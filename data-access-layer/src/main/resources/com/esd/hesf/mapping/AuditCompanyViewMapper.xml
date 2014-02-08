@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.AuditCompanyViewDao">
+
+	<!-- return the audit result with company info -->
+	<resultMap id="AuditCompanyViewModel" type="com.esd.hesf.model.Audit">
+		<id column="au_id" jdbcType="INTEGER" property="id" />
+		<result column="au_year" jdbcType="CHAR" property="year" />
+		<result column="au_amount_payable" jdbcType="DECIMAL" property="amountPayable" />
+		<result column="au_reduction_amount" jdbcType="DECIMAL" property="reductionAmount" />
+		<result column="au_actual_amount" jdbcType="DECIMAL" property="actualAmount" />
+		<result column="au_pay_amount" jdbcType="DECIMAL" property="payAmount" />
+		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
+		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
+		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUserId" />
+		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
+		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
+		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUserId" />
+		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
+		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
+		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
+		<result column="au_is_exempt" jdbcType="BIT" property="isExempt" />
+		<result column="au_reduction_type" jdbcType="INTEGER" property="reductionType" />
+		<result column="au_reducion_apply_user" jdbcType="VARCHAR" property="reducionApplyUser" />
+		<result column="au_reduction_date" jdbcType="TIMESTAMP" property="reductionDate" />
+		<result column="au_reduction_reason" jdbcType="VARCHAR" property="reductionReason" />
+		<result column="au_reduction_answer_user" jdbcType="VARCHAR" property="reductionAnswerUser" />
+		<result column="au_reduction_answer_date" jdbcType="VARCHAR" property="reductionAnswerDate" />
+		<result column="au_reduction_answer_option" jdbcType="VARCHAR"
+			property="reductionAnswerOption" />
+		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
+		<result column="au_create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="au_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="au_is_active" jdbcType="BIT" property="isActive" />
+		<result column="au_version" jdbcType="INTEGER" property="version" />
+		<result column="c_year" jdbcType="CHAR" property="company.year" />
+		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
+		<result column="c_id" jdbcType="VARCHAR" property="company.id" />
+		<result column="c_company_name" jdbcType="VARCHAR" property="company.companyName" />
+		<result column="c_company_legal" jdbcType="VARCHAR" property="company.companyLegal" />
+		<result column="c_company_contact_person" jdbcType="VARCHAR" property="company.companyContactPerson" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR"
+			property="company.companyOrganizationCode" />
+		<result column="c_company_tax_code" jdbcType="VARCHAR" property="company.companyTaxCode" />
+		<result column="c_company_address" jdbcType="VARCHAR" property="company.companyAddress" />
+		<result column="c_company_zip_code" jdbcType="CHAR" property="company.companyZipCode" />
+		<result column="c_company_phone" jdbcType="VARCHAR" property="company.companyPhone" />
+		<result column="c_company_mobile" jdbcType="VARCHAR" property="company.companyMobile" />
+		<result column="c_company_bank" jdbcType="VARCHAR" property="company.companyBank" />
+		<result column="c_company_bank_account" jdbcType="VARCHAR" property="company.companyBankAccount" />
+		<result column="c_company_remark" jdbcType="VARCHAR" property="company.companyRemark" />
+		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
+		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		c_id, c_year, c_company_code, c_company_name, c_company_legal, c_company_contact_person, 
+			c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
+			c_company_phone, c_company_mobile, c_company_bank, c_company_bank_account,
+			c_company_remark, 
+		t_id, t_company_type, 
+		et_id, et_company_economy_type,
+		p_id, p_company_property,
+		a_code, a_name,
+		au_id, au_year, au_amount_payable, au_reduction_amount, au_actual_amount,
+			au_pay_amount, au_remain_amount, au_init_audit_user_id, au_init_audit_date, 
+			au_verify_audit_user_id, au_verify_audit_date, au_remark, au_is_exempt, 
+			au_reduction_type, au_reducion_apply_user, au_reduction_date, au_reduction_reason,
+			au_reduction_answer_user, au_reduction_answer_date, 
+			au_reduction_answer_option, au_reduction_remark,
+			au_create_time,au_update_time, au_user_id, 
+			au_is_active, au_version,
+		aup_id, aup_audit_process_status
+	</sql>
+
+	<sql id="From_condition_list">
+		company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
+	</sql>
+	
+	<sql id="Where_condition_list">
+		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id   
+	</sql>
+
+	<select id="retrieveByCompany" parameterType="map" resultMap="AuditCompanyViewModel">
+		select
+		<include refid="Base_Column_List" />
+		from audit_company_view 
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="year != null and year != ''">
+				c_year = #{year,jdbcType=CHAR} 
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				and c_company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyTaxCode != null and companyTaxCode != ''">
+				and c_company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyOrganizationCode != null and companyOrganizationCode != ''">
+				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyProperty != null and companyProperty > 0">
+				and c_company_property = #{companyProperty,jdbcType=INTEGER} 
+			</if>
+			<if test="companyEconomyType != null and companyEconomyType > 0">
+				and c_company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
+			</if>
+			<!-- emp total -->
+			<if test="minTotal != null and minTotal > 0">
+				and c_company_emp_total &gt;= #{minTotal} 
+			</if>
+			<if test="maxTotal != null and maxTotal > 0">
+				and c_company_emp_total &lt;=  #{maxTotal} 
+			</if>
+			<if test="companyName != null and companyName != ''">
+				and c_company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyAddress != null and companyAddress != ''">
+				and c_company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
+			</if>				
+			<if test="companyLegal != null and companyLegal != ''">
+				and c_company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="auditProcessStatus != null and auditProcessStatus > 0">
+				and aup_id = #{auditProcessStatus,jdbcType=INTEGER} 
+			</if>
+			<if test="paymentPerson != null and paymentPerson > 0">
+				and u_id = #{paymentPerson,jdbcType=INTEGER} 
+			</if>
+			<if test="overYear != null and overYear != ''">
+				and au_year &lt;= #{overYear}
+			</if>
+			<if test="isExempt != null">
+				and au_is_exempt = #{isExempt,jdbcType=BIT} 
+			</if>
+		</trim>
+		order by au_update_time desc
+		limit #{start},#{size}
+	</select>
+	
+	<select id="retrieveCount" parameterType="map" resultType="java.lang.Integer">
+		select count(*) 
+		from audit_company_view
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="year != null and year != ''">
+				c_year = #{year,jdbcType=CHAR} 
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				and c_company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyTaxCode != null and companyTaxCode != ''">
+				and c_company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyOrganizationCode != null and companyOrganizationCode != ''">
+				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyProperty != null and companyProperty > 0">
+				and c_company_property = #{companyProperty,jdbcType=INTEGER} 
+			</if>
+			<if test="companyEconomyType != null and companyEconomyType > 0">
+				and c_company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
+			</if>
+			<!-- emp total -->
+			<if test="minTotal != null and minTotal > 0">
+				and c_company_emp_total &gt;= #{minTotal} 
+			</if>
+			<if test="maxTotal != null and maxTotal > 0">
+				and c_company_emp_total &lt;=  #{maxTotal} 
+			</if>
+			<if test="companyName != null and companyName != ''">
+				and c_company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyAddress != null and companyAddress != ''">
+				and c_company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
+			</if>				
+			<if test="companyLegal != null and companyLegal != ''">
+				and c_company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="auditProcessStatus != null and auditProcessStatus > 0">
+				and aup_id = #{auditProcessStatus,jdbcType=INTEGER} 
+			</if>
+			<if test="paymentPerson != null and paymentPerson > 0">
+				and u_id = #{paymentPerson,jdbcType=INTEGER} 
+			</if>
+			<if test="overYear != null and overYear != ''">
+				and au_year &lt;= #{overYear}
+			</if>
+			<if test="isExempt != null">
+				and au_is_exempt = #{isExempt,jdbcType=BIT} 
+			</if>
+		</trim>
+	</select>
+	
+	
+	<!-- create view sql -->
+	<insert id="createViewSql">
+		select 
+			c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, 
+			t.id as t_id, t.company_type as t_company_type, 
+			et.id as et_id, et.company_economy_type as et_company_economy_type,
+			p.id as p_id, p.company_property as p_company_property,
+			a.code as a_code, a.name as a_name,
+			au.id as au_id, au.year as au_year, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, au.init_audit_user_id as au_init_audit_user_id, 
+				au.init_audit_date as au_init_audit_date, au.verify_audit_user_id as au_verify_audit_user_id,
+				au.verify_audit_date as au_verify_audit_date , au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status 
+		from company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
+		where c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id
+	</insert>
+	
+	<!-- xxxxxxxxcreate view sql xxxxxxxxx  -->
+	<insert id="xxxxxxcreateViewSql">
+		select 
+			c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, 
+			t.id as t_id, t.company_type as t_company_type, 
+			et.id as et_id, et.company_economy_type as et_company_economy_type,
+			p.id as p_id, p.company_property as p_company_property,
+			a.code as a_code, a.name as a_name,
+			au.id as au_id, au.year as au_year, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, au.init_audit_user_id as au_init_audit_user_id, 
+				au.init_audit_date as au_init_audit_date, au.verify_audit_user_id as au_verify_audit_user_id,
+				au.verify_audit_date as au_verify_audit_date , au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status,
+			pay.id as pay_id, pay.create_time as pay_create_time,
+				pay.update_time as pay_update_time,pay.user_id as pay_user_id,
+				pay.is_active as pay_is_active,pay.payment_date as pay_payment_date,
+				pay.payment_money as pay_payment_money,pay.remark as pay_remark,
+				pay.audit_id as pay_audit_id,pay.version as pay_version,
+			u.id as u_id, u.user_name as u_user_name, u.user_real_name as u_user_real_name,
+				u.user_password as u_user_password, u.user_email as u_user_email,
+				u.user_mobile as u_user_mobile, u.user_phone as
+				u_user_phone, u.user_status as u_user_status
+		from company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup, payment as pay, user as u
+		where c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id and au.id = pay.audit_id and pay.payment_person = u.id
+		group by au.id
+	</insert>
+	
+	<!-- xxxxxx sql -->
+	<insert id="xxxxxinsert">
+		pay_id, pay_create_time, pay_update_time, pay_user_id,
+			pay_is_active, pay_payment_date, pay_payment_money, pay_remark,
+			pay_audit_id, pay_version,
+		u_id, u_user_name, u_user_real_name, u_user_password, u_user_email,
+			u_user_mobile, u_user_phone, u_user_status
+	</insert>
+</mapper>

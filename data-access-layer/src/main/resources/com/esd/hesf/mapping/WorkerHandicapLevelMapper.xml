@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.hesf.dao.WorkerHandicapLevelDao">
+
+	<resultMap id="BaseResultMap" type="com.esd.hesf.model.WorkerHandicapLevel">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="handicap_level" property="handicapLevel" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_active" property="isActive" jdbcType="BIT" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, handicap_level, create_time, update_time, user_id, is_active, version
+	</sql>
+	
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerHandicapLevel">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into worker_handicap_level (handicap_level, create_time,
+		update_time, user_id, is_active, version )
+		values (#{handicapLevel,jdbcType=VARCHAR},
+		now(), now(), #{userId,jdbcType=INTEGER}, default, default)
+	</insert>
+	
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerHandicapLevel">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>	
+		insert into worker_handicap_level
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="handicapLevel != null">
+				handicap_level,
+			</if>
+			create_time, update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+			version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="handicapLevel != null">
+				#{handicapLevel,jdbcType=VARCHAR},
+			</if>
+			now(),now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 
+			</if>
+			default
+		</trim>
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from worker_handicap_level
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.WorkerHandicapLevel">
+		update worker_handicap_level
+		<set>
+			<if test="handicapLevel != null">
+				handicap_level = #{handicapLevel,jdbcType=VARCHAR},
+			</if>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1
+		</set>
+		where id = #{id,jdbcType=INTEGER} and version = #{version, jdbyType=INTEGER}
+	</update>
+
+	<!-- retrieve -->	
+	<select id="retrieveByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from worker_handicap_level
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from worker_handicap_level
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="workerHandicapLevel != null">
+				<if test="workerHandicapLevel.userId != null and workerHandicapLevel.userId > 0">
+					user_id = #{workerHandicapLevel.userId}
+				</if>
+				<if test="workerHandicapLevel.isActive != null">
+					is_active = #{workerHandicapLevel.isActive}
+				</if>
+			</if>
+		</trim>
+		limit #{start},#{size}
+	</select>
+
+
+</mapper>

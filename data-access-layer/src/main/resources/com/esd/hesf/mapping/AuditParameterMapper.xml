@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.hesf.dao.AuditParameterDao">
+
+	<resultMap id="BaseResultMap" type="com.esd.hesf.model.AuditParameter">
+		<id column="ap_id" property="id" jdbcType="INTEGER" />
+		<result column="ap_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="ap_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="ap_user_id" property="userId" jdbcType="INTEGER" />
+		<result column="ap_is_active" property="isActive" jdbcType="BIT" />
+		<result column="ap_version" property="version" jdbcType="INTEGER" />
+		<result column="ap_year" property="year" jdbcType="CHAR" />
+		<result column="ap_put_scale" property="putScale" jdbcType="DECIMAL" />
+		<result column="ap_average_salary" property="averageSalary" jdbcType="DECIMAL" />
+		<result column="ap_audit_start_date" property="auditStartDate" jdbcType="TIMESTAMP" />
+		<result column="ap_audit_close_date" property="auditCloseDate" jdbcType="TIMESTAMP" />
+		<result column="ap_audit_delay_date" property="auditDelayDate" jdbcType="TIMESTAMP" />
+		<result column="ap_pay_close_date" property="payCloseDate" jdbcType="TIMESTAMP" />
+		<result column="ap_pay_limit_days" property="payLimitDays" jdbcType="INTEGER" />
+		<result column="ap_decimal_count" property="decimalCount" jdbcType="INTEGER" />
+		<result column="ap_eye_one" property="eyeOne" jdbcType="INTEGER" />
+		<result column="ap_eye_two" property="eyeTwo" jdbcType="INTEGER" />
+		<result column="ap_eye_three" property="eyeThree" jdbcType="INTEGER" />
+		<result column="ap_eye_four" property="eyeFour" jdbcType="INTEGER" />
+		<result column="ap_hearing_one" property="hearingOne" jdbcType="INTEGER" />
+		<result column="ap_hearing_two" property="hearingTwo" jdbcType="INTEGER" />
+		<result column="ap_hearing_three" property="hearingThree" jdbcType="INTEGER" />
+		<result column="ap_hearing_four" property="hearingFour" jdbcType="INTEGER" />
+		<result column="ap_body_one" property="bodyOne" jdbcType="INTEGER" />
+		<result column="ap_body_two" property="bodyTwo" jdbcType="INTEGER" />
+		<result column="ap_body_three" property="bodyThree" jdbcType="INTEGER" />
+		<result column="ap_body_four" property="bodyFour" jdbcType="INTEGER" />
+		<result column="ap_speak_one" property="speakOne" jdbcType="INTEGER" />
+		<result column="ap_speak_two" property="speakTwo" jdbcType="INTEGER" />
+		<result column="ap_speak_three" property="speakThree" jdbcType="INTEGER" />
+		<result column="ap_speak_four" property="speakFour" jdbcType="INTEGER" />
+		<result column="ap_intelligence_one" property="intelligenceOne" jdbcType="INTEGER" />
+		<result column="ap_intelligence_two" property="intelligenceTwo" jdbcType="INTEGER" />
+		<result column="ap_intelligence_three" property="intelligenceThree"
+			jdbcType="INTEGER" />
+		<result column="ap_intelligence_four" property="intelligenceFour"
+			jdbcType="INTEGER" />
+		<result column="ap_mental_one" property="mentalOne" jdbcType="INTEGER" />
+		<result column="ap_mental_two" property="mentalTwo" jdbcType="INTEGER" />
+		<result column="ap_mental_three" property="mentalThree" jdbcType="INTEGER" />
+		<result column="ap_mental_four" property="mentalFour" jdbcType="INTEGER" />
+		<result column="ap_multi_one" property="multiOne" jdbcType="INTEGER" />
+		<result column="ap_multi_two" property="multiTwo" jdbcType="INTEGER" />
+		<result column="ap_multi_three" property="multiThree" jdbcType="INTEGER" />
+		<result column="ap_multi_four" property="multiFour" jdbcType="INTEGER" />
+		<association property="area" javaType="com.esd.hesf.model.Area"
+			resultMap="ResultArea" />
+	</resultMap>
+	
+	<!-- area -->
+	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
+		<id column="a_code" jdbcType="CHAR" property="code" />
+		<result column="a_name" jdbcType="VARCHAR" property="name" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		ap.id as ap_id, ap.create_time as ap_create_time, ap.update_time as ap_update_time, ap.user_id as ap_user_id, 
+		ap.is_active as ap_is_active, ap.version as ap_version,
+		ap.year as ap_year, ap.put_scale as ap_put_scale,
+		ap.average_salary as ap_average_salary, ap.audit_start_date as ap_audit_start_date,
+		ap.audit_close_date as ap_audit_close_date,ap.audit_delay_date as ap_audit_delay_date,
+		ap.pay_close_date as ap_pay_close_date,
+		ap.pay_limit_days as ap_pay_limit_days, ap.decimal_count as ap_decimal_count,
+		ap.eye_one as ap_eye_one, ap.eye_two as ap_eye_two,
+		ap.eye_three as ap_eye_three, ap.eye_four as ap_eye_four,
+		ap.hearing_one as ap_hearing_one, ap.hearing_two as ap_hearing_two,
+		ap.hearing_three as ap_hearing_three,
+		ap.hearing_four as ap_hearing_four,
+		ap.body_one as ap_body_one, ap.body_two as ap_body_two,
+		ap.body_three as ap_body_three, ap.body_four as ap_body_four, ap.speak_one as ap_speak_one,
+		ap.speak_two as ap_speak_two, ap.speak_three as ap_speak_three,
+		ap.speak_four as ap_speak_four,
+		ap.intelligence_one as ap_intelligence_one, ap.intelligence_two as ap_intelligence_two,
+		ap.intelligence_three as ap_intelligence_three, ap.intelligence_four as ap_intelligence_four,
+		ap.mental_one as ap_mental_one, ap.mental_two as ap_mental_two,
+		ap.mental_three as ap_mental_three, ap.mental_four as ap_mental_four, ap.multi_one as ap_multi_one, 
+		ap.multi_two as ap_multi_two, ap.multi_three as ap_multi_three, ap.multi_four as ap_multi_four,
+		<!-- area -->
+		a.code as a_code, a.name as a_name
+	</sql>
+	
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.esd.hesf.model.AuditParameter">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into audit_parameter (create_time,
+		update_time,
+		user_id,
+		is_active,
+		version,
+		year, area_code, put_scale,
+		average_salary,
+		audit_close_date,
+		pay_start_date,
+		pay_close_date,
+		pay_delay_date,
+		pay_limit_days,
+		decimal_count,
+		eye_one,
+		eye_two, eye_three,
+		eye_four, hearing_one,
+		hearing_two,
+		hearing_three, hearing_four,
+		body_one,
+		body_two,
+		body_three, body_four,
+		speak_one, speak_two, speak_three,
+		speak_four,
+		intelligence_one,
+		intelligence_two,
+		intelligence_three,
+		intelligence_four,
+		mental_one,
+		mental_two, mental_three, mental_four,
+		multi_one, multi_two,
+		multi_three,
+		multi_four)
+		values
+		(now(),now(),
+		#{userId,jdbcType=INTEGER},
+		default,
+		default,
+		#{year,jdbcType=CHAR},
+		#{area.code,jdbcType=CHAR},
+		#{putScale,jdbcType=DECIMAL},
+		#{averageSalary,jdbcType=DECIMAL},
+		#{auditStartDate,jdbcType=TIMESTAMP},
+		#{auditCloseDate,jdbcType=TIMESTAMP},
+		#{auditDelayDate,jdbcType=TIMESTAMP},
+		#{payCloseDate,jdbcType=TIMESTAMP},
+		#{payLimitDays,jdbcType=INTEGER},
+		#{decimalCount,jdbcType=INTEGER}, #{eyeOne,jdbcType=INTEGER},
+		#{eyeTwo,jdbcType=INTEGER}, #{eyeThree,jdbcType=INTEGER},
+		#{eyeFour,jdbcType=INTEGER},
+		#{hearingOne,jdbcType=INTEGER},
+		#{hearingTwo,jdbcType=INTEGER},
+		#{hearingThree,jdbcType=INTEGER},
+		#{hearingFour,jdbcType=INTEGER},
+		#{bodyOne,jdbcType=INTEGER},
+		#{bodyTwo,jdbcType=INTEGER}, #{bodyThree,jdbcType=INTEGER},
+		#{bodyFour,jdbcType=INTEGER},
+		#{speakOne,jdbcType=INTEGER},
+		#{speakTwo,jdbcType=INTEGER},
+		#{speakThree,jdbcType=INTEGER},
+		#{speakFour,jdbcType=INTEGER},
+		#{intelligenceOne,jdbcType=INTEGER},
+		#{intelligenceTwo,jdbcType=INTEGER},
+		#{intelligenceThree,jdbcType=INTEGER},
+		#{intelligenceFour,jdbcType=INTEGER},
+		#{mentalOne,jdbcType=INTEGER},
+		#{mentalTwo,jdbcType=INTEGER},
+		#{mentalThree,jdbcType=INTEGER},
+		#{mentalFour,jdbcType=INTEGER},
+		#{multiOne,jdbcType=INTEGER},
+		#{multiTwo,jdbcType=INTEGER}, #{multiThree,jdbcType=INTEGER},
+		#{multiFour,jdbcType=INTEGER})
+	</insert>
+	
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.esd.hesf.model.AuditParameter">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into audit_parameter
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			create_time, update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+			version,
+			<if test="year != null">
+				year,
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					area_code,
+				</if>
+			</if>
+			<if test="putScale != null">
+				put_scale,
+			</if>
+			<if test="averageSalary != null">
+				average_salary,
+			</if>
+			<if test="auditStartDate != null">
+				audit_start_date,
+			</if>
+			<if test="auditCloseDate != null">
+				audit_close_date,
+			</if>
+			<if test="auditDelayDate != null">
+				audit_delay_date,
+			</if>
+			<if test="payCloseDate != null">
+				pay_close_date,
+			</if>
+			<if test="payLimitDays != null">
+				pay_limit_days,
+			</if>
+			<if test="decimalCount != null">
+				decimal_count,
+			</if>
+			<if test="eyeOne != null">
+				eye_one,
+			</if>
+			<if test="eyeTwo != null">
+				eye_two,
+			</if>
+			<if test="eyeThree != null">
+				eye_three,
+			</if>
+			<if test="eyeFour != null">
+				eye_four,
+			</if>
+			<if test="hearingOne != null">
+				hearing_one,
+			</if>
+			<if test="hearingTwo != null">
+				hearing_two,
+			</if>
+			<if test="hearingThree != null">
+				hearing_three,
+			</if>
+			<if test="hearingFour != null">
+				hearing_four,
+			</if>
+			<if test="bodyOne != null">
+				body_one,
+			</if>
+			<if test="bodyTwo != null">
+				body_two,
+			</if>
+			<if test="bodyThree != null">
+				body_three,
+			</if>
+			<if test="bodyFour != null">
+				body_four,
+			</if>
+			<if test="speakOne != null">
+				speak_one,
+			</if>
+			<if test="speakTwo != null">
+				speak_two,
+			</if>
+			<if test="speakThree != null">
+				speak_three,
+			</if>
+			<if test="speakFour != null">
+				speak_four,
+			</if>
+			<if test="intelligenceOne != null">
+				intelligence_one,
+			</if>
+			<if test="intelligenceTwo != null">
+				intelligence_two,
+			</if>
+			<if test="intelligenceThree != null">
+				intelligence_three,
+			</if>
+			<if test="intelligenceFour != null">
+				intelligence_four,
+			</if>
+			<if test="mentalOne != null">
+				mental_one,
+			</if>
+			<if test="mentalTwo != null">
+				mental_two,
+			</if>
+			<if test="mentalThree != null">
+				mental_three,
+			</if>
+			<if test="mentalFour != null">
+				mental_four,
+			</if>
+			<if test="multiOne != null">
+				multi_one,
+			</if>
+			<if test="multiTwo != null">
+				multi_two,
+			</if>
+			<if test="multiThree != null">
+				multi_three,
+			</if>
+			<if test="multiFour != null">
+				multi_four,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			now(),now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 	
+			</if>
+			default,
+			<if test="year != null">
+				#{year,jdbcType=CHAR},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					#{area.code,jdbcType=CHAR},
+				</if>
+			</if>
+			<if test="putScale != null">
+				#{putScale,jdbcType=DECIMAL},
+			</if>
+			<if test="averageSalary != null">
+				#{averageSalary,jdbcType=DECIMAL},
+			</if>
+			<if test="auditStartDate != null">
+				#{auditStartDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditCloseDate != null">
+				#{auditCloseDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditDelayDate != null">
+				#{auditDelayDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payCloseDate != null">
+				#{payCloseDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payLimitDays != null">
+				#{payLimitDays,jdbcType=INTEGER},
+			</if>
+			<if test="decimalCount != null">
+				#{decimalCount,jdbcType=INTEGER},
+			</if>
+			<if test="eyeOne != null">
+				#{eyeOne,jdbcType=INTEGER},
+			</if>
+			<if test="eyeTwo != null">
+				#{eyeTwo,jdbcType=INTEGER},
+			</if>
+			<if test="eyeThree != null">
+				#{eyeThree,jdbcType=INTEGER},
+			</if>
+			<if test="eyeFour != null">
+				#{eyeFour,jdbcType=INTEGER},
+			</if>
+			<if test="hearingOne != null">
+				#{hearingOne,jdbcType=INTEGER},
+			</if>
+			<if test="hearingTwo != null">
+				#{hearingTwo,jdbcType=INTEGER},
+			</if>
+			<if test="hearingThree != null">
+				#{hearingThree,jdbcType=INTEGER},
+			</if>
+			<if test="hearingFour != null">
+				#{hearingFour,jdbcType=INTEGER},
+			</if>
+			<if test="bodyOne != null">
+				#{bodyOne,jdbcType=INTEGER},
+			</if>
+			<if test="bodyTwo != null">
+				#{bodyTwo,jdbcType=INTEGER},
+			</if>
+			<if test="bodyThree != null">
+				#{bodyThree,jdbcType=INTEGER},
+			</if>
+			<if test="bodyFour != null">
+				#{bodyFour,jdbcType=INTEGER},
+			</if>
+			<if test="speakOne != null">
+				#{speakOne,jdbcType=INTEGER},
+			</if>
+			<if test="speakTwo != null">
+				#{speakTwo,jdbcType=INTEGER},
+			</if>
+			<if test="speakThree != null">
+				#{speakThree,jdbcType=INTEGER},
+			</if>
+			<if test="speakFour != null">
+				#{speakFour,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceOne != null">
+				#{intelligenceOne,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceTwo != null">
+				#{intelligenceTwo,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceThree != null">
+				#{intelligenceThree,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceFour != null">
+				#{intelligenceFour,jdbcType=INTEGER},
+			</if>
+			<if test="mentalOne != null">
+				#{mentalOne,jdbcType=INTEGER},
+			</if>
+			<if test="mentalTwo != null">
+				#{mentalTwo,jdbcType=INTEGER},
+			</if>
+			<if test="mentalThree != null">
+				#{mentalThree,jdbcType=INTEGER},
+			</if>
+			<if test="mentalFour != null">
+				#{mentalFour,jdbcType=INTEGER},
+			</if>
+			<if test="multiOne != null">
+				#{multiOne,jdbcType=INTEGER},
+			</if>
+			<if test="multiTwo != null">
+				#{multiTwo,jdbcType=INTEGER},
+			</if>
+			<if test="multiThree != null">
+				#{multiThree,jdbcType=INTEGER},
+			</if>
+			<if test="multiFour != null">
+				#{multiFour,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		audit_parameter
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.AuditParameter">
+		update audit_parameter
+		<set>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1,
+			<if test="year != null">
+				year = #{year,jdbcType=CHAR},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					area_code = #{area.code,jdbcType=CHAR},
+				</if>
+			</if>
+			<if test="putScale != null">
+				put_scale = #{putScale,jdbcType=DECIMAL},
+			</if>
+			<if test="averageSalary != null">
+				average_salary = #{averageSalary,jdbcType=DECIMAL},
+			</if>
+			<if test="auditStartDate != null">
+				audit_start_date = #{auditStartDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditCloseDate != null">
+				audit_close_date = #{auditCloseDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditDelayDate != null">
+				audit_delay_date = #{auditDelayDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payCloseDate != null">
+				pay_close_date = #{payCloseDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payLimitDays != null">
+				pay_limit_days = #{payLimitDays,jdbcType=INTEGER},
+			</if>
+			<if test="decimalCount != null">
+				decimal_count = #{decimalCount,jdbcType=INTEGER},
+			</if>
+			<if test="eyeOne != null">
+				eye_one = #{eyeOne,jdbcType=INTEGER},
+			</if>
+			<if test="eyeTwo != null">
+				eye_two = #{eyeTwo,jdbcType=INTEGER},
+			</if>
+			<if test="eyeThree != null">
+				eye_three = #{eyeThree,jdbcType=INTEGER},
+			</if>
+			<if test="eyeFour != null">
+				eye_four = #{eyeFour,jdbcType=INTEGER},
+			</if>
+			<if test="hearingOne != null">
+				hearing_one = #{hearingOne,jdbcType=INTEGER},
+			</if>
+			<if test="hearingTwo != null">
+				hearing_two = #{hearingTwo,jdbcType=INTEGER},
+			</if>
+			<if test="hearingThree != null">
+				hearing_three = #{hearingThree,jdbcType=INTEGER},
+			</if>
+			<if test="hearingFour != null">
+				hearing_four = #{hearingFour,jdbcType=INTEGER},
+			</if>
+			<if test="bodyOne != null">
+				body_one = #{bodyOne,jdbcType=INTEGER},
+			</if>
+			<if test="bodyTwo != null">
+				body_two = #{bodyTwo,jdbcType=INTEGER},
+			</if>
+			<if test="bodyThree != null">
+				body_three = #{bodyThree,jdbcType=INTEGER},
+			</if>
+			<if test="bodyFour != null">
+				body_four = #{bodyFour,jdbcType=INTEGER},
+			</if>
+			<if test="speakOne != null">
+				speak_one = #{speakOne,jdbcType=INTEGER},
+			</if>
+			<if test="speakTwo != null">
+				speak_two = #{speakTwo,jdbcType=INTEGER},
+			</if>
+			<if test="speakThree != null">
+				speak_three = #{speakThree,jdbcType=INTEGER},
+			</if>
+			<if test="speakFour != null">
+				speak_four = #{speakFour,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceOne != null">
+				intelligence_one = #{intelligenceOne,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceTwo != null">
+				intelligence_two = #{intelligenceTwo,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceThree != null">
+				intelligence_three = #{intelligenceThree,jdbcType=INTEGER},
+			</if>
+			<if test="intelligenceFour != null">
+				intelligence_four = #{intelligenceFour,jdbcType=INTEGER},
+			</if>
+			<if test="mentalOne != null">
+				mental_one = #{mentalOne,jdbcType=INTEGER},
+			</if>
+			<if test="mentalTwo != null">
+				mental_two = #{mentalTwo,jdbcType=INTEGER},
+			</if>
+			<if test="mentalThree != null">
+				mental_three = #{mentalThree,jdbcType=INTEGER},
+			</if>
+			<if test="mentalFour != null">
+				mental_four = #{mentalFour,jdbcType=INTEGER},
+			</if>
+			<if test="multiOne != null">
+				multi_one = #{multiOne,jdbcType=INTEGER},
+			</if>
+			<if test="multiTwo != null">
+				multi_two = #{multiTwo,jdbcType=INTEGER},
+			</if>
+			<if test="multiThree != null">
+				multi_three = #{multiThree,jdbcType=INTEGER},
+			</if>
+			<if test="multiFour != null">
+				multi_four = #{multiFour,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+	</update>
+	
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from audit_parameter as ap, area as a
+		where ap.id = #{id,jdbcType=INTEGER} and ap.area_code = a.code
+	</select>
+
+	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from audit_parameter as ap, area as a 
+		<trim prefix="where" prefixOverrides="and|or">
+			ap.area_code = a.code 
+			<if test="auditParameter != null">
+				<if
+					test="auditParameter.auditParameter != null and auditParameter.auditParameter != ''">
+					and ap.auditParameter = #{auditParameter.auditParameter}
+				</if>
+				<if test="auditParameter.userId != null and auditParameter.userId > 0">
+					and ap.user_id = #{auditParameter.userId}
+				</if>
+				<if test="auditParameter.isActive != null">
+					and ap.is_active = #{auditParameter.isActive}
+				</if>
+				<if test="auditParameter.year != null">
+					and ap.year = #{auditParameter.year}
+				</if>
+				<if test="auditParameter.area != null">
+					<if test="auditParameter.area.code != null and auditParameter.area.code  != ''">
+						and ap.area_code = #{auditParameter.areaCode}
+					</if>
+				</if>
+			</if>
+		</trim>
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from audit_parameter
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="auditParameter != null">
+				<if
+					test="auditParameter.auditParameter != null and auditParameter.auditParameter != ''">
+					ap.auditParameter = #{auditParameter.auditParameter}
+				</if>
+				<if test="auditParameter.userId != null and auditParameter.userId > 0">
+					and ap.user_id = #{auditParameter.userId}
+				</if>
+				<if test="auditParameter.isActive != null">
+					and ap.is_active = #{auditParameter.isActive}
+				</if>
+				<if test="auditParameter.year != null">
+					and ap.year = #{auditParameter.year}
+				</if>
+				<if test="auditParameter.area != null">
+					<if test="auditParameter.area.code != null and auditParameter.area.code  != ''">
+						and ap.area_code = #{auditParameter.areaCode}
+					</if>
+				</if>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- retrieve -->
+	<select id="retrieveByYear" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from audit_parameter as ap, area as a
+		where ap.year = #{year,jdbcType=VARCHAR} and ap.area_code = a.code
+	</select>
+
+</mapper>
