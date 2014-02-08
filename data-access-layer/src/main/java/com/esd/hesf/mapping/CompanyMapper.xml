@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.CompanyDao">
+
+	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
+		<id column="c_year" jdbcType="CHAR" property="year" />
+		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
+		<result column="c_id" jdbcType="VARCHAR" property="id" />
+		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
+		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
+		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR"
+			property="companyOrganizationCode" />
+		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
+		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
+		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
+		<result column="c_company_phone" jdbcType="VARCHAR" property="companyPhone" />
+		<result column="c_company_mobile" jdbcType="VARCHAR" property="companyMobile" />
+		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
+		<result column="c_company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
+		<result column="c_company_remark" jdbcType="VARCHAR" property="companyRemark" />
+		<result column="c_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
+		<result column="c_company_handicap_total" jdbcType="INTEGER" property="companyHandicapTotal" />
+		<result column="c_company_predict_total" jdbcType="INTEGER" property="companyPredictTotal" />
+		<result column="c_company_should_total" jdbcType="DECIMAL" property="companyShouldTotal" />
+		<result column="c_company_already_total" jdbcType="INTEGER" property="companyAlreadyTotal" />
+		<result column="c_create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="c_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="c_is_active" jdbcType="BIT" property="isActive" />
+		<result column="c_version" jdbcType="INTEGER" property="version" />
+		<association property="companyType" javaType="com.esd.hesf.model.CompanyType" resultMap="ResultCompanyType" />
+		<association property="companyEconomyType" javaType="com.esd.hesf.model.CompanyEconomyType" resultMap="ResultCompanyEconomyType" />
+		<association property="companyProperty" javaType="com.esd.hesf.model.CompanyProperty" resultMap="ResultCompanyProperty" />
+		<association property="area" javaType="com.esd.hesf.model.Area" resultMap="ResultArea" />
+	</resultMap>
+	
+	<!-- company type -->
+	<resultMap id="ResultCompanyType" type="com.esd.hesf.model.CompanyType">
+		<id column="t_id" jdbcType="INTEGER" property="id" />
+		<result column="t_company_type" jdbcType="VARCHAR" property="companyType" />
+	</resultMap>
+	
+	<!-- company economy type -->
+	<resultMap id="ResultCompanyEconomyType" type="com.esd.hesf.model.CompanyEconomyType">
+		<id column="et_id" property="id" jdbcType="INTEGER" />
+		<result column="et_company_economy_type" property="companyEconomyType"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- company property -->
+	<resultMap id="ResultCompanyProperty" type="com.esd.hesf.model.CompanyProperty">
+		<id column="p_id" property="id" jdbcType="INTEGER" />
+		<result column="p_company_property" property="companyProperty"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- area -->
+	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
+		<id column="a_code" property="code" jdbcType="CHAR" />
+		<result column="a_name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		<!-- company -->
+		c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+		c.company_contact_person as c_company_contact_person, 
+		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+		c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
+		c.company_handicap_total as c_company_handicap_total, 
+		c.company_predict_total as c_company_predict_total, c.company_should_total as c_company_should_total,
+		c.company_already_total as c_company_already_total, c.create_time as c_create_time, 
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
+		<!-- type -->
+		t.id as t_id, t.company_type as t_company_type, 
+		<!-- economy type -->
+		et.id as et_id, et.company_economy_type as et_company_economy_type,
+		<!-- property -->
+		p.id as p_id, p.company_property as p_company_property,
+		<!-- area -->
+		a.code as a_code, a.name as a_name 
+	</sql>
+
+	<sql id="From_condition_list">
+		company as c, company_type as t, company_economy_type as et, company_property as p, area as a 
+	</sql>
+	
+	<sql id="Where_condition_list">
+		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code 
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" parameterType="com.esd.hesf.model.Company">
+		insert into company (id,year,
+			company_code,
+			company_name,
+			company_legal, company_contact_person,
+			company_organization_code, company_tax_code,
+			company_address, company_zip_code,
+			company_type, company_economy_type,
+			company_property,
+			area_code, company_phone, company_mobile,
+			company_bank,
+			company_bank_account, company_remark,
+			company_emp_total,
+			company_handicap_total,
+			company_predict_total,company_should_total,company_already_total,
+			create_time, update_time, user_id,
+			is_active,version)
+		values
+			(#{id,jdbcType=VARCHAR},#{year,jdbcType=CHAR},
+			#{companyCode,jdbcType=VARCHAR},
+			#{companyName,jdbcType=VARCHAR},
+			#{companyLegal,jdbcType=VARCHAR},#{companyContactPerson,jdbcType=VARCHAR},
+			#{companyOrganizationCode,jdbcType=VARCHAR},
+			#{companyTaxCode,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR},
+			#{companyZipCode,jdbcType=INTEGER},
+			#{companyType.id,jdbcType=INTEGER},
+			#{companyEconomyType.id,jdbcType=INTEGER}, #{companyProperty.id,jdbcType=INTEGER},
+			#{area.code,jdbcType=VARCHAR}, #{companyPhone,jdbcType=VARCHAR},
+			#{companyMobile,jdbcType=INTEGER},
+			#{companyBank,jdbcType=VARCHAR},
+			#{companyBankAccount,jdbcType=INTEGER}, #{companyRemark,jdbcType=VARCHAR},
+			#{companyEmpTotal,jdbcType=INTEGER},#{companyHandicapTotal,jdbcType=INTEGER},#{companyPredictTotal,jdbcType=INTEGER},
+			#{companyShouldTotal,jdbcType=INTEGER},#{companyAlreadyTotal,jdbcType=INTEGER},
+			now(),now(),
+			#{userId,jdbcType=INTEGER},
+			default,default)
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.esd.hesf.model.Company">
+		insert into company
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">
+				id,
+			</if>
+			<if test="year != null and year != ''">
+				year,
+			</if>
+			<if test="companyCode != null">
+				company_code,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="companyLegal != null">
+				company_legal,
+			</if>
+			<if test="companyContactPerson != null">
+				company_contact_person, 
+			</if>
+			<if test="companyOrganizationCode != null">
+				company_organization_code,
+			</if>
+			<if test="companyTaxCode != null">
+				company_tax_code,
+			</if>
+			<if test="companyAddress != null">
+				company_address,
+			</if>
+			<if test="companyZipCode != null">
+				company_zip_code,
+			</if>
+			<if test="companyType != null">
+				<if test="companyType.id != null and companyType.id > 0">
+					company_type,
+				</if>
+			</if>
+			<if test="companyEconomyType != null">
+				<if test="companyEconomyType.id != null and companyEconomyType.id > 0">
+					company_economy_type,
+				</if>
+			</if>
+			<if test="companyProperty != null">
+				<if test="companyProperty.id != null and companyProperty.id > 0">
+					company_property,
+				</if>
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					area_code,
+				</if>
+			</if>
+			<if test="companyPhone != null">
+				company_phone,
+			</if>
+			<if test="companyMobile != null">
+				company_mobile,
+			</if>
+			<if test="companyBank != null">
+				company_bank,
+			</if>
+			<if test="companyBankAccount != null">
+				company_bank_account,
+			</if>
+			<if test="companyRemark != null">
+				company_remark,
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total,
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total,
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total,
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total,
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total,
+			</if>
+			create_time, update_time,
+			<if test="userId != null and userId > 0">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active, 
+			</if>
+			version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="year != null and year != ''">
+				#{year,jdbcType=CHAR},
+			</if>
+			<if test="companyCode != null">
+				#{companyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="companyName != null">
+				#{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyLegal != null">
+				#{companyLegal,jdbcType=VARCHAR},
+			</if>
+			<if test="companyContactPerson != null">
+				#{companyContactPerson,jdbcType=VARCHAR},
+			</if>
+			<if test="companyOrganizationCode != null">
+				#{companyOrganizationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="companyTaxCode != null">
+				#{companyTaxCode,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddress != null">
+				#{companyAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="companyZipCode != null">
+				#{companyZipCode,jdbcType=INTEGER},
+			</if>
+			<if test="companyType != null">
+				<if test="companyType.id != null and companyType.id > 0">
+					#{companyType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyEconomyType != null">
+				<if test="companyEconomyType.id != null and companyEconomyType.id > 0">
+					#{companyEconomyType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyProperty != null">
+				<if test="companyProperty.id != null and companyProperty.id > 0">
+					#{companyProperty.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					#{area.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="companyPhone != null">
+				#{companyPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="companyMobile != null">
+				#{companyMobile,jdbcType=INTEGER},
+			</if>
+			<if test="companyBank != null">
+				#{companyBank,jdbcType=VARCHAR},
+			</if>
+			<if test="companyBankAccount != null">
+				#{companyBankAccount,jdbcType=INTEGER},
+			</if>
+			<if test="companyRemark != null">
+				#{companyRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="companyEmpTotal != null">
+				#{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				#{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				#{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				#{companyShouldTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				#{companyAlreadyTotal,jdbcType=INTEGER},
+			</if>
+			now(),now(),
+			<if test="userId != null and userId > 0">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 
+			</if>
+			default
+		</trim>
+	</insert>
+	
+	<!-- copy last year data -->
+	<insert id="insertLastYearData" parameterType="java.lang.String">
+		insert into company 
+			(id, 
+			year, 
+			company_code, 
+			company_name, 
+			company_legal, 
+			company_contact_person,
+			company_organization_code, 
+			company_tax_code, 
+			company_address, 
+			company_zip_code, 
+			company_type, 
+			company_economy_type, 
+			company_property, 
+			area_code, 
+			company_phone, 
+			company_mobile, 
+			company_bank, 
+			company_bank_account, 
+			company_remark, 
+			company_emp_total, 
+	<!-- 		company_handicap_total,	 -->
+			create_time,
+			update_time, 
+			user_id, 
+			is_active
+			)
+		select 	(select md5(CONCAT(#{currentYear},company_code))), 
+			#{currentYear}, 
+			company_code, 
+			company_name, 
+			company_legal, 
+			company_contact_person,
+			company_organization_code, 
+			company_tax_code, 
+			company_address, 
+			company_zip_code, 
+			company_type, 
+			company_economy_type, 
+			company_property, 
+			area_code, 
+			company_phone, 
+			company_mobile, 
+			company_bank, 
+			company_bank_account, 
+			company_remark, 
+			company_emp_total, 
+	<!-- 		company_handicap_total, 	-->
+			now(),
+			now(),
+			user_id, 
+			is_active
+			from company
+		where company.year = #{lastYear}
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from company
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Company">
+		update company
+		<set>
+			<if test="companyName != null">
+				company_name = #{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyLegal != null">
+				company_legal = #{companyLegal,jdbcType=VARCHAR},
+			</if>
+			<if test="companyOrganizationCode != null">
+				company_organization_code =
+				#{companyOrganizationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="companyTaxCode != null">
+				company_tax_code = #{companyTaxCode,jdbcType=VARCHAR},
+			</if>
+			<if test="companyAddress != null">
+				company_address = #{companyAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="companyZipCode != null">
+				company_zip_code = #{companyZipCode,jdbcType=INTEGER},
+			</if>
+			<if test="companyType != null">
+				<if test="companyType.id != null and companyType.id > 0">
+					company_type = #{companyType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyEconomyType != null">
+				<if test="companyEconomyType.id != null and companyEconomyType.id > 0">
+					company_economy_type = #{companyEconomyType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyProperty != null">
+				<if test="companyProperty.id != null and companyProperty.id > 0">
+					company_property = #{companyProperty.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					area_code = #{area.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="companyPhone != null">
+				company_phone = #{companyPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="companyMobile != null">
+				company_mobile = #{companyMobile,jdbcType=INTEGER},
+			</if>
+			<if test="companyBank != null">
+				company_bank = #{companyBank,jdbcType=VARCHAR},
+			</if>
+			<if test="companyBankAccount != null">
+				company_bank_account = #{companyBankAccount,jdbcType=INTEGER},
+			</if>
+			<if test="companyRemark != null">
+				company_remark = #{companyRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total = #{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total = #{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total = #{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total = #{companyShouldTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total = #{companyAlreadyTotal,jdbcType=INTEGER},
+			</if>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1 
+		</set>
+		where id = #{id,jdbcType=VARCHAR} and version = #{version}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.String"
+		resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where 
+		<include refid="Where_condition_list" />
+		and c.id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="retrieveByYearAndCode" parameterType="map"
+		resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where 
+		<include refid="Where_condition_list" />
+		and c.year = #{year,jdbcType=CHAR} and c.company_code = #{companyCode,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByPage" parameterType="map" resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_condition_list" />
+			<if test="company != null">
+				<if test="company.year != null and company.year != ''">
+					and c.year = #{company.year,jdbcType=CHAR} 
+				</if>
+				<if test="company.companyCode != null and company.companyCode != ''">
+					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyName != null and company.companyName != ''">
+					and c.company_name like concat('%',#{company.companyName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyType != null">
+					<if test="company.companyType.id != null and company.companyType.id > 0">
+						and c.company_type = #{company.companyType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.companyEconomyType != null">
+					<if test="company.companyEconomyType.id != null and company.companyEconomyType.id > 0">
+						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.companyProperty != null">
+					<if test="company.companyProperty.id != null and company.companyProperty.id > 0">
+						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.area != null">
+					<if test="company.area.code != null and company.area.code != ''">
+						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%') 
+					</if>
+				</if>
+				<if test="company.companyTaxCode!= null and company.companyTaxCode != ''">
+					and c.company_tax_code like concat('%',#{company.companyTaxCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyLegal!= null and company.companyLegal != ''">
+					and c.company_legal like concat('%',#{company.companyLegal,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyAddress != null and company.companyAddress != ''">
+					and c.company_address like concat('%',#{company.companyAddress,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyOrganizationCode != null and company.companyOrganizationCode != ''">
+					and c.company_organization_code like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.userId != null and company.userId > 0">
+					and c.user_id = #{company.userId,jdbcType=INTEGER} 
+				</if>
+				<if test="company.isActive != null">
+					and c.is_active = #{company.isActive,jdbcType=BIT}
+				</if>
+			</if>
+			<!-- emp total -->
+			<if test="minTotal != null and minTotal > 0">
+				and c.company_emp_total &gt;= #{minTotal} 
+			</if>
+			<if test="maxTotal != null and maxTotal > 0">
+				and c.company_emp_total &lt;= #{maxTotal} 
+			</if>
+			<!-- handicap emp total -->
+			<if test="minHandicapTotal != null and minHandicapTotal > 0">
+				and c.company_handicap_total &gt;= #{minHandicapTotal} 
+			</if>
+			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
+				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
+			</if>
+		</trim>
+		order by c.create_time desc
+		limit #{start},#{size}
+	</select>
+	
+	<select id="retrieveCount" parameterType="map" resultType="java.lang.Integer">
+		select count(*) 
+		from
+		<include refid="From_condition_list" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_condition_list" />
+			<if test="company != null">
+				<if test="company.year != null and company.year != ''">
+					and c.year = #{company.year,jdbcType=CHAR} 
+				</if>
+				<if test="company.companyCode != null and company.companyCode != ''">
+					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyName != null and company.companyName != ''">
+					and c.company_name like concat('%',#{company.companyName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyType != null">
+					<if test="company.companyType.id != null and company.companyType.id > 0">
+						and c.company_type = #{company.companyType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.companyEconomyType != null">
+					<if test="company.companyEconomyType.id != null and company.companyEconomyType.id > 0">
+						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.companyProperty != null">
+					<if test="company.companyProperty.id != null and company.companyProperty.id > 0">
+						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="company.area != null">
+					<if test="company.area.code != null and company.area.code != ''">
+						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%')  
+					</if>
+				</if>
+				<if test="company.companyTaxCode!= null and company.companyTaxCode != ''">
+					and c.company_tax_code like concat('%',#{company.companyTaxCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyLegal!= null and company.companyLegal != ''">
+					and c.company_legal like concat('%',#{company.companyLegal,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyAddress != null and company.companyAddress != ''">
+					and c.company_address like concat('%',#{company.companyAddress,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyOrganizationCode != null and company.companyOrganizationCode != ''">
+					and c.company_address like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.userId != null and company.userId > 0">
+					and c.user_id = #{company.userId,jdbcType=INTEGER} 
+				</if>
+				<if test="company.isActive != null">
+					and c.is_active = #{company.isActive,jdbcType=BIT}
+				</if>
+			</if>
+			<!-- emp total -->
+			<if test="minTotal != null and minTotal > 0">
+				and c.company_emp_total &gt;= #{minTotal} 
+			</if>
+			<if test="maxTotal != null and maxTotal > 0">
+				and c.company_emp_total &lt;= #{maxTotal} 
+			</if>
+			<!-- handicap emp total -->
+			<if test="minHandicapTotal != null and minHandicapTotal > 0">
+				and c.company_handicap_total &gt;= #{minHandicapTotal} 
+			</if>
+			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
+				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="retrieveYears" resultType="java.lang.String">
+		select year from company group by year
+	</select>
+	
+	<!-- get last year -->
+	<select id="retrieveLastYear" resultType="java.lang.String">
+		select year from company group by year order by year desc limit 0,1
+	</select>
+	
+	<!-- get company by organizationCode -->
+	<select id="retrieveByOrganizationCode" parameterType="java.lang.String"
+		resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where 
+		<include refid="Where_condition_list" />
+		and c.company_organization_code = #{companyOrganizationCode,jdbcType=INTEGER}
+	</select>
+	
+</mapper>

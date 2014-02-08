@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.hesf.dao.PermissionTypeDao">
+
+	<resultMap id="BaseResultMap" type="com.esd.hesf.model.PermissionType">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="permission_type" property="permissionType" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="is_active" property="isActive" jdbcType="BIT" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, permission_type, create_time, update_time, user_id, is_active, version
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.esd.hesf.model.PermissionType">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into permission_type (permission_type, create_time,
+		update_time, user_id, is_active, version )
+		values (#{permissionType,jdbcType=VARCHAR}, now(),now(),
+		#{userId,jdbcType=INTEGER}, default, default)
+	</insert>
+
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.esd.hesf.model.PermissionType">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into permission_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="permissionType != null">
+				permission_type,
+			</if>
+			create_time,update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+			version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="permissionType != null">
+				#{permissionType,jdbcType=VARCHAR},
+			</if>
+			now(),now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER}, 
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 
+			</if>
+			default
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		permission_type
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.PermissionType">
+		update permission_type
+		<set>
+			<if test="permissionType != null">
+				permission_type = #{permissionType,jdbcType=VARCHAR},
+			</if>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1 
+		</set>
+		where id = #{id,jdbcType=INTEGER} and version = #{version, jdbyType=INTEGER}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from permission_type
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from permission_type
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="permissionType != null">
+				<if test="permissionType.userId != null and permissionType.userId > 0 ">
+					user_id = #{permissionType.userId}
+				</if>
+				<if test="permissionType.isActive != null">
+					and is_active = #{permissionType.isActive}
+				</if>
+			</if>
+		</trim>
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from permission_type
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="permissionType != null">
+				<if test="permissionType.userId != null and permissionType.userId > 0 ">
+					user_id = #{permissionType.userId}
+				</if>
+				<if test="permissionType.isActive != null">
+					and is_active = #{permissionType.isActive}
+				</if>
+			</if>
+		</trim>
+	</select>
+
+</mapper>

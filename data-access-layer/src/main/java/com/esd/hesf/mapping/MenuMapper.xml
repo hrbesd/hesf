@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.MenuDao">
+
+	<resultMap id="ResultMenu" type="com.esd.hesf.model.Menu">
+		<id column="m_primary_key" property="primaryKey" jdbcType="INTEGER" />
+		<result column="m_id" property="id" jdbcType="CHAR" />
+		<result column="m_text" property="text" jdbcType="VARCHAR" />
+		<result column="m_iconcls" property="iconcls" jdbcType="VARCHAR" />
+		<result column="m_state" property="state" jdbcType="VARCHAR" />
+		<result column="m_url" property="url" jdbcType="VARCHAR" />
+		<result column="m_checked" property="checked" jdbcType="VARCHAR" />
+		<result column="m_user_id" property="userId" jdbcType="INTEGER" />
+		<result column="m_is_active" property="isActive" jdbcType="BIT" />
+		<result column="m_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="m_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="m_version" property="version" jdbcType="INTEGER" />
+		<association property="permissionType" javaType="com.esd.hesf.model.PermissionType"
+			resultMap="ResultPermissionType" />
+	</resultMap>
+
+	<resultMap id="ResultPermissionType" type="com.esd.hesf.model.PermissionType">
+		<id column="p_id" property="id" jdbcType="INTEGER" />
+		<result column="p_permission_type" property="permissionType" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		<!-- menu -->
+		m.primary_key as m_primary_key, m.id as m_id, m.text as m_text, m.iconcls as m_iconcls, m.state as
+		m_state, m.url as m_url, m.checked as m_checked, m.user_id as m_user_id,
+		m.is_active as m_is_active, m.create_time as m_create_time, m.update_time as
+		m_update_time, m.version as m_version,
+		<!-- permission tyep -->
+		p.id as p_id, p.permission_type as p_permission_type 
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="primaryKey" parameterType="com.esd.hesf.model.Menu">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="primaryKey">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into menu (id, text, iconcls,
+		state, url, checked,
+		user_id, is_active, permission_type_id,
+		create_time, update_time, version)
+		values (#{id,jdbcType=CHAR}, #{text,jdbcType=VARCHAR},
+		#{iconcls,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{checked,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT},
+		#{permissionType.id,jdbcType=INTEGER},
+		now(),now(),default)
+	</insert>
+
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="primaryKey" parameterType="com.esd.hesf.model.Menu">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="primaryKey">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="text != null">
+				text,
+			</if>
+			<if test="iconcls != null">
+				iconcls,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="checked != null">
+				checked,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+			<if test="permissionType != null">
+				<if test="permissionType.id != null and permissionType.id > 0">
+					permission_type_id,
+				</if>
+			</if>
+			create_time, update_time,version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=CHAR},
+			</if>
+			<if test="text != null">
+				#{text,jdbcType=VARCHAR},
+			</if>
+			<if test="iconcls != null">
+				#{iconcls,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="checked != null">
+				#{checked,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 
+			</if>
+			<if test="permissionType != null">
+				<if test="permissionType.id != null and permissionType.id > 0">
+					#{permissionType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			now(),now(), default
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from menu
+		where primary_key =
+		#{primaryKey,jdbcType=INTEGER}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Menu">
+		update menu
+		<set>
+			<if test="text != null">
+				text = #{text,jdbcType=VARCHAR},
+			</if>
+			<if test="iconcls != null">
+				iconcls = #{iconcls,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="checked != null">
+				checked = #{checked,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			<if test="permissionType != null">
+				<if test="permissionType.id != null and permissionType.id > 0">
+					permission_type_id = #{permissionType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			update_time = now(), version = version + 1 
+		</set>
+		where primary_key = #{primaryKey,jdbcType=INTEGER} and version = #{version, jdbyType=INTEGER}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultMenu">
+		select
+		<include refid="Base_Column_List" />
+		from menu as m, permission_type as p 
+		where m.permission_type_id = p.id and  m.primary_key = #{primarykey,jdbcType=INTEGER}
+	</select>
+
+	<select id="retrieveByPage" resultMap="ResultMenu"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from menu as m, permission_type as p
+		<trim prefix="where" prefixOverrides="and|or">
+			m.permission_type_id = p.id 
+			<if test="menu != null">
+				<if test="menu.text != null and menu.text != ''">
+					and m.text = #{menu.text}
+				</if>
+				<if test="menu.state != null and menu.state != ''">
+					and m.state = #{menu.state}
+				</if>
+				<if test="menu.checked != null and menu.checked != ''">
+					and m.checked = #{menu.checked}
+				</if>
+				<if test="menu.userId != null and menu.userId > 0">
+					and m.user_id = #{menu.userId}
+				</if>
+				<if test="menu.isActive != null">
+					and m.is_active = #{menu.isActive}
+				</if>
+				<if test="menu.permissionType != null">
+					<if test="menu.permissionType.id != null and menu.permissionType.id > 0">
+						and m.permission_type_id = #{menu.permissionType.id}
+					</if>
+				</if>
+			</if>
+		</trim>
+		limit #{start}, #{size}
+	</select>
+
+</mapper>

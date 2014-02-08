@@ -1,0 +1,56 @@
+* {
+	font-size: 14px;
+}
+
+body,input,textarea {
+	font-family: 微软雅黑, helvetica, tahoma, verdana, sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+input{
+	height: 28px;
+	line-height: 28px;
+	border: #95B8E7 1px solid;
+}
+textarea {
+	line-height: 28px;
+	border: #95B8E7 1px solid;
+}
+
+.tree-title {
+	font-size: 14px;
+}
+
+/*长输入框*/
+.longInputBox {
+	width: 400px;
+}
+/*
+	显示文本域
+*/
+.textField {
+	border: 1px solid #A0A0A0;
+	height: 100px;
+	overflow-y: scroll;
+}
+
+.combobox-item {
+	font-size: 14px;
+}
+/*重写easeui .combobox-item-hover 样式*/
+.combobox-item-hover {
+	cursor: pointer;
+}
+
+.combo .combo-text {
+	font-size: 14px;
+	height: 28px;
+	line-height: 28px;
+}
+
+.datagrid-cell {
+	height: 28px;
+	line-height: 28px;
+	font-size: 14px;
+}

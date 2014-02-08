@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
+
+
+<div style="width: 400px;margin-left: 20px;float: left;">
+	<div>
+		<p>用人单位名称：黑龙江省机械科学研究院</p>
+	</div>
+	<div style="1px solid;border-top: 1px solid;border-left: 1px solid;border-right: 1px solid;">
+		<span>残疾人劳动就业服务机构审核意见</span>
+		<p>1．您的企业2012年度在职职工平均人数111人，其中残疾职工2.00人，已达到规定安排残疾人1.5%比例。</p>
+		<p>2．您的企业 年度在职职工平均人数 人，其中残疾职工 人，少安排人，按上年度本地区职工年平均工资标准元计算，应缴纳残疾人就业保障金（大写） 请于 前缴款，逾期不缴纳按《按比例安排残疾人就业规定》(省政府第206号令)有关条款执行。</p>
+
+		<p style="margin: 0">初审员：逯峰 复审员：焦洋</p>
+	</div>
+	<div style="border: 1px solid;">
+		<p>实际缴纳残疾人就业保障金</p>
+		<p>合计金额￥：</p>
+		<p>人民币（大写）：</p>
+		<p>收款单位（盖章）：黑龙江省机械科学研究院</p>
+	</div>
+	（一） 受检单位存档
+</div>
+
+
+<div style="width: 400px;margin-left: 20px;float: left;">
+	<div>
+		<p>用人单位名称：黑龙江省机械科学研究院</p>
+	</div>
+	<div style="1px solid;border-top: 1px solid;border-left: 1px solid;border-right: 1px solid;">
+		<span>残疾人劳动就业服务机构审核意见</span>
+
+		<p>1．您的企业2012年度在职职工平均人数111人，其中残疾职工2.00人，已达到规定安排残疾人1.5%比例。</p>
+		<p>2．您的企业 年度在职职工平均人数 人，其中残疾职工 人，少安排人，按上年度本地区职工年平均工资标准元计算，应缴纳残疾人就业保障金（大写） 请于 前缴款，逾期不缴纳按《按比例安排残疾人就业规定》(省政府第206号令)有关条款执行。</p>
+
+		<p style="margin: 0">初审员：逯峰 复审员：焦洋</p>
+	</div>
+	<div style="border: 1px solid;">
+		<p>实际缴纳残疾人就业保障金</p>
+
+		<p>合计金额￥：</p>
+		<p>人民币（大写）：</p>
+		<p>收款单位（盖章）：黑龙江省机械科学研究院</p>
+	</div>
+	（一） 受检单位存档
+</div>
+<div style="clear: both">
+	<button>打印</button>
+	<button>打印页面设置</button>
+	<button>打印预览</button>
+	<button>返回</button>
+</div>
+
+
