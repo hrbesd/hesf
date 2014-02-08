@@ -8,8 +8,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:property-placeholder location="classpath:application.properties,classpath:jdbc.properties" />
-
-	<context:component-scan base-package="com.esd.hesf"></context:component-scan>
+	<context:component-scan base-package="com.esd.hesf" />
 	<!-- 开启AOP 注解机制 -->
 	<aop:aspectj-autoproxy />
 	<!-- 载入其他配置文件 -->
@@ -32,46 +31,7 @@
 		<property name="testWhileIdle" value="true" />
 		<property name="testOnBorrow" value="false" />
 		<property name="testOnReturn" value="false" />
-		<!-- <property name="poolPreparedStatements" value="true" /> <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
 	</bean>
-	<!-- 事务控制 -->
-	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	<aop:config>
-		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.CompanyServiceImpl.*(..))" advice-ref="txAdvice" />
-		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.MenuServiceImpl.*(..))" advice-ref="txAdvice" />
-		<!-- <aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.ParameterServiceImpl.*(..))" advice-ref="txAdvice" /> -->
-		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.UserServiceImpl.*(..))" advice-ref="txAdvice" />
-		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.VerifyServiceImpl.*(..))" advice-ref="txAdvice" />
-	</aop:config>
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<!-- the only one method need requests-new -->
-			<tx:method name="submitSussfullHelper" propagation="REQUIRES_NEW" />
-
-			<tx:method name="get*" read-only="true" />
-			<tx:method name="is*" read-only="true" />
-			<tx:method name="search*" read-only="true" />
-			<tx:method name="select*" read-only="true" />
-			<tx:method name="list*" read-only="true" />
-			<tx:method name="find*" read-only="true" />
-			<tx:method name="load*" read-only="true" />
-			<tx:method name="list*" read-only="true" />
-			<tx:method name="insert*" />
-			<tx:method name="create*" />
-			<tx:method name="save*" />
-			<tx:method name="add*" />
-			<tx:method name="do*" />
-			<tx:method name="update*" />
-			<tx:method name="delete*" />
-			<tx:method name="remove*" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-	<!-- 支持注解注入方式,支持事物管理 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
 	<!-- mybatis 扫描mapping -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
