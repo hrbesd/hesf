@@ -150,8 +150,7 @@
 		param.buJiaoJingE = $('#buJiaoJingE').val();
 		param.shiJiaoJingE = $('#shiJiaoJingE').val();
 		param.year = $('#year').val();
-		param.companyCode = $('#companyCode').val();
-
+		param.companyCode = $('input[name="company.companyCode"]').val();
 		$.ajax({
 			url : 'audits/calculate',
 			type : 'POST',
@@ -193,7 +192,7 @@
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/audit", function(data) {
 			if (data == true) {
 				$.messager.alert('消息', '审批成功', 'info', function() {
-					$("#auditPanel").window("close");
+					esd.common.defaultOpenWindowClose();
 					$("#initAuditList_datagrid").datagrid('reload');
 				});
 			} else {
@@ -225,8 +224,7 @@
 		<tr>
 			<td class="td_short">档案号码:</td>
 			<td class="td_short bj_belu" colspan="2"><input name="company.companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId"
-				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /> <input
-				type="hidden" id="companyCode" value="${entity.company.companyCode}" />
+				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
 			</td>
 			<td class="td_short">税务代码:</td>
 			<td class="td_long bj_belu" colspan="3"><input name="company.companyTaxCode" class="bj_belu2" type="text" value="${entity.company.companyTaxCode}" />

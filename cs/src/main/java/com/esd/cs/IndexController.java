@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.esd.common.captcha.CaptchaService;
 import com.esd.common.util.UsernameAndPasswordMd5;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.User;
@@ -81,32 +82,34 @@ public class IndexController {
 		String userName = request.getParameter("username");
 		String passWord = request.getParameter("password");
 		String checkCode = request.getParameter("checkCode");
+
 		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
-		User user = userService.getUserByUserName(userName);
-		if (user != null && user.getUserName().equals(userName)) {
-			UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
-			String pwd = md5.getMd5(userName, passWord);
-			logger.debug("pwd:", pwd);
-			if (pwd.equals(user.getUserPassword())) {
-				session.setAttribute(Constants.USER_ID, user.getId());
-				session.setAttribute(Constants.USER_NAME, user.getUserName());
-				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
-				return new ModelAndView("redirect:/security/index");
+
+		CaptchaService captchaService = new CaptchaService();
+		Boolean b = captchaService.checkCode(checkCode, request);
+		logger.debug("checkcode status:{}", b);
+		if (!b) {
+			redirectAttributes.addFlashAttribute("username", userName);
+			redirectAttributes.addFlashAttribute("password", passWord);
+			redirectAttributes.addFlashAttribute("message", "验证码错误");
+		} else {
+			User user = userService.getUserByUserName(userName);
+			if (user != null && user.getUserName().equals(userName)) {
+				UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
+				String pwd = md5.getMd5(userName, passWord);
+				logger.debug("pwd:", pwd);
+				if (pwd.equals(user.getUserPassword())) {
+					session.setAttribute(Constants.USER_ID, user.getId());
+					session.setAttribute(Constants.USER_NAME, user.getUserName());
+					session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
+					return new ModelAndView("redirect:/security/index");
+				} else {
+					redirectAttributes.addFlashAttribute("username", userName);
+					redirectAttributes.addFlashAttribute("password", passWord);
+					redirectAttributes.addFlashAttribute("message", "密码错误");
+				}
 			}
 		}
-		// CaptchaService captchaService = new CaptchaService();
-		// Boolean b = captchaService.checkCode(checkCode, request);
-		// logger.debug("checkcode status:{}", b);
-		// if (b) {
-		// UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
-		// String md5Str = md5.getMd5(userName, passWord);
-		// logger.debug("md5:{}", md5Str);
-		// return new ModelAndView("redirect:/index");
-		// } else {
-		// redirectAttributes.addFlashAttribute("username", userName);
-		// redirectAttributes.addFlashAttribute("password", passWord);
-		// return new ModelAndView("redirect:/login");
-		// }
 		return new ModelAndView("redirect:/login");
 	}
 

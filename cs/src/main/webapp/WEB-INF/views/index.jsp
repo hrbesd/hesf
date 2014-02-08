@@ -44,7 +44,7 @@
 	</div>
 	<!-- 底部 -->
 	<div data-options="region:'south',border:true" style="height:40px;text-align:center; padding:10px;">
-		<div>© 2013 hrbesd.com, Inc. 哈尔滨亿时代数码科技开发有限公司, All rights reserved. 黑ICP备10202513号</div>
+		<div style="font-size: 12px;">© 2013 hrbesd.com, Inc. 哈尔滨亿时代数码科技开发有限公司, All rights reserved. 黑ICP备10202513号</div>
 	</div>
 	<!-- 右侧主体部分 -->
 	<div data-options="region:'center',border:true,title:'残疾人就业保障金'">

@@ -5,16 +5,22 @@
 
 <script type="text/javascript">
 	initAuditList = {};
+
+	initAuditList.getParams = function() {
+		var params = {};
+		params.year = $('#year').combobox('getValue');
+		params.process = $('#process').combobox('getValue');
+		params.companyCode = $('#companyCode').val();
+		params.companyTaxCode = $('#companyTaxCode').val();
+		params.companyName = $('#companyName').val();
+		return params;
+	};
+
 	/**
 	 * 加载初审列表数据
 	 */
 	initAuditList.loadData = function() {
-		var params = {};
-		params.year = $('#companyYear').val();
-		params.process = $('#process').val();
-		params.companyCode = $('#companyCode').val();
-		params.companyTaxCode = $('#companyTaxCode').val();
-		params.companyName = $('#companyName').val();
+		var params = initAuditList.getParams();
 		esd.common.datagrid("#initAuditList_datagrid", "${contextPath}/security/audits/list", "#initAuditList_boolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
@@ -66,18 +72,35 @@
 		esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 	};
+	/**
+	 * 查询数据 并校验所有输入框
+	 */
+	initAuditList.findData = function() {
+		if (esd.common.validatebox()) {
+			// 重新根据参数加载数据
+			var params = initAuditList.getParams();
+			$('#initAuditList_datagrid').datagrid('load',params);
+		};
+	};
 </script>
-<input type="hidden" id="process" value="${process}" />
 <!-- 自定义菜单 -->
 <div id="initAuditList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
-	<div style="text-align: center;">
-		<input id="companyYear" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />年
+	<div style="text-align: left;">
+		审计时间(年):<input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
+		流程状态:<input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
+		<!--  
+		<input id="process" class="easyui-combobox" value="${process}"
+			data-options="height:30,editable:false,valueField:'id',textField:'auditProcessStatus',url:'${contextPath }/security/parameter/getStatus'" />
+			 <select id="process" class="easyui-combobox" data-options="width:150,height:30,editable:false">
+					<c:forEach items="${auditProcessStatuss}" var="item">
+						<option value="${item.id}" <c:if test="${process eq item.id}">selected="selected"</c:if>>${item.auditProcessStatus }</option>
+					</c:forEach>
+			</select>
+			-->
 	</div>
-	<div style="padding-top: 5px;">
-		<input type="text" style="width: 50px" id="companyCode" />
-		 <input type="text" style="width: 50px" id="companyTaxCode" />
-		  <input type="text" style="width: 68%" id="companyName" /> 
-		  <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
+	<div style="padding-top: 5px; width: 100%">
+		<input type="text" style="width: 20%" id="companyCode" /> <input type="text" style="width: 20%" id="companyTaxCode" /> <input type="text" style="width: 40%" id="companyName" /> <a href="#"
+			class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a>
 	</div>
 </div>
 <!-- 数据表格 -->
@@ -85,6 +108,18 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#year').combobox({
+			url : 'parameter/getyears',
+			valueField : 'id',
+			textField : 'text'
+		});
+		$('#process').combobox({
+			url : 'parameter/getStatus',
+			valueField : 'id',
+			textField : 'auditProcessStatus',
+			value:'${process}' 
+		});
+	
 		initAuditList.loadData();
 	});
 </script>

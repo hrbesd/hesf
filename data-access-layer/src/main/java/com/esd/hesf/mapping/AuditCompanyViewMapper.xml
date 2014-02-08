@@ -50,6 +50,8 @@
 		<result column="c_company_bank" jdbcType="VARCHAR" property="company.companyBank" />
 		<result column="c_company_bank_account" jdbcType="VARCHAR" property="company.companyBankAccount" />
 		<result column="c_company_remark" jdbcType="VARCHAR" property="company.companyRemark" />
+		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
+		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -69,20 +71,15 @@
 			au_reduction_answer_option, au_reduction_remark,
 			au_create_time,au_update_time, au_user_id, 
 			au_is_active, au_version,
-		aup_id, aup_audit_process_status,
-		pay_id, pay_create_time, pay_update_time, pay_user_id,
-			pay_is_active, pay_payment_date, pay_payment_money, pay_remark,
-			pay_audit_id, pay_version,
-		u_id, u_user_name, u_user_real_name, u_user_password, u_user_email,
-			u_user_mobile, u_user_phone, u_user_status
+		aup_id, aup_audit_process_status
 	</sql>
 
 	<sql id="From_condition_list">
-		company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup, payment as pay, user as u 
+		company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
 	</sql>
 	
 	<sql id="Where_condition_list">
-		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id and au.id = pay.audit_id and pay.payment_person = u.id  
+		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id   
 	</sql>
 
 	<select id="retrieveByCompany" parameterType="map" resultMap="AuditCompanyViewModel">
@@ -140,8 +137,7 @@
 				and au_is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
 		</trim>
-		group by au_id 
-		order by au_year asc
+		order by au_update_time desc
 		limit #{start},#{size}
 	</select>
 	
@@ -201,8 +197,40 @@
 		</trim>
 	</select>
 	
+	
 	<!-- create view sql -->
 	<insert id="createViewSql">
+		select 
+			c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, 
+			t.id as t_id, t.company_type as t_company_type, 
+			et.id as et_id, et.company_economy_type as et_company_economy_type,
+			p.id as p_id, p.company_property as p_company_property,
+			a.code as a_code, a.name as a_name,
+			au.id as au_id, au.year as au_year, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, au.init_audit_user_id as au_init_audit_user_id, 
+				au.init_audit_date as au_init_audit_date, au.verify_audit_user_id as au_verify_audit_user_id,
+				au.verify_audit_date as au_verify_audit_date , au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status 
+		from company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
+		where c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id
+	</insert>
+	
+	<!-- xxxxxxxxcreate view sql xxxxxxxxx  -->
+	<insert id="xxxxxxcreateViewSql">
 		select 
 			c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
 				c.company_contact_person as c_company_contact_person, 
@@ -242,4 +270,12 @@
 		group by au.id
 	</insert>
 	
+	<!-- xxxxxx sql -->
+	<insert id="xxxxxinsert">
+		pay_id, pay_create_time, pay_update_time, pay_user_id,
+			pay_is_active, pay_payment_date, pay_payment_money, pay_remark,
+			pay_audit_id, pay_version,
+		u_id, u_user_name, u_user_real_name, u_user_password, u_user_email,
+			u_user_mobile, u_user_phone, u_user_status
+	</insert>
 </mapper>

@@ -19,6 +19,9 @@
 	function submit() {
 		$("#loginform").submit();
 	}
+	$(function(){
+		getimgcode();
+	});
 </script>
 <style type="text/css">
 p {
@@ -35,18 +38,20 @@ img {
 </head>
 <body>
 	<div id="main" style=" display: none;">
+	
 		<div id="win" class="easyui-window" title="登录" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
 			<form id="loginform" action="${contextPath}/login" method="post" style="padding-left: 80px; padding-top: 30px;">
 				<div style="text-align: left;">
+					<div style="color: red;">${message}</div>
 					<p>
-						用户名: <input name="username" type="text" style="width: 160px;" />
+						用户名: <input name="username" type="text" style="width: 160px;" value="${username}"/>
 					</p>
 					<p>
-						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" />
+						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="${password}" />
 					</p>
 					<div>
 						<div style="height: 30px; width: 230px;">
-							验证码: <input name="checkCode" type="text" style="width: 60px; " /> <img id="loginVerifyCode" onclick="getimgcode();" src="${contextPath}/captcha/create" alt="验证码" />
+							验证码: <input name="checkCode" type="text" style="width: 60px; " /> <img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" />
 						</div>
 					</div>
 				</div>

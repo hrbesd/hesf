@@ -52,19 +52,17 @@ public class CaptchaService {
 	 * @return Boolean
 	 */
 	public Boolean checkCode(String code, HttpServletRequest request) {
-		// if (code == null) {
-		// throw new NullPointerException("code is invalid");
-		// }
-		// String captchaId = request.getSession().getId();
-		// logger.debug("code:{},captchaId:{}", code, captchaId);
-		// try {
-		// return
-		// CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId,
-		// code);
-		// } catch (CaptchaServiceException e) {
-		// logger.error("error in check", e);
-		// }
-		//
+		if (code == null) {
+			throw new NullPointerException("code is invalid");
+		}
+		String captchaId = request.getSession().getId();
+		logger.debug("code:{},captchaId:{}", code, captchaId);
+		try {
+			return CaptchaServiceSingleton.getInstance().validateResponseForID(captchaId, code);
+		} catch (CaptchaServiceException e) {
+			logger.error("error in check", e);
+		}
+
 		return Boolean.FALSE;
 
 	}

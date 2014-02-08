@@ -178,8 +178,7 @@
 		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR}, #{reductionAnswerUser,jdbcType=VARCHAR},
 		#{reductionAnswerDate,jdbcType=VARCHAR},
 		#{reductionAnswerOption,jdbcType=VARCHAR},
-		#{reductionRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-		#{updateTime,jdbcType=TIMESTAMP},
+		#{reductionRemark,jdbcType=VARCHAR}, now(),now(),
 		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{version,jdbcType=INTEGER}
 		)
 	</insert>
@@ -247,7 +246,9 @@
 			<if test="remark != null">
 				remark,
 			</if>
-			is_exempt,
+			<if test="isExempt != null">
+				is_exempt,
+			</if>
 			<if test="reductionType != null and reductionType > 0">
 				reduction_type,
 			</if>
@@ -272,21 +273,14 @@
 			<if test="reductionRemark != null">
 				reduction_remark,
 			</if>
-			<if test="createTime != null">
-				create_time,
-			</if>
-			<if test="updateTime != null">
-				update_time,
-			</if>
+			create_time, update_time,
 			<if test="userId != null">
 				user_id,
 			</if>
 			<if test="isActive != null">
 				is_active,
 			</if>
-			<if test="version != null">
-				version,
-			</if>
+			version
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="year != null">
@@ -346,7 +340,9 @@
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
 			</if>
-			#{isExempt,jdbcType=BIT},
+			<if test="isExempt != null">
+				#{isExempt,jdbcType=BIT},
+			</if>
 			<if test="reductionType != null and reductionType > 0">
 				#{reductionType,jdbcType=INTEGER},
 			</if>
@@ -371,21 +367,14 @@
 			<if test="reductionRemark != null">
 				#{reductionRemark,jdbcType=VARCHAR},
 			</if>
-			<if test="createTime != null">
-				#{createTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="updateTime != null">
-				#{updateTime,jdbcType=TIMESTAMP},
-			</if>
+			now(),now(),
 			<if test="userId != null">
 				#{userId,jdbcType=INTEGER},
 			</if>
 			<if test="isActive != null">
 				#{isActive,jdbcType=BIT},
 			</if>
-			<if test="version != null">
-				#{version,jdbcType=INTEGER},
-			</if>
+			default
 		</trim>
 	</insert>
 
@@ -547,7 +536,7 @@
 				</if>
 			</if>
 		</trim>
-		order by au.create_time desc 
+		order by au.update_time desc 
 		limit #{start},#{size}
 	</select>
 	

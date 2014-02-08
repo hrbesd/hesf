@@ -111,6 +111,7 @@
 				</if>
 			</if>
 		</trim>
+		order by update_time asc 
 		limit #{start}, #{size}
 	</select>
 

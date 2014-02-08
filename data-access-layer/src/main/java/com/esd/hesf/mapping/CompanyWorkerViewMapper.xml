@@ -163,6 +163,7 @@
 				and l_id = #{workerHandicapLevel}
 			</if>
 		</trim>
+		order by w_update_time desc 
 		limit #{start},#{size}
 	</select>
 	

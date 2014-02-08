@@ -67,6 +67,7 @@ public class AuditsController {
 	private CompanyPropertyService companyPropertyService;
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;
+
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyTypes;
 

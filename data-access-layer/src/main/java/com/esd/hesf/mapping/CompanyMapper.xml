@@ -558,7 +558,7 @@
 				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
 			</if>
 		</trim>
-		order by c.create_time desc
+		order by c.update_time desc
 		limit #{start},#{size}
 	</select>
 	

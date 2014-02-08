@@ -142,6 +142,7 @@
 				</if>
 			</if>
 		</trim>
+		order by ug.update_time asc 
 		limit #{start}, #{size}
 	</select>
 	

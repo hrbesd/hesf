@@ -55,6 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Audit audit = new Audit();
 		audit.setYear(t.getYear());
 		audit.setCompany(t);
+		audit.setArea(t.getArea());
 		int k = auDao.insertSelective(audit);
 		return (i == 1 && k == 1) ? true : false;
 	}

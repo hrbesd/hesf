@@ -69,7 +69,7 @@ view.tabs.addTab = function(title, url, closable) {
 
 		},
 		error : function() {
-			alert("请求错误");
+			alert("正在维护中");
 		},
 		dataType : "html",
 		async : true
@@ -92,7 +92,7 @@ view.tabs.update = function(url) {
 			});
 		},
 		error : function() {
-			alert("请求错误");
+			alert("正在维护中");
 		},
 		dataType : "html",
 		async : false

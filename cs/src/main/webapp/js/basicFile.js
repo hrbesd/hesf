@@ -24,8 +24,7 @@ basicFile.findData = function() {
 	if (esd.common.validatebox()) {
 		// 重新根据参数加载数据
 		$('#company_grid').datagrid('load', basicFile.getParams());
-	}
-	;
+	};
 };
 
 basicFile.toolbar = [ {
