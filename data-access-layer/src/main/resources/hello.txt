@@ -1,4 +1,1 @@
-创建一个应用,然后在应用上右键->Team->Share Project,选择git,点击next,点击use or create repository in parent folder,不用理会上面的警告,直接finish.
-在应用根目录下创建一个README,随便写入内容,然后右键->team->commit,但此时文件仍然在你本地,并没有push到远程服务器上.
-接着右键->team->remote->push,此处填写你的项目地址,协议,填写完后点击next,如果出现ssh://git@github.com:22 The authenticity of host “github.com” can’t be established. RSA key的错误信息请重启eclipse,重启完毕后继续此步骤.
-如果没有异常,在弹出窗口直接点击add all branches spec按钮,最后点击finish,整个过程完毕,点击github你的主页就能看到你的代码.
+你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
