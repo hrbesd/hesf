@@ -6,7 +6,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>众乐乐首页</title>
+<title>400</title>
 
 <link href="${contextPath}/css/404.css" rel="stylesheet" type="text/css" />
 
