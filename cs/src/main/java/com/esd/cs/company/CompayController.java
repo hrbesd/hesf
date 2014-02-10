@@ -100,7 +100,7 @@ public class CompayController {
 	public ModelAndView editCompany(@PathVariable(value = "id") String id) {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
-		logger.debug("company{}", company);
+		logger.debug("editCompany{}", company);
 		return new ModelAndView("basicInfo/edit_company", "company", company);
 	}
 
@@ -213,8 +213,10 @@ public class CompayController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean edit_company(Company company) {
-		logger.debug("company{}", company);
-		return companyService.update(company);
+		logger.debug("editCompanyParams:{}", company);
+		boolean b=companyService.update(company);
+		logger.debug("editCompanyResult:{}", b);
+		return b;
 	}
 
 	/**

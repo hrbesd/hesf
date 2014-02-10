@@ -179,7 +179,8 @@ esd.common.window = function(id, title, width, height, url){
  * 自定义ID的通用的编辑弹出框
  */
 esd.common.openWindow = function(id, title, width, height, url) {
-	$("#main").append('<div id="' + id + '"></div>');
+	
+	$("#main").append('<div id="' + id.substring(1) + '"></div>');
 	esd.common.window(id, title, width, height, url);
 };
 /**

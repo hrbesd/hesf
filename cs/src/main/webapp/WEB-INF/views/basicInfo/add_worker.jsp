@@ -30,7 +30,7 @@
 		$("#workerGender").combobox("setValue", "0");//性别
 		$("#workerHandicapType").combobox("setValue", "1");//残疾类别
 		$("#workerHandicapLevel").combobox("setValue", "1");//残疾等级
-	};
+	};     
 	/**
 		校验信息  并  保存残疾职工信息
 	 **/
@@ -85,7 +85,7 @@
 				addWorker.close();
 				$('#workerList_dataGrid').datagrid("load");
 			} else {
-				alert("单位信息增加失败。");
+				alert("残疾职工信息增加失败。");
 			}
 		});
 	};
