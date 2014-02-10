@@ -485,6 +485,7 @@
 		where 
 		<include refid="Where_condition_list" />
 		and c.year = #{year,jdbcType=CHAR} and c.company_code = #{companyCode,jdbcType=VARCHAR}
+		order by c.company_code 
 	</select>
 	
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultCompany">
@@ -558,7 +559,7 @@
 				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
 			</if>
 		</trim>
-		order by c.update_time desc
+		order by c.company_code
 		limit #{start},#{size}
 	</select>
 	
@@ -653,6 +654,7 @@
 		where 
 		<include refid="Where_condition_list" />
 		and c.company_organization_code = #{companyOrganizationCode,jdbcType=INTEGER}
+		order by c.company_code
 	</select>
 	
 </mapper>
