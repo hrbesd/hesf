@@ -75,7 +75,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>地区</td>
+			<td class="tdRight">地区</td>
 
 			<td><input name="area.code" class="easyui-combobox iniTcompanyProperty" value="${company.area.code}"
 				data-options="height:30,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" /></td>
