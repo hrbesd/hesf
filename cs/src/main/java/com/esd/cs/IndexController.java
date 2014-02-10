@@ -84,32 +84,37 @@ public class IndexController {
 		String checkCode = request.getParameter("checkCode");
 
 		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
-
+		User user = userService.getUserByUserName(userName);
+		if (user != null && user.getUserName().equals(userName)) {
+			UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
+			String pwd = md5.getMd5(userName, passWord);
+			logger.debug("pwd:", pwd);
+			if (pwd.equals(user.getUserPassword())) {
+				session.setAttribute(Constants.USER_ID, user.getId());
+				session.setAttribute(Constants.USER_NAME, user.getUserName());
+				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
+				return new ModelAndView("redirect:/security/index");
+			} else {
+				redirectAttributes.addFlashAttribute("username", userName);
+				redirectAttributes.addFlashAttribute("password", passWord);
+				redirectAttributes.addFlashAttribute("message", "用户名密码错误");
+			}
+		} else {
+			redirectAttributes.addFlashAttribute("username", userName);
+			redirectAttributes.addFlashAttribute("password", passWord);
+			redirectAttributes.addFlashAttribute("message", "用户名密码错误");
+			return new ModelAndView("redirect:/login");
+		}
 		CaptchaService captchaService = new CaptchaService();
 		Boolean b = captchaService.checkCode(checkCode, request);
 		logger.debug("checkcode status:{}", b);
-		if (!b) {
+		if (b == false) {
 			redirectAttributes.addFlashAttribute("username", userName);
 			redirectAttributes.addFlashAttribute("password", passWord);
 			redirectAttributes.addFlashAttribute("message", "验证码错误");
-		} else {
-			User user = userService.getUserByUserName(userName);
-			if (user != null && user.getUserName().equals(userName)) {
-				UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
-				String pwd = md5.getMd5(userName, passWord);
-				logger.debug("pwd:", pwd);
-				if (pwd.equals(user.getUserPassword())) {
-					session.setAttribute(Constants.USER_ID, user.getId());
-					session.setAttribute(Constants.USER_NAME, user.getUserName());
-					session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
-					return new ModelAndView("redirect:/security/index");
-				} else {
-					redirectAttributes.addFlashAttribute("username", userName);
-					redirectAttributes.addFlashAttribute("password", passWord);
-					redirectAttributes.addFlashAttribute("message", "密码错误");
-				}
-			}
+			return new ModelAndView("redirect:/login");
 		}
+
 		return new ModelAndView("redirect:/login");
 	}
 
