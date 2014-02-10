@@ -75,7 +75,8 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="basicFile.openViewCompany(\'' + row.id + '\')">' + value + '</a>';
+				
+				var c = '<a href="#" onclick="queryCompany.openViewCompany(\'' + row.id + '\')">' + value + '</a>';
 				return c;
 			}
 		}] ], params);
