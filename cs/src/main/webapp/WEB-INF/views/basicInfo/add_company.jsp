@@ -11,7 +11,7 @@
 		<tr>
 
 			<td class="tdRight">组织机关代码证:</td>
-			<td class="texttd"><input name="companyOrganizationCode" class="inNormal easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
+			<td class=""><input name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
 			</td>
 			<td class="tdRight">税务编码:</td>
 			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_length[8]']" /></td>
@@ -61,7 +61,7 @@
 			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_number']" /></td>
 		</tr>
 		<tr>
-			<td>地区</td>
+			<td class="tdRight">地区</td>
 			<td><input name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="10230000" /></td>
 		</tr>
 		<tr>
