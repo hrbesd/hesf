@@ -55,13 +55,12 @@ img {
 						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="${password}" />
 					</p>
 					<div>
-						<div style="height: 30px; width: 215px;">
-							验证码: <input name="checkCode" type="text" style="width: 60px; " />
-							<img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" />
+						<div style="height: 30px; width: 230px;">
+							验证码: <input name="checkCode" type="text" style="width: 60px; " /> <img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" />
 						</div>
 					</div>
 				</div>
-				<div style="padding-left: 50px;">
+				<div style="padding-left: 40px;">
 					<p>
 						<a href="javascript:getimgcode();">看不清验证码</a>
 					</p>
