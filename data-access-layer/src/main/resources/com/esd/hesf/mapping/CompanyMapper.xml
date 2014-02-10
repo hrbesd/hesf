@@ -654,7 +654,7 @@
 		where 
 		<include refid="Where_condition_list" />
 		and c.company_organization_code = #{companyOrganizationCode,jdbcType=INTEGER}
-		order by c.company_code
+		order by c.company_code 
 	</select>
 	
 </mapper>
