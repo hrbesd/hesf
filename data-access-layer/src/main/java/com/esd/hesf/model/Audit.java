@@ -23,6 +23,7 @@ public class Audit extends PrimaryKey_Int {
 	private BigDecimal payAmount;// 已缴金额
 	private BigDecimal remainAmount;// 上年度未缴金额
 	private BigDecimal complementAmount; // 补缴金额
+	private BigDecimal delayPayAmount; // 滞纳金
 	private Integer initAuditUserId;// 初审人id
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date initAuditDate;// 初审日期
@@ -127,6 +128,14 @@ public class Audit extends PrimaryKey_Int {
 
 	public void setComplementAmount(BigDecimal complementAmount) {
 		this.complementAmount = complementAmount;
+	}
+
+	public BigDecimal getDelayPayAmount() {
+		return delayPayAmount;
+	}
+
+	public void setDelayPayAmount(BigDecimal delayPayAmount) {
+		this.delayPayAmount = delayPayAmount;
 	}
 
 	public Integer getInitAuditUserId() {
