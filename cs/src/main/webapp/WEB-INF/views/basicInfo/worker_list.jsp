@@ -63,7 +63,11 @@
 			field : 'workerAge',
 			title : '年龄',
 			width : 250,
-			align : 'center'
+			align : 'center',
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'phone',
 			title : '联系电话',
@@ -90,7 +94,27 @@
 				return e + d;
 			}
 		} ] ], params);
+	};
 
+	/**
+	 职工年龄检测
+	 **/
+	workerList.ageDetection = function(value, row, index) {
+		//男退休年龄
+		var maleRetirementAge = $("#maleRetirementAge").val();
+		//女退休年龄
+		var femaleRetirementAge = $("#femaleRetirementAge").val();
+		
+		if(row.workerGender=='男'){
+			if (value > maleRetirementAge) {
+				return 'background-color:red;font-weight: bold;';
+			}
+		}
+		if(row.workerGender=='女'){
+			if (value > femaleRetirementAge) {
+					return 'background-color:red;font-weight: bold;';
+			}
+		}
 	};
 
 	/**
@@ -127,15 +151,15 @@
 	打开增加残疾职工页面
 	 **/
 	workerList.openAddWorker = function() {
-	
-		esd.common.openWindow("#workerWindow","增加残疾职工",960,550,'worker/add/' + $("#companyId").val());
+
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
 	};
 
 	/**
 	打开编辑残疾职工页面
 	 **/
 	workerList.openEditWorker = function(id) {
-			esd.common.openWindow("#workerWindow","编辑残疾职工", 960, 550, 'worker/edit/' + id);
+		esd.common.openWindow("#workerWindow", "编辑残疾职工", 960, 550, 'worker/edit/' + id);
 	};
 
 	/**
@@ -191,6 +215,7 @@
 			}
 		});
 	};
+
 	/**
 	 获取企业信息
 	 **/
@@ -236,6 +261,12 @@
 
 <input type="hidden" id="companyId" value="${companyId}" />
 <input type="hidden" id="year" value="${year}" />
+<!-- 男退休年龄 -->
+<input type="hidden" id="maleRetirementAge" value="${maleRetirementAge}" />
+<!-- 女退休年龄 -->
+<input type="hidden" id="femaleRetirementAge" value="${femaleRetirementAge}" />
+
+
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
 	<div style="text-align: right;">
@@ -259,7 +290,7 @@
 			<td id="worker_HandicapTotal"></td>
 
 			<td>地区:</td>
-			<td id="company_Area">iren zhig <br /></td>
+			<td id="company_Area"></td>
 
 		</tr>
 	</table>
@@ -271,9 +302,8 @@
 		<!-- 性别 -->
 		<input id="workerFind_workerGender" type="text" />
 		<!-- 年龄 -->
-		<input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />-
-		 <input id="workerFind_workerAge2" type="text" style="width: 32px"
-			data-options="validType:['_number']" class="easyui-validatebox" />
+		<input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
+			style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />
 		<!-- 电话 -->
 		<input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" />
 		<!-- 残疾类型 -->

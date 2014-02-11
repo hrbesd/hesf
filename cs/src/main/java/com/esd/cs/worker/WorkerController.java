@@ -58,6 +58,11 @@ public class WorkerController {
 	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
+		//男职工退休年龄
+		request.setAttribute("maleRetirementAge", "60");
+		//女职工退休年龄
+		request.setAttribute("femaleRetirementAge", "50");
+		
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("basicInfo/worker_list");
 
