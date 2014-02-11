@@ -147,7 +147,7 @@ basicFile.openCompanyStaff = function(id) {
 	basicFile.companyYears = $("#companyYears").combobox("getValue");
 	esd.common.defaultOpenWindow("企业残疾职工列表", 'worker/list/' + id + '/' + basicFile.companyYears);
 };
-/*
+/**
  * 单条删除企业数据
  */
 basicFile.openDeleteCompany = function(id) {

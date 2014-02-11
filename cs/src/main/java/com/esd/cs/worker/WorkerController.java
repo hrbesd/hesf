@@ -65,14 +65,15 @@ public class WorkerController {
 
 		//获取年审参数
 		AuditParameter param= auditParameterService.getByYear(year);
-		if(param==null){
+		if(param!=null){
 			//男职工退休年龄
 			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
 			//女职工退休年龄
 			request.setAttribute("femaleRetirementAge", param.getRetireAgeFemale());
+		
+		}else{
 			logger.error("getAuditParameterError");
 		}
-		
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("basicInfo/worker_list");
 

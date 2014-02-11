@@ -100,6 +100,7 @@
 	 职工年龄检测
 	 **/
 	workerList.ageDetection = function(value, row, index) {
+
 		//男退休年龄
 		var maleRetirementAge = $("#maleRetirementAge").val();
 		//女退休年龄
@@ -255,7 +256,6 @@
 		workerList.getCompany();
 	});
 </script>
-
 <!-- 数据表格 -->
 <table id="workerList_dataGrid"></table>
 
@@ -279,6 +279,7 @@
 			<td id="company_name"></td>
 			<td>档案编码:</td>
 			<td id="company_Code"></td>
+
 			<td>税务编码:</td>
 			<td id="company_TaxCode"></td>
 		</tr>
@@ -287,8 +288,10 @@
 			<td id="company_EmpTotal"></td>
 			<td>已录用残疾职工人数:</td>
 			<td id="worker_HandicapTotal"></td>
+
 			<td>地区:</td>
 			<td id="company_Area"></td>
+
 		</tr>
 	</table>
 	<div>

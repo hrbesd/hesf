@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
+package com.esd.cs.documentation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.esd.common.util.CalendarUtil;
+import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Company;
+import com.esd.hesf.service.CompanyEconomyTypeService;
+import com.esd.hesf.service.CompanyPropertyService;
+import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.CompanyTypeService;
+
+@Controller
+@RequestMapping(value = "/security/print")
+public class PrintCompany {
+	private static final Logger logger = LoggerFactory.getLogger(PrintCompany.class);
+
+	@Autowired
+	private CompanyService companyService;// 企业
+	@Autowired
+	private CompanyTypeService companyTypeService;// 企业类型
+	@Autowired
+	private CompanyPropertyService companyPropertyService;// 企业性质
+	@Autowired
+	private CompanyEconomyTypeService companyEconomyTypeService;// 企业经济类型
+
+
+
+	/**
+	 * 转到打印列表页面
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/print_list", method = RequestMethod.GET)
+	public ModelAndView addCompany(HttpServletRequest request) {
+		logger.debug("gotoPrintList");
+		return new ModelAndView("documents/print_list");
+	}
+
+
+
+}
