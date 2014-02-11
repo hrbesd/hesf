@@ -88,14 +88,15 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(Worker t, Integer page, Integer pageSize) {
-		// 处理地区code,转化为适合sql语句的		xxxx 暂时不启用
-//		if (t != null) {
-//			if (t.getArea() != null) {
-//				if (t.getArea().getCode() != null && !"".equals(t.getArea().getCode())) {
-//					t.getArea().setCode(KitService.areaCodeForSql(t.getArea().getCode()));
-//				}
-//			}
-//		}
+		// 处理地区code,转化为适合sql语句的 xxxx 暂时不启用
+		// if (t != null) {
+		// if (t.getArea() != null) {
+		// if (t.getArea().getCode() != null &&
+		// !"".equals(t.getArea().getCode())) {
+		// t.getArea().setCode(KitService.areaCodeForSql(t.getArea().getCode()));
+		// }
+		// }
+		// }
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("worker", t);
@@ -173,10 +174,11 @@ public class WorkerServiceImpl implements WorkerService {
 		if (map.get("pageSize") != null) {
 			pageSize = Integer.parseInt(map.get("pageSize").toString());
 		}
-		// 处理地区code,转化为适合sql语句的			xxxx 暂时不启用
-//		if (map.get("areaCode") != null) {
-//			map.put("areaCode", KitService.areaCodeForSql(map.get("areaCode").toString()));
-//		}
+		// 处理地区code,转化为适合sql语句的 xxxx 暂时不启用
+		// if (map.get("areaCode") != null) {
+		// map.put("areaCode",
+		// KitService.areaCodeForSql(map.get("areaCode").toString()));
+		// }
 		// 最小年龄转化为对应的出生年月
 		if (map.get("minAge") != null) {
 			map.put("minBirth", KitService.getBirthFromAge(map.get("minAge").toString()));

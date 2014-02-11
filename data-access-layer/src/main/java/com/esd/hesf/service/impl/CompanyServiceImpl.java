@@ -13,14 +13,18 @@ import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditDao;
+import com.esd.hesf.dao.AuditParameterDao;
 import com.esd.hesf.dao.CompanyDao;
+import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyYearWorker;
+import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.KitService;
@@ -45,6 +49,14 @@ public class CompanyServiceImpl implements CompanyService {
 	// 审核表dao接口
 	@Autowired
 	private AuditDao auDao;
+
+	// 公司--员工 视图表dao接口
+	@Autowired
+	private CompanyWorkerViewDao cwvDao;
+
+	// 审核参数表dao接口
+	@Autowired
+	private AuditParameterDao apDao;
 
 	@Override
 	public boolean save(Company t) {
@@ -89,14 +101,15 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public PaginationRecordsAndNumber<Company, Number> getPaginationRecords(Company t, Integer page, Integer pageSize) {
-		// 处理地区code,转化为适合sql语句的		xxxx 暂时不启用
-//		if (t != null) {
-//			if (t.getArea() != null) {
-//				if (t.getArea().getCode() != null && !"".equals(t.getArea().getCode())) {
-//					t.getArea().setCode(KitService.areaCodeForSql(t.getArea().getCode()));
-//				}
-//			}
-//		}
+		// 处理地区code,转化为适合sql语句的 xxxx 暂时不启用
+		// if (t != null) {
+		// if (t.getArea() != null) {
+		// if (t.getArea().getCode() != null &&
+		// !"".equals(t.getArea().getCode())) {
+		// t.getArea().setCode(KitService.areaCodeForSql(t.getArea().getCode()));
+		// }
+		// }
+		// }
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("company", t);
@@ -290,8 +303,9 @@ public class CompanyServiceImpl implements CompanyService {
 			t.setCompanyEconomyType(new CompanyEconomyType(Integer.parseInt(map.get("companyEconomyType").toString())));
 		}
 		if (map.get("areaCode") != null) {
-			//地区处理, 		xxxx 暂时不启用
-//			t.setArea(new Area(KitService.areaCodeForSql(map.get("areaCode").toString())));
+			// 地区处理, xxxx 暂时不启用
+			// t.setArea(new
+			// Area(KitService.areaCodeForSql(map.get("areaCode").toString())));
 			t.setArea(new Area(map.get("areaCode").toString()));
 		}
 		if (map.get("companyName") != null) {
@@ -322,16 +336,79 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public int getWorkerHandicapTotal(String companyCode, String year) {
-		if(companyCode == null || "".equals(companyCode) || year == null || "".equals(year)){
+		if (companyCode == null || "".equals(companyCode) || year == null || "".equals(year)) {
 			return -1;
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setCompanyCode(companyCode);
 		cyw.setYear(year);
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyYearWorker", cyw);
 		return cywDao.retrieveCount(map);
 	}
 
-	
+	@Override
+	public PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, String companyCode, Integer page, Integer pageSize) {
+		if (year == null || "".equals(year) || companyCode == null || "".equals(companyCode)) {
+			return null;
+		}
+		// 得到对应年份的参数
+		AuditParameter ap = apDao.retrieveByYear(year);
+		// 计算男女各自的最大出生日期
+		String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale() + "");
+		String maxFemaleBirth = KitService.getBirthFromAge(ap.getRetireAgeFemale() + "");
+		// 参数map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("companyCode", companyCode);
+		map.put("maxMaleBirth", maxMaleBirth);
+		map.put("maxFemaleBirth", maxFemaleBirth);
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<Worker> list = cwvDao.retrieveRetiredWorkerByCompany(map);
+		// 数据条数
+		int count = cwvDao.retrieveRetiredWorkerByCompanyCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Worker, Number> prn = new PaginationRecordsAndNumber<Worker, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
+	}
+
+	@Override
+	public PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize) {
+		if (companyId == null || "".equals(companyId)) {
+			return null;
+		}
+		Company company = dao.retrieveByPrimaryKey(companyId);
+		String year = company.getYear();
+		// 得到对应年份的参数
+		AuditParameter ap = apDao.retrieveByYear(year);
+		// 计算男女各自的最大出生日期
+		String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale() + "");
+		String maxFemaleBirth = KitService.getBirthFromAge(ap.getRetireAgeFemale() + "");
+		// 参数map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("companyId", companyId);
+		map.put("maxMaleBirth", maxMaleBirth);
+		map.put("maxFemaleBirth", maxFemaleBirth);
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<Worker> list = cwvDao.retrieveRetiredWorkerByCompany(map);
+		// 数据条数
+		int count = cwvDao.retrieveRetiredWorkerByCompanyCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Worker, Number> prn = new PaginationRecordsAndNumber<Worker, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
+	}
+
 }

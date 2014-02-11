@@ -47,11 +47,33 @@ public interface CompanyWorkerViewDao {
 	 * @return
 	 */
 	int retrieveWorkerByWorkerCount(Map<String, Object> map);
-	
+
 	/**
 	 * 根据年份和残疾证号, 判断一个员工是在在一家公司里
-	 * @param map中 放入 year : 年份 , workerHandicapCode : 残疾证号
+	 * 
+	 * @param map中
+	 *            放入 year : 年份 , workerHandicapCode : 残疾证号
 	 * @return
 	 */
-	Company retrieveCompanyByWorker(Map<String,String> map);
+	Company retrieveCompanyByWorker(Map<String, String> map);
+
+	/**
+	 * 根据相应参数得到公司已经达到退休年龄的职工列表
+	 * 
+	 * @param map
+	 *            参数 ：公司-id, year-年份,公司档案code-companyCode,
+	 *            男女分别最大的生日起始时间-maxMaleBirth和maxFemaleBirth
+	 * @return 员工列表
+	 */
+	List<Worker> retrieveRetiredWorkerByCompany(Map<String, Object> map);
+
+	/**
+	 * 根据相应参数得到公司已经达到退休年龄的职工 总数
+	 * 
+	 * @param map
+	 *            参数 ：公司-id, year-年份,公司档案code-companyCode,
+	 *            男女分别最大的生日起始时间-maxMaleBirth和maxFemaleBirth
+	 * @return 员工列表
+	 */
+	int retrieveRetiredWorkerByCompanyCount(Map<String, Object> map);
 }
