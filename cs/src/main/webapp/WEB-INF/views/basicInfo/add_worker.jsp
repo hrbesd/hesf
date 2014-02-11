@@ -73,7 +73,7 @@
 	};
 
 	/**
-			保存增加残疾职工信息
+		保存增加残疾职工信息
 	 **/
 	addWorker.save = function() {
 		var workerHandicapCode = $("#workerHandicapCode").val();
@@ -113,7 +113,6 @@
 		} else {
 			//基数
 			$("#workerGender").combobox("setValue", "0");
-
 		}
 		//出生日期
 		$("#workerBirth").val(year + "-" + month + "-" + day);

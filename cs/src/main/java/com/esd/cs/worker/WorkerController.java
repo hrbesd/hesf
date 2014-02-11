@@ -28,8 +28,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.model.Area;
+import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
+import com.esd.hesf.service.AuditParameterService;
+import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 
@@ -47,7 +50,8 @@ public class WorkerController {
 	private WorkerService workerService;// 工作者
 	@Autowired
 	private CompanyService companyService;// 企业
-
+	@Autowired
+	private AuditParameterService auditParameterService;// 年审参数
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
 	 * 
@@ -58,10 +62,13 @@ public class WorkerController {
 	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
+		
+		//获取年审参数
+		AuditParameter param= auditParameterService.getByYear(year);
 		//男职工退休年龄
-		request.setAttribute("maleRetirementAge", "60");
+		request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
 		//女职工退休年龄
-		request.setAttribute("femaleRetirementAge", "50");
+		request.setAttribute("femaleRetirementAge", param.getRetireAgeFemale());
 		
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("basicInfo/worker_list");
@@ -119,12 +126,11 @@ public class WorkerController {
 		logger.debug("addWorkerParams:{},companyId:{}", worker, companyId);
 		Company c = companyService.getByPrimaryKey(companyId);
 		if(c==null){
-			
 			logger.error("addWorker_getCompanyError:{}","null");
 			return false;
 		}
 		boolean b = workerService.save(worker, c.getCompanyCode());
-		logger.debug("addWorkerResult{}", b);
+		logger.debug("addWorkerResult:{}", b);
 		return b;
 	}
 
@@ -254,19 +260,15 @@ public class WorkerController {
 			list.add(companyMap);
 			return list;
 		}
-		// 没有在任何公司
-		// 第二种情况：存在，并且没有在任何公司。
-		// 第三种情况，不存在.
 		else {
-
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
-			// 存在，并且不再任何公司
+			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
 				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。存在，并且不再任何公司");
 				paramsMap.put("type", "2");
 				list.add(paramsMap);
 				return list;
-				// 不存在
+				// 第三种情况，不存在.
 			} else {
 				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:3。不存在");
 				paramsMap.put("type", "3");

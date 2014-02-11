@@ -231,22 +231,16 @@ public class CompayController {
 	public boolean deleteCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		boolean b = true;
-
-		// if(idArr==null){
-		// logger.error("deleteCompanyParamsError:{}","null");
-		// return false;
-		// }
 		for (int i = 0; i < idArr.length; i++) {
 			Company c = companyService.getByPrimaryKey(idArr[i]);
 			c.setIsActive(true);
 			b = companyService.update(c);
+			logger.debug("deleteCompanyID:{},Result:{}",idArr[i],b);
 			if (b == false) {
-				logger.debug("deleteComapnmyError:{}",b);
 				return b;
 			}
 		}
-
-		logger.debug("deleteCompanyResult:{},paramsId:{}", b,idArr);
+		logger.debug("deleteCompanyResults:{},paramsId:{}", b,idArr);
 		return b;
 	}
 
