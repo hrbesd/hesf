@@ -89,7 +89,7 @@ public class TestController {
 
 	@Autowired
 	private PaymentService pService;
-	
+
 	@Autowired
 	private PaymentTypeService ptService;
 
@@ -511,7 +511,7 @@ public class TestController {
 		return map;
 	}
 
-	// 付款表  得到缴款列表
+	// 付款表 得到缴款列表
 	@RequestMapping("/39")
 	@ResponseBody
 	public Map<String, Object> test39() {
@@ -533,4 +533,14 @@ public class TestController {
 		return map;
 	}
 
+	// 员工--公司--关系表 查询一个公司某年的达到退休年龄的职工
+	@RequestMapping("/41")
+	@ResponseBody
+	public Map<String, Object> test41() {
+		System.out.println(111111);
+		Map<String, Object> map = new HashMap<String, Object>();
+		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("768f0b92051a002df8b347c9f4dd70cd", 1, 20);
+		map.put("entity", entity);
+		return map;
+	}
 }
