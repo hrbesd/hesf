@@ -15,9 +15,12 @@
 		<result column="ap_audit_start_date" property="auditStartDate" jdbcType="TIMESTAMP" />
 		<result column="ap_audit_close_date" property="auditCloseDate" jdbcType="TIMESTAMP" />
 		<result column="ap_audit_delay_date" property="auditDelayDate" jdbcType="TIMESTAMP" />
+		<result column="ap_audit_delay_rate" property="auditDelayRate" jdbcType="DECIMAL" />
 		<result column="ap_pay_close_date" property="payCloseDate" jdbcType="TIMESTAMP" />
 		<result column="ap_pay_limit_days" property="payLimitDays" jdbcType="INTEGER" />
 		<result column="ap_decimal_count" property="decimalCount" jdbcType="INTEGER" />
+		<result column="ap_retire_age_male" property="retireAgeMale" jdbcType="INTEGER" />
+		<result column="ap_retire_age_female" property="retireAgeFemale" jdbcType="INTEGER" />
 		<result column="ap_eye_one" property="eyeOne" jdbcType="INTEGER" />
 		<result column="ap_eye_two" property="eyeTwo" jdbcType="INTEGER" />
 		<result column="ap_eye_three" property="eyeThree" jdbcType="INTEGER" />
@@ -64,8 +67,9 @@
 		ap.year as ap_year, ap.put_scale as ap_put_scale,
 		ap.average_salary as ap_average_salary, ap.audit_start_date as ap_audit_start_date,
 		ap.audit_close_date as ap_audit_close_date,ap.audit_delay_date as ap_audit_delay_date,
-		ap.pay_close_date as ap_pay_close_date,
+		ap.audit_delay_rate as ap_audit_delay_rate, ap.pay_close_date as ap_pay_close_date,
 		ap.pay_limit_days as ap_pay_limit_days, ap.decimal_count as ap_decimal_count,
+		ap.retire_age_male as ap_retire_age_male, ap.retire_age_female as ap_retire_age_female, 
 		ap.eye_one as ap_eye_one, ap.eye_two as ap_eye_two,
 		ap.eye_three as ap_eye_three, ap.eye_four as ap_eye_four,
 		ap.hearing_one as ap_hearing_one, ap.hearing_two as ap_hearing_two,
@@ -97,12 +101,14 @@
 		version,
 		year, area_code, put_scale,
 		average_salary,
+		audit_start_date,
 		audit_close_date,
-		pay_start_date,
-		pay_close_date,
-		pay_delay_date,
+		audit_delay_date,
+		audit_delay_rate,
 		pay_limit_days,
 		decimal_count,
+		retire_age_male,
+		retire_age_female,
 		eye_one,
 		eye_two, eye_three,
 		eye_four, hearing_one,
@@ -134,9 +140,12 @@
 		#{auditStartDate,jdbcType=TIMESTAMP},
 		#{auditCloseDate,jdbcType=TIMESTAMP},
 		#{auditDelayDate,jdbcType=TIMESTAMP},
+		#{auditDelayRate,jdbcType=DECIMAL},
 		#{payCloseDate,jdbcType=TIMESTAMP},
 		#{payLimitDays,jdbcType=INTEGER},
-		#{decimalCount,jdbcType=INTEGER}, #{eyeOne,jdbcType=INTEGER},
+		#{decimalCount,jdbcType=INTEGER}, 
+		#{retireAgeMale,jdbcType=INTEGER},#{retireAgeFemale,jdbcType=INTEGER},
+		#{eyeOne,jdbcType=INTEGER},
 		#{eyeTwo,jdbcType=INTEGER}, #{eyeThree,jdbcType=INTEGER},
 		#{eyeFour,jdbcType=INTEGER},
 		#{hearingOne,jdbcType=INTEGER},
@@ -201,6 +210,9 @@
 			<if test="auditDelayDate != null">
 				audit_delay_date,
 			</if>
+			<if test="auditDelayRate != null">
+				audit_delay_rate,
+			</if>
 			<if test="payCloseDate != null">
 				pay_close_date,
 			</if>
@@ -209,6 +221,12 @@
 			</if>
 			<if test="decimalCount != null">
 				decimal_count,
+			</if>
+			<if test="retireAgeMale != null">
+				retire_age_male,
+			</if>
+			<if test="retireAgeFemale != null">
+				retire_age_female,
 			</if>
 			<if test="eyeOne != null">
 				eye_one,
@@ -327,6 +345,9 @@
 			<if test="auditDelayDate != null">
 				#{auditDelayDate,jdbcType=TIMESTAMP},
 			</if>
+			<if test="auditDelayRate != null">
+				#{auditDelayRate,jdbcType=DECIMAL},
+			</if>
 			<if test="payCloseDate != null">
 				#{payCloseDate,jdbcType=TIMESTAMP},
 			</if>
@@ -335,6 +356,12 @@
 			</if>
 			<if test="decimalCount != null">
 				#{decimalCount,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeMale != null">
+				#{retireAgeMale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeFemale != null">
+				#{retireAgeFemale,jdbcType=INTEGER},
 			</if>
 			<if test="eyeOne != null">
 				#{eyeOne,jdbcType=INTEGER},
@@ -465,6 +492,9 @@
 			<if test="auditDelayDate != null">
 				audit_delay_date = #{auditDelayDate,jdbcType=TIMESTAMP},
 			</if>
+			<if test="auditDelayRate != null">
+				audit_delay_rate = #{auditDelayRate,jdbcType=DECIMAL},
+			</if>
 			<if test="payCloseDate != null">
 				pay_close_date = #{payCloseDate,jdbcType=TIMESTAMP},
 			</if>
@@ -473,6 +503,12 @@
 			</if>
 			<if test="decimalCount != null">
 				decimal_count = #{decimalCount,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeMale != null">
+				retire_age_male = #{retireAgeMale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeFemale != null">
+				retire_age_female = #{retireAgeFemale,jdbcType=INTEGER},
 			</if>
 			<if test="eyeOne != null">
 				eye_one = #{eyeOne,jdbcType=INTEGER},
