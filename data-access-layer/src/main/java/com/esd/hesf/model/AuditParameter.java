@@ -3,6 +3,8 @@ package com.esd.hesf.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 审核参数 类
  * 
@@ -14,12 +16,19 @@ public class AuditParameter extends PrimaryKey_Int {
 	private Area area; // 地区
 	private BigDecimal putScale;// 安置比例
 	private BigDecimal averageSalary;// 当年平均工资
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date auditStartDate; // 审核开始日期
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date auditCloseDate; // 审核截止日期
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date auditDelayDate; // 滞纳金开始日期
+	private BigDecimal auditDelayRate; // 滞纳金征收比例 按天计算
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date payCloseDate;// 支付截止日期
 	private Integer payLimitDays;// 支付限制天数
 	private Integer decimalCount;// 小数位数
+	private Integer retireAgeMale; // 职工退休年龄-男-默认为60
+	private Integer retireAgeFemale; // 职工退休年龄-女-默认为50
 	private Integer eyeOne;
 	private Integer eyeTwo;
 	private Integer eyeThree;
@@ -116,6 +125,14 @@ public class AuditParameter extends PrimaryKey_Int {
 		this.auditDelayDate = auditDelayDate;
 	}
 
+	public BigDecimal getAuditDelayRate() {
+		return auditDelayRate;
+	}
+
+	public void setAuditDelayRate(BigDecimal auditDelayRate) {
+		this.auditDelayRate = auditDelayRate;
+	}
+
 	public Date getPayCloseDate() {
 		return payCloseDate;
 	}
@@ -138,6 +155,22 @@ public class AuditParameter extends PrimaryKey_Int {
 
 	public void setDecimalCount(Integer decimalCount) {
 		this.decimalCount = decimalCount;
+	}
+
+	public Integer getRetireAgeMale() {
+		return retireAgeMale;
+	}
+
+	public void setRetireAgeMale(Integer retireAgeMale) {
+		this.retireAgeMale = retireAgeMale;
+	}
+
+	public Integer getRetireAgeFemale() {
+		return retireAgeFemale;
+	}
+
+	public void setRetireAgeFemale(Integer retireAgeFemale) {
+		this.retireAgeFemale = retireAgeFemale;
 	}
 
 	public Integer getEyeOne() {
