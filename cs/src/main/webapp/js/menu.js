@@ -72,7 +72,7 @@ view.tabs.addTab = function(title, url, closable) {
 			alert("正在维护中");
 		},
 		dataType : "html",
-		async : true
+		async : false
 	});
 };
 /**
