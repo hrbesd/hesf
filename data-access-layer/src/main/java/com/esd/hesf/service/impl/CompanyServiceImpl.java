@@ -1,6 +1,7 @@
 package com.esd.hesf.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -409,6 +410,20 @@ public class CompanyServiceImpl implements CompanyService {
 		prn.setNumber(count);
 		prn.setRecords(list);
 		return prn;
+	}
+
+	@Override
+	public String[] getUnauditYearByCompanycode(String companyCode) {
+		if(companyCode == null || "".equals(companyCode)){
+			return null;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		map.put("companyCode", companyCode);
+		map.put("year", year);
+		String[] years = auDao.retireveUnauditYearByCompanycode(map);
+		return years;
 	}
 
 }

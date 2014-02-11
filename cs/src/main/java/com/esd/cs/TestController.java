@@ -537,9 +537,28 @@ public class TestController {
 	@RequestMapping("/41")
 	@ResponseBody
 	public Map<String, Object> test41() {
-		System.out.println(111111);
 		Map<String, Object> map = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("768f0b92051a002df8b347c9f4dd70cd", 1, 20);
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 审核表 获得一个公司过去未审核的年份列表
+	@RequestMapping("/42")
+	@ResponseBody
+	public Map<String, Object> test42() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] entity = cService.getUnauditYearByCompanycode("1390293306601");
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 审核表 根据年份, 和公司code获得一个审核数据
+	@RequestMapping("/43")
+	@ResponseBody
+	public Map<String, Object> test43() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Audit entity = auditService.getByPrimaryKey("2014", "1390293306601");
 		map.put("entity", entity);
 		return map;
 	}

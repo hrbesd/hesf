@@ -141,4 +141,10 @@ public interface CompanyService extends BaseService<Company> {
 	 */
 	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize);
 
+	/**
+	 * 根据公司档案号companyCode得到该公司过去为审核的年份列表
+	 * @param companyCode
+	 * @return
+	 */
+	String[] getUnauditYearByCompanycode(String companyCode);
 }
