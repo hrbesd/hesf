@@ -255,7 +255,7 @@
 		workerList.getCompany();
 	});
 </script>
-<h1>残疾职工列表</h1>
+
 <!-- 数据表格 -->
 <table id="workerList_dataGrid"></table>
 
@@ -279,7 +279,6 @@
 			<td id="company_name"></td>
 			<td>档案编码:</td>
 			<td id="company_Code"></td>
-
 			<td>税务编码:</td>
 			<td id="company_TaxCode"></td>
 		</tr>
@@ -288,10 +287,8 @@
 			<td id="company_EmpTotal"></td>
 			<td>已录用残疾职工人数:</td>
 			<td id="worker_HandicapTotal"></td>
-
 			<td>地区:</td>
 			<td id="company_Area"></td>
-
 		</tr>
 	</table>
 	<div>
