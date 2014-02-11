@@ -21,6 +21,11 @@
 	}
 	$(function(){
 		getimgcode();
+		$("body").keypress(function(event){
+			if(event.keyCode == 13){
+                submit();
+            }
+		});
 	});
 </script>
 <style type="text/css">
@@ -59,7 +64,7 @@ img {
 					<p>
 						<a href="javascript:getimgcode();">看不清验证码</a>
 					</p>
-					<a href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok">登录</a>
+					<a id="login" href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok">登录</a>
 				</div>
 			</form>
 		</div>

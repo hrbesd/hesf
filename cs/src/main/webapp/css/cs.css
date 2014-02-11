@@ -22,9 +22,29 @@ textarea {
 	font-size: 14px;
 }
 
+/*输入框提示文本*/
+.tdRight{
+	
+	 text-align: right;
+    width: 110px;
+}
 /*长输入框*/
 .longInputBox {
 	width: 400px;
+}
+
+.longtext{
+	
+	width: 100%;
+	
+}
+
+/*企业表格*/
+.companyTable{
+	
+	width: 700px;
+margin-top: 20px;
+margin-left: 80px;
 }
 /*
 	显示文本域
@@ -54,3 +74,13 @@ textarea {
 	line-height: 28px;
 	font-size: 14px;
 }
+.companyTable input{
+	width: 100%;
+}
+
+.selectall{
+		width: 100%;
+	
+}
+
+
