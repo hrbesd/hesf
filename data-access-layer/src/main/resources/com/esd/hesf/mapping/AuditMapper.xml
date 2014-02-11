@@ -517,6 +517,17 @@
 		and au.id = #{id,jdbcType=INTEGER}
 	</select>
 	
+	<select id="retrieveByYearAndCompanyCode" parameterType="map" resultMap="ResultAudit">
+		select
+		<include refid="Base_Column_List" />
+		from 
+		<include refid="From_List" />
+		where 
+		<include refid="Where_List" />
+		and au.year = #{year,jdbcType=CHAR}
+		and c.company_code = #{companyCode,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />
@@ -580,5 +591,9 @@
 		</trim>
 	</select>
 
-
+	<!-- retireve unaudit years by companyCode -->
+	<select id="retireveUnauditYearByCompanycode" parameterType="map" resultType="java.lang.String">
+		select  year from  audit 
+		where company_code = #{companyCode,jdbcType=VARCHAR} and audit_process_status = 1 and year &lt; #{year,jdbcType=CHAR};
+	</select>
 </mapper>

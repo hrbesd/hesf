@@ -84,6 +84,18 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	@Override
+	public Audit getByPrimaryKey(String year, String companyCode) {
+		if (year == null || "".equals(year) || companyCode == null || "".equals(companyCode)) {
+			return null;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("companyCode", companyCode);
+		Audit audit = dao.retrieveByYearAndCompanyCode(map);
+		return audit;
+	}
+
+	@Override
 	public PaginationRecordsAndNumber<Audit, Number> getPaginationRecords(Audit t, Integer page, Integer pageSize) {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
