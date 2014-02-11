@@ -109,14 +109,13 @@ esd.common.datagrid = function(grid, url, toolbar, columns) {
 		pageList : [ 20, 40, 60, 80 ],
 		border : false,// 不显示边框
 		pagination : true, // 是否显示分页栏
-		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
-		fit : true, // 面板大小将自适应父容器
+		doSize : false,// 在面板被创建的时候将重置大小和重新布局。
+		fit : false, // 面板大小将自适应父容器
 		fitColumns : true,// 是否显示横向滚动条，未生效
 		nowrap : true,// 如果为true，则在同一行中 。设置为true可以提高加载性能
 		idField : 'id',// 指明哪一个字段是标识字段。
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
-		fit : true,
 		checkOnSelect : false,// 单击不选择复选框
 
 		frozenColumns : [ [ {// 复选框

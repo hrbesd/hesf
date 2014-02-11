@@ -14,7 +14,8 @@
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
 		</div>
-		<div title="残疾职工信息" style="padding:20px;" data-options="fit:true,doSize:true"></div>
+		<div title="残疾职工信息" style="padding:20px;width: 400px" data-options="href:'worker/list/${entity.company.id}/${entity.year}'">
+		</div>
 		<div title="年审参数" style="padding:20px;">
 			<jsp:include page="audit_params.jsp" />
 		</div>

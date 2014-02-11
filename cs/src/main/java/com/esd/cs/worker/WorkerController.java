@@ -62,7 +62,7 @@ public class WorkerController {
 	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
-		
+
 		//获取年审参数
 		AuditParameter param= auditParameterService.getByYear(year);
 		//男职工退休年龄
