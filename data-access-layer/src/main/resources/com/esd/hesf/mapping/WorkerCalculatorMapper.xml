@@ -15,7 +15,7 @@
 	<!-- retrieve -->
 	<select id="retrieveSpecialSetting" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select t.type,t.per,t.lvl from (
-			select "1" type,eye_one per,1 lvl from audit_parameter
+			select "1" type,eye_one per,1 lvl from audit_parameter where year = #{year,jdbcType=CHAR} 
 			union all
 			select "1" type,eye_two per,2 lvl from audit_parameter
 			union all

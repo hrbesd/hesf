@@ -30,10 +30,10 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 
 	/**
 	 * 查询残疾人设定比例不为 1 的参数组
-	 * 
+	 * @param year
 	 * @return
 	 */
-	List<WorkerCalculator> getSpecialSetting();
+	List<WorkerCalculator> getSpecialSetting(String year);
 
 	/**
 	 * 查询 指定公司, 指定年度, 指定残疾类型和等级的残疾人数

@@ -1,5 +1,6 @@
 package com.esd.hesf.service.impl;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +86,13 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	}
 
 	@Override
-	public List<WorkerCalculator> getSpecialSetting() {
-		return wcDao.retrieveSpecialSetting();
+	public List<WorkerCalculator> getSpecialSetting(String year) {
+		//如果year为空的话, 则查询当前年份的
+		if(year == null ||"".equals(year)){
+			Calendar cal = Calendar.getInstance();
+			year = String.valueOf(cal.get(Calendar.YEAR));
+		}
+		return wcDao.retrieveSpecialSetting(year);
 	}
 
 	@Override

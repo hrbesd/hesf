@@ -18,7 +18,7 @@ public interface WorkerCalculatorDao {
 	 * 
 	 * @return
 	 */
-	List<WorkerCalculator> retrieveSpecialSetting();
+	List<WorkerCalculator> retrieveSpecialSetting(String year);
 
 	/**
 	 * 查询 指定公司, 指定年度, 指定残疾等级和类型的残疾人数
