@@ -83,9 +83,9 @@
 			width : 370,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var e = '<a  href="#" onclick="basicFile.openEditCompany(\'' + row.id + '\')">年审表</a> ';
-				var d = '<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">残疾职工表</a> ';
-				var v = '<a href="#" onclick="basicFile.openCompanyStaff(\'' + row.id + '\')">缴款通知书</a> ';
+				var e = '<a  href="#" onclick="printList.openAuditTab(\'' + row.id + '\')">年审表</a> ';
+				var d = '<a href="#" onclick="printList.openWorkerList(\'' + row.id + '\')">残疾职工表</a> ';
+				var v = '<a href="#" onclick="printList.openNotice(\'' + row.id + '\')">缴款通知书</a> ';
 				return e + d + v;
 			}
 		} ] ], params);
@@ -133,22 +133,22 @@
 	/**
 	打开年审表
 	**/
-	printList.openAuditTab=function(){
-	
+	printList.openAuditTab=function(id){
+			esd.common.defaultOpenWindow("年审表", 'print/audittab/' + id);
 	
 	};
 	/**
 	打开职工列表
 	**/
-	printList.openWorkerList=function(){
-	
+	printList.openWorkerList=function(id){
+		esd.common.defaultOpenWindow("残疾职工列表", 'print/workerlist/' + id);
 	
 	};
 	/**
 	打开催缴通知书
 	**/
-	printList.openNotice=function(){
-	
+	printList.openNotice=function(id){
+	esd.common.defaultOpenWindow("催缴通知书", 'print/notice/' + id);
 	
 	};
 

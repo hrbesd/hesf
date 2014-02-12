@@ -31,7 +31,7 @@
 		<td colspan="5" class="txt_">哈尔滨市道里区河洛街10号</td>
 	</tr>
 	<tr>
-		<td -g`class="td_short">开户银行</td>
+		<td class="td_short">开户银行</td>
 		<td colspan="2" class="txt_">工行河图分理处</td>
 		<td class="td_GD_short">账号</td>
 		<td colspan="2" class="txt_">20124878181512012</td>
