@@ -8,11 +8,12 @@ body,input,textarea {
 	margin: 0;
 }
 
-input{
+input {
 	height: 28px;
 	line-height: 28px;
 	border: #95B8E7 1px solid;
 }
+
 textarea {
 	line-height: 28px;
 	border: #95B8E7 1px solid;
@@ -23,28 +24,24 @@ textarea {
 }
 
 /*输入框提示文本*/
-.tdRight{
-	
-	 text-align: right;
-    width: 110px;
+.tdRight {
+	text-align: right;
+	width: 110px;
 }
 /*长输入框*/
 .longInputBox {
 	width: 400px;
 }
 
-.longtext{
-	
+.longtext {
 	width: 100%;
-	
 }
 
 /*企业表格*/
-.companyTable{
-	
+.companyTable {
 	width: 700px;
-margin-top: 20px;
-margin-left: 80px;
+	margin-top: 20px;
+	margin-left: 80px;
 }
 /*
 	显示文本域
@@ -74,13 +71,15 @@ margin-left: 80px;
 	line-height: 28px;
 	font-size: 14px;
 }
-.companyTable input{
+
+.companyTable input {
 	width: 100%;
 }
 
-.selectall{
-		width: 100%;
-	
+.selectall {
+	width: 100%;
 }
-
-
+.tabs-panels {
+	border-width: 0px;
+	border-style: none;
+}

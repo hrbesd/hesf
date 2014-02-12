@@ -120,10 +120,10 @@
 		$('#zaiZhiYuanGongZongShu').attr("onmouseup", "value=value.replace(/\\D/g,'')");
 		$('#yuDingCanJiRen').attr("onkeyup", "value=value.replace(/\\D/g,'')");
 		$('#yuDingCanJiRen').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#jianJiaoJingE').attr("onkeyup", "initAudit.checkMoney(this)");
-		$('#jianJiaoJingE').attr("onmouseup", "initAudit.checkMoney(this)");
-		$('#buJiaoJingE').attr("onkeyup", "initAudit.checkMoney(this)");
-		$('#buJiaoJingE').attr("onmouseup", "initAudit.checkMoney(this)");
+		$('#jianJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
+		$('#jianJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
+		$('#buJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
+		$('#buJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
 	};
 
 	//输入金钱校验
@@ -145,10 +145,12 @@
 		param.yuDingCanJiRen = $('#yuDingCanJiRen').val();
 
 		param.shangNianDuWeiJiaoBaoZhangJin = $('#shangNianDuWeiJiaoBaoZhangJin').val();
-		param.yingJiaoJingE = $('#yingJiaoJingE').val();
-		param.jianJiaoJingE = $('#jianJiaoJingE').val();
-		param.buJiaoJingE = $('#buJiaoJingE').val();
-		param.shiJiaoJingE = $('#shiJiaoJingE').val();
+		param.yingJiaoJinE = $('#yingJiaoJinE').val();
+		param.jianJiaoJinE = $('#jianJiaoJinE').val();
+		param.buJiaoJinE = $('#buJiaoJinE').val();
+		param.shiJiaoJinE = $('#shiJiaoJinE').val();
+		param.shiJiaoJinE = $('#zhiNaJin').val();
+		param.shiJiaoJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('#year').val();
 		param.companyCode = $('input[name="company.companyCode"]').val();
 		$.ajax({
@@ -163,10 +165,12 @@
 				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
 
 				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				$('#yingJiaoJingE').val(data.s_yingJiaoJingE);
-				$('#jianJiaoJingE').val(data.s_jianJiaoJingE);
-				$('#buJiaoJingE').val(data.s_buJiaoJingE);
-				$('#shiJiaoJingE').val(data.s_shiJiaoJingE);
+				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
+				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
+				$('#buJiaoJinE').val(data.s_buJiaoJinE);
+				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
+				$('#zhiNaJin').val(data.s_zhiNaJin);
+				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
 			},
 			error : function() {
 				alert("请求错误");
@@ -218,86 +222,84 @@
 	});
 </script>
 
-<form id="form" action="${contextPath }/security/audits/save" method="post">
+<form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 3px;">
 	<!-- 年审企业表格  第二部分 -->
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="td_short">档案号码:</td>
-			<td class="td_short bj_belu" colspan="2"><input name="company.companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId"
-				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
-			</td>
-			<td class="td_short">税务代码:</td>
-			<td class="td_long bj_belu" colspan="3"><input name="company.companyTaxCode" class="bj_belu2" type="text" value="${entity.company.companyTaxCode}" />
-			</td>
+			<td width="300" colspan="2"><input name="company.companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId"
+				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /></td>
+			<td>年审年度:</td>
+			<td><input name="company.year" class="bj_belu2 readonly " type="text" value="${entity.company.year}" /></td>
+			<td>未审记录</td>
+			<td><select style="font-size: 12px;" class="easyui-combobox" name="ageEx" data-options="width:105,height:30,editable:false">
+					<option value="true" <c:if test="${ageEx==true}">selected="selected"</c:if>>是</option>
+					<option value="false" <c:if test="${ageEx==false}">selected="selected"</c:if>>否</option>
+			</select></td>
 		</tr>
 		<tr>
-			<td class="td_short">企业名称:</td>
-			<td class="td_long bj_belu" colspan="2"><input name="company.companyName" class="bj_belu2" type="text" value="${entity.company.companyName}" />
-			</td>
-			<td class="td_short">年审年度:</td>
-			<td class="td_long bj_belu" colspan="3"><input name="company.year" class="bj_belu2 readonly " type="text" value="${entity.company.year}" />
-			</td>
+			<td>企业名称:</td>
+			<td colspan="2"><input name="company.companyName" class="bj_belu2" type="text" value="${entity.company.companyName}" /></td>
+
+			<td style="width:100px;">税务代码:</td>
+			<td width="180"><input name="company.companyTaxCode" class="bj_belu2" type="text" value="${entity.company.companyTaxCode}" /></td>
+			<td width="100">年龄超标</td>
+			<td><select style="font-size: 12px;" class="easyui-combobox" name="ageEx" data-options="width:100,height:30,editable:false">
+					<option value="true" <c:if test="${ageEx==true}">selected="selected"</c:if>>是</option>
+					<option value="false" <c:if test="${ageEx==false}">selected="selected"</c:if>>否</option>
+			</select></td>
 		</tr>
 
 		<tr>
 			<td rowspan="4" class="td_short">单位基本情况</td>
-			<td class="td_short">法人代表:</td>
-			<td class="bj_belu"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" /></td>
-			<td class="td_short_150">组织机关代码证:</td>
-			<td class="bj_belu"><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" />
+			<td width="100">法人代表:</td>
+			<td width="200"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" />
 			</td>
-			<td class="td_short">企业性质:</td>
-			<td class="bj_belu">
+			<td>组织机关代码证:</td>
+			<td><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" /></td>
+			<td>企业性质:</td>
+			<td>
 				<!--
 			<input value="${entity.company.companyProperty.id}" method="GET" id="companyProperty" name="company.companyProperty.id" class="easyui-combobox"
 				data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/property'" />
-				--> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:150,height:30,editable:false">
+				--> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:105,height:30,editable:false">
 					<c:forEach items="${companyPropertys}" var="item">
 						<option value="${item.id}" <c:if test="${entity.company.companyProperty.id eq item.id}">selected="selected"</c:if>>${item.companyProperty }</option>
 					</c:forEach>
-			</select>
-			</td>
+			</select></td>
 
 		</tr>
 		<tr>
-			<td class="td_short">联系人 :</td>
-			<td class="bj_belu"><input name="company.companyContactPerson" class="bj_belu3" type="text" value="${entity.company.companyContactPerson}" />
-			</td>
-			<td class="td_short_150">电话号码:</td>
-			<td class="bj_belu"><input name="company.companyPhone" class="bj_belu3" type="text" value="${entity.company.companyPhone}" />
-			</td>
-			<td class="td_short">经济类型:</td>
-			<td class="bj_belu">
+			<td>联系人 :</td>
+			<td><input name="company.companyContactPerson" class="bj_belu3" type="text" value="${entity.company.companyContactPerson}" /></td>
+			<td>电话号码:</td>
+			<td><input name="company.companyPhone" class="bj_belu3" type="text" value="${entity.company.companyPhone}" /></td>
+			<td>经济类型:</td>
+			<td>
 				<!-- 
 			<input value="${entity.company.companyEconomyType.id}" method="GET" id="companyEconomyType" name="company.companyEconomyType.id" class="easyui-combobox" 
 			data-options="height:30,editable:false,valueField:'id',textField:'companyEconomyType',url:'parameter/economytype'" />
-			 --> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyEconomyType.id" data-options="width:150,height:30,editable:false">
+			 --> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyEconomyType.id" data-options="width:105,height:30,editable:false">
 					<c:forEach items="${companyEconomyTypes}" var="item">
 						<option value="${item.id}" <c:if test="${entity.company.companyEconomyType.id eq item.id}">selected="selected"</c:if>>${item.companyEconomyType }</option>
 					</c:forEach>
-			</select>
-			</td>
+			</select></td>
 
 		</tr>
 		<tr>
-			<td class="td_short">手机号码:</td>
-			<td class="bj_belu"><input name="company.companyMobile" class="bj_belu3" value="${entity.company.companyMobile}" />
-			</td>
-			<td class="td_short_150">企业地址:</td>
-			<td class="bj_belu" colspan="6"><input name="company.companyAddress" value=${entity.company.companyAddress } />
-			</td>
+			<td>手机号码:</td>
+			<td><input name="company.companyMobile" class="bj_belu3" value="${entity.company.companyMobile}" /></td>
+			<td>企业地址:</td>
+			<td colspan="6"><input name="company.companyAddress" value=${entity.company.companyAddress } /></td>
 
 		</tr>
 		<tr>
-			<td class="td_short">开户银行:</td>
-			<td class="bj_belu"><input name="company.companyBank" class="bj_belu3" value=${entity.company.companyBank } />
-			</td>
-			<td class="td_short_150">银行账号:</td>
-			<td class="bj_belu"><input name="company.companyBankAccount" class="bj_belu3" value=${entity.company.companyBankAccount } />
-			</td>
-			<td class="td_short">邮政编码:</td>
-			<td class="bj_belu"><input name="company.companyZipCode" value=${entity.company.companyZipCode } />
-			</td>
+			<td>开户银行:</td>
+			<td><input name="company.companyBank" class="bj_belu3" value=${entity.company.companyBank } /></td>
+			<td>银行账号:</td>
+			<td><input name="company.companyBankAccount" class="bj_belu3" value=${entity.company.companyBankAccount } /></td>
+			<td>邮政编码:</td>
+			<td><input name="company.companyZipCode" value=${entity.company.companyZipCode } /></td>
 
 		</tr>
 	</table>
@@ -314,52 +316,51 @@
 		</tr>
 		<tr>
 			<td rowspan="3" style="vertical-align: bottom"><input name="company.companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.company.companyEmpTotal }"
-				class="warn" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" />
-			</td>
+				class="warn" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" /></td>
 			<td>应按排数:</td>
 			<td>已安排数:</td>
 
 			<td rowspan="2" style="vertical-align: bottom"><input id="yiLuRuCanJiRen" name="company.companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.company.companyHandicapTotal }"
-				style="border-top: #95B8E7 2px solid;" />
-			</td>
+				style="border-top: #95B8E7 2px solid;" /></td>
 			<td rowspan="2" style="vertical-align: bottom"><input id="yuDingCanJiRen" name="company.companyPredictTotal" value="${entity.company.companyPredictTotal }" title="预定残疾职工人数" class="warn"
-				style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" />
-			</td>
+				style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" /></td>
 			<td style="vertical-align: bottom" rowspan="2"><input id="shangNianDuWeiJiaoBaoZhangJin" title="上年度未缴保障金额度" class="readonly" style="border-top: #95B8E7 2px solid;"
-				value="${entity.complementAmount }" />
-			</td>
+				value="${entity.complementAmount }" /></td>
 
 		</tr>
 		<tr>
-			<td><input type="text" class="text_short readonly" value="${entity.company.companyShouldTotal}" name="company.companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" />
-			</td>
-			<td><input type="text" class="text_short readonly" value="${entity.company.companyAlreadyTotal}" name="company.companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" />
-			</td>
+			<td><input type="text" class="text_short readonly" value="${entity.company.companyShouldTotal}" name="company.companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" /></td>
+			<td><input type="text" class="text_short readonly" value="${entity.company.companyAlreadyTotal}" name="company.companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" /></td>
 		</tr>
 
 	</table>
 	<!-- 年审企业表格  第四部分(保障金额度) -->
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td style="width: 60px;">是否免交:</td>
-			<td class="bj_belu"><select id="cc" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:40,panelHeight:80,height:30,editable:false">
+			<td rowspan="2" width="100">保障金情况:</td>
+			<td width="100">应缴金额:</td>
+			<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
+			<td width="100">减缴金额:</td>
+			<td><input id="jianJiaoJinE" type="text" class="warn" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+			<td width="100">补缴金额:</td>
+			<td><input id="buJiaoJinE" type="text" class="warn" name="complementAmount" value="${entity.complementAmount }" onblur="initAudit.jisuan()" /></td>
+
+			<td width="100">是否免交:</td>
+			<td><select id="cc" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:40,panelHeight:80,height:30,editable:false">
 					<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 					<option value="true" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
-			</select>
+			</select></td>
+		</tr>
+		<tr>
+			<td>实缴金额:</td>
+			<td><input id="shiJiaoJinE" type="text" class="readonly" name="actualAmount" value="${entity.actualAmount}" />
 			</td>
-			<td class="td_GD_short">应缴金额:</td>
-			<td class="bj_belu"><input id="yingJiaoJingE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" />
+			<td>滞纳金:</td>
+			<td><input id="zhiNaJin" type="text" class="readonly" name="delayPayAmount" value="${entity.delayPayAmount}"/>
 			</td>
-			<td class="td_GD_short">减缴金额:</td>
-			<td class="bj_belu"><input id="jianJiaoJingE" type="text" class="warn" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" />
+			<td>实缴总金额:</td>
+			<td><input id="shiJiaoZongJinE" type="text" class="readonly" value="${entity.delayPayAmount}" />
 			</td>
-			<td class="td_GD_short">补缴金额:</td>
-			<td class="bj_belu"><input id="buJiaoJingE" type="text" class="warn" name="complementAmount" value="${entity.complementAmount }" onblur="initAudit.jisuan()" />
-			</td>
-			<td class="td_GD_short">实缴金额:</td>
-			<td class="bj_belu"><input id="shiJiaoJingE" type="text" class="readonly" name="actualAmount" value="${entity.actualAmount}" />
-			</td>
-
 		</tr>
 	</table>
 
@@ -367,8 +368,7 @@
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="td_short">备注:</td>
-			<td class="bj_belu" colspan="6"><textarea name="remark" rows="3" cols="90">${entity.remark }</textarea>
-			</td>
+			<td class="bj_belu" colspan="6"><textarea name="remark" rows="2" cols="90">${entity.remark }</textarea></td>
 
 		</tr>
 	</table>
@@ -376,11 +376,9 @@
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="td_short">初审意见:</td>
-			<td class="bj_belu" colspan="3"><textarea name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea>
-			</td>
+			<td class="bj_belu" colspan="3"><textarea name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea></td>
 			<td class="td_short">复审意见:</td>
-			<td colspan="3"><textarea class="readonly" rows="3" cols="45">${entity.verifyAuditComment}</textarea>
-			</td>
+			<td colspan="3"><textarea class="readonly" rows="3" cols="45">${entity.verifyAuditComment}</textarea></td>
 		</tr>
 		<tr>
 			<td class="td_short">初审日期:</td>
@@ -388,18 +386,14 @@
 					<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
 				</c:if> <c:if test="${entity.initAuditDate!=null}">
 					<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-				</c:if> <input class="bj_belu4 readonly" value="${date}" />
-			</td>
+				</c:if> <input class="bj_belu4 readonly" value="${date}" /></td>
 			<td class="td_short">初审人:</td>
-			<td><input type="text" class="bj_belu4 readonly" value="${sessionScope.userRealName}" />
-			</td>
+			<td><input type="text" class="bj_belu4 readonly" value="${sessionScope.userRealName}" /></td>
 			<td class="td_short">复核日期:</td>
 			<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-				value="${verifyAuditDate}" />
-			</td>
+				value="${verifyAuditDate}" /></td>
 			<td class="td_short">复审人:</td>
-			<td><input type="text" class="bj_belu4 readonly" value="${entity.verifyAuditUserId}" />
-			</td>
+			<td><input type="text" class="bj_belu4 readonly" value="${entity.verifyAuditUserId}" /></td>
 		</tr>
 	</table>
 	<div style="text-align: center;margin-top: 10px;">

@@ -117,7 +117,12 @@ public class AuditsController {
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
 		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
 		getAudit.setVerifyAuditUserId((Integer) session.getAttribute(Constants.USER_ID));// 添加复审ID
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+		AuditProcessStatus auditProcessStatus = null;
+		if (getAudit.getActualAmount().signum() == 0) {
+			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
+		} else {
+			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+		}
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
@@ -187,11 +192,12 @@ public class AuditsController {
 		String companyCode = calculateModel.getCompanyCode();
 		String year = calculateModel.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
+
 		// 获得在职员工总数
 		Integer zaiZhiYuanGongZongShu = calculateModel.getZaiZhiYuanGongZongShu();
 		// 获得已录入排数
 		Integer yiLuRuCanJiRen = calculateModel.getYiLuRuCanJiRen();
-		List<WorkerCalculator> list = auditParameterService.getSpecialSetting();
+		List<WorkerCalculator> list = auditParameterService.getSpecialSetting(year);
 		for (WorkerCalculator workerCalculator : list) {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
@@ -215,18 +221,33 @@ public class AuditsController {
 		// 获得人均工资数
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
 		// 计算出应缴金额
-		BigDecimal yingJiaoJingE = averageSalary.multiply(yingAnPaiCanJiRen.subtract(new BigDecimal(yiAnPaiCanJiRen)));
-		calculateModel.setYingJiaoJingE(yingJiaoJingE); // 添加
+		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加
+			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+		} else {
+			yingJiaoJinE = Constants.ZERO;
+			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+		}
 		// 获得减缴金额
-		BigDecimal jianJiaoJingE = calculateModel.getJianJiaoJingE();
+		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
 		// 应缴金额-减缴金额+补缴+上年度未缴金额 =实缴金额
-		BigDecimal shiJiaoJingE = yingJiaoJingE.subtract(jianJiaoJingE);
+		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得补缴金额
-		BigDecimal buJiaoJingE = calculateModel.getBuJiaoJingE();
+		BigDecimal buJiaoJinE = calculateModel.getBuJiaoJinE();
 		// 获得上年度未缴金额
 		BigDecimal shangNianDuWeiJiaoBaoZhangJin = calculateModel.getShangNianDuWeiJiaoBaoZhangJin();
-		BigDecimal real_yingJiaoJingE = shiJiaoJingE.add(buJiaoJingE).add(shangNianDuWeiJiaoBaoZhangJin);
-		calculateModel.setShiJiaoJingE(real_yingJiaoJingE);// 添加
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(buJiaoJinE).add(shangNianDuWeiJiaoBaoZhangJin);
+		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加
+		// 计算滞纳金
+		Date date = auditParameter.getAuditDelayDate();
+		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
+		long zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
+		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi).multiply(new BigDecimal(zhiNanJinTianshu));
+		calculateModel.setZhiNaJin(zhiNaJin);//添加滞纳金
+		//实缴总金额
+		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin);
+		calculateModel.setShiJiaoZongJinE(shiJiaoZongJinE);
+		
 		return calculateModel;
 	}
 
@@ -311,6 +332,9 @@ public class AuditsController {
 		}
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
 		request.setAttribute("process", process);
+
+		request.setAttribute("ageEx", false);
+
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}
 

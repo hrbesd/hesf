@@ -7,7 +7,7 @@
        					maximizable:true,fit:true,border:false,doSize:true">
 
 	<div class="easyui-tabs" data-options="fit:true">
-		<div id="startaudit_tabs" style="padding:20px;" title="年审信息">
+		<div id="startaudit_tabs" title="年审信息">
 			<c:if test="${process==1}">
 				<jsp:include page="audit_init.jsp" />
 			</c:if>

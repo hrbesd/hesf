@@ -14,10 +14,12 @@ public class CalculateModel {
 	private Integer yuDingCanJiRen;
 
 	private BigDecimal shangNianDuWeiJiaoBaoZhangJin;
-	private BigDecimal yingJiaoJingE;
-	private BigDecimal jianJiaoJingE;
-	private BigDecimal buJiaoJingE;
-	private BigDecimal shiJiaoJingE;
+	private BigDecimal yingJiaoJinE;
+	private BigDecimal jianJiaoJinE;
+	private BigDecimal buJiaoJinE;
+	private BigDecimal shiJiaoJinE;
+	private BigDecimal zhiNaJin;
+	private BigDecimal shiJiaoZongJinE;
 	private String year;
 	private String companyCode;
 
@@ -28,15 +30,18 @@ public class CalculateModel {
 	private String s_yuDingCanJiRen;
 
 	private String s_shangNianDuWeiJiaoBaoZhangJin;
-	private String s_yingJiaoJingE;
-	private String s_jianJiaoJingE;
-	private String s_buJiaoJingE;
-	private String s_shiJiaoJingE;
+	private String s_yingJiaoJinE;
+	private String s_jianJiaoJinE;
+	private String s_buJiaoJinE;
+	private String s_shiJiaoJinE;
+	private String s_zhiNaJin;
+	private String s_shiJiaoZongJinE;
 
 	@Override
 	public String toString() {
-		return "calculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen=" + yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJingE=" + yingJiaoJingE + ", jianJiaoJingE=" + jianJiaoJingE
-				+ ", buJiaoJingE=" + buJiaoJingE + ", shiJiaoJingE=" + shiJiaoJingE + "]";
+		return "calculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen="
+				+ yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE="
+				+ jianJiaoJinE + ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + "]";
 	}
 
 	public Integer getZaiZhiYuanGongZongShu() {
@@ -93,40 +98,40 @@ public class CalculateModel {
 		this.s_shangNianDuWeiJiaoBaoZhangJin = String.valueOf(df.format(shangNianDuWeiJiaoBaoZhangJin));
 	}
 
-	public BigDecimal getYingJiaoJingE() {
-		return yingJiaoJingE;
+	public BigDecimal getYingJiaoJinE() {
+		return yingJiaoJinE;
 	}
 
-	public void setYingJiaoJingE(BigDecimal yingJiaoJingE) {
-		this.yingJiaoJingE = yingJiaoJingE;
-		this.s_yingJiaoJingE = String.valueOf(df.format(yingJiaoJingE));
+	public void setYingJiaoJinE(BigDecimal yingJiaoJinE) {
+		this.yingJiaoJinE = yingJiaoJinE;
+		this.s_yingJiaoJinE = String.valueOf(df.format(yingJiaoJinE));
 	}
 
-	public BigDecimal getJianJiaoJingE() {
-		return jianJiaoJingE;
+	public BigDecimal getJianJiaoJinE() {
+		return jianJiaoJinE;
 	}
 
-	public void setJianJiaoJingE(BigDecimal jianJiaoJingE) {
-		this.jianJiaoJingE = jianJiaoJingE;
-		this.s_jianJiaoJingE = String.valueOf(df.format(jianJiaoJingE));
+	public void setJianJiaoJinE(BigDecimal jianJiaoJinE) {
+		this.jianJiaoJinE = jianJiaoJinE;
+		this.s_jianJiaoJinE = String.valueOf(df.format(jianJiaoJinE));
 	}
 
-	public BigDecimal getBuJiaoJingE() {
-		return buJiaoJingE;
+	public BigDecimal getBuJiaoJinE() {
+		return buJiaoJinE;
 	}
 
-	public void setBuJiaoJingE(BigDecimal buJiaoJingE) {
-		this.buJiaoJingE = buJiaoJingE;
-		this.s_buJiaoJingE = String.valueOf(df.format(buJiaoJingE));
+	public void setBuJiaoJinE(BigDecimal buJiaoJinE) {
+		this.buJiaoJinE = buJiaoJinE;
+		this.s_buJiaoJinE = String.valueOf(df.format(buJiaoJinE));
 	}
 
-	public BigDecimal getShiJiaoJingE() {
-		return shiJiaoJingE;
+	public BigDecimal getShiJiaoJinE() {
+		return shiJiaoJinE;
 	}
 
-	public void setShiJiaoJingE(BigDecimal shiJiaoJingE) {
-		this.shiJiaoJingE = shiJiaoJingE;
-		this.s_shiJiaoJingE = String.valueOf(df.format(shiJiaoJingE));
+	public void setShiJiaoJinE(BigDecimal shiJiaoJinE) {
+		this.shiJiaoJinE = shiJiaoJinE;
+		this.s_shiJiaoJinE = String.valueOf(df.format(shiJiaoJinE));
 	}
 
 	public String getYear() {
@@ -186,36 +191,36 @@ public class CalculateModel {
 		this.s_shangNianDuWeiJiaoBaoZhangJin = s_shangNianDuWeiJiaoBaoZhangJin;
 	}
 
-	public String getS_yingJiaoJingE() {
-		return s_yingJiaoJingE;
+	public String getS_yingJiaoJinE() {
+		return s_yingJiaoJinE;
 	}
 
-	public void setS_yingJiaoJingE(String s_yingJiaoJingE) {
-		this.s_yingJiaoJingE = s_yingJiaoJingE;
+	public void setS_yingJiaoJinE(String s_yingJiaoJinE) {
+		this.s_yingJiaoJinE = s_yingJiaoJinE;
 	}
 
-	public String getS_jianJiaoJingE() {
-		return s_jianJiaoJingE;
+	public String getS_jianJiaoJinE() {
+		return s_jianJiaoJinE;
 	}
 
-	public void setS_jianJiaoJingE(String s_jianJiaoJingE) {
-		this.s_jianJiaoJingE = s_jianJiaoJingE;
+	public void setS_jianJiaoJinE(String s_jianJiaoJinE) {
+		this.s_jianJiaoJinE = s_jianJiaoJinE;
 	}
 
-	public String getS_buJiaoJingE() {
-		return s_buJiaoJingE;
+	public String getS_buJiaoJinE() {
+		return s_buJiaoJinE;
 	}
 
-	public void setS_buJiaoJingE(String s_buJiaoJingE) {
-		this.s_buJiaoJingE = s_buJiaoJingE;
+	public void setS_buJiaoJinE(String s_buJiaoJinE) {
+		this.s_buJiaoJinE = s_buJiaoJinE;
 	}
 
-	public String getS_shiJiaoJingE() {
-		return s_shiJiaoJingE;
+	public String getS_shiJiaoJinE() {
+		return s_shiJiaoJinE;
 	}
 
-	public void setS_shiJiaoJingE(String s_shiJiaoJingE) {
-		this.s_shiJiaoJingE = s_shiJiaoJingE;
+	public void setS_shiJiaoJinE(String s_shiJiaoJinE) {
+		this.s_shiJiaoJinE = s_shiJiaoJinE;
 	}
 
 	public String getCompanyCode() {
@@ -224,6 +229,40 @@ public class CalculateModel {
 
 	public void setCompanyCode(String companyCode) {
 		this.companyCode = companyCode;
+	}
+
+	public BigDecimal getZhiNaJin() {
+		return zhiNaJin;
+	}
+
+	public void setZhiNaJin(BigDecimal zhiNaJin) {
+		this.zhiNaJin = zhiNaJin;
+		this.s_zhiNaJin = String.valueOf(df.format(zhiNaJin));
+	}
+
+	public BigDecimal getShiJiaoZongJinE() {
+		return shiJiaoZongJinE;
+	}
+
+	public void setShiJiaoZongJinE(BigDecimal shiJiaoZongJinE) {
+		this.shiJiaoZongJinE = shiJiaoZongJinE;
+		this.s_shiJiaoZongJinE = String.valueOf(df.format(shiJiaoZongJinE));
+	}
+
+	public String getS_zhiNaJin() {
+		return s_zhiNaJin;
+	}
+
+	public void setS_zhiNaJin(String s_zhiNaJin) {
+		this.s_zhiNaJin = s_zhiNaJin;
+	}
+
+	public String getS_shiJiaoZongJinE() {
+		return s_shiJiaoZongJinE;
+	}
+
+	public void setS_shiJiaoZongJinE(String s_shiJiaoZongJinE) {
+		this.s_shiJiaoZongJinE = s_shiJiaoZongJinE;
 	}
 
 }

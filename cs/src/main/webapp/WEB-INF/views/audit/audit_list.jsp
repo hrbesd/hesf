@@ -85,23 +85,24 @@
 </script>
 <!-- 自定义菜单 -->
 <div id="initAuditList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
-	<div style="text-align: left;">
-		审计时间(年):<input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
-		流程状态:<input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
-		<!--  
-		<input id="process" class="easyui-combobox" value="${process}"
-			data-options="height:30,editable:false,valueField:'id',textField:'auditProcessStatus',url:'${contextPath }/security/parameter/getStatus'" />
-			 <select id="process" class="easyui-combobox" data-options="width:150,height:30,editable:false">
-					<c:forEach items="${auditProcessStatuss}" var="item">
-						<option value="${item.id}" <c:if test="${process eq item.id}">selected="selected"</c:if>>${item.auditProcessStatus }</option>
-					</c:forEach>
-			</select>
-			-->
-	</div>
-	<div style="padding-top: 5px; width: 100%">
-		<input type="text" style="width: 20%" id="companyCode" /> <input type="text" style="width: 20%" id="companyTaxCode" /> <input type="text" style="width: 40%" id="companyName" /> <a href="#"
-			class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a>
-	</div>
+	<table border="0" width="100%">
+		<tr>
+			<td width="80" style="text-align: right;" >年审时间:</td>
+			<td width="150" ><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+			<td width="80" style="text-align: right;">流程状态:</td>
+			<td width="150" ><input id="process" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+		</tr>
+		<tr>
+			<td style="text-align: right;" >档案编码 :</td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
+			<td style="text-align: right;" >税务编码:</td>
+			<td><input type="text" style="width: 100%" id="companyCode" /></td>
+			<td width="80" style="text-align: right;" >企业名称 :</td>
+			<td><input type="text" style="width: 100%" id="companyName" /></td>
+			<td><a href="#"
+			class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a></td>
+		</tr>
+	</table>
 </div>
 <!-- 数据表格 -->
 <table id="initAuditList_datagrid"></table>
