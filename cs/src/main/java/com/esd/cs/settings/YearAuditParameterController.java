@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.hesf.model.AuditParameter;
@@ -52,7 +53,7 @@ public class YearAuditParameterController {
 	private CompanyService companyService;
 
 	/**
-	 * 转到 用户
+	 * 转到年审参数
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView user() {
@@ -112,13 +113,31 @@ public class YearAuditParameterController {
 	}
 
 	/**
-	 * 跳转到添加用户
+	 * 检测添加年审时是否以经添加过
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/check", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean checkYear() {
+		String year = CalendarUtil.getNowYear();
+		AuditParameter auditParameter = auditParameterService.getByYear(year);
+		if (auditParameter != null) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 跳转到添加年审参数
 	 * 
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView addGet() {
+	public ModelAndView addGet(HttpServletRequest request) {
+		String year = CalendarUtil.getNowYear();
+		request.setAttribute("year", year);
 		return new ModelAndView("settings/parameter_save");
 	}
 
@@ -138,11 +157,11 @@ public class YearAuditParameterController {
 		auditParameter.setPutScale(puScale);
 		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
 		String lastYear = companyService.getLastYear();// 获取上一次有效的年;
-		try {
-			auditService.initAuditData(currentYear, lastYear);
-		} catch (Exception e) {
-			logger.error("initAuditData", e);
-		}
+//		try {
+//			auditService.initAuditData(currentYear, lastYear);
+//		} catch (Exception e) {
+//			logger.error("initAuditData", e);
+//		}
 		auditParameterService.save(auditParameter);
 		return true;
 	}

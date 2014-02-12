@@ -28,34 +28,44 @@
 <div>
 	<div style="margin-top: 20px; margin-left: 20px;">
 		<form id="form" action="${contextPath}/security/settings/yearAuditParameter/add" method="post">
-			<table class="parameterTab">
+			<table class="parameterTab" border="0">
 				<tr>
 					<td width="100">年度:</td>
-					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="year" type="text" value="${entity.year}" /> <input class="easyui-validatebox" name="version" type="hidden"
-						value="1" /></td>
+					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${year}" />
+					 <input class="easyui-validatebox" name="version" type="hidden" value="1" /></td>
 				</tr>
 				<tr>
 					<td>所属地区:</td>
-					<td><input name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
+					<td><input name="area.code" class="easyui-combobox" value="10230000" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
 					</td>
+					<td>滞纳金开始时间:</td>
+					<td><input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="2014-09-15" style="width:150px" /></td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>
-					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" />
+					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="0.15" />
 					</td>
+					<td>滞纳金征收比率(%):</td>
+					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="0.005" /></td>
+					<td>职工退休年龄(男)：</td>
+					<td><input class="easyui-validatebox" name="retireAgeMale" type="text" required="true" value="60" /></td>
 				</tr>
 				<tr>
 					<td>计算基数:</td>
 					<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" />
 					</td>
+					<td>支付限制天数:</td>
+					<td><input class="easyui-validatebox" name="payLimitDays" type="text" required="true" value="15" /></td>
+					<td>职工退休年龄(女)：</td>
+					<td><input class="easyui-validatebox" name="retireAgeFemale" type="text" required="true" value="50" /></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 				</tr>
 
 			</table>
-			<div>残疾人等级计算：</div>
-			<table style="margin-top: 10px; margin-left: 20px;">
+			<div><strong>残疾人等级计算：</strong></div>
+			<table style="margin-top: 10px; margin-left: 20px; float: left;" border="0">
 				<tr>
 					<td width="120">视力1,2,3,4级:</td>
 					<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:70,height:30">
