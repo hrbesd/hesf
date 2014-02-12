@@ -47,20 +47,49 @@ public class PrintCompany {
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;// 企业经济类型
 
-
-
 	/**
 	 * 转到打印列表页面
 	 * 
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/print_list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
-		logger.debug("gotoPrintList");
+		// 获取当前年份
+		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		logger.debug("gotoPrintList:{}", "queryAudit");
 		return new ModelAndView("documents/print_list");
 	}
-
-
+	/**
+	 * 转到打印审核表页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/audittab/{id}", method = RequestMethod.GET)
+	public ModelAndView audittab(@PathVariable(value = "id") String id,HttpServletRequest request) {
+		logger.debug("gotoPrint_audit");
+		return new ModelAndView("documents/print_audit");
+	}
+	/**
+	 * 转到打印职工列表页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/workerlist/{id}", method = RequestMethod.GET)
+	public ModelAndView workerlist(@PathVariable(value = "id") String id,HttpServletRequest request) {
+		logger.debug("gotoPrint_workerList");
+		return new ModelAndView("documents/print_workerList");
+	}
+	/**
+	 * 转到打印催缴通知书页面
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/notice/{id}", method = RequestMethod.GET)
+	public ModelAndView notice(@PathVariable(value = "id") String id,HttpServletRequest request) {
+		logger.debug("gotonotice");
+		return new ModelAndView("documents/print_notice");
+	}
+	
 
 }
