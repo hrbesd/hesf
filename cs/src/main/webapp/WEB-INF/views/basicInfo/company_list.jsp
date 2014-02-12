@@ -5,7 +5,8 @@
 <script type="text/javascript" src="${contextPath}/js/basicFile.js"></script>
 <!-- 基本档案   企业信息列表页面 -->
 
-
+<!-- 企业信息类型 -->
+<input type="hidden" id="companyProperty" value="${companyProperty}" />
 <!-- 自定义菜单 -->
 <div id="company_boolbar">
 	<div style="text-align: right;">

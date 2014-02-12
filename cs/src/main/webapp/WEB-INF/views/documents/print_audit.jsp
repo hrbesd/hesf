@@ -5,7 +5,7 @@
 
 
 <h2 style="text-align: center;">按比例安排残疾人就业情况表</h2>
-<table data-options="fit:true,border:false,doSize:true" title="企业年审信息" class="print_table">
+<table title="企业年审信息" class="print_table" style="width: 100%" border="1">
 	<tr>
 		<td style="text-align: left;">企业法人代码：123456789</td>
 		<td>税务编码：01010111</td>
