@@ -37,7 +37,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public boolean save(AuditParameter t) {
-		return dao.insert(t) == 1 ? true : false;
+		return dao.insertSelective(t) == 1 ? true : false;
 	}
 
 	@Override
