@@ -162,6 +162,12 @@
 	workerList.openEditWorker = function(id) {
 		esd.common.openWindow("#workerWindow", "编辑残疾职工", 960, 550, 'worker/edit/' + id);
 	};
+	/**
+	打开导入残疾职工页面
+	 **/
+	workerList.openImportWorker = function() {
+		esd.common.openWindow("#workerWindow", "导入残疾职工", 960, 550, 'worker/importworker');
+	};
 
 	/**
 	删除企业
@@ -272,6 +278,8 @@
 	<div style="text-align: right;">
 		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" iconCls="icon-ok">添加</a> <a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" iconCls="icon-ok">删除</a>
 		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
+		
+	
 	</div>
 	<table>
 		<tr>
