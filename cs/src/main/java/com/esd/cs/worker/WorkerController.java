@@ -5,6 +5,8 @@
  */
 package com.esd.cs.worker;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
@@ -52,6 +55,7 @@ public class WorkerController {
 	private CompanyService companyService;// 企业
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
+
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
 	 * 
@@ -63,15 +67,15 @@ public class WorkerController {
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
 
-		//获取年审参数
-		AuditParameter param= auditParameterService.getByYear(year);
-		if(param!=null){
-			//男职工退休年龄
+		// 获取年审参数
+		AuditParameter param = auditParameterService.getByYear(year);
+		if (param != null) {
+			// 男职工退休年龄
 			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
-			//女职工退休年龄
+			// 女职工退休年龄
 			request.setAttribute("femaleRetirementAge", param.getRetireAgeFemale());
-		
-		}else{
+
+		} else {
 			logger.error("getAuditParameterError");
 		}
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
@@ -129,8 +133,8 @@ public class WorkerController {
 		String companyId = request.getParameter("companyId");
 		logger.debug("addWorkerParams:{},companyId:{}", worker, companyId);
 		Company c = companyService.getByPrimaryKey(companyId);
-		if(c==null){
-			logger.error("addWorker_getCompanyError:{}","null");
+		if (c == null) {
+			logger.error("addWorker_getCompanyError:{}", "null");
 			return false;
 		}
 		boolean b = workerService.save(worker, c.getCompanyCode());
@@ -238,7 +242,8 @@ public class WorkerController {
 		return true;
 	}
 
-	
+
+
 	/**
 	 * 验证 残疾证号是否存在，是否在其他公司内
 	 * 
@@ -264,8 +269,7 @@ public class WorkerController {
 			list.add(paramsMap);
 			list.add(companyMap);
 			return list;
-		}
-		else {
+		} else {
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
