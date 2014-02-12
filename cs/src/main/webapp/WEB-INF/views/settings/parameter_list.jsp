@@ -3,7 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <script type="text/javascript">
-	$(function() {
+	parameter_list = {};
+
+	parameter_list.list = function() {
+		var params = {};
+		params.year = $('#year').combobox('getValue');
 		esd.common.datagrid("#parameter_list_grid", "${contextPath}/security/settings/yearAuditParameter/list", "#parameter_list_boolbar", [ [ {
 			field : 'year',
 			title : '年度',
@@ -35,25 +39,25 @@
 			align : 'center',
 			formatter : function(value, row, index) {
 				var e = '<a href="#" onclick="parameter_list.updateParameter(' + row.id + ')">编辑</a> ';
-				var d = '<a href="#" onclick="parameter_list.deleteParameter(' + row.id + ')">删除</a>';
-				return e + d;
+				//var d = '<a href="#" onclick="parameter_list.deleteParameter(' + row.id + ')">删除</a>';
+				return e;
 			}
-		} ] ]);
-	});
+		} ] ], params);
 
-	parameter_list = {};
+	};
+
 	/*
 		打开参数窗口
 	 */
 	parameter_list.addParameter = function() {
-			$.ajax({
+		$.ajax({
 			url : "${contextPath}/security/settings/yearAuditParameter/check",
 			type : 'GET',
 			success : function(data) {
 				if (data == true) {
 					$.messager.alert('消息', '今年的年审参数已存在!', 'info');
 				} else {
-					esd.common.defaultOpenWindow("添加年审参数","${contextPath}/security/settings/yearAuditParameter/add");
+					esd.common.defaultOpenWindow("添加年审参数", "${contextPath}/security/settings/yearAuditParameter/add");
 				}
 			},
 			dataType : "json",
@@ -61,7 +65,7 @@
 		});
 	};
 	parameter_list.updateParameter = function(index) {
-		esd.common.defaultOpenWindowEx("更新年审参数", 650, 600, "${contextPath}/security/settings/yearAuditParameter/edit/" + index);
+		esd.common.defaultOpenWindow("更新年审参数", "${contextPath}/security/settings/yearAuditParameter/edit/" + index);
 	};
 
 	parameter_list.deleteParameter = function(index) {
@@ -91,6 +95,14 @@
 		});
 
 	};
+	$(function() {
+		$('#year').combobox({
+			url : 'parameter/getyears',
+			valueField : 'id',
+			textField : 'text'
+		});
+		parameter_list.list();
+	});
 </script>
 
 
@@ -99,13 +111,17 @@
 <table id="parameter_list_grid"></table>
 
 <!-- 自定义菜单 -->
-<div id="parameter_list_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 60px;margin-top: 5px">
-	<div style="text-align: right;">
-		<a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加</a> <a href="javascript:parameter_list.delParameter();" class="easyui-linkbutton"
-			plain="true" iconCls="icon-cancel">批量删除</a>
-	</div>
+<div id="parameter_list_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;margin-top: 5px">
 	<div>
-		<input type= /> <input type="" style="width: 6%" /> <input type="" style="width: 68%" /> <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
+		<table border="0">
+			<tr>
+				<td><a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加</a>
+				</td>
+				<td width="80" style="text-align: right;">年审时间:</td>
+				<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+				<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="parameter_list.list()">查找</a></td>
+			</tr>
+		</table>
 	</div>
 </div>
 

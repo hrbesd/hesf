@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +72,12 @@ public class YearAuditParameterController {
 	@ResponseBody
 	public Map<String, Object> list(@RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows, HttpServletRequest request) {
 		Map<String, Object> entity = new HashMap<>();
+		String year = request.getParameter("year");
 		try {
 			AuditParameter auditParameter = new AuditParameter();
+			if (StringUtils.isNotBlank(year)) {
+				auditParameter.setYear(year);
+			}
 			PaginationRecordsAndNumber<AuditParameter, Number> query = null;
 			query = auditParameterService.getPaginationRecords(auditParameter, page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
@@ -157,11 +162,11 @@ public class YearAuditParameterController {
 		auditParameter.setPutScale(puScale);
 		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
 		String lastYear = companyService.getLastYear();// 获取上一次有效的年;
-//		try {
-//			auditService.initAuditData(currentYear, lastYear);
-//		} catch (Exception e) {
-//			logger.error("initAuditData", e);
-//		}
+		// try {
+		// auditService.initAuditData(currentYear, lastYear);
+		// } catch (Exception e) {
+		// logger.error("initAuditData", e);
+		// }
 		auditParameterService.save(auditParameter);
 		return true;
 	}
