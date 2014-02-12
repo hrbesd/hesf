@@ -19,6 +19,15 @@ textarea {
 	border: #95B8E7 1px solid;
 }
 
+.warn {
+	background-color: #D8D828;
+}
+.error {
+	background-color: #D82828;
+}
+.readonly {
+	background: #d8d8d8;
+}
 .tree-title {
 	font-size: 14px;
 }

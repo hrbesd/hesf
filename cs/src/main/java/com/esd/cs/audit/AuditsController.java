@@ -35,6 +35,7 @@ import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
+import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -317,7 +318,6 @@ public class AuditsController {
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request) {
-		long l = System.currentTimeMillis();
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
 		String year = audit.getYear();
@@ -332,8 +332,10 @@ public class AuditsController {
 		}
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
 		request.setAttribute("process", process);
-
-		request.setAttribute("ageEx", false);
+		
+		String companyCode = audit.getCompany().getCompanyCode();
+		PaginationRecordsAndNumber<Worker, Number>  query = companyService.getOverproofAge(year,companyCode,1,Integer.MAX_VALUE);
+		request.setAttribute("ageEx",query.getNumber());
 
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}

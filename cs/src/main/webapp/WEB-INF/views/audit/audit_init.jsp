@@ -9,79 +9,8 @@
 /*表格部分*/
 .company-examined {
 	width: 900px;
-	/*background-color: #6AB7DB;*/
 	background-color: #E0ECFF;
 	text-align: center;
-	/*border: #95B8E7 1px solid;*/
-}
-
-.td_long {
-	width: 300px;
-}
-
-.td_short {
-	width: 100px;
-}
-
-.td_short_150 {
-	width: 150px;
-}
-
-.td_GD_short {
-	width: 70px;
-}
-
-.txt_ {
-	text-align: left;
-	padding-left: 5px;
-}
-
-.td_zhong {
-	width: 200px;
-}
-
-.text_short {
-	width: 80px;
-}
-
-.bj_belu {
-	text-align: left;
-}
-
-.bj_belu2 {
-	text-align: left;
-	width: 350px;
-}
-
-.bj_belu3 {
-	text-align: left;
-	width: 160px;
-}
-
-.bj_belu4 {
-	text-align: left;
-	width: 120px;
-}
-
-.readonly {
-	background: #d8d8d8;
-}
-
-.warn {
-	background-color: #D8D828;
-}
-
-/*输入框背景颜色 特殊*/
-.bj_special {
-	background-color: #7881B2;
-}
-/*输入框背景颜色    不可输入样色*/
-.bj_prohibit {
-	background-color: #E1E9F8;
-}
-
-.tab_select {
-	width: 90%;
 }
 
 #startaudit_tabs td {
@@ -222,36 +151,32 @@
 	});
 </script>
 
-<form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 3px;">
+<form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 2px;">
 	<!-- 年审企业表格  第二部分 -->
+	<div style="border: #95B8E7 1px solid; width: 900px;">
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="td_short">档案号码:</td>
+			<td width="100" >档案号码:</td>
 			<td width="300" colspan="2"><input name="company.companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId"
 				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /></td>
 			<td>年审年度:</td>
-			<td><input name="company.year" class="bj_belu2 readonly " type="text" value="${entity.company.year}" /></td>
+			<td><input name="company.year" class="readonly" type="text" value="${entity.company.year}" /></td>
 			<td>未审记录</td>
-			<td><select style="font-size: 12px;" class="easyui-combobox" name="ageEx" data-options="width:105,height:30,editable:false">
-					<option value="true" <c:if test="${ageEx==true}">selected="selected"</c:if>>是</option>
-					<option value="false" <c:if test="${ageEx==false}">selected="selected"</c:if>>否</option>
-			</select></td>
+			<td><input type="text" value="${ageEx }"  <c:if test="${ageEx>0}">class="error"</c:if> />
+			</td>
 		</tr>
 		<tr>
 			<td>企业名称:</td>
-			<td colspan="2"><input name="company.companyName" class="bj_belu2" type="text" value="${entity.company.companyName}" /></td>
+			<td colspan="2"><input name="company.companyName"  type="text" value="${entity.company.companyName}" /></td>
 
 			<td style="width:100px;">税务代码:</td>
-			<td width="180"><input name="company.companyTaxCode" class="bj_belu2" type="text" value="${entity.company.companyTaxCode}" /></td>
+			<td width="180"><input name="company.companyTaxCode" type="text" value="${entity.company.companyTaxCode}" /></td>
 			<td width="100">年龄超标</td>
-			<td><select style="font-size: 12px;" class="easyui-combobox" name="ageEx" data-options="width:100,height:30,editable:false">
-					<option value="true" <c:if test="${ageEx==true}">selected="selected"</c:if>>是</option>
-					<option value="false" <c:if test="${ageEx==false}">selected="selected"</c:if>>否</option>
-			</select></td>
+			<td><input type="text" value="${ageEx }"  <c:if test="${ageEx>0}">class="error"</c:if> /></td>
 		</tr>
 
 		<tr>
-			<td rowspan="4" class="td_short">单位基本情况</td>
+			<td rowspan="4" >单位基本情况</td>
 			<td width="100">法人代表:</td>
 			<td width="200"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" />
 			</td>
@@ -306,13 +231,13 @@
 	<!-- 年审企业表格  第三部分(残疾人信息) -->
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td rowspan="4" class="td_short">在职员工情况:</td>
+			<td rowspan="4" width="100" >在职员工情况:</td>
 			<td>在职员工总数(人):</td>
 			<td colspan="2">在职残疾职工情况(人)</td>
-			<td>已录入残疾职工人数(人):</td>
-			<td>预定残疾职工人数(人):</td>
+			<td>已录入残疾人数(人):</td>
+			<td>预定残疾人数(人):</td>
 
-			<td>上年度未缴保障金额度:</td>
+			<td>上年度未缴金额:</td>
 		</tr>
 		<tr>
 			<td rowspan="3" style="vertical-align: bottom"><input name="company.companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.company.companyEmpTotal }"
@@ -341,25 +266,25 @@
 			<td width="100">应缴金额:</td>
 			<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 			<td width="100">减缴金额:</td>
-			<td><input id="jianJiaoJinE" type="text" class="warn" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+			<td><input id="jianJiaoJinE" type="text" class="readonly" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 			<td width="100">补缴金额:</td>
-			<td><input id="buJiaoJinE" type="text" class="warn" name="complementAmount" value="${entity.complementAmount }" onblur="initAudit.jisuan()" /></td>
+			<td><input id="buJiaoJinE" type="text" class="readonly" name="complementAmount" value="${entity.complementAmount }" onblur="initAudit.jisuan()" /></td>
 
-			<td width="100">是否免交:</td>
-			<td><select id="cc" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:40,panelHeight:80,height:30,editable:false">
+			<td width="91">是否免交:</td>
+			<td><select disabled="disabled" id="cc" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:40,panelHeight:80,height:30,editable:false">
 					<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 					<option value="true" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 			</select></td>
 		</tr>
 		<tr>
 			<td>实缴金额:</td>
-			<td><input id="shiJiaoJinE" type="text" class="readonly" name="actualAmount" value="${entity.actualAmount}" />
+			<td ><input id="shiJiaoJinE" type="text" class="readonly" name="actualAmount" value="${entity.actualAmount}" />
 			</td>
 			<td>滞纳金:</td>
 			<td><input id="zhiNaJin" type="text" class="readonly" name="delayPayAmount" value="${entity.delayPayAmount}"/>
 			</td>
 			<td>实缴总金额:</td>
-			<td><input id="shiJiaoZongJinE" type="text" class="readonly" value="${entity.delayPayAmount}" />
+			<td colspan="3" ><input id="shiJiaoZongJinE" type="text" class="readonly" value="${entity.delayPayAmount}" />
 			</td>
 		</tr>
 	</table>
@@ -367,35 +292,36 @@
 	<!-- 年审企业表格  第五部分(残疾人信息备注) -->
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="td_short">备注:</td>
-			<td class="bj_belu" colspan="6"><textarea name="remark" rows="2" cols="90">${entity.remark }</textarea></td>
+			<td width="100" >备注:</td>
+			<td colspan="6"><textarea name="remark" rows="2" cols="90">${entity.remark }</textarea></td>
 
 		</tr>
 	</table>
 	<!-- 年审企业表格  第六部分(意见栏) -->
 	<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="td_short">初审意见:</td>
-			<td class="bj_belu" colspan="3"><textarea name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea></td>
-			<td class="td_short">复审意见:</td>
+			<td width="100">初审意见:</td>
+			<td colspan="3"><textarea name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea></td>
+			<td width="100">复审意见:</td>
 			<td colspan="3"><textarea class="readonly" rows="3" cols="45">${entity.verifyAuditComment}</textarea></td>
 		</tr>
 		<tr>
-			<td class="td_short">初审日期:</td>
+			<td class="">初审日期:</td>
 			<td><c:if test="${entity.initAuditDate==null}">
 					<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
 				</c:if> <c:if test="${entity.initAuditDate!=null}">
 					<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-				</c:if> <input class="bj_belu4 readonly" value="${date}" /></td>
-			<td class="td_short">初审人:</td>
-			<td><input type="text" class="bj_belu4 readonly" value="${sessionScope.userRealName}" /></td>
-			<td class="td_short">复核日期:</td>
+				</c:if> <input class="readonly" value="${date}" /></td>
+			<td width="100">初审人:</td>
+			<td><input type="text" class="readonly" value="${sessionScope.userRealName}" /></td>
+			<td class="">复核日期:</td>
 			<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
 				value="${verifyAuditDate}" /></td>
-			<td class="td_short">复审人:</td>
-			<td><input type="text" class="bj_belu4 readonly" value="${entity.verifyAuditUserId}" /></td>
+			<td width="100">复审人:</td>
+			<td><input type="text" class="readonly" value="${entity.verifyAuditUserId}" /></td>
 		</tr>
 	</table>
+	</div>
 	<div style="text-align: center;margin-top: 10px;">
 		<input name="id" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="${entity.version}" /> <a href="javascript:initAudit.save();" class="easyui-linkbutton"
 			iconCls="icon-save">保存</a> <a href="javascript:initAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a> <a href="javascript:initAudit.back();" class="easyui-linkbutton"
