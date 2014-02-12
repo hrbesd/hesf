@@ -466,7 +466,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test34() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<WorkerCalculator> entity = apService.getSpecialSetting();
+		List<WorkerCalculator> entity = apService.getSpecialSetting("2014");
 		map.put("entity", entity);
 		return map;
 	}
