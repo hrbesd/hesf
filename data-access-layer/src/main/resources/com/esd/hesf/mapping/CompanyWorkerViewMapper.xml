@@ -308,52 +308,17 @@
 	
 	<!-- retrieve retired workers of a company -->
 	<select id="retrieveRetiredWorkerByCompany" parameterType="map" resultMap="ResultWorker">
-		select 
-		<include refid="Column_List_worker"/> 
-		from company_worker_view 
-		<trim prefix="where" prefixOverrides="and|or">
-			<if test="companyId != null and companyId != ''">
-				c_id = #{companyId} 
-			</if>
-			<if test="year != null and year != ''">
-				and c_year = #{year,jdbcType=VARCHAR}
-			</if>
-			<if test="companyCode != null and companyCode != ''">
-				and c_company_code = #{companyCode,jdbcType=VARCHAR}
-			</if>
-			<!-- age scope -->
-			<if test="maxMaleBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
-			</if>
-			<if test="maxFemaleBirth != null">
-				or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
-			</if>
-		</trim>
-		order by w_worker_name desc 
+		select	<include refid="Column_List_worker"/> 
+		from (select * from  company_worker_view where c_year = #{year,jdbcType=VARCHAR} and c_company_code = #{companyCode,jdbcType=VARCHAR}) as cwv 
+		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
+		order by cwv.w_worker_name  
 		limit #{start},#{size}
 	</select>
 	
 	<select id="retrieveRetiredWorkerByCompanyCount" parameterType="map" resultType="int">
-		select count(*)
-		from company_worker_view 
-		<trim prefix="where" prefixOverrides="and|or">
-			<if test="companyId != null and companyId != ''">
-				c_id = #{companyId} 
-			</if>
-			<if test="year != null and year != ''">
-				and c_year = #{year,jdbcType=VARCHAR}
-			</if>
-			<if test="companyCode != null and companyCode != ''">
-				and c_company_code = #{companyCode,jdbcType=VARCHAR}
-			</if>
-			<!-- age scope -->
-			<if test="maxMaleBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
-			</if>
-			<if test="maxFemaleBirth != null">
-				or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
-			</if>
-		</trim>
+		select count(*) 
+		from (select * from  company_worker_view where c_year = #{year,jdbcType=VARCHAR} and c_company_code = #{companyCode,jdbcType=VARCHAR}) as cwv 
+		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
 	</select>
 	
 	
