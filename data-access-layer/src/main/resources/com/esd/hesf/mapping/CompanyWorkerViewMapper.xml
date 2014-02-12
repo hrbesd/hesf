@@ -148,10 +148,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth &lt;= #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth &gt;= #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="phone != null and phone != ''">
 				and w_phone like concat('%', #{phone},'%')
@@ -191,10 +191,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth &lt;= #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth &gt;= #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="phone != null and phone != ''">
 				and w_phone like concat('%', #{phone},'%')
@@ -235,10 +235,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth &lt;= #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth &gt;= #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
 				and t_id = #{workerHandicapType}
@@ -274,10 +274,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth &lt;= #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth &gt;= #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
 				and t_id = #{workerHandicapType}
@@ -323,10 +323,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="maxMaleBirth != null">
-				and (w_worker_birth &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
 			</if>
 			<if test="maxFemaleBirth != null">
-				or (w_worker_birth &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
+				or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
 			</if>
 		</trim>
 		order by w_worker_name desc 
@@ -348,10 +348,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="maxMaleBirth != null">
-				and (w_worker_birth &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1)  
 			</if>
 			<if test="maxFemaleBirth != null">
-				or (w_worker_birth &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
+				or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
 			</if>
 		</trim>
 	</select>
@@ -374,7 +374,7 @@
 				cyw.current_job as cyw_current_job, cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
 				cyw.is_active as cyw_is_active, cyw.user_id as cyw_user_id,
 		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
-				w_worker_gender, w.worker_birth as w_worker_birth, w.worker_id_card as
+				w_worker_gender, w.worker_birth as w_worker_birth, w.worker_birth_year as w_worker_birth_year, w.worker_id_card as
 				w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 				w.current_job as w_current_job, w.worker_address as w_worker_address,
 				w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,

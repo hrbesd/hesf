@@ -70,11 +70,11 @@ public class KitService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String todayStr = sdf.format(today);
 		// 获得出生年  =  当前年 - 年龄
-		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(0, 4)) - iAge));
+		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(0, 4)) - iAge)+1);
 		// 后面的 月日时分秒信息
-		String birthLast = todayStr.substring(4);
+//		String birthLast = todayStr.substring(4);
 		// 年和月日等信息拼接起来
-		String birthStr = birthYear + birthLast;
+//		String birthStr = birthYear + birthLast;
 //		// 再将其格式化为Date类型
 //		Date birth = null;
 //		try {
@@ -83,7 +83,7 @@ public class KitService {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		return birthStr;
+		return birthYear;
 	}
 
 	public static void main(String[] args) {
