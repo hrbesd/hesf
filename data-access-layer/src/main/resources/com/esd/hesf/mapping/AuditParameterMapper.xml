@@ -615,10 +615,6 @@
 		<trim prefix="where" prefixOverrides="and|or">
 			ap.area_code = a.code 
 			<if test="auditParameter != null">
-				<if
-					test="auditParameter.auditParameter != null and auditParameter.auditParameter != ''">
-					and ap.auditParameter = #{auditParameter.auditParameter}
-				</if>
 				<if test="auditParameter.userId != null and auditParameter.userId > 0">
 					and ap.user_id = #{auditParameter.userId}
 				</if>
@@ -640,13 +636,9 @@
 
 	<select id="retrieveCount" resultType="int" parameterType="map">
 		select count(*) 
-		from audit_parameter
+		from audit_parameter as ap
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="auditParameter != null">
-				<if
-					test="auditParameter.auditParameter != null and auditParameter.auditParameter != ''">
-					ap.auditParameter = #{auditParameter.auditParameter}
-				</if>
 				<if test="auditParameter.userId != null and auditParameter.userId > 0">
 					and ap.user_id = #{auditParameter.userId}
 				</if>
