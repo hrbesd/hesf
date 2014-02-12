@@ -105,6 +105,7 @@
 		audit_close_date,
 		audit_delay_date,
 		audit_delay_rate,
+		pay_close_date,
 		pay_limit_days,
 		decimal_count,
 		retire_age_male,
