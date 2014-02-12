@@ -47,20 +47,18 @@ public class PrintCompany {
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;// 企业经济类型
 
-
-
 	/**
 	 * 转到打印列表页面
 	 * 
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/print_list", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
-		logger.debug("gotoPrintList");
+		// 获取当前年份
+		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		logger.debug("gotoPrintList:{}", "queryAudit");
 		return new ModelAndView("documents/print_list");
 	}
-
-
 
 }
