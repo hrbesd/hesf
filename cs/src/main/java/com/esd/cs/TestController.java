@@ -562,4 +562,17 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+
+	// 公司表 更新数据
+	@RequestMapping("/44")
+	@ResponseBody
+	public Map<String, Object> test44() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Company c = cService.getByPrimaryKey("636e88c06f5acd0858fd782dasdd674b");
+		c.setCompanyContactPerson("虎头人");
+		boolean entity = cService.update(c);
+		map.put("entity", entity);
+		return map;
+
+	}
 }
