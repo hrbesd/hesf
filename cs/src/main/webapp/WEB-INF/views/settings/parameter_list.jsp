@@ -46,10 +46,22 @@
 		打开参数窗口
 	 */
 	parameter_list.addParameter = function() {
-		esd.common.defaultOpenWindowEx("添加年审参数", 650, 600, "${contextPath}/security/settings/yearAuditParameter/add");
+			$.ajax({
+			url : "${contextPath}/security/settings/yearAuditParameter/check",
+			type : 'GET',
+			success : function(data) {
+				if (data == true) {
+					$.messager.alert('消息', '今年的年审参数已存在!', 'info');
+				} else {
+					esd.common.defaultOpenWindow("添加年审参数","${contextPath}/security/settings/yearAuditParameter/add");
+				}
+			},
+			dataType : "json",
+			async : false
+		});
 	};
 	parameter_list.updateParameter = function(index) {
-		esd.common.defaultOpenWindowEx("添加年审参数", 650, 600, "${contextPath}/security/settings/yearAuditParameter/edit/" + index);
+		esd.common.defaultOpenWindowEx("更新年审参数", 650, 600, "${contextPath}/security/settings/yearAuditParameter/edit/" + index);
 	};
 
 	parameter_list.deleteParameter = function(index) {
