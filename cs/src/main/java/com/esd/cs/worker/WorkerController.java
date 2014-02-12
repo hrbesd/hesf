@@ -238,6 +238,7 @@ public class WorkerController {
 		return true;
 	}
 
+	
 	/**
 	 * 验证 残疾证号是否存在，是否在其他公司内
 	 * 

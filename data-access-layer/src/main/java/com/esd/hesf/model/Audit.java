@@ -20,7 +20,7 @@ public class Audit extends PrimaryKey_Int {
 	private BigDecimal amountPayable; // 应缴金额
 	private BigDecimal reductionAmount;// 减缴金额
 	private BigDecimal actualAmount;// 实际应缴金额
-	private BigDecimal payAmount;// 已缴金额
+	private BigDecimal payAmount;// 实缴总金额
 	private BigDecimal remainAmount;// 上年度未缴金额
 	private BigDecimal complementAmount; // 补缴金额
 	private BigDecimal delayPayAmount; // 滞纳金

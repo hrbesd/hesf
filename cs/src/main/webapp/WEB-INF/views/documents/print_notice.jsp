@@ -5,7 +5,7 @@
 
 
 
-<div style="width: 400px;margin-left: 20px;float: left;">
+<div class="print_tab" style="width: 400px;margin-left: 20px;float: left;">
 	<div>
 		<p>用人单位名称：黑龙江省机械科学研究院</p>
 	</div>
@@ -47,11 +47,11 @@
 	</div>
 	（一） 受检单位存档
 </div>
-<div style="clear: both">
-	<button>打印</button>
-	<button>打印页面设置</button>
-	<button>打印预览</button>
-	<button>返回</button>
-</div>
+<div class="printBut" style="clear: both;">
+		<button>打印</button>
+		<button>打印页面设置</button>
+		<button>打印预览</button>
+		<button>返回</button>
+	</div>
 
 

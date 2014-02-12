@@ -19,6 +19,7 @@ public class Company extends PrimaryKey_String {
 	private String companyTaxCode;// 税务编码
 	private String companyAddress;// 企业地址
 	private String companyZipCode;// 企业邮政编码
+	private String companyFax; // 传真
 	private CompanyType companyType; // 企业类型
 	private CompanyEconomyType companyEconomyType; // 企业经济类型
 	private CompanyProperty companyProperty; // 公司属性
@@ -126,6 +127,14 @@ public class Company extends PrimaryKey_String {
 
 	public void setCompanyZipCode(String companyZipCode) {
 		this.companyZipCode = companyZipCode;
+	}
+
+	public String getCompanyFax() {
+		return companyFax;
+	}
+
+	public void setCompanyFax(String companyFax) {
+		this.companyFax = companyFax;
 	}
 
 	public CompanyType getCompanyType() {

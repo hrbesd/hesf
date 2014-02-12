@@ -83,3 +83,24 @@ textarea {
 	border-width: 0px;
 	border-style: none;
 }
+
+
+
+/*打印列表 部分  表格部分*/
+.print_tab ,.printBut{
+	margin: auto;
+	width: 850px;
+	text-align: center;
+}
+.printBut {
+	margin-top: 50px;
+}
+.print_outline{
+	width: 100px;
+}
+
+.print_content{
+	text-align:left;
+	margin-left:5px;
+	
+}

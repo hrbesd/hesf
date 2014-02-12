@@ -14,6 +14,7 @@
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
+		<result column="c_company_fax" jdbcType="CHAR" property="companyFax" />
 		<result column="c_company_phone" jdbcType="VARCHAR" property="companyPhone" />
 		<result column="c_company_mobile" jdbcType="VARCHAR" property="companyMobile" />
 		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
@@ -67,6 +68,7 @@
 		c.company_contact_person as c_company_contact_person, 
 		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
 		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+		c.company_fax as c_company_fax, 
 		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
 		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
 		c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
@@ -99,7 +101,7 @@
 			company_name,
 			company_legal, company_contact_person,
 			company_organization_code, company_tax_code,
-			company_address, company_zip_code,
+			company_address, company_zip_code,company_fax,
 			company_type, company_economy_type,
 			company_property,
 			area_code, company_phone, company_mobile,
@@ -117,7 +119,7 @@
 			#{companyLegal,jdbcType=VARCHAR},#{companyContactPerson,jdbcType=VARCHAR},
 			#{companyOrganizationCode,jdbcType=VARCHAR},
 			#{companyTaxCode,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR},
-			#{companyZipCode,jdbcType=INTEGER},
+			#{companyZipCode,jdbcType=INTEGER},#{companyFax,jdbcType=VARCHAR},
 			#{companyType.id,jdbcType=INTEGER},
 			#{companyEconomyType.id,jdbcType=INTEGER}, #{companyProperty.id,jdbcType=INTEGER},
 			#{area.code,jdbcType=VARCHAR}, #{companyPhone,jdbcType=VARCHAR},
@@ -163,6 +165,9 @@
 			</if>
 			<if test="companyZipCode != null">
 				company_zip_code,
+			</if>
+			<if test="companyFax != null">
+				company_fax,
 			</if>
 			<if test="companyType != null">
 				<if test="companyType.id != null and companyType.id > 0">
@@ -253,6 +258,9 @@
 			</if>
 			<if test="companyZipCode != null">
 				#{companyZipCode,jdbcType=INTEGER},
+			</if>
+			<if test="companyFax != null">
+				#{companyFax,jdbcType=VARCHAR},
 			</if>
 			<if test="companyType != null">
 				<if test="companyType.id != null and companyType.id > 0">
@@ -389,6 +397,9 @@
 			<if test="companyLegal != null">
 				company_legal = #{companyLegal,jdbcType=VARCHAR},
 			</if>
+			<if test="companyContactPerson != null">
+				company_contact_person = #{companyContactPerson,jdbcType=VARCHAR},
+			</if>
 			<if test="companyOrganizationCode != null">
 				company_organization_code =
 				#{companyOrganizationCode,jdbcType=VARCHAR},
@@ -401,6 +412,9 @@
 			</if>
 			<if test="companyZipCode != null">
 				company_zip_code = #{companyZipCode,jdbcType=INTEGER},
+			</if>
+			<if test="companyFax != null">
+				company_fax = #{companyFax,jdbcType=VARCHAR},
 			</if>
 			<if test="companyType != null">
 				<if test="companyType.id != null and companyType.id > 0">
@@ -505,6 +519,9 @@
 				<if test="company.companyName != null and company.companyName != ''">
 					and c.company_name like concat('%',#{company.companyName,jdbcType=VARCHAR},'%')
 				</if>
+				<if test="company.companyContactPerson != null and company.companyContactPerson != ''">
+					and c.company_contact_person like concat('%',#{company.companyContactPerson,jdbcType=VARCHAR},'%')
+				</if>
 				<if test="company.companyType != null">
 					<if test="company.companyType.id != null and company.companyType.id > 0">
 						and c.company_type = #{company.companyType.id,jdbcType=INTEGER} 
@@ -578,6 +595,9 @@
 				</if>
 				<if test="company.companyName != null and company.companyName != ''">
 					and c.company_name like concat('%',#{company.companyName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="company.companyContactPerson != null and company.companyContactPerson != ''">
+					and c.company_contact_person like concat('%',#{company.companyContactPerson,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="company.companyType != null">
 					<if test="company.companyType.id != null and company.companyType.id > 0">
