@@ -141,8 +141,8 @@ public class CompanyServiceImpl implements CompanyService {
 
 	// 得到有数据的上一年份
 	@Override
-	public String getLastYear() {
-		return dao.retrieveLastYear();
+	public String getLastYear(String thisYear) {
+		return dao.retrieveLastYear(thisYear);
 	}
 
 	// 测试用

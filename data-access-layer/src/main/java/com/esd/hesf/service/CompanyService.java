@@ -61,7 +61,7 @@ public interface CompanyService extends BaseService<Company> {
 	 * 
 	 * @return
 	 */
-	public String getLastYear();
+	public String getLastYear(String thisYear);
 
 	/**
 	 * 修改测试数据用--暂时勿删

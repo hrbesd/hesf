@@ -14,7 +14,7 @@ public interface AuditDao extends BaseDao<Audit> {
 
 	/**
 	 * 复制去年的审核数据
-	 * 
+	 * map中放入下面2个参数
 	 * @param currentYear
 	 * @param lastYear
 	 * @return

@@ -56,7 +56,7 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * 
 	 * @return
 	 */
-	public String retrieveLastYear();
+	public String retrieveLastYear(String thisYear);
 
 	/**
 	 * 根据组织机构代码查询公司对象是否存在
