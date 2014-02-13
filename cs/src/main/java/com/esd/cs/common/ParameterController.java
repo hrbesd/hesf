@@ -1,5 +1,6 @@
 package com.esd.cs.common;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +70,9 @@ public class ParameterController {
 	private static List<CompanyEconomyType> companyEconomyType;
 	private static List<CompanyType> companyTypes;
 
+	
+
+	
 	/**
 	 * 返回年份
 	 * 

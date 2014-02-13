@@ -18,14 +18,15 @@ width:100%;
 
 </style>
 <script type="text/javascript">
-	var workerImport = {};
-workerImport.upload=function(){
-
-
-};
+	$(function(){
+		$("#currentCompanyId").val($("#companyId").val());
+	});
 </script>
 <form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe">
-	<input type="file" name="file" /> <input type="submit" value="上传" />
+	<input type="file" name="file" />
+		<input type="hidden" name="companyId"  id="currentCompanyId"/>
+	
+	 <input type="submit" value="上传" />
 </form>
 <iframe name="importWorkerIframe" class="importWorkerIframe" frameborder="0">
 

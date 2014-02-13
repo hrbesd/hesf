@@ -7,12 +7,14 @@ package com.esd.cs.worker;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,10 +32,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.common.CommonUtil;
+import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
+import com.esd.hesf.model.WorkerHandicapLevel;
+import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
@@ -63,7 +69,8 @@ public class WorkerController {
 
 	// 提示文本
 	static String BEENHIRED = "职工已被录用";
-
+	// 提示文本
+	static String ILLEGALSTR = "残疾证号内含有中文字符";
 	
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
@@ -138,14 +145,18 @@ public class WorkerController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
-
 		String companyId = request.getParameter("companyId");
+		return addWorker(worker,companyId);
+			
+	}
+	private boolean addWorker(Worker worker,String companyId){
 		logger.debug("addWorkerParams:{},companyId:{}", worker, companyId);
 		Company c = companyService.getByPrimaryKey(companyId);
 		if (c == null) {
 			logger.error("addWorker_getCompanyError:{}", "null");
 			return false;
 		}
+		
 		boolean b = workerService.save(worker, c.getCompanyCode());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -209,8 +220,12 @@ public class WorkerController {
 	public Boolean edit_worker_up(Worker worker, HttpServletRequest request) {
 		logger.debug("editUpdata:{}", worker);
 		String companyId = request.getParameter("companyId");
-		boolean workerUpDataStatus = false, companyUpdataStatus = false;
+	
+		return editWorkerUp(worker,companyId);
+	}
 
+	private boolean editWorkerUp(Worker worker,String companyId){
+		boolean workerUpDataStatus = false, companyUpdataStatus = false;
 		try {
 			// 根据残疾证号获取版本号
 			Worker w = workerService.getByWorkerHandicapCode(worker.getWorkerHandicapCode());
@@ -236,9 +251,9 @@ public class WorkerController {
 		} catch (Exception e) {
 			logger.error("workerUpdataError:{}", e.getMessage());
 		}
-		return workerUpDataStatus && companyUpdataStatus;
+		
+		return workerUpDataStatus&&companyUpdataStatus;
 	}
-
 	/**
 	 * 删除残疾职工
 	 * 
@@ -268,17 +283,17 @@ public class WorkerController {
 	 * 导入残疾职工文件
 	 */
 	@RequestMapping(value = "/importworker", method = RequestMethod.POST)
-	public ModelAndView importworker(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
+	public ModelAndView importworker(@RequestParam(value = "companyId") String companyId,@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
 		logger.debug("importWorker:{}");
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list=null;
+		String url = request.getRealPath("/");
 		if (file != null) {
-			String url = request.getRealPath("/");
 			try {
 				File f = new File(url + "upload" + File.separator + "temp" + File.separator + file.getOriginalFilename());
 				file.transferTo(f);
-				 list = WorkerUtil.parse(f, 0);
+				list = WorkerUtil.parse(f, 0);
 				if (list == null || list.size() <= 0) {
 					logger.error("importWorkerError:{}", "getWorkerExclenull");
 				}
@@ -298,6 +313,15 @@ public class WorkerController {
 						continue;
 					} else {
 						workerHandicapCode.replace(" ", "");// 去掉所有空格
+						//检测是否含有中文
+						if(CommonUtil.chineseValid(workerHandicapCode)){
+							// 存储错误信息
+							w.setRemark(ILLEGALSTR);
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
+							continue;
+						}
+						//检测长度
 						if (!(workerHandicapCode.length() == HANDICAPCODE)) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
@@ -322,12 +346,28 @@ public class WorkerController {
 					}
 					// 第二种情况：存在，并且不再任何公司。
 					if(validateResult.get("type").equals("2")){
+						
+						Worker workerUp=new Worker();
+						workerUp.setWorkerName(w.getWorkerName());
+						workerUp.setWorkerHandicapCode(workerHandicapCode);
+						editWorkerUp(workerUp, companyId);
 						logger.error("存在更新员工");
 						continue;
 					}
 					//第三种情况： 不存在数据库中，进行存储
 					logger.error("员工信息正常，可以进行存储："+worker.getWorkerName());
+					Worker workerUp=new Worker();
+					workerUp.setWorkerName(w.getWorkerName());
+					workerUp.setWorkerHandicapCode(workerHandicapCode);
+					workerUp.setWorkerIdCard(workerHandicapCode.substring(0, 18));
+					workerUp.setWorkerHandicapLevel(new WorkerHandicapLevel(2));
+					workerUp.setWorkerHandicapType(new WorkerHandicapType(2));
 					
+					System.out.println(workerUp.getWorkerIdCard()+"----"+workerUp.getWorkerName());
+					boolean b=addWorker(workerUp,companyId);
+					logger.debug("importWorkerAddResult:{}",b);
+					
+				
 				}
 			} catch (IllegalStateException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
@@ -335,6 +375,14 @@ public class WorkerController {
 				logger.error("importWorkerError:{}", e.getMessage());
 			}
 		
+			//检测是否有未导入数据
+			if(workerErrorList.size()!=0){
+				String errorFilePath= url +"upload" + File.separator + "temp" + File.separator +companyId+".xls";
+				boolean result=PoiCreateExcel.createExcel(errorFilePath,workerErrorList);
+				String destPath = request.getLocalAddr() + ":" + request.getLocalPort()+ request.getContextPath();
+				//返回错误列表文件下载地址
+				request.setAttribute("errorFilePath","http://" + destPath +"/upload/temp/"+companyId+".xls");//
+			}
 			int totalLength=list.size();
 			int errorLength=workerErrorList.size();
 			int succesLength=totalLength-errorLength;
@@ -378,6 +426,7 @@ public class WorkerController {
 	 * @return
 	 */
 	private List<Map<String, String>> validateOrganizationCode(String workerIdCard) {
+		logger.debug("validateOrganizationCode:{}",workerIdCard);
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		Company company = workerService.retrieveCompanyByWorker(CalendarUtil.getNowYear(), workerIdCard);
