@@ -369,10 +369,8 @@
 					and w.is_active = #{worker.isActive,jdbcType=BIT} 
 				</if>
 			</if>
-			
-			
 		</trim>
-		order by w.update_time desc
+		order by w.id desc
 		limit #{start}, #{size}
 	</select>
 

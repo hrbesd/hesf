@@ -163,7 +163,7 @@
 				and l_id = #{workerHandicapLevel}
 			</if>
 		</trim>
-		order by w_update_time desc 
+		order by w_id  
 		limit #{start},#{size}
 	</select>
 	
@@ -247,6 +247,7 @@
 				and l_id = #{workerHandicapLevel}
 			</if>
 		</trim>
+		order by w_id 
 		limit #{start},#{size}
 	</select>
 	
@@ -311,7 +312,7 @@
 		select	<include refid="Column_List_worker"/> 
 		from (select * from  company_worker_view where c_year = #{year,jdbcType=VARCHAR} and c_company_code = #{companyCode,jdbcType=VARCHAR}) as cwv 
 		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
-		order by cwv.w_worker_name  
+		order by cwv.w_id  
 		limit #{start},#{size}
 	</select>
 	

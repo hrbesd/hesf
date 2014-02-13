@@ -228,7 +228,7 @@
 				</if>
 			</if>
 		</trim>
-		order by u.update_time desc 
+		order by u.create_time desc 
 		limit #{start}, #{size}
 	</select>
 

@@ -557,7 +557,7 @@
 				</if>
 			</if>
 		</trim>
-		order by au.update_time desc 
+		order by au.company_code 
 		limit #{start},#{size}
 	</select>
 	

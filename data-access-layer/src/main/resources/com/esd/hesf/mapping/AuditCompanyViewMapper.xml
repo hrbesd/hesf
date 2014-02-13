@@ -137,7 +137,7 @@
 				and au_is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
 		</trim>
-		order by au_update_time desc
+		order by c_company_code
 		limit #{start},#{size}
 	</select>
 	
