@@ -168,7 +168,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test10() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getCompanyByOrganizationCode("300046300046");
+		Company entity = cService.getCompanyByOrganizationCode("22222221");
 		map.put("entity", entity);
 		return map;
 	}
@@ -406,7 +406,7 @@ public class TestController {
 	public Map<String, Object> test28() {
 		System.out.println(123123);
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getByYearAndCode("2013", "1390293306601");
+		Company entity = cService.getByYearAndCode("2014", "1390373258624");
 		map.put("entity", entity);
 		return map;
 	}
