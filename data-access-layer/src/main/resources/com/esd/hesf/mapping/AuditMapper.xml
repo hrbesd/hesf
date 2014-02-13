@@ -30,6 +30,9 @@
 		<result column="au_reduction_answer_option" jdbcType="VARCHAR"
 			property="reductionAnswerOption" />
 		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
+		<result column="au_unaudit_years" jdbcType="INTEGER" property="unauditYears" />
+		<result column="au_bushen_year" jdbcType="CHAR" property="bushenYear" />
+		<result column="au_delay_days" jdbcType="INTEGER" property="delayDays" />
 		<result column="au_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="au_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
@@ -118,6 +121,8 @@
 		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
 		au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
 		au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+		au.unaudit_years as au_unaudit_years, au.bushen_year as au_bushen_year,
+		au.delay_days as au_delay_days, 
 		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
 		au.is_active as au_is_active, au.version as au_version,
 		<!-- company -->
@@ -164,7 +169,8 @@
 		verify_audit_date, verify_audit_comment, remark, is_exempt,reduction_type,reducion_apply_user,
 		reduction_date, reduction_reason, reduction_answer_user,
 		reduction_answer_date, reduction_answer_option,
-		reduction_remark, create_time, update_time,
+		reduction_remark, unaudit_years,bushen_year,delay_days, 
+		create_time, update_time,
 		user_id, is_active, version
 		)
 		values (#{year,jdbcType=CHAR},
@@ -179,7 +185,9 @@
 		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR}, #{reductionAnswerUser,jdbcType=VARCHAR},
 		#{reductionAnswerDate,jdbcType=VARCHAR},
 		#{reductionAnswerOption,jdbcType=VARCHAR},
-		#{reductionRemark,jdbcType=VARCHAR}, now(),now(),
+		#{reductionRemark,jdbcType=VARCHAR}, #{unauditYears,jdbcType=INTEGER},
+		#{bushenYear,jdbcType=CHAR}, #{delayDays,jdbcType=INTEGER}, 
+		now(),now(),
 		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{version,jdbcType=INTEGER}
 		)
 	</insert>
@@ -277,6 +285,15 @@
 			<if test="reductionRemark != null">
 				reduction_remark,
 			</if>
+			<if test="unauditYears != null">
+				unaudit_years,
+			</if>
+			<if test="bushenYear != null">
+				bushen_year,
+			</if>
+			<if test="delayDays != null">
+				delay_days,
+			</if>
 			create_time, update_time,
 			<if test="userId != null">
 				user_id,
@@ -373,6 +390,15 @@
 			</if>
 			<if test="reductionRemark != null">
 				#{reductionRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="unauditYears != null">
+				#{unauditYears,jdbcType=INTEGER},
+			</if>
+			<if test="bushenYear != null">
+				#{bushenYears,jdbcType=CHAR},
+			</if>
+			<if test="delayDays != null">
+				#{delayDays,jdbcType=CHAR},
 			</if>
 			now(),now(),
 			<if test="userId != null">
@@ -493,6 +519,15 @@
 			</if>
 			<if test="reductionRemark != null">
 				reduction_remark = #{reductionRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="unauditYears != null">
+				unaudit_years = #{unauditYears,jdbcType=INTEGER},
+			</if>
+			<if test="bushenYear != null">
+				bushen_year = #{bushenYear,jdbcType=CHAR},
+			</if>
+			<if test="delayDays != null">
+				delay_days = #{delayDays,jdbcType=INTEGER},
 			</if>
 			update_time = now(),
 			<if test="userId != null">

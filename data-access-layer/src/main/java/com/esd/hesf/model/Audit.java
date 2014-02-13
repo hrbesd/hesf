@@ -42,6 +42,9 @@ public class Audit extends PrimaryKey_Int {
 	private String reductionAnswerDate;// 答复日期
 	private String reductionAnswerOption;// 答复意见
 	private String reductionRemark;// 减免缓 备注
+	private Integer unauditYears;	//未审年数
+	private String bushenYear;	//补审年份
+	private Integer delayDays;	//缴纳滞纳金天数
 
 	public Audit() {
 	}
