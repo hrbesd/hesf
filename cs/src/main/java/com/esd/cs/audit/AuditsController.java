@@ -336,6 +336,13 @@ public class AuditsController {
 		String companyCode = audit.getCompany().getCompanyCode();
 		PaginationRecordsAndNumber<Worker, Number>  query = companyService.getOverproofAge(year,companyCode,1,Integer.MAX_VALUE);
 		request.setAttribute("ageEx",query.getNumber());
+		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode);
+		StringBuilder sb = new StringBuilder();
+		for(String s:unAudits){
+			sb.append(s).append(",");
+		}
+		request.setAttribute("unAudityear",sb.toString());
+		request.setAttribute("unAudityearNum",unAudits.length);
 
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}

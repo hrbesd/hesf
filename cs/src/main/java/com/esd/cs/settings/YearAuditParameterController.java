@@ -161,12 +161,13 @@ public class YearAuditParameterController {
 		logger.debug("puScale:{}", puScale);
 		auditParameter.setPutScale(puScale);
 		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
-		String lastYear = companyService.getLastYear();// 获取上一次有效的年;
-		// try {
-		// auditService.initAuditData(currentYear, lastYear);
-		// } catch (Exception e) {
-		// logger.error("initAuditData", e);
-		// }
+		String lastYear = companyService.getLastYear(currentYear);// 获取上一次有效的年;
+		try {
+			auditService.initAuditData(currentYear, lastYear);
+		} catch (Exception e) {
+			logger.error("initAuditData", e);
+			return false;
+		}
 		auditParameterService.save(auditParameter);
 		return true;
 	}
@@ -200,6 +201,19 @@ public class YearAuditParameterController {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 编辑年审参数
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/view/{year}")
+	public ModelAndView editGetByYear(@PathVariable("year") String year) {
+		logger.debug("year:{}", year);
+		AuditParameter auditParameter = auditParameterService.getByYear(year);
+		return new ModelAndView("settings/parameter_edit", "entity", auditParameter);
 	}
 
 	/**

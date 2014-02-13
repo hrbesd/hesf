@@ -1,9 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<jsp:useBean id="now" class="java.util.Date" />
-
 <script type="text/javascript">
 	var parameter_edit = {};
 	parameter_edit.update = function() {
@@ -23,7 +22,6 @@
 	};
 </script>
 <div>
-${entity.auditDelayDate}
 	<div style="margin-top: 20px; margin-left: 20px;">
 		<form id="form" action="${contextPath}/security/settings/yearAuditParameter/update" method="post">
 			<table class="parameterTab">
@@ -38,8 +36,8 @@ ${entity.auditDelayDate}
 					</td>
 					<td>滞纳金开始时间:</td>
 					<td>
-					<fmt:formatDate value="${entity.auditDelayDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" />
-					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="${auditDelayDate}" style="width:150px" /></td>
+					<fmt:formatDate value="${entity.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
+					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="${date}" style="width:150px" /></td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>

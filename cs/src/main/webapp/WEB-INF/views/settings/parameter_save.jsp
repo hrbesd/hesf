@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <script type="text/javascript">
-	var user_detail = {};
+	var parameter_save = {};
 	parameter_save.submit = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
@@ -33,7 +33,7 @@
 					<td>所属地区:</td>
 					<td><input name="area.code" class="easyui-combobox" value="10230000" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" /></td>
 					<td>滞纳金开始时间:</td>
-					<td><input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="2014-09-15" style="width:150px" />
+					<td><input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="${year}-09-15" style="width:150px" />
 					</td>
 				</tr>
 				<tr>

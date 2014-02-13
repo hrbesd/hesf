@@ -3,6 +3,8 @@ package com.esd.cs.audit;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CalculateModel {
 
 	private DecimalFormat df = new DecimalFormat("0.00");
@@ -49,6 +51,9 @@ public class CalculateModel {
 	}
 
 	public void setZaiZhiYuanGongZongShu(Integer zaiZhiYuanGongZongShu) {
+		if (zaiZhiYuanGongZongShu == null) {
+			zaiZhiYuanGongZongShu = 0;
+		}
 		this.zaiZhiYuanGongZongShu = zaiZhiYuanGongZongShu;
 		this.s_zaiZhiYuanGongZongShu = String.valueOf(zaiZhiYuanGongZongShu);
 	}
@@ -85,6 +90,9 @@ public class CalculateModel {
 	}
 
 	public void setYuDingCanJiRen(Integer yuDingCanJiRen) {
+		if (yuDingCanJiRen == null) {
+			yuDingCanJiRen = 0;
+		}
 		this.yuDingCanJiRen = yuDingCanJiRen;
 		this.s_yuDingCanJiRen = String.valueOf(yuDingCanJiRen);
 	}

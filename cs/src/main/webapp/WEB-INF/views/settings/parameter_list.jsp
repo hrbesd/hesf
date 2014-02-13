@@ -12,10 +12,6 @@
 			field : 'year',
 			title : '年度',
 			width : 200,
-			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="viewrow(' + row.id + ')">' + value + '</a>';
-				return c;
-			}
 		}, {
 			field : 'areaCode',
 			title : '所属区域',
@@ -39,8 +35,8 @@
 			align : 'center',
 			formatter : function(value, row, index) {
 				var e = '<a href="#" onclick="parameter_list.updateParameter(' + row.id + ')">编辑</a> ';
-				//var d = '<a href="#" onclick="parameter_list.deleteParameter(' + row.id + ')">删除</a>';
-				return e;
+				var d = '<a href="#" onclick="parameter_list.deleteParameter(' + row.id + ')">删除</a>';
+				return e+d;
 			}
 		} ] ], params);
 
@@ -54,11 +50,11 @@
 			url : "${contextPath}/security/settings/yearAuditParameter/check",
 			type : 'GET',
 			success : function(data) {
-				if (data == true) {
-					$.messager.alert('消息', '今年的年审参数已存在!', 'info');
-				} else {
+				//if (data == true) {
+					//$.messager.alert('消息', '今年的年审参数已存在!', 'info');
+				//} else {
 					esd.common.defaultOpenWindow("添加年审参数", "${contextPath}/security/settings/yearAuditParameter/add");
-				}
+				//}
 			},
 			dataType : "json",
 			async : false

@@ -161,8 +161,8 @@
 				name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /></td>
 			<td>年审年度:</td>
 			<td><input name="company.year" class="readonly" type="text" value="${entity.company.year}" /></td>
-			<td>未审记录</td>
-			<td><input type="text" value="${ageEx }"  <c:if test="${ageEx>0}">class="error"</c:if> />
+			<td>未审年度:</td>
+			<td><input type="text" value="${unAudityear}"  <c:if test="${unAudityearNum>0}">class="error"</c:if> />
 			</td>
 		</tr>
 		<tr>
