@@ -79,6 +79,7 @@ esd.common.syncPostSubmit = function(id, callback) {
 		async : false
 	});
 };
+
 /**
  * 同步提交返回提交状态
  * 

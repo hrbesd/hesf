@@ -109,10 +109,10 @@
 		var sex = workerHandicapCode.substring(16, 17);
 		if (sex % 2 === 0) {
 			//偶数
-			$("#workerGender").combobox("setValue", "1");
+			$("#workerGender").combobox("setValue", "0");
 		} else {
 			//基数
-			$("#workerGender").combobox("setValue", "0");
+			$("#workerGender").combobox("setValue", "1");
 		}
 		//出生日期
 		$("#workerBirth").val(year + "-" + month + "-" + day);
@@ -174,8 +174,8 @@
 			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" /></td>
 			<td class="">性别:</td>
 			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="disabled:'true'">
-					<option value="0">男</option>
-					<option value="1">女</option>
+					<option value="1">男</option>
+					<option value="0">女</option>
 			</select></td>
 			<td class="">出生日期:</td>
 			<td><input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input>

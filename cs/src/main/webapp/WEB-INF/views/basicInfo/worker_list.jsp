@@ -27,10 +27,10 @@
 				label : '',
 				value : '请选择'
 			}, {
-				label : '0',
+				label : '1',
 				value : '男'
 			}, {
-				label : '1',
+				label : '0',
 				value : '女'
 			} ],
 			valueField : 'label',
@@ -166,7 +166,7 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindow("#workerWindow", "导入残疾职工", 960, 550, 'worker/importworker');
+		esd.common.openWindow("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker');
 	};
 
 	/**
@@ -277,7 +277,7 @@
 <div id="workerListBoolbar">
 	<div style="text-align: right;">
 		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" iconCls="icon-ok">添加</a> <a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" iconCls="icon-ok">删除</a>
-		<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
+		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
 		
 	
 	</div>

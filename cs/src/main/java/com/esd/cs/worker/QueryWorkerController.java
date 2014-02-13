@@ -79,10 +79,11 @@ public class QueryWorkerController {
 				map.put("id", it.getId());// id
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
+				
 				if (it.getWorkerGender().equals("0")) {
-					map.put("workerGender", "男");// 性别
-				} else {
 					map.put("workerGender", "女");// 性别
+				} else {
+					map.put("workerGender", "男");// 性别
 				}
 				map.put("vestingCompanyName", it.getCompany().getCompanyName());// 所在公司
 				map.put("vestingCompanyId", it.getCompany().getId());// 所在公司id
@@ -143,9 +144,9 @@ public class QueryWorkerController {
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
 				if (it.getWorkerGender().equals("0")) {
-					map.put("workerGender", "男");// 性别
-				} else {
 					map.put("workerGender", "女");// 性别
+				} else {
+					map.put("workerGender", "男");// 性别
 				}
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));

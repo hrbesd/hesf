@@ -2,9 +2,32 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<style>
+
+.importWorkerForm{
+margin: 30px auto auto;
+    width: 400px;
+}
+.importWorkerIframe{
+width:100%;
+    height: 400px;
+    margin-top: 30px;
+}
 
 
-<form id="editComapnyForm" action="worker/importworker" method="post">
-	<input type="file" name="file" /> <input type="submit" value="导入文件" />
+
+</style>
+<script type="text/javascript">
+	var workerImport = {};
+workerImport.upload=function(){
+
+
+};
+</script>
+<form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe">
+	<input type="file" name="file" /> <input type="submit" value="上传" />
 </form>
+<iframe name="importWorkerIframe" class="importWorkerIframe" frameborder="0">
 
+
+</iframe>

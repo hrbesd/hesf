@@ -55,7 +55,16 @@ public class WorkerController {
 	private CompanyService companyService;// 企业
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
+	// 身份证号长度
+	static int HANDICAPCODE = 20;
 
+	// 提示文本
+	static String LENGTHERROR = "残疾证号长度不符";
+
+	// 提示文本
+	static String BEENHIRED = "职工已被录用";
+
+	
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
 	 * 
@@ -160,6 +169,19 @@ public class WorkerController {
 	}
 
 	/**
+	 * 转到导入残疾职工页面
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/importworker", method = RequestMethod.GET)
+	public ModelAndView importworker() {
+		logger.debug("goToWorker_import");
+		return new ModelAndView("basicInfo/worker_import");
+	}
+
+	/**
 	 * 编辑残疾职工
 	 * 
 	 * @param worker
@@ -242,7 +264,96 @@ public class WorkerController {
 		return true;
 	}
 
+	/**
+	 * 导入残疾职工文件
+	 */
+	@RequestMapping(value = "/importworker", method = RequestMethod.POST)
+	public ModelAndView importworker(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
+		logger.debug("importWorker:{}");
+		// 错误信息列表
+		List<Worker> workerErrorList = new ArrayList<Worker>();
+		List<Worker> list=null;
+		if (file != null) {
+			String url = request.getRealPath("/");
+			try {
+				File f = new File(url + "upload" + File.separator + "temp" + File.separator + file.getOriginalFilename());
+				file.transferTo(f);
+				 list = WorkerUtil.parse(f, 0);
+				if (list == null || list.size() <= 0) {
+					logger.error("importWorkerError:{}", "getWorkerExclenull");
+				}
+				for (int i = 0; i < list.size(); i++) {
+					Worker worker = list.get(i);
+					// 校验部分
+					// 1.检测残疾证号长度
+					String workerHandicapCode = worker.getWorkerHandicapCode();
+					Worker w = new Worker();
+					w.setWorkerName(worker.getWorkerName());
+					w.setWorkerHandicapCode(workerHandicapCode);
+					if (workerHandicapCode == null) {
+						// 存储错误信息
+						w.setRemark(LENGTHERROR);
+						workerErrorList.add(w);
+						logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
+						continue;
+					} else {
+						workerHandicapCode.replace(" ", "");// 去掉所有空格
+						if (!(workerHandicapCode.length() == HANDICAPCODE)) {
+							// 存储错误信息
+							w.setRemark(LENGTHERROR);
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
+							continue;
+						}
+					}
+					
+					// 2.校验身份证号，重复性检测
+					List<Map<String, String>> validateList = validateOrganizationCode(workerHandicapCode.substring(0, 18));
+					Map<String, String> validateResult=validateList.get(0);
+					logger.debug("LineNumber:{},validataType:{}",i,validateResult.get("type"));
+					// 第一种情况 存在，并且在其他公司内。
+					if(validateResult.get("type").equals("1")){
+						// 存储错误信息
+						String errinfo="职工已被："+validateList.get(1).get("companyName")+" 单位录用，单位档案编码为："+validateList.get(1).get("companyCode");
+						w.setRemark(errinfo);
+						workerErrorList.add(w);
+						logger.error("impoerWorkerError:{},info:{}", w,errinfo);
+						continue;
+					}
+					// 第二种情况：存在，并且不再任何公司。
+					if(validateResult.get("type").equals("2")){
+						logger.error("存在更新员工");
+						continue;
+					}
+					//第三种情况： 不存在数据库中，进行存储
+					logger.error("员工信息正常，可以进行存储："+worker.getWorkerName());
+					
+				}
+			} catch (IllegalStateException e) {
+				logger.error("importWorkerError:{}", e.getMessage());
+			} catch (IOException e) {
+				logger.error("importWorkerError:{}", e.getMessage());
+			}
+		
+			int totalLength=list.size();
+			int errorLength=workerErrorList.size();
+			int succesLength=totalLength-errorLength;
+			
+			request.setAttribute("totalLength",list.size());//总条数
+			request.setAttribute("errorLength",errorLength);//失败条数
+			request.setAttribute("succesLength",succesLength);//成功条数
+			// 返回成功页面
+			return new ModelAndView("basicInfo/worker_importInfo");
+		} else {
+			request.setAttribute("fileLoadUpResult","文件上传失败");
+			// 返回失败页面
+			logger.error("importUpLoadError");
+			return new ModelAndView("basicInfo/worker_importInfo");
+		}
 
+	
+
+	}
 
 	/**
 	 * 验证 残疾证号是否存在，是否在其他公司内
@@ -254,46 +365,47 @@ public class WorkerController {
 	@RequestMapping(value = "/validate_workerHandicapCode")
 	@ResponseBody
 	public List<Map<String, String>> validate_companyOrganizationCode(@RequestParam(value = "workerIdCard") String workerIdCard, HttpServletRequest request) {
-
+		// 参数 年份 残疾证号
+		// 1.存在，并且在其他公司内 返回公司对象，前台提示在哪个公司内 2.存在，不在其他公司内。 返回公司id，前台调用更新方法 3.不存在
 		logger.debug("validate_workerIdCardParams:{}", workerIdCard);
+		return validateOrganizationCode(workerIdCard);
+	}
+
+	/**
+	 * 校验残疾证号
+	 * 
+	 * @param workerIdCard
+	 * @return
+	 */
+	private List<Map<String, String>> validateOrganizationCode(String workerIdCard) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		Company company = workerService.retrieveCompanyByWorker(CalendarUtil.getNowYear(), workerIdCard);
 		// 第一种情况 存在，并且在其他公司内。
 		if (company != null) {
-			logger.debug("validate_workerHandicapCodeResult:{}", "trpe:1。存在其他公司内");
 			paramsMap.put("type", "1");
 			Map<String, String> companyMap = new HashMap<String, String>();
 			companyMap.put("companyName", company.getCompanyName());
 			companyMap.put("companyCode", company.getCompanyCode());
 			list.add(paramsMap);
 			list.add(companyMap);
+			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "trpe:1。职工存在，并且在其他公司内",company.getCompanyName()+"  "+company.getCompanyCode());
 			return list;
 		} else {
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
-				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。存在，并且不再任何公司");
+				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工存在数据库中，并且不再任何公司");
 				paramsMap.put("type", "2");
 				list.add(paramsMap);
 				return list;
 				// 第三种情况，不存在.
 			} else {
-				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:3。不存在");
+				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:3。职工不存在数据库中");
 				paramsMap.put("type", "3");
 				list.add(paramsMap);
 				return list;
-
 			}
-
 		}
-
-		/**
-		 * 参数 年份 残疾证号
-		 * 
-		 * 1.存在，并且在其他公司内 返回公司对象，前台提示在哪个公司内 2.存在，不在其他公司内。 返回公司id，前台调用更新方法 3.不存在
-		 * 
-		 */
-
 	}
 }
