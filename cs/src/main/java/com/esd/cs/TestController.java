@@ -481,12 +481,12 @@ public class TestController {
 		return map;
 	}
 
-	// 审核参数表 查询 比例不为1的人数 在某公司中有几人
+	// 缴款表 查询已付款金额
 	@RequestMapping("/36")
 	@ResponseBody
 	public Map<String, Object> test36() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity = auditService.getAlreadyPayByAudit(1);
+		BigDecimal entity = pService.getAlreadyPay("2014", "1390293713906");
 		map.put("entity", entity);
 		return map;
 	}
@@ -506,7 +506,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test38() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = auditService.getPaymentRecord(137, 1, 30);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecord("0e79797525f95737da607bfc2079a010", 1, 30);
 		map.put("entity", entity);
 		return map;
 	}
