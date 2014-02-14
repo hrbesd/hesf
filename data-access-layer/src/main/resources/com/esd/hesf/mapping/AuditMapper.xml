@@ -629,7 +629,7 @@
 	<!-- retireve unaudit years by companyCode -->
 	<select id="retireveUnauditYearByCompanycode" parameterType="map" resultType="java.lang.String">
 		select  year from  audit 
-		where company_code = #{companyCode,jdbcType=VARCHAR} and audit_process_status = 1 and year &lt; #{year,jdbcType=CHAR}
+		where company_code = #{companyCode,jdbcType=VARCHAR} and audit_process_status in (1,2) and year &lt; #{year,jdbcType=CHAR}
 		order by year 
 	</select>
 </mapper>
