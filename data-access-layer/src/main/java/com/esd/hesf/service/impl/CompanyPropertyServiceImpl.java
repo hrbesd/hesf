@@ -55,7 +55,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 
 	@Override
 	public PaginationRecordsAndNumber<CompanyProperty, Number> getPaginationRecords(CompanyProperty t, Integer page, Integer pageSize) {
-		// TODO Auto-generated method stub
+		log.debug(t.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyproperty", t);
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);

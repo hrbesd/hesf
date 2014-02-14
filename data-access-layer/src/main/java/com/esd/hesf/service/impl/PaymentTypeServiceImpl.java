@@ -8,63 +8,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.hesf.dao.PaymentDao;
-import com.esd.hesf.model.Payment;
+import com.esd.hesf.dao.PaymentTypeDao;
+import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.service.Constants;
-import com.esd.hesf.service.PaymentService;
+import com.esd.hesf.service.PaymentTypeService;
 
 /**
- * 
+ * 	缴款类型 service实现类
  * @author Administrator
  * 
  */
 @Service
-public class PaymentTypeServiceImpl implements PaymentService {
+public class PaymentTypeServiceImpl implements PaymentTypeService {
 
 	@Autowired
-	private PaymentDao dao;
+	private PaymentTypeDao dao;
 
 	@Override
-	public boolean save(Payment t) {
-		if (t == null) {
-			return false;
-		}
-		// 验证缴款人
-		if (t.getPaymentPerson() == null) {
-			return false;
-		}
-		// 验证缴款公司
-		if (t.getPaymentCompany() == null) {
-			return false;
-		}
-		if (t.getPaymentCompany().getId() == null) {
-			return false;
-		}
-		// 验证缴款金额
-
+	public boolean save(PaymentType t) {
 		return dao.insertSelective(t) == 1 ? true : false;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		// TODO Auto-generated method stub
 		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
 	}
 
 	@Override
-	public boolean update(Payment t) {
-		// TODO Auto-generated method stub
+	public boolean update(PaymentType t) {
 		return dao.updateByPrimaryKey(t) == 1 ? true : false;
 	}
 
 	@Override
-	public Payment getByPrimaryKey(int id) {
-		// TODO Auto-generated method stub
+	public PaymentType getByPrimaryKey(int id) {
 		return dao.retrieveByPrimaryKey(id);
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<Payment, Number> getPaginationRecords(Payment t, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<PaymentType, Number> getPaginationRecords(PaymentType t, Integer page, Integer pageSize) {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("payment", t);
@@ -73,18 +54,18 @@ public class PaymentTypeServiceImpl implements PaymentService {
 		// 返回量
 		map.put("size", pageSize);
 		// 返回的数据
-		List<Payment> list = dao.retrieveByPage(map);
+		List<PaymentType> list = dao.retrieveByPage(map);
 		// 数据条数
 		int count = dao.retrieveCount(map);
 		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
-		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
+		PaginationRecordsAndNumber<PaymentType, Number> prn = new PaginationRecordsAndNumber<PaymentType, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
 		return prn;
 	}
 
 	@Override
-	public List<Payment> getAll() {
+	public List<PaymentType> getAll() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 起始索引值
 		map.put("start", Constants.START);

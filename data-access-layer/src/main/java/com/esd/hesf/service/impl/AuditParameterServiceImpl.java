@@ -57,7 +57,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public PaginationRecordsAndNumber<AuditParameter, Number> getPaginationRecords(AuditParameter t, Integer page, Integer pageSize) {
-		System.out.println("   "+t);
+		log.debug(t.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("auditParameter", t);
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);

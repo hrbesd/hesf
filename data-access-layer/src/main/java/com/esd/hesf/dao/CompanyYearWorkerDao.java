@@ -1,10 +1,6 @@
 package com.esd.hesf.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.esd.hesf.model.CompanyYearWorker;
-import com.esd.hesf.model.Worker;
 
 /**
  * 公司--残疾职工 关系表 dao借口

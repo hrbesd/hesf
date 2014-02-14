@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.UserLogDao;
-import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserLog;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.UserLogService;

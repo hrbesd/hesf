@@ -52,6 +52,7 @@ public class CompanyEconomyTypeServiceImpl implements CompanyEconomyTypeService 
 
 	@Override
 	public PaginationRecordsAndNumber<CompanyEconomyType, Number> getPaginationRecords(CompanyEconomyType t, Integer page, Integer pageSize) {
+		log.debug(t.toString());
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyEconomyType", t);
