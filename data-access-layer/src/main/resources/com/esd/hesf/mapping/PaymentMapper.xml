@@ -274,8 +274,14 @@
 					</if>
 				</if>
 				<if test="payment.paymentCompany != null">
-					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id > 0">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR},
+					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR} 
+					</if>
+					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
+						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR} 
+					</if>
+					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
+						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR} 
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
@@ -291,7 +297,7 @@
 				</if>
 			</if>
 		</trim>
-		order by pay.create_time desc 
+		order by pay.id  
 		limit #{start}, #{size}
 	</select>
 	
@@ -319,8 +325,14 @@
 					</if>
 				</if>
 				<if test="payment.paymentCompany != null">
-					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id > 0">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR},
+					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR} 
+					</if>
+					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
+						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR} 
+					</if>
+					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
+						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR} 
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
@@ -338,9 +350,26 @@
 		</trim>
 	</select>
 
-	<select id="retrieveAlreadyPayByAudit" resultType="decimal" parameterType="int">
-		select sum(payment_money) from payment 
-		where audit_id = #{auditId,jdbcType=INTEGER};
+	<select id="retrieveAlreadyPay" resultType="decimal" parameterType="com.esd.hesf.model.Payment">
+		select sum(pay.payment_money) 
+		from payment as pay, company as c 
+		<trim prefix="where" prefixOverrides="and|or">
+			pay.payment_company = c.id 
+			<if test="paymentCompany != null">
+				<if test="paymentCompany.id != null and paymentCompany.id != ''">
+					and pay.payment_company = #{paymentCompany.id, jdbcType=VARCHAR} 
+				</if>
+				<if test="paymentCompany.year != null and paymentCompany.year != ''">
+					and c.year = #{paymentCompany.year, jdbcType=CHAR} 
+				</if>
+				<if test="paymentCompany.companyCode != null and paymentCompany.companyCode != ''">
+					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR} 
+				</if>
+			</if>
+			<if test="auditId != null and auditId > 0">
+				and pay.audit_id = #{auditId, jdbcType=INTEGER}
+			</if>
+		</trim>	
 	</select>
 
 </mapper>
