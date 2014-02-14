@@ -6,15 +6,13 @@
 
 .importWorkerForm{
 margin: 30px auto auto;
-    width: 400px;
+    width: 450px;
 }
 .importWorkerIframe{
 width:100%;
     height: 400px;
     margin-top: 30px;
 }
-
-
 
 </style>
 <script type="text/javascript">

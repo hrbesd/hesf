@@ -229,6 +229,10 @@ public class WorkerController {
 		try {
 			// 根据残疾证号获取版本号
 			Worker w = workerService.getByWorkerHandicapCode(worker.getWorkerHandicapCode());
+			if(w==null){
+				logger.error("UpWorkerError:{},info:{}","notWorkerHandicapCode",worker);
+				return false;
+			}
 			// set版本号
 			worker.setVersion(w.getVersion());
 			// 设置id
@@ -240,18 +244,21 @@ public class WorkerController {
 				// 员工信息更新成功，进行员工和录用企业之间关联更新
 				Company c = companyService.getByPrimaryKey(companyId);
 				if (c != null) {
-
 					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), CalendarUtil.getNowYear(), worker.getCurrentJob());
 					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getCompanyCode(), CalendarUtil.getNowYear(), worker.getCurrentJob());
-					logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
+					if(companyUpdataStatus){
+						logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
+					}else{
+						logger.error("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
+					}
+				}else{
+					logger.error("upWorkerError:{}","noGetCompany");
 				}
-
 			}
-
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("workerUpdataError:{}", e.getMessage());
 		}
-		
 		return workerUpDataStatus&&companyUpdataStatus;
 	}
 	/**
@@ -346,12 +353,18 @@ public class WorkerController {
 					}
 					// 第二种情况：存在，并且不再任何公司。
 					if(validateResult.get("type").equals("2")){
-						
 						Worker workerUp=new Worker();
-						workerUp.setWorkerName(w.getWorkerName());
+						workerUp.setWorkerName(worker.getWorkerName());
 						workerUp.setWorkerHandicapCode(workerHandicapCode);
-						editWorkerUp(workerUp, companyId);
-						logger.error("存在更新员工");
+						logger.debug("impoerWorkerUp:{},companyId:{}", workerUp,companyId);
+						if(editWorkerUp(workerUp,companyId)){
+							logger.debug("impoerWorkerUp:{}", "sucsse");
+						}else{
+							w.setRemark("存储未成功");
+							workerErrorList.add(w);
+							logger.error("impoerWorkerUpError:{}", "false");
+							
+						}
 						continue;
 					}
 					//第三种情况： 不存在数据库中，进行存储
@@ -362,8 +375,8 @@ public class WorkerController {
 					workerUp.setWorkerIdCard(workerHandicapCode.substring(0, 18));
 					workerUp.setWorkerHandicapLevel(new WorkerHandicapLevel(2));
 					workerUp.setWorkerHandicapType(new WorkerHandicapType(2));
-					
-					System.out.println(workerUp.getWorkerIdCard()+"----"+workerUp.getWorkerName());
+					workerUp.setWorkerGender("0");
+					System.out.println(workerUp.getWorkerIdCard()+"++++---+++"+workerUp.getWorkerName());
 					boolean b=addWorker(workerUp,companyId);
 					logger.debug("importWorkerAddResult:{}",b);
 					
@@ -390,6 +403,10 @@ public class WorkerController {
 			request.setAttribute("totalLength",list.size());//总条数
 			request.setAttribute("errorLength",errorLength);//失败条数
 			request.setAttribute("succesLength",succesLength);//成功条数
+			//清理部分
+			workerErrorList.clear();//清楚错误列表数据
+			workerErrorList=null;
+			
 			// 返回成功页面
 			return new ModelAndView("basicInfo/worker_importInfo");
 		} else {
@@ -444,7 +461,7 @@ public class WorkerController {
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
-				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工存在数据库中，并且不再任何公司");
+				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工"+w.getWorkerName()+"存在数据库中，并且不再任何公司");
 				paramsMap.put("type", "2");
 				list.add(paramsMap);
 				return list;

@@ -116,6 +116,7 @@ public class QueryWorkerController {
 		logger.debug("queryCompanyWorkerParams{}", params);
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
+		List<Map<String, Object>> list=null;
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id
@@ -136,17 +137,23 @@ public class QueryWorkerController {
 
 			PaginationRecordsAndNumber<Worker, Number> query = workerService.getPaginationRecords(paramsMap);
 			total = query.getNumber().intValue();// 数据总条数
-			List<Map<String, Object>> list = new ArrayList<>();
+			 list = new ArrayList<>();
 			for (Iterator<Worker> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 				Worker it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
-				if (it.getWorkerGender().equals("0")) {
-					map.put("workerGender", "女");// 性别
-				} else {
-					map.put("workerGender", "男");// 性别
+				if(it.getWorkerGender()==null){
+					map.put("workerGender", "未知");// 性别
+					
+				}else{
+					
+					if (it.getWorkerGender().equals("0")) {
+						map.put("workerGender", "女");// 性别
+					} else {
+						map.put("workerGender", "男");// 性别
+					}
 				}
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
@@ -158,9 +165,10 @@ public class QueryWorkerController {
 			entity.put("total", total);
 			entity.put("rows", list);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			
+			logger.error("queryCompanyWorkerErrorin:{}",e.getMessage());
 		}
-		logger.debug("queryCompanyWorker:{}", total);
+		logger.debug("queryCompanyWorkerResult:{},list:{}", total,list);
 		return entity;
 
 	}
