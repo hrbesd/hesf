@@ -1,6 +1,5 @@
 package com.esd.hesf.service.impl;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +14,8 @@ import com.esd.hesf.dao.AuditCompanyViewDao;
 import com.esd.hesf.dao.AuditDao;
 import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
-import com.esd.hesf.dao.PaymentDao;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.CompanyYearWorker;
-import com.esd.hesf.model.Payment;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.Constants;
 
@@ -45,10 +42,6 @@ public class AuditServiceImpl implements AuditService {
 	// 公司--员工--年份 关系表dao接口
 	@Autowired
 	private CompanyYearWorkerDao cywDao;
-
-	// 付款表 dao接口
-	@Autowired
-	private PaymentDao pDao;
 
 	@Override
 	public boolean save(Audit t) {
@@ -179,30 +172,4 @@ public class AuditServiceImpl implements AuditService {
 		return prn;
 	}
 
-	@Override
-	public BigDecimal getAlreadyPayByAudit(int auditId) {
-		return pDao.retrieveAlreadyPayByAudit(auditId);
-	}
-
-	@Override
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(Integer auditId, Integer page, Integer pageSize) {
-		// 将参数放入到map中
-		Map<String, Object> map = new HashMap<String, Object>();
-		Payment t = new Payment();
-		t.setAuditId(auditId);
-		map.put("payment", t);
-		// 起始索引值
-		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
-		// 返回量
-		map.put("size", pageSize);
-		// 返回的数据
-		List<Payment> list = pDao.retrieveByPage(map);
-		// 数据条数
-		int count = pDao.retrieveCount(map);
-		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
-		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
-		prn.setNumber(count);
-		prn.setRecords(list);
-		return prn;
-	}
 }

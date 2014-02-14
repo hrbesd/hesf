@@ -1,12 +1,10 @@
 package com.esd.hesf.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.model.Audit;
-import com.esd.hesf.model.Payment;
 
 /**
  * 审核 service接口
@@ -22,15 +20,15 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	public List<Audit> getAll();
-	
+
 	/**
 	 * 根据年份year, 公司档案号companyCode获得一条审核数据
+	 * 
 	 * @param year
 	 * @param companyCode
 	 * @return
 	 */
-	Audit getByPrimaryKey(String year,String companyCode);
-	
+	Audit getByPrimaryKey(String year, String companyCode);
 
 	/**
 	 * 初始化审计参数--包括复制上年度公司信息和想审计表中插入要审计的公司数据
@@ -53,21 +51,4 @@ public interface AuditService extends BaseService<Audit> {
 	 */
 	PaginationRecordsAndNumber<Audit, Number> getByMultiCondition(Map<String, Object> map);
 
-	/**
-	 * 根据审核id, 得到已经付款的金额
-	 * 
-	 * @param auditId
-	 * @return
-	 */
-	BigDecimal getAlreadyPayByAudit(int auditId);
-
-	/**
-	 * 根据审核id, 得到缴款列表
-	 * 
-	 * @param auditId
-	 * @param page
-	 * @param pageSize
-	 * @return
-	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(Integer auditId, Integer page, Integer pageSize);
 }
