@@ -136,7 +136,7 @@
 			<if test="isExempt != null">
 				and au_is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
-			<if test="actualAmount != null and actualAmount > 0">
+			<if test="actualAmount != null">
 				and au_actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
 		</trim>
@@ -197,7 +197,7 @@
 			<if test="isExempt != null">
 				and au_is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
-			<if test="actualAmount != null and actualAmount > 0">
+			<if test="actualAmount != null">
 				and au_actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
 		</trim>
