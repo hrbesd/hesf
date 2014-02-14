@@ -77,6 +77,7 @@ public class ExampleMap {
 		map.put("paymentPerson", 3); // 缴款人 id
 		map.put("overYear", 3); // 超过几年未初审的公司
 		map.put("isExempt", false); // 是否免缴 true免缴, false不免缴
+		map.put("actualAmount", 20000.0);	//实缴金额
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
 	}
