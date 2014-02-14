@@ -234,6 +234,10 @@
 		= #{id,jdbcType=INTEGER}
 	</delete>
 	
+	<delete id="deleteAllData">
+		delete from worker;
+	</delete>
+	
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Worker">
 		update worker

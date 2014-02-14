@@ -82,6 +82,10 @@
 		where id = #{id,jdbcType=INTEGER} 
 	</delete>
 	
+	<delete id="deleteAllData">
+		delete from company_year_worker;
+	</delete>
+	
 	<!-- delete by self condition -->
 	<delete id="deleteBySelfObject" parameterType="com.esd.hesf.model.CompanyYearWorker">
 		delete from company_year_worker

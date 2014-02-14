@@ -33,4 +33,10 @@ public interface WorkerDao extends BaseDao<Worker> {
 	 * @return
 	 */
 	public Worker retrieveByWorkerHandicapCode(String workerHandicapCode);
+	
+	/**
+	 * 删除所有数据, 慎用！慎用！慎用！
+	 * @return
+	 */
+	int deleteAllData();
 }

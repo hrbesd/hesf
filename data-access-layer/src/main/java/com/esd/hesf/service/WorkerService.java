@@ -27,15 +27,6 @@ public interface WorkerService extends BaseService<Worker> {
 	public boolean save(Worker worker, String companyId);
 
 	/**
-	 * 测试数据用--暂时勿删
-	 * 
-	 * @param size
-	 * @return
-	 */
-	List<Worker> getAll(int size);
-
-	
-	/**
 	 * 根据年度, 公司code, 和员工的相关信息 得到员工列表
 	 * @param map 参数map 详见 com.esd.hesf.ExampleMap类中的 example_worker() 里面的描述
 	 * 测试样例见  com.esd.cs.TestController 的测试方法13
@@ -83,4 +74,21 @@ public interface WorkerService extends BaseService<Worker> {
 	 * @return
 	 */
 	public boolean changeCompany(int workerId,String targetCompanyCode,String currentYear,String currentJob);
+	
+
+	/**
+	 * 删除所有员工数据, 包括关联的公司.
+	 * 慎用！慎用！慎用！慎用！慎用！
+	 * @return
+	 */
+	void deleteAllData();
+	
+	/**
+	 * 测试数据用--暂时勿删
+	 * 
+	 * @param size
+	 * @return
+	 */
+	List<Worker> getAll(int size);
+
 }

@@ -24,4 +24,10 @@ public interface CompanyYearWorkerDao extends BaseDao<CompanyYearWorker> {
 	// * @return
 	// */
 	// int updateCompanyByWorkerAndYear(CompanyYearWorker cyw);
+	
+	/**
+	 * 删除所有数据, 慎用！慎用！慎用！
+	 * @return
+	 */
+	int deleteAllData();
 }
