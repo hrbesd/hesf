@@ -166,7 +166,7 @@
 				<td><input name="company.year" class="readonly" type="text" value="${entity.company.year}" />
 				</td>
 				<td>未审年度:</td>
-				<td><input type="text" value="${unAudityear}" <c:if test="${unAudityearNum>0}">class="error"</c:if> /></td>
+				<td><input type="text" <c:if test="${unAudityearNum==0}">value="无"</c:if> <c:if test="${unAudityearNum>0}">value="${unAudityear}" class="error"</c:if> /></td>
 			</tr>
 			<tr>
 				<td>企业名称:</td>
@@ -264,12 +264,12 @@
 				<td width="100">已录入数</td>
 				<td width="98">预定人数</td>
 
-				<td style="vertical-align: bottom" rowspan="2"><input id="shangNianDuWeiJiaoBaoZhangJin" title="上年度未缴保障金额度" class="readonly" style="border-top: #95B8E7 2px solid;"
-					value="${entity.complementAmount}" />
+				<td style="vertical-align: bottom" rowspan="2"><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="上年度未缴保障金额度" class="readonly" style="border-top: #95B8E7 2px solid;"
+					value="${entity.remainAmount}" />
 				</td>
 				<td style="vertical-align: bottom" rowspan="2"><input name="unauditYears" id="weiShenNianShu" title="未审年数" class="readonly" style="border-top: #95B8E7 2px solid;" value="${unAudityearNum}" />
 				</td>
-				<td style="vertical-align: bottom" rowspan="2"><input name="" title="补审年度" class="readonly" style="border-top: #95B8E7 2px solid;" value="${unAudityearNum}" />
+				<td style="vertical-align: bottom" rowspan="2"><input name="supplementYear" title="补审年度" class="readonly" style="border-top: #95B8E7 2px solid;" value="${supplementYear}" />
 				</td>
 
 			</tr>

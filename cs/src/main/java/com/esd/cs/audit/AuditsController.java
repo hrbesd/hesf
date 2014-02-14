@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
+import com.esd.cs.company.CompayController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
+import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.service.AuditParameterService;
@@ -43,6 +46,7 @@ import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.PaymentService;
 
 /**
  * 初审管理控制器
@@ -61,6 +65,9 @@ public class AuditsController {
 	private CompanyService companyService;
 	@Autowired
 	private AuditParameterService auditParameterService;
+	@Autowired
+	private PaymentService paymentService;
+
 	@Autowired
 	private AuditProcessStatusService auditProcessStatusService;
 
@@ -196,8 +203,16 @@ public class AuditsController {
 
 		// 获得在职员工总数
 		Integer zaiZhiYuanGongZongShu = calculateModel.getZaiZhiYuanGongZongShu();
-		// 获得已录入排数
+		// 残疾人安排比例
+		BigDecimal putScale = auditParameter.getPutScale();
+		// 计算出应安排人数
+		// 应安排人数=单位在职职工总数*残疾人安排比例
+		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(zaiZhiYuanGongZongShu));
+		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
+		// ========================================================================================
+		// 获得已录入残疾人数
 		Integer yiLuRuCanJiRen = calculateModel.getYiLuRuCanJiRen();
+		// 处理残疾人残疾类型和等级不同的比例
 		List<WorkerCalculator> list = auditParameterService.getSpecialSetting(year);
 		for (WorkerCalculator workerCalculator : list) {
 			Integer per = workerCalculator.getPer().intValue();
@@ -207,23 +222,18 @@ public class AuditsController {
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
 		}
-		// 获取残疾人安排比例
-		BigDecimal putScale = auditParameter.getPutScale();
-		// 计算出应安排人数
-		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(zaiZhiYuanGongZongShu));
-		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加
-		// 获得已录入排数
-		// Integer yiLuRuCanJiRen = calculateModel.getYiLuRuCanJiRen();
 		// 获得预定残疾人数
 		Integer yuDingCanJiRen = calculateModel.getYuDingCanJiRen();
 		// 计算出在岗所有残疾人
 		Integer yiAnPaiCanJiRen = yiLuRuCanJiRen + yuDingCanJiRen;
-		calculateModel.setYiAnPaiCanJiRen(yiAnPaiCanJiRen);// 添加
-		// 获得人均工资数
+		calculateModel.setYiAnPaiCanJiRen(yiAnPaiCanJiRen);// 添加已安排残疾人数;残疾人总数
+		// =========================================================================================
+		// 本地区上年度职工年人均工资数
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
 		// 计算出应缴金额
+		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
 		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen.subtract(new BigDecimal(yiAnPaiCanJiRen)));
-		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加
+		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
 			calculateModel.setYingJiaoJinE(yingJiaoJinE);
 		} else {
 			yingJiaoJinE = Constants.ZERO;
@@ -231,33 +241,38 @@ public class AuditsController {
 		}
 		// 获得减缴金额
 		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
-		// 应缴金额-减缴金额+补缴+上年度未缴金额 =实缴金额
+		// 应缴金额=应缴金额-减缴金额
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得补缴金额
 		BigDecimal buJiaoJinE = calculateModel.getBuJiaoJinE();
-		// 获得上年度未缴金额
+		// 获得未缴金额
 		BigDecimal shangNianDuWeiJiaoBaoZhangJin = calculateModel.getShangNianDuWeiJiaoBaoZhangJin();
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(buJiaoJinE).add(shangNianDuWeiJiaoBaoZhangJin);
-		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加
-		// 计算滞纳金
+		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE.subtract(jianJiaoJinE).add(buJiaoJinE).add(shangNianDuWeiJiaoBaoZhangJin);
+		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
+		// 计算滞纳金============================================================================================
+		// 获得支付截至日期
 		Date date = auditParameter.getAuditDelayDate();
+		// 获得滞纳金比例
 		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
+		// 计算滞纳金天数
 		int zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
 		if (zhiNanJinTianshu < 0) {
 			zhiNanJinTianshu = 0;
 		}
-		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);
+		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);// 添加滞纳金天数
+		// 计算滞纳金
 		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi).multiply(new BigDecimal(zhiNanJinTianshu));
 		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
-		// 实缴总金额
+		// 计算滞纳金===============================================================================================
+		// 实缴总金额=实缴金额+滞纳金
 		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin);
 		calculateModel.setShiJiaoZongJinE(shiJiaoZongJinE);
-
 		return calculateModel;
 	}
 
 	/**
-	 * 获取残疾职工列表数据
+	 * 获取审计列表数据
 	 * 
 	 * @param page
 	 * @param rows
@@ -272,6 +287,7 @@ public class AuditsController {
 		Integer page = Integer.valueOf(request.getParameter("page"));
 		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
 		Integer process = Integer.valueOf(request.getParameter("process"));
+		String money = request.getParameter("money");
 		String companyCode = request.getParameter("companyCode");
 		String companyTaxCode = request.getParameter("companyTaxCode");
 		String companyName = request.getParameter("companyName");
@@ -284,6 +300,9 @@ public class AuditsController {
 		params.put("companyCode", companyCode); // 公司档案号
 		params.put("companyTaxCode", companyTaxCode); // 公司税务编码
 		params.put("companyName", companyName); // 公司税务编码
+		if (StringUtils.isNotBlank(money)) {
+			params.put("actualAmount", new BigDecimal(money)); // 实缴金额
+		}
 
 		logger.debug("years:{},page:{},rows:{},process{}", year, page, pageSize, process);
 		Map<String, Object> entity = new HashMap<>();
@@ -338,8 +357,10 @@ public class AuditsController {
 		request.setAttribute("process", process);
 
 		String companyCode = audit.getCompany().getCompanyCode();
-		PaginationRecordsAndNumber<Worker, Number> query = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
-		request.setAttribute("ageEx", query.getNumber());
+		// 年龄超标
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
+		request.setAttribute("ageEx", workers.getNumber());
+		// 未审年度
 		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode);
 		StringBuilder sb = new StringBuilder();
 		for (String s : unAudits) {
@@ -347,8 +368,71 @@ public class AuditsController {
 		}
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
+		// 上年度未缴金额
+
+		// 获得支付
+		BigDecimal lastNotPayAmount = getUnPaidAmount(companyCode);
+		audit.setRemainAmount(lastNotPayAmount);
 
 		return new ModelAndView("audit/audit_detail", "entity", audit);
+	}
+
+	private BigDecimal getUnPaidAmount(String companyCode) {
+		BigDecimal unPaidAmount = new BigDecimal(0);
+		unPaidAmount = unPaidAmount.add(getUnpaid(companyCode)).add(getUnpaidEx(companyCode));
+		return unPaidAmount;
+	}
+
+	/**
+	 * 获得未缴款状态金额
+	 * 
+	 * @param companyCode
+	 * @return
+	 */
+	private BigDecimal getUnpaid(String companyCode) {
+		BigDecimal unpaid = new BigDecimal(0);
+		Audit param = new Audit();
+		Company company = new Company();
+		company.setCompanyCode(companyCode);
+		param.setCompany(company);
+		AuditProcessStatus aps = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+		param.setAuditProcessStatus(aps);
+		PaginationRecordsAndNumber<Audit, Number> query = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
+		for (Audit a : query.getRecords()) {
+			if (a.getPayAmount() != null) {
+				unpaid = unpaid.add(a.getPayAmount());
+			}
+		}
+		return unpaid;
+	}
+
+	/**
+	 * 获得部分缴款状态金额
+	 * 
+	 * @param companyCode
+	 * @return
+	 */
+	private BigDecimal getUnpaidEx(String companyCode) {
+		BigDecimal unpaid = new BigDecimal(0);
+		// 未缴金额
+		Audit param = new Audit();
+		Company company = new Company();
+		company.setCompanyCode(companyCode);
+		param.setCompany(company);
+		AuditProcessStatus aps = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
+		param.setAuditProcessStatus(aps);
+		PaginationRecordsAndNumber<Audit, Number> query = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
+		for (Audit a : query.getRecords()) {
+			String year = a.getCompany().getYear();
+			// 查询支付记录
+			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecord(year, companyCode, 1, Integer.MAX_VALUE);
+			BigDecimal paymentTotal = new BigDecimal(0);
+			for (Payment p : payments.getRecords()) {
+				paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
+			}
+			unpaid.add(a.getPayAmount().subtract(paymentTotal));
+		}
+		return unpaid;
 	}
 
 }

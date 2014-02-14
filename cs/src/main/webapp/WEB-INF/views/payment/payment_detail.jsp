@@ -183,7 +183,6 @@
 		<input name="paymentCompany.id" type="hidden" value="${entity.company.id}" /> <input name="auditId" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="1" />
 	</form>
 </div>
-<a href="#" onclick="find()">fff</a>
 <table id="payment_tt"></table>
 
 <div style="text-align: center;margin-top: 30px;">
