@@ -130,7 +130,7 @@ public class PaymentController {
 	public Map<String, Object> getPayment(@PathVariable(value = "id") Integer id, HttpSession session) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> query = null;
-		query = auditService.getPaymentRecord(id, 1, 999);
+		query = paymentService.getPaymentRecord(id, 1, 999);
 		entity.put("total", query.getNumber());
 		List<Payments> list = new ArrayList<>();
 		for (Iterator<Payment> iterator = query.getRecords().iterator(); iterator.hasNext();) {

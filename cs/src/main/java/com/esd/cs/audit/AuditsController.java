@@ -242,13 +242,17 @@ public class AuditsController {
 		// 计算滞纳金
 		Date date = auditParameter.getAuditDelayDate();
 		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
-		long zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
+		int zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
+		if (zhiNanJinTianshu < 0) {
+			zhiNanJinTianshu = 0;
+		}
+		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);
 		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi).multiply(new BigDecimal(zhiNanJinTianshu));
-		calculateModel.setZhiNaJin(zhiNaJin);//添加滞纳金
-		//实缴总金额
+		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
+		// 实缴总金额
 		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin);
 		calculateModel.setShiJiaoZongJinE(shiJiaoZongJinE);
-		
+
 		return calculateModel;
 	}
 
@@ -332,17 +336,17 @@ public class AuditsController {
 		}
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
 		request.setAttribute("process", process);
-		
+
 		String companyCode = audit.getCompany().getCompanyCode();
-		PaginationRecordsAndNumber<Worker, Number>  query = companyService.getOverproofAge(year,companyCode,1,Integer.MAX_VALUE);
-		request.setAttribute("ageEx",query.getNumber());
+		PaginationRecordsAndNumber<Worker, Number> query = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
+		request.setAttribute("ageEx", query.getNumber());
 		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode);
 		StringBuilder sb = new StringBuilder();
-		for(String s:unAudits){
+		for (String s : unAudits) {
 			sb.append(s).append(",");
 		}
-		request.setAttribute("unAudityear",sb.toString());
-		request.setAttribute("unAudityearNum",unAudits.length);
+		request.setAttribute("unAudityear", sb.toString());
+		request.setAttribute("unAudityearNum", unAudits.length);
 
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}

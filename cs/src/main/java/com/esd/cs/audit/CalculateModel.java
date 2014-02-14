@@ -3,8 +3,6 @@ package com.esd.cs.audit;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
-import org.apache.commons.lang.StringUtils;
-
 public class CalculateModel {
 
 	private DecimalFormat df = new DecimalFormat("0.00");
@@ -21,6 +19,7 @@ public class CalculateModel {
 	private BigDecimal buJiaoJinE;
 	private BigDecimal shiJiaoJinE;
 	private BigDecimal zhiNaJin;
+	private Integer zhiNaJinTianShu;
 	private BigDecimal shiJiaoZongJinE;
 	private String year;
 	private String companyCode;
@@ -38,6 +37,7 @@ public class CalculateModel {
 	private String s_shiJiaoJinE;
 	private String s_zhiNaJin;
 	private String s_shiJiaoZongJinE;
+	private String s_zhiNaJinTianShu;
 
 	@Override
 	public String toString() {
@@ -271,6 +271,26 @@ public class CalculateModel {
 
 	public void setS_shiJiaoZongJinE(String s_shiJiaoZongJinE) {
 		this.s_shiJiaoZongJinE = s_shiJiaoZongJinE;
+	}
+
+	public Integer getZhiNaJinTianShu() {
+		return zhiNaJinTianShu;
+	}
+
+	public void setZhiNaJinTianShu(Integer zhiNaJinTianShu) {
+		if (zhiNaJinTianShu == null) {
+			zhiNaJinTianShu = 0;
+		}
+		this.zhiNaJinTianShu = zhiNaJinTianShu;
+		this.s_zhiNaJinTianShu = zhiNaJinTianShu.toString();
+	}
+
+	public String getS_zhiNaJinTianShu() {
+		return s_zhiNaJinTianShu;
+	}
+
+	public void setS_zhiNaJinTianShu(String s_zhiNaJinTianShu) {
+		this.s_zhiNaJinTianShu = s_zhiNaJinTianShu;
 	}
 
 }

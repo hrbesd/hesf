@@ -40,9 +40,9 @@ public class CalendarUtil {
 		return day;
 	}
 
-	public static long getDaySub(Date beginDate, Date endDate) {
-		long day = 0;
+	public static int getDaySub(Date beginDate, Date endDate) {
+		Long day = 0L;
 		day = (endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
-		return day;
+		return day.intValue();
 	}
 }

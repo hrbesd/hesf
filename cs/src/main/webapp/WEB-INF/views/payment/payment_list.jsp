@@ -51,24 +51,34 @@
 		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + index);
 	};
 </script>
-
-
-<!-- 数据表格 -->
-<table id="payment_datagrid"></table>
 <input type="hidden" id="process" value="${process}" />
 <!-- 自定义菜单 -->
 <div id="payment_boolbarTest" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
-	<div style="text-align: center;">
-		<input id="companyYears" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />年
-	</div>
+	<table width="100%">
+		<tr>
+			<td width="80" style="text-align: right;" >年审时间:</td>
+			<td><input id="companyYears" class="easyui-combobox" value="${nowYear}"
+				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" /></td>
+			<td>实缴金额:</td>
+			<td><input type="text" style="width: 50px" /></td>
+		</tr>
+		<tr>
+			<td style="text-align: right;">档案编码 :</td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
+			<td style="text-align: right;">税务编码:</td>
+			<td><input type="text" style="width: 100%" id="companyCode" /></td>
+			<td width="80" style="text-align: right;">企业名称 :</td>
+			<td><input type="text" style="width: 100%" id="companyName" /></td>
+			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a></td>
+		</tr>
+	</table>
+	<div style="text-align: center;"></div>
 	<div style="padding-top: 5px;">
-		<input type="text" style="width: 50px" /> <input type="text" style="width: 50px" /> <input type="text" style="width: 68%" /> <a href="#" class="easyui-linkbutton" plain="true"
-			iconCls="icon-search">查找</a>
+		<input type="text" style="width: 50px" /> <input type="text" style="width: 68%" /> <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
 	</div>
 </div>
-<!-- 审计窗口 -->
-<div id="auditPanel"></div>
-
+<!-- 数据表格 -->
+<table id="payment_datagrid"></table>
 <script type="text/javascript">
 	$(document).ready(function() {
 		payment.loadData();
