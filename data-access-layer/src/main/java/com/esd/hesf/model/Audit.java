@@ -42,9 +42,9 @@ public class Audit extends PrimaryKey_Int {
 	private String reductionAnswerDate;// 答复日期
 	private String reductionAnswerOption;// 答复意见
 	private String reductionRemark;// 减免缓 备注
-	private Integer unauditYears;	//未审年数
-	private String bushenYear;	//补审年份
-	private Integer delayDays;	//缴纳滞纳金天数
+	private Integer unauditYears; // 未审年数
+	private String supplementYear; // 补审年份
+	private Integer delayDays; // 缴纳滞纳金天数
 
 	public Audit() {
 	}
@@ -276,6 +276,30 @@ public class Audit extends PrimaryKey_Int {
 				+ initAuditDate + ", verifyAuditUserId=" + verifyAuditUserId + ", verifyAuditDate=" + verifyAuditDate + ", remark=" + remark + ", isExempt=" + isExempt + ", reductionType="
 				+ reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate=" + reductionDate + ", reductionReason=" + reductionReason + ", reductionAnswerUser="
 				+ reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption=" + reductionAnswerOption + ", reductionRemark=" + reductionRemark + "]";
+	}
+
+	public Integer getUnauditYears() {
+		return unauditYears;
+	}
+
+	public void setUnauditYears(Integer unauditYears) {
+		this.unauditYears = unauditYears;
+	}
+
+	public String getSupplementYear() {
+		return supplementYear;
+	}
+
+	public void setSupplementYear(String supplementYear) {
+		this.supplementYear = supplementYear;
+	}
+
+	public Integer getDelayDays() {
+		return delayDays;
+	}
+
+	public void setDelayDays(Integer delayDays) {
+		this.delayDays = delayDays;
 	}
 
 }
