@@ -3,34 +3,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-
+<style type="text/css">
+	.red_notice{
+		color:red;
+	}
+</style>
 
 <form id="addComapnyForm" action="${contextPath}/security/company/add" method="post">
 	<!-- 数据表格 -->
 	<table id="company_information"  class="companyTable" >
 		<tr>
-
-			<td class="tdRight">组织机关代码证:</td>
+			<td class="tdRight">企业名称(<span class="red_notice">*</span>):</td>
+			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
+		</tr>
+		<tr>
+			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
 			<td class=""><input name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
 			</td>
-			<td class="tdRight">税务编码:</td>
+			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
 			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_length[8]']" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">企业名称:</td>
-			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
-
-		</tr>
-		
-		<tr>
-			<td class="tdRight">法人代表:</td>
-			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
-		<td class="tdRight">联系人:</td>
-			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
-		
-		</tr>
-		<tr>
-
 			<td class="tdRight">企业性质:</td>
 			<td><input value="1" name="companyProperty.id" class="easyui-combobox"
 				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
@@ -41,39 +34,47 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">邮政编码:</td>
-			<td class="bj_belu"><input name="companyZipCode" class="inNormal easyui-validatebox" type="text" data-options="validType:['_length[6]','_number']" /></td>
 			<td class="tdRight">单位类型:</td>
 			<td class="bj_belu"><input name="companyType.id" class="easyui-combobox" value="1"
 				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">电话号码:</td>
+			<td class="tdRight">职工总人数(<span class="red_notice">*</span>):</td>
+			<td><input id="companyEmpTotal" name="companyEmpTotal" data-options="required:true,validType:['_number']" class="inNormal easyui-validatebox" name="amount" type="text" />
+			</td>
+			<td class="tdRight">残疾职工人数(<span class="red_notice">*</span>):</td>
+			<td><input id="companyHandicapTotal" name="companyHandicapTotal" data-options="required:true,validType:['_number']" class="inNormal easyui-validatebox" name="amount" type="text" />
+			</td>
+		</tr>
+		<tr>
+			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
+			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+		<td class="tdRight">联系人(<span class="red_notice">*</span>):</td>
+			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+		
+		</tr>
+		<tr>
+			<td class="tdRight">电话号码(<span class="red_notice">*</span>):</td>
 			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
 			<td class="tdRight">手机号码:</td>
 			<td><input name="companyMobile" class="easyui-validatebox" type="text" data-options="validType:['_number']" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">开户银行:</td>
+			<td class="tdRight">开户银行(<span class="red_notice">*</span>):</td>
 			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
-			<td class="tdRight">银行账户:</td>
+			<td class="tdRight">银行账户(<span class="red_notice">*</span>):</td>
 			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_number']" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">地区</td>
-			<td><input name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="10230000" /></td>
+			<td><input name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="10230000" />
+			</td>
+			<td class="tdRight">邮政编码:</td>
+			<td class="bj_belu"><input name="companyZipCode" class="inNormal easyui-validatebox" type="text" data-options="validType:['_length[6]','_number']" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">职工总人数:</td>
-			<td><input id="companyEmpTotal" name="companyEmpTotal" data-options="required:true,validType:['_number']" class="inNormal easyui-validatebox" name="amount" type="text" />
-			</td>
-			<td class="tdRight">残疾职工人数:</td>
-			<td><input id="companyHandicapTotal" name="companyHandicapTotal" data-options="required:true,validType:['_number']" class="inNormal easyui-validatebox" name="amount" type="text" />
-			</td>
-		</tr>
-		<tr>
-			<td class="tdRight">企业地址:</td>
+			<td class="tdRight">企业地址(<span class="red_notice">*</span>):</td>
 			<td colspan="3"><input name="companyAddress" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
 		</tr>
 		<tr>
