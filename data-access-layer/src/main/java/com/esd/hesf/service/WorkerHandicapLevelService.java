@@ -2,8 +2,6 @@ package com.esd.hesf.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.esd.hesf.model.WorkerHandicapLevel;
 
 /**
