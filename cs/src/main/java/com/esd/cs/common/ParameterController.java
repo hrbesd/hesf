@@ -70,9 +70,6 @@ public class ParameterController {
 	private static List<CompanyEconomyType> companyEconomyType;
 	private static List<CompanyType> companyTypes;
 
-	
-
-	
 	/**
 	 * 返回年份
 	 * 
@@ -122,6 +119,7 @@ public class ParameterController {
 		logger.debug("property{}", companyPropertys.toString());
 		return companyPropertys;
 	}
+
 	/**
 	 * 返回 企业性质Ex
 	 */
@@ -135,10 +133,11 @@ public class ParameterController {
 		if (companyPropertys == null) {
 			companyPropertys = new ArrayList<CompanyProperty>();
 		}
-	
+
 		logger.debug("property{}", companyPropertys.toString());
 		return companyPropertys;
 	}
+
 	/**
 	 * 返回 经济类型Ex
 	 * 
@@ -155,10 +154,11 @@ public class ParameterController {
 		if (companyEconomyType == null) {
 			companyEconomyType = new ArrayList<CompanyEconomyType>();
 		}
-		
+
 		logger.debug("economytype{}", companyEconomyType.toString());
 		return companyEconomyType;
 	}
+
 	/**
 	 * 返回 经济类型
 	 * 
@@ -203,6 +203,7 @@ public class ParameterController {
 		logger.debug("companytype{}", companyTypes.toString());
 		return companyTypes;
 	}
+
 	/**
 	 * 返回 企业类型Ex
 	 */
@@ -226,6 +227,11 @@ public class ParameterController {
 	@RequestMapping(value = "/workerHandicapTypeService", method = RequestMethod.POST)
 	@ResponseBody
 	public List<WorkerHandicapType> workerHandicapTypeService(HttpServletRequest request) {
+
+		return getHandicapType();
+	}
+
+	public List<WorkerHandicapType> getHandicapType() {
 		List<WorkerHandicapType> list = null;
 		try {
 			list = workerHandicapTypeService.getAll();

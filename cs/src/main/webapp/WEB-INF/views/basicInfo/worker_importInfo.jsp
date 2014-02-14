@@ -2,12 +2,15 @@
 <br /><%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<script type="text/javascript">
-	$(function() {
-alert(12332112312);
-	//$('#workerList_dataGrid').datagrid('load');
-	});
-</script>
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/css/cs.css" />
+<script type="text/javascript" src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
+
+
+
 <div style="width: 500px;margin: auto;font-size: 18;font-weight: bold;text-align: center;">
 	<c:if test="${fileLoadUpResult==''}">
 						${fileLoadUpResult}

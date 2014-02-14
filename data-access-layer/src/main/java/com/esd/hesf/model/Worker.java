@@ -150,4 +150,5 @@ public class Worker extends PrimaryKey_Int {
 		this.remark = remark;
 	}
 
+
 }

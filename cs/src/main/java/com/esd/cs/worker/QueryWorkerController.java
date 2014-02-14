@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
+import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 import com.esd.hesf.viewmodels.WorkerViewModel;
@@ -34,6 +36,8 @@ public class QueryWorkerController {
 	private WorkerService workerService;// 工作者
 	@Autowired
 	private CompanyService companyService;// 企业
+	@Autowired
+	private AuditParameterService auditParameterService;// 年审参数
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView worker_list(HttpServletRequest request) {
@@ -51,6 +55,8 @@ public class QueryWorkerController {
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		try {
+			// 获取年审参数
+			AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getNowYear());
 
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("year", params.getYear()); // 年度
@@ -69,7 +75,6 @@ public class QueryWorkerController {
 														// ******************************
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
 														// ******************************
-
 			PaginationRecordsAndNumber<WorkerViewModel, Number> query = workerService.getByMultiCondition(paramsMap);
 			total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
@@ -79,11 +84,13 @@ public class QueryWorkerController {
 				map.put("id", it.getId());// id
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
-				
+
 				if (it.getWorkerGender().equals("0")) {
 					map.put("workerGender", "女");// 性别
+					map.put("femaleRetirementAge", auditParam.getRetireAgeFemale());// 女退休年龄
 				} else {
 					map.put("workerGender", "男");// 性别
+					map.put("femaleRetirementAge", auditParam.getRetireAgeMale());// 男退休年龄
 				}
 				map.put("vestingCompanyName", it.getCompany().getCompanyName());// 所在公司
 				map.put("vestingCompanyId", it.getCompany().getId());// 所在公司id
@@ -92,6 +99,7 @@ public class QueryWorkerController {
 				map.put("phone", it.getPhone());// phone
 				map.put("workerHandicapType", it.getWorkerHandicapType().getHandicapType());// 残疾类别
 				map.put("workerHandicapLevel", it.getWorkerHandicapLevel().getHandicapLevel());// 残疾等级
+
 				list.add(map);
 			}
 			entity.put("total", total);
@@ -116,7 +124,9 @@ public class QueryWorkerController {
 		logger.debug("queryCompanyWorkerParams{}", params);
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
-		List<Map<String, Object>> list=null;
+		List<Map<String, Object>> list = null;
+		// 获取年审参数
+		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getNowYear());
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id
@@ -137,24 +147,28 @@ public class QueryWorkerController {
 
 			PaginationRecordsAndNumber<Worker, Number> query = workerService.getPaginationRecords(paramsMap);
 			total = query.getNumber().intValue();// 数据总条数
-			 list = new ArrayList<>();
+			list = new ArrayList<>();
 			for (Iterator<Worker> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 				Worker it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
-				if(it.getWorkerGender()==null){
+				if (it.getWorkerGender() == null) {
 					map.put("workerGender", "未知");// 性别
-					
-				}else{
-					
+
+				} else {
+
 					if (it.getWorkerGender().equals("0")) {
 						map.put("workerGender", "女");// 性别
+						map.put("retirementAge", auditParam.getRetireAgeFemale());// 女退休年龄
 					} else {
 						map.put("workerGender", "男");// 性别
+						map.put("retirementAge", auditParam.getRetireAgeMale());// 男退休年龄
 					}
 				}
+				
+				System.out.println();
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
 				map.put("phone", it.getPhone());// phone
@@ -165,10 +179,10 @@ public class QueryWorkerController {
 			entity.put("total", total);
 			entity.put("rows", list);
 		} catch (Exception e) {
-			
-			logger.error("queryCompanyWorkerErrorin:{}",e.getMessage());
+
+			logger.error("queryCompanyWorkerErrorin:{}", e.getMessage());
 		}
-		logger.debug("queryCompanyWorkerResult:{},list:{}", total,list);
+		logger.debug("queryCompanyWorkerResult:{},list:{}", total, list);
 		return entity;
 
 	}

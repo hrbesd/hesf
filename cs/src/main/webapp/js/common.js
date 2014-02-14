@@ -184,6 +184,25 @@ esd.common.openWindow = function(id, title, width, height, url) {
 	esd.common.window(id, title, width, height, url);
 };
 /**
+ * 自定义ID的通用的编辑弹出框 EX
+ */
+esd.common.openWindowEx = function(id, title, width, height, url,closeFun) {
+ 	$("#main").append('<div id="' + id.substring(1) + '"></div>');
+	$(id).window({
+		width : width,
+		height : height,
+		href : url,
+		title : title,
+		loadingMessage : '正在加载，请稍后。',
+		collapsible : false,
+		minimizable : false,
+		maximizable : false,
+		modal : true,
+		onClose :closeFun
+	});
+};
+
+/**
  * 使用默认ID的通用弹出框
  */
 esd.common.defaultOpenWindowEx = function(title, width, height, url) {

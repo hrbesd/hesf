@@ -214,7 +214,7 @@ public class CompayController {
 	@ResponseBody
 	public Boolean edit_company(Company company) {
 		logger.debug("editCompanyParams:{}", company);
-		boolean b=companyService.update(company);
+		boolean b = companyService.update(company);
 		logger.debug("editCompanyResult:{}", b);
 		return b;
 	}
@@ -235,12 +235,12 @@ public class CompayController {
 			Company c = companyService.getByPrimaryKey(idArr[i]);
 			c.setIsActive(true);
 			b = companyService.update(c);
-			logger.debug("deleteCompanyID:{},Result:{}",idArr[i],b);
+			logger.debug("deleteCompanyID:{},Result:{}", idArr[i], b);
 			if (b == false) {
 				return b;
 			}
 		}
-		logger.debug("deleteCompanyResults:{},paramsId:{}", b,idArr);
+		logger.debug("deleteCompanyResults:{},paramsId:{}", b, idArr);
 		return b;
 	}
 

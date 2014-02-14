@@ -46,19 +46,37 @@
 	 **/
 	workerList.loadData = function(params) {
 
-		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [ {
+		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
+
+		{
+			field : 'retirementAge',
+			title : '休年龄',
+			hidden : true,
+		}, {
 			field : 'workerName',
 			title : '姓名',
-			width : 300
+			width : 300,
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'workerHandicapCode',
 			title : '残疾证号',
-			width : 600
+			width : 600,
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'workerGender',
 			title : '性别',
 			width : 250,
-			align : 'center'
+			align : 'center',
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'workerAge',
 			title : '年龄',
@@ -72,17 +90,29 @@
 			field : 'phone',
 			title : '联系电话',
 			width : 350,
-			align : 'center'
+			align : 'center',
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'workerHandicapType',
 			title : '残疾类别',
 			width : 250,
-			align : 'center'
+			align : 'center',
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'workerHandicapLevel',
 			title : '残疾等级',
 			width : 250,
-			align : 'center'
+			align : 'center',
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
+			}
 		}, {
 			field : 'yanz',
 			title : '操作',
@@ -92,6 +122,10 @@
 				var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
 				var d = '<a href="#" onclick="workerList.deleteWorker(' + row.id + ',0)">删除</a>';
 				return e + d;
+			},
+			styler : function(value, row, index) {
+				//年龄检测
+				return workerList.ageDetection(value, row, index);
 			}
 		} ] ], params);
 	};
@@ -101,21 +135,17 @@
 	 **/
 	workerList.ageDetection = function(value, row, index) {
 
-		//男退休年龄
-		var maleRetirementAge = $("#maleRetirementAge").val();
-		//女退休年龄
-		var femaleRetirementAge = $("#femaleRetirementAge").val();
-		
-		if(row.workerGender=='男'){
-			if (value > maleRetirementAge) {
+		if (row.workerGender == '男') {
+			if (row.workerAge > row.retirementAge) {
 				return 'background-color:red;font-weight: bold;';
 			}
 		}
-		if(row.workerGender=='女'){
-			if (value > femaleRetirementAge) {
-					return 'background-color:red;font-weight: bold;';
+		if (row.workerGender == '女') {
+			if (row.workerAge > row.retirementAge) {
+				return 'background-color:red;font-weight: bold;';
 			}
 		}
+
 	};
 
 	/**
@@ -166,7 +196,11 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindow("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker');
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker', function() {
+			$("#importWorkerWindow").window("destroy");
+			//刷新数据列表
+			$('#workerList_dataGrid').datagrid('reload');
+		});
 	};
 
 	/**
@@ -267,19 +301,13 @@
 
 <input type="hidden" id="companyId" value="${companyId}" />
 <input type="hidden" id="year" value="${year}" />
-<!-- 男退休年龄 -->
-<input type="hidden" id="maleRetirementAge" value="${maleRetirementAge}" />
-<!-- 女退休年龄 -->
-<input type="hidden" id="femaleRetirementAge" value="${femaleRetirementAge}" />
-
-
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
 	<div style="text-align: right;">
 		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" iconCls="icon-ok">添加</a> <a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" iconCls="icon-ok">删除</a>
 		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
-		
-	
+
+
 	</div>
 	<table>
 		<tr>

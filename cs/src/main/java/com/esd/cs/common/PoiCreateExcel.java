@@ -22,8 +22,7 @@ import com.esd.hesf.model.Worker;
 
 public class PoiCreateExcel {
 
-	
-	public static boolean createExcel(String FilePath,List<Worker> workerList){
+	public static boolean createExcel(String FilePath, List<Worker> workerList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -31,10 +30,9 @@ public class PoiCreateExcel {
 		// 设置excel每列宽度
 		sheet.setColumnWidth(0, 4000);
 		sheet.setColumnWidth(1, 3500);
-		
-		
+
 		// 创建一个头部Excel的单元格
-		HSSFRow headRow= sheet.createRow(0);
+		HSSFRow headRow = sheet.createRow(0);
 		HSSFCell headell = headRow.createCell(0);
 		// 设置单元格的样式格式
 		headell = headRow.createCell(0);
@@ -43,10 +41,10 @@ public class PoiCreateExcel {
 		headell.setCellValue("残疾证号");
 		headell = headRow.createCell(2);
 		headell.setCellValue("失败原因");
-		for(int i=1;i<=workerList.size();i++){
-			Worker worker =workerList.get(i-1);
+		for (int i = 1; i <= workerList.size(); i++) {
+			Worker worker = workerList.get(i - 1);
 			// 创建一个Excel的单元格
-			HSSFRow row= sheet.createRow(i);
+			HSSFRow row = sheet.createRow(i);
 			HSSFCell cell = row.createCell(i);
 			// 设置单元格的样式格式
 			cell = row.createCell(0);
@@ -67,7 +65,5 @@ public class PoiCreateExcel {
 		}
 		return true;
 	}
-	
-	
 
 }

@@ -72,8 +72,10 @@ public class QueryAuditController {
 			paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
 			paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
 			paramsMap.put("overYear", params.getOverYear());// 超过几年未初审的公司
-			paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴 true免缴, false不免缴
-			if(!params.getIsExempt().equals("")){
+			paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
+																				// true免缴,
+																				// false不免缴
+			if (!params.getIsExempt().equals("")) {
 				paramsMap.put("page", params.getPage()); // 分页--起始页
 				paramsMap.put("pageSize", params.getRows());// 分页--返回量
 			}
