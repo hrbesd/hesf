@@ -557,9 +557,14 @@
 				<if test="company.userId != null and company.userId > 0">
 					and c.user_id = #{company.userId,jdbcType=INTEGER} 
 				</if>
-				<if test="company.isActive != null">
-					and c.is_active = #{company.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="company.isActive != null">
+						and c.is_active = #{company.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and c.is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
@@ -634,9 +639,14 @@
 				<if test="company.userId != null and company.userId > 0">
 					and c.user_id = #{company.userId,jdbcType=INTEGER} 
 				</if>
-				<if test="company.isActive != null">
-					and c.is_active = #{company.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="company.isActive != null">
+						and c.is_active = #{company.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and c.is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
