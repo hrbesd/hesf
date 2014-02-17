@@ -10,7 +10,7 @@
 	addWorker = {};
 	/**
 	关闭增残疾职工信息窗口
-	**/
+	 **/
 	addWorker.close = function() {
 		$("#workerWindow").window("destroy");
 	};
@@ -30,11 +30,12 @@
 		$("#workerGender").combobox("setValue", "0");//性别
 		$("#workerHandicapType").combobox("setValue", "1");//残疾类别
 		$("#workerHandicapLevel").combobox("setValue", "1");//残疾等级
-	};     
+	};
 	/**
 		校验信息  并  保存残疾职工信息
 	 **/
 	addWorker.validate = function() {
+
 		if (esd.common.validatebox("#addWorkerForm") == false) {
 			return;
 		}
@@ -45,7 +46,7 @@
 			url : 'worker/validate_workerHandicapCode',
 			type : 'post',
 			data : {
-				'workerIdCard' :($("#workerHandicapCode").val()).substring(0, 18)
+				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18)
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
@@ -77,7 +78,7 @@
 	 **/
 	addWorker.save = function() {
 		var workerHandicapCode = $("#workerHandicapCode").val();
-		
+
 		//数据验证可以通过
 		esd.common.syncPostSubmit("#addWorkerForm", function(data) {
 			if (data == true) {
@@ -100,23 +101,22 @@
 		}
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
-		
-		
+
 		//获取残疾类型 
-		var workerType=workerHandicapCode.substring(18, 19);
-		$("#workerHandicapType").combobox("setValue",workerType);
-		if(workerType==0){
-		alert("残疾证号内残疾类型错误。");
-			return ;
+		var workerType = workerHandicapCode.substring(18, 19);
+		$("#workerHandicapType").combobox("setValue", workerType);
+		if (workerType == 0) {
+			alert("残疾证号内残疾类型错误。");
+			return;
 		}
 		//获取残疾等级
-		var workerLeven=workerHandicapCode.substring(19, 20);
-		$("#workerHandicapLevel").combobox("setValue",workerLeven);
-		if(workerLeven==0){
-		alert("残疾证号内残疾等级错误。");
-			return ;
+		var workerLeven = workerHandicapCode.substring(19, 20);
+		$("#workerHandicapLevel").combobox("setValue", workerLeven);
+		if (workerLeven == 0) {
+			alert("残疾证号内残疾等级错误。");
+			return;
 		}
-		
+
 		//根据残疾证号获取出生日期
 		var year = workerHandicapCode.substring(6, 10);//年份
 		var month = workerHandicapCode.substring(10, 12);//月
@@ -147,9 +147,18 @@
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
 				if (data[0].type == "1") {
-					$.messager.alert("警告：该员工已被其他公司录用", "残疾证号： “" + 
-					$("#workerHandicapCode").val() + "”已被：\n ”" + data[1].companyName +
-					 "“\n公司录用。公司档案编码为：" + data[1].companyCode+"<h1>hello</h1>");
+
+					$('#win').window({
+						title : '警告：该员工已被其他公司录用',
+						height : 150,
+						width : 650,
+						content :  "证号："+$("#workerIdCard").val() + "”已被：" +data[1].companyName +"录用\n"
+								+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>"+ data[1].companyCode+"</td> <td>"+data[1].companyTaxCode+"</td><td style='width: 450px;'>"+data[1].companyName+"</td></tr></table>",
+						modal : true,
+						collapsible:false,
+						minimizable:false,
+						maximizable:false
+					});
 					return;
 					//第二种情况，员工存在，不再任何公司
 				} else {
@@ -162,15 +171,16 @@
 			}
 		});
 	};
-
 </script>
 
 
 
 
 
+
 <form id="addWorkerForm" action="security/worker/add" method="post">
-	<input type="hidden" value="${companyId}" name="companyId"  style="margin-top: 40px;"/>
+	<input type="hidden" value="${companyId}" name="companyId" style="margin-top: 40px;" />
+
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
@@ -181,7 +191,7 @@
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463700" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
+					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
 						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
 				</div>
@@ -235,6 +245,7 @@
 	</table>
 </form>
 
+<div id="win"></div> 
 
 
 

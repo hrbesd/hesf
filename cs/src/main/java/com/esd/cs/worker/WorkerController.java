@@ -157,6 +157,8 @@ public class WorkerController {
 		try {
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
+			//设置年份
+			worker.setWorkerBirthYear(CalendarUtil.getNowYear());
 			boolean b = workerService.save(worker, c.getCompanyCode());
 			logger.debug("addWorker:{},Result:{}",worker, b);
 			return b;
@@ -174,7 +176,8 @@ public class WorkerController {
 			logger.error("addWorker_getCompanyError:{}", "null");
 			return false;
 		}
-
+		//设置年份
+		worker.setWorkerBirthYear(CalendarUtil.getNowYear());
 		boolean b = workerService.save(worker, c.getCompanyCode());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -512,6 +515,7 @@ public class WorkerController {
 			Map<String, String> companyMap = new HashMap<String, String>();
 			companyMap.put("companyName", company.getCompanyName());
 			companyMap.put("companyCode", company.getCompanyCode());
+			companyMap.put("companyTaxCode", company.getCompanyTaxCode());
 			list.add(paramsMap);
 			list.add(companyMap);
 			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "trpe:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
