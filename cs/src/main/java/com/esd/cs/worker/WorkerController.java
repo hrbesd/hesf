@@ -156,9 +156,13 @@ public class WorkerController {
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
 		try {
 			String companyId = request.getParameter("companyId");
-			return addWorker(WorkerUtil.assembly(worker), companyId);
+			Company c = companyService.getByPrimaryKey(companyId);
+			boolean b = workerService.save(worker, c.getCompanyCode());
+			logger.debug("addWorker:{},Result:{}",worker, b);
+			return b;
 		} catch (Exception e) {
-			logger.error("addWorkerError:{}");
+			e.printStackTrace();
+			logger.error("addWorkerError:{}",e.getMessage());
 			return null;
 		}
 	}
@@ -325,13 +329,12 @@ public class WorkerController {
 
 					String workerHandicapCode = worker.getWorkerHandicapCode();
 					// 员工姓名
-					String workerName = worker.getWorkerName().replace(" ", "");
-					
+					String workerName = worker.getWorkerName().replace(" ", "");//取出所有空格
 					Worker w = new Worker();
 					w.setWorkerName(worker.getWorkerName());
 					w.setWorkerHandicapCode(workerHandicapCode);
 				
-					// 检测姓名
+					// 校验姓名
 					if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName,"null")) {
 						// 存储错误信息
 						w.setRemark(NAMENULL);
@@ -339,8 +342,7 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, NAMENULL);
 						continue;
 					}
-
-					// 检测残疾证号长度
+					// 校验残疾证号长度
 					if (workerHandicapCode == null) {
 						// 存储错误信息
 						w.setRemark(LENGTHERROR);
@@ -349,7 +351,7 @@ public class WorkerController {
 						continue;
 					} else {
 						workerHandicapCode.replace(" ", "");// 去掉所有空格
-						// 检测是否含有中文
+						// 校验残疾证号是否含有中文
 						if (CommonUtil.chineseValid(workerHandicapCode)) {
 							// 存储错误信息
 							w.setRemark(ILLEGALSTR);
@@ -357,7 +359,7 @@ public class WorkerController {
 							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 							continue;
 						}
-						// 检测长度
+						// 校验残疾证号长度
 						if (!(workerHandicapCode.length() == HANDICAPCODE)) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
@@ -375,7 +377,7 @@ public class WorkerController {
 						continue;
 					}
 
-					// 校验部分 残疾证号等级校验
+					// 校验残疾证号等级校验
 					int handicapLevel = Integer.valueOf(workerHandicapCode.substring(19, 20));
 					if (handicapLevel > 4 || handicapLevel == 0) {
 						w.setRemark(LEVELERROR);
@@ -383,7 +385,7 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
 						continue;
 					}
-					// 校验部分 职工年龄校验
+					// 校验职工年龄校验
 					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getNowYear()));
 					if (ageResult != null) {
 						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。已超过退休年龄。";

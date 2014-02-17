@@ -101,6 +101,22 @@
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		
+		
+		//获取残疾类型 
+		var workerType=workerHandicapCode.substring(18, 19);
+		$("#workerHandicapType").combobox("setValue",workerType);
+		if(workerType==0){
+		alert("残疾证号内残疾类型错误。");
+			return ;
+		}
+		//获取残疾等级
+		var workerLeven=workerHandicapCode.substring(19, 20);
+		$("#workerHandicapLevel").combobox("setValue",workerLeven);
+		if(workerLeven==0){
+		alert("残疾证号内残疾等级错误。");
+			return ;
+		}
+		
 		//根据残疾证号获取出生日期
 		var year = workerHandicapCode.substring(6, 10);//年份
 		var month = workerHandicapCode.substring(10, 12);//月
@@ -131,7 +147,9 @@
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
 				if (data[0].type == "1") {
-					$.messager.alert("警告：该员工已被其他公司录用", "残疾证号： “" + $("#workerHandicapCode").val() + "”已被：\n ”" + data[1].companyName + "“\n公司录用。公司档案编码为：" + data[1].companyCode);
+					$.messager.alert("警告：该员工已被其他公司录用", "残疾证号： “" + 
+					$("#workerHandicapCode").val() + "”已被：\n ”" + data[1].companyName +
+					 "“\n公司录用。公司档案编码为：" + data[1].companyCode+"<h1>hello</h1>");
 					return;
 					//第二种情况，员工存在，不再任何公司
 				} else {

@@ -78,10 +78,10 @@ public class WorkerUtil {
 				logger.info("excel 2007-2010");
 				return xWorkbook;
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
+			
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+			
 				e1.printStackTrace();
 			}
 		}
@@ -169,6 +169,7 @@ public class WorkerUtil {
 			// 残疾类别
 			int handicapType = Integer.valueOf(handicapCode.substring(18, 19));
 			w.setWorkerHandicapType(new WorkerHandicapType(handicapType));
+			
 			// 残疾等级
 			int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
 			w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));

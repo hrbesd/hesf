@@ -27,7 +27,9 @@
 	};
 </script>
 <form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return ">
-	<input type="file" id="uploadWorkerFile" name="file" /> <input type="hidden" name="companyId" id="currentCompanyId" /> <input type="submit" value="上传" />
+	<input type="file" id="uploadWorkerFile" name="file" style="width: 400px" /> <input type="hidden" name="companyId" id="currentCompanyId" />
+	
+	 <input type="submit" value="上传" />
 </form>
 <iframe name="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>
 
