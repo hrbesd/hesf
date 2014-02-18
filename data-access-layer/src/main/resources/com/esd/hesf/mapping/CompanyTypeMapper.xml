@@ -114,6 +114,7 @@
 				</if>
 			</if>
 		</trim>
+		order by id
 		limit #{start}, #{size}
 	</select>
 

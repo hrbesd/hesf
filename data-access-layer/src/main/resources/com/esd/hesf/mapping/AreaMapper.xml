@@ -116,6 +116,7 @@
 				</if>
 			</if>
 		</trim>
+		order by code
 		limit #{start}, #{size}
 	</select>
 
@@ -155,7 +156,8 @@
 		select 
 		<include refid="Base_Column_List" />
 		from area
-		where code like '10230000' or code like '2023____';
+		where code like '10230000' or code like '2023____'
+		order by code
 	</select>
 
 </mapper>
