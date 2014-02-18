@@ -102,7 +102,7 @@ textarea {
 	text-align: center;
 }
 .printBut {
-	margin-top: 50px;
+	margin-top: 20px;
 }
 .print_outline{
 	width: 100px;
@@ -119,3 +119,10 @@ textarea {
 		margin:auto;
 		margin-top: 50px;
 	}
+	
+.printNotice{
+	width: 400px;float: left;	
+    margin: auto auto auto 30px;
+
+	text-align: center;
+}

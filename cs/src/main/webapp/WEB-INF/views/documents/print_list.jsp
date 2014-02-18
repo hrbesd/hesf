@@ -148,7 +148,7 @@
 	打开催缴通知书
 	**/
 	printList.openNotice=function(id){
-	esd.common.defaultOpenWindow("催缴通知书", 'print/notice/' + id);
+	esd.common.defaultOpenWindow("催缴通知书", 'print/notice/' + id+'/'+$("#year").val());
 	
 	};
 

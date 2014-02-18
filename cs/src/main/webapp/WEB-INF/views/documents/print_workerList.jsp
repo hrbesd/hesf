@@ -3,7 +3,59 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<script type="text/javascript">
+	var printWorkerList = {};
 
+	/**	
+		加载列表数据
+	 **/
+	printWorkerList.loadData = function() {
+		var params = {};
+		params.companyId = $("#companyId").val();//单位id
+		params.year = $("#year").val();//年份
+		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "", [ [ {
+			field : 'workerName',
+			title : '姓名',
+			width : 300
+		}, {
+			field : 'workerHandicapCode',
+			title : '残疾证号',
+			width : 600
+		}, {
+			field : 'workerGender',
+			title : '性别',
+			width : 250,
+			align : 'center'
+		}, {
+			field : 'workerAge',
+			title : '年龄',
+			width : 250,
+			align : 'center'
+		}, {
+			field : 'phone',
+			title : '联系电话',
+			width : 350,
+			align : 'center'
+		}, {
+			field : 'workerHandicapType',
+			title : '残疾类别',
+			width : 250,
+			align : 'center'
+		}, {
+			field : 'workerHandicapLevel',
+			title : '残疾等级',
+			width : 250,
+			align : 'center'
+		
+		} ] ], params);
+	};
+
+	$(function() {
+
+		printWorkerList.loadData();
+
+	});
+</script>
 <div>
 	<table title="企业年审信息" class="print_tab">
 		<tr>
@@ -49,10 +101,16 @@
 			<td>3000.00</td>
 		</tr>
 	</table>
-	<div class="printBut">
-		<button>打印</button>
-		<button>打印页面设置</button>
-		<button>打印预览</button>
-		<button>返回</button>
+
+	<div id="workerList_panel" class="easyui-panel" style="width:850px;height:370px;background:#fafafa;"
+		data-options="">
+		<!-- 数据表格 -->
+		<table id="workerList_dataGrid" ></table>
 	</div>
+
+<div class="printBut">
+<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','Preview');">打印预览</a> 
+<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','print');">打印</a> 
+			 <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+</div>
 </div>

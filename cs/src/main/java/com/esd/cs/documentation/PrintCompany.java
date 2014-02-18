@@ -33,11 +33,13 @@ import com.esd.cs.worker.WorkerUtil;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.User;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
+import com.esd.hesf.service.UserService;
 import com.esd.hesf.viewmodels.WorkerViewModel;
 
 @Controller
@@ -53,6 +55,8 @@ public class PrintCompany {
 	private CompanyPropertyService companyPropertyService;// 企业性质
 	@Autowired
 	private AuditService auditService;// 审核对象
+	@Autowired
+	private UserService service;
 
 	/**
 	 * 转到打印列表页面
@@ -91,6 +95,7 @@ public class PrintCompany {
 		}
 		//企业基本信息
 		result.put("companyName", company.getCompanyName());//企业名称
+		
 		result.put("companyBank", company.getCompanyBank());// 开户银行
 		result.put("bankAccount", company.getCompanyBankAccount());// 银行账户
 		result.put("zipCode", company.getCompanyZipCode());// 企业邮政编码
@@ -107,9 +112,6 @@ public class PrintCompany {
 		result.put("companyShouldTotal", company.getCompanyShouldTotal()+"");// 应安排残疾人数
 		result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal()+"");//  已安排残疾人数
 		//保证金额度
-		
-		
-		
 		request.setAttribute("company", result);
 		return new ModelAndView("documents/print_audit");
 	}
@@ -152,10 +154,62 @@ public class PrintCompany {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/notice/{id}", method = RequestMethod.GET)
-	public ModelAndView notice(@PathVariable(value = "id") String id, HttpServletRequest request) {
-		logger.debug("gotonotice");
+	@RequestMapping(value = "/notice/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView notice(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year,HttpServletRequest request) {
+		
+		logger.debug("gotoPrint_gotonotice,companyId:{},year:{}",companyId,year);
+		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
 		return new ModelAndView("documents/print_notice");
 	}
-
+	
+	/**
+	 * 获取催缴通知书页面数据
+	 * @param companyId
+	 * @param year
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/notice/{companyId}/{year}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object get_company(@PathVariable(value = "companyId") String companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
+		logger.debug("printNoticeParamsID:{},year:{}",companyId,year);
+		try {
+			logger.debug("getPrintNoticeInfo:{}",companyId);
+			Map<String,String> result=new HashMap<String,String>();
+			Company company = companyService.getByPrimaryKey(companyId);
+			if(company==null){
+				logger.error("getPrintNoticeInfoError:{}","getCompanyNull");
+				return null;
+			}
+			//企业基本信息
+			result.put("companyName", company.getCompanyName());//企业名称
+			//残疾职工信息
+			result.put("companyEmpTotal", company.getCompanyEmpTotal()+"");//员工总数
+			result.put("companyHandicapTotal", company.getCompanyHandicapTotal()+"");//残疾员工总数 已录入数
+			result.put("companyPredictTotal", company.getCompanyPredictTotal()+"");// 预计残疾人数
+			result.put("companyShouldTotal", company.getCompanyShouldTotal()+"");// 应安排残疾人数
+			result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal()+"");//  已安排残疾人数
+			
+			//初审员
+			Audit audit = auditService.getByPrimaryKey(year, company.getCompanyCode());
+			if(audit==null){
+				logger.error("getPrintNoticeInfoError:{}","getauditNull");
+				return null;
+			}
+			User user=service.getByPrimaryKey(audit.getInitAuditUserId());
+			System.out.println(user.getUserName()+"-=-=-=-=-=-=-=-=-");
+			//复审员
+			//保证金额度
+			logger.debug(" getcompany{}", company);
+			request.setAttribute("company", company);
+			return company;
+		} catch (Exception e) {
+			logger.error("获取企业对象发生错误");
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
