@@ -53,6 +53,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getEmpTotal() {
+		if (empTotal == null) {
+			return 0;
+		}
 		return empTotal;
 	}
 
@@ -61,6 +64,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getPredictTotal() {
+		if (predictTotal == null) {
+			return 0;
+		}
 		return predictTotal;
 	}
 
@@ -69,6 +75,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getUnAudit() {
+		if (unAudit == null) {
+			return 0;
+		}
 		return unAudit;
 	}
 
@@ -77,6 +86,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getUnReAudit() {
+		if (unReAudit == null) {
+			return 0;
+		}
 		return unReAudit;
 	}
 
@@ -85,6 +97,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getAuditOk() {
+		if (auditOk == null) {
+			return 0;
+		}
 		return auditOk;
 	}
 
@@ -93,6 +108,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getUnauditOk() {
+		if (unauditOk == null) {
+			return 0;
+		}
 		return unauditOk;
 	}
 
@@ -101,6 +119,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getShouldTotal() {
+		if (shouldTotal == null) {
+			return new BigDecimal(0);
+		}
 		return shouldTotal;
 	}
 
@@ -109,6 +130,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getAlreadyTotal() {
+		if (alreadyTotal == null) {
+			return new BigDecimal(0);
+		}
 		return alreadyTotal;
 	}
 
@@ -117,6 +141,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getLessTotal() {
+		if (lessTotal == null) {
+			return new BigDecimal(0);
+		}
 		return lessTotal;
 	}
 
@@ -125,6 +152,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getAmountPayable() {
+		if (amountPayable == null) {
+			return new BigDecimal(0);
+		}
 		return amountPayable;
 	}
 
@@ -133,6 +163,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getReductionAmount() {
+		if (reductionAmount == null) {
+			return new BigDecimal(0);
+		}
 		return reductionAmount;
 	}
 
@@ -141,6 +174,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getActualAmount() {
+		if (actualAmount == null) {
+			return new BigDecimal(0);
+		}
 		return actualAmount;
 	}
 
@@ -149,6 +185,9 @@ public class ReportViewModel {
 	}
 
 	public BigDecimal getAlreadyAmount() {
+		if (alreadyAmount == null) {
+			return new BigDecimal(0);
+		}
 		return alreadyAmount;
 	}
 
@@ -157,6 +196,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getCompanyType() {
+		if (alreadyAmount == null) {
+			return 0;
+		}
 		return companyType;
 	}
 
@@ -173,6 +215,9 @@ public class ReportViewModel {
 	}
 
 	public Integer getCompanyEconomyType() {
+		if (companyEconomyType == null) {
+			return 0;
+		}
 		return companyEconomyType;
 	}
 
