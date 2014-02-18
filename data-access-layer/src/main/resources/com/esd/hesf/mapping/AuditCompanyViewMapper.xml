@@ -54,6 +54,31 @@
 		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
 	</resultMap>
 	
+	<resultMap id="ReportViewModel" type="com.esd.hesf.viewmodels.ReportViewModel">
+		<result column="report_name" property="reportName" jdbcType="VARCHAR" />
+		<result column="unit_num" property="unitNum" jdbcType="INTEGER" />
+		<result column="emp_total" property="empTotal" jdbcType="INTEGER" />
+		<result column="predict_total" property="predictTotal" jdbcType="INTEGER" />
+		<result column="un_audit" property="unAudit" jdbcType="INTEGER" />
+		<result column="un_reaudit" property="unReAudit" jdbcType="INTEGER" />
+		<result column="audit_ok" property="auditOk" jdbcType="INTEGER" />
+		<result column="unaudit_ok" property="unauditOk" jdbcType="INTEGER" />
+		<result column="should_total" property="shouldTotal" jdbcType="DECIMAL" />
+		<result column="already_total" property="alreadyTotal" jdbcType="DECIMAL" />
+		<result column="less_total" property="lessTotal" jdbcType="DECIMAL" />
+		<result column="amount_payable" property="amountPayable" jdbcType="DECIMAL" />
+		<result column="reduction_amount" property="reductionAmount" jdbcType="DECIMAL" />
+		<result column="actual_amount" property="actualAmount" jdbcType="DECIMAL" />
+		<result column="already_amount" property="alreadyAmount" jdbcType="DECIMAL" />
+		<result column="t_id" property="companyType" jdbcType="INTEGER" />
+		<result column="a_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="et_id" property="companyEconomyType" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="AuditTempModel" type="com.esd.hesf.viewmodels.AuditTempModel">
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="aup_id" property="aupId" jdbcType="INTEGER" />
+	</resultMap>
 	<sql id="Base_Column_List">
 		c_id, c_year, c_company_code, c_company_name, c_company_legal, c_company_contact_person, 
 			c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
@@ -203,17 +228,88 @@
 		</trim>
 	</select>
 	
+	<sql id="report_column_list">
+		count(*) as unit_num, sum(c_company_emp_total) as emp_total, sum(c_company_predict_total) as predict_total,  
+			sum(c_company_should_total) as should_total, sum(c_company_already_total) as already_total, sum(au_amount_payable) as amount_payable, 
+			sum(au_reduction_amount) as reduction_amount, sum(au_actual_amount) as actual_amount
+	</sql>
+	
+	<!-- retrieve report statistics by company type -->
+	<select id="retrieveReportByCompanyType" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select t_company_type as report_name,
+				<include refid="report_column_list"/>
+				,t_id
+		from audit_company_view 
+		<where>
+				au_year = #{year,jdbcType=CHAR} 
+		</where>
+		group by t_id
+	</select>
+	
+	<!-- retrieve report statistics by company economy type -->
+	<select id="retrieveReportByCompanyEconomyType" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select et_company_economy_type as report_name,
+				<include refid="report_column_list"/>
+				,et_id
+		from audit_company_view 
+		<where>
+				au_year = #{year,jdbcType=CHAR} 
+		</where>
+		group by et_id
+	</select>
+	
+	<!-- retrieve report statistics by area -->
+	<select id="retrieveReportByArea" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select a_name as report_name,
+				<include refid="report_column_list"/>
+				,a_code
+		from audit_company_view 
+		<where>
+				au_year = #{year,jdbcType=CHAR} 
+		</where>
+		group by a_code
+	</select>
+	
+	<!-- retrieve company number of different audit process status -->
+	<select id="retrieveAupCount" parameterType="map" resultMap="AuditTempModel">
+		select count(*) as num, aup_id from audit_company_view 
+		<where>
+			au_year = #{year,jdbcType=CHAR}
+			<if test="companyType != null and companyType > 0">
+				and t_id = #{companyType,jdbcType=INTEGER}
+			</if>
+			<if test="companyEconomyType != null and companyEconomyType > 0">
+				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and a_code  = #{areaCode,jdbcType=CHAR}
+			</if>
+		</where>
+		group by aup_id
+	</select>
+	
+	
+	
+	
+	
+	
 	
 	<!-- create view sql -->
 	<insert id="createViewSql">
+		create view audit_company_view as
 		select 
 			c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
-				c.company_contact_person as c_company_contact_person, 
-				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
-				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
-				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
-				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
-				c.company_remark as c_company_remark, 
+			c.company_contact_person as c_company_contact_person, 
+			c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+			c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+			c.company_fax as c_company_fax, 
+			c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+			c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+			c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
+			c.company_handicap_total as c_company_handicap_total, 
+			c.company_predict_total as c_company_predict_total, c.company_should_total as c_company_should_total,
+			c.company_already_total as c_company_already_total, c.create_time as c_create_time, 
+			c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
 			t.id as t_id, t.company_type as t_company_type, 
 			et.id as et_id, et.company_economy_type as et_company_economy_type,
 			p.id as p_id, p.company_property as p_company_property,

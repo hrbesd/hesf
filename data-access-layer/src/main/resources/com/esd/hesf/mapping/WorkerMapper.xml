@@ -485,5 +485,5 @@
 		and w.worker_handicap_code = #{workerHandicapCode,jdbcType=INTEGER}
 	</select>
 
-
+	
 </mapper>
