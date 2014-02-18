@@ -60,7 +60,7 @@
 	 * 获取企业基本档案函数
 	 */
 	queryAudit.loadData = function(params) {
-		esd.common.datagrid("#queryAuditGrid", "query/audit/audit_list", "#queryAuditBoolbar", [ [ {
+		esd.common.datagrid("#queryAuditGrid", "query/company/list", "#queryAuditBoolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 230
@@ -134,7 +134,7 @@
 	打开年审表
 	**/
 	printList.openAuditTab=function(id){
-			esd.common.defaultOpenWindow("年审表", 'print/audittab/' + id);
+			esd.common.defaultOpenWindow("年审表", 'print/audit/' + id+'/'+$("#year").val());
 	
 	};
 	/**

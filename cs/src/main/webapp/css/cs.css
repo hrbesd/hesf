@@ -111,5 +111,11 @@ textarea {
 .print_content{
 	text-align:left;
 	margin-left:5px;
-	
+	 width: 152px;
 }
+.printOverall{
+		width: 1000px;
+		text-align: center;
+		margin:auto;
+		margin-top: 50px;
+	}

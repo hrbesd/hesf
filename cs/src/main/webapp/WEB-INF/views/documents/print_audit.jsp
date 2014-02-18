@@ -2,47 +2,56 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
-
+<script type="text/javascript">
+	var printAudit = {};
+	printAudit.init = function() {
+		
+		
+	};
+	$(function() {
+			printAudit.init();
+	});
+	function f(){
+	javascript:WindowPrint.execwb(7,1);
+	}
+</script>
+<input type="hidden" value="${companyId}" />
+<input type="hidden" value="${year}" />
+<div id="printAudit">
 <table title="企业年审信息" class="print_tab">
-		<tr>
-			<td colspan="4">
-				<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2></td>
-		</tr>
-		<tr>
-			<td style="text-align: left;" class="print_outline">企业法人代码：</td>
-			<td class="print_content">123456789</td>
-
-			<td class="print_outline">税务编码：</td>
-			<td class="print_content">01010111</td>
-		</tr>
-		<tr>
-			<td style="text-align: left;" class="print_outline">企业名称(盖章):</td>
-			<td class="print_content">黑龙江省北龙交通工程有限公司</td>
-			<td class="print_outline">年度</td>
-			<td class="print_content">2012年</td>
-		</tr>
-	</table>
+	<tr>
+		<td colspan="4">
+			<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2></td>
+	</tr>
+	<tr>
+		<td style="text-align: left;" class="print_outline">组织机关代码证：${company.companyOrganizationCode}</td>
+		<td class="print_outline" style="text-align: right;width: 150px">税务编码：${company.taxCode}</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;" class="print_outline">企业名称(盖章):${company.companyName}</td>
+		<td class="print_outline" style="text-align: right;width: 150px">年度:${year}年</td>
+	</tr>
+</table>
 <!-- 企业基本情况表 -->
 <table cellspacing="0" cellpadding="0" border="1" title="企业年审信息" class="print_tab">
 	<tr>
 		<td class="print_outline" rowspan="3">企业基本情况</td>
 		<td>法人代表</td>
-		<td class="print_content">马站村</td>
+		<td class="print_content">${company.legal}</td>
 		<td class="">联系人</td>
-		<td class="print_content">赵玉红</td>
+		<td class="print_content">${company.contactPerson}</td>
 		<td class="">联系电话</td>
-		<td class="print_content">587845784</td>
+		<td class="print_content">${company.companyPhone}</td>
 	</tr>
 	<tr>
 		<td class="">企业地址</td>
-		<td colspan="5" class="print_content" align="left">哈尔滨市道里区河洛街10号</td>
+		<td colspan="5" class="print_content" align="left">${company.address}</td>
 	</tr>
 	<tr>
 		<td class="">开户银行</td>
-		<td colspan="2" class="print_content">工行河图分理处</td>
+		<td colspan="2" class="print_content">${company.companyBank}</td>
 		<td class="">账号</td>
-		<td colspan="2" class="print_content">20124878181512012</td>
+		<td colspan="2" class="print_content">${company.bankAccount}</td>
 	</tr>
 </table>
 
@@ -57,18 +66,18 @@
 
 	</tr>
 	<tr>
-		<td>应安排数</td>
-		<td>已安排数</td>
-		<td>欠安排数</td>
-		<td>超安排数</td>
+		<td>应安排数(人)</td>
+		<td>已安排数(人)</td>
+		<td>预定人数(人)</td>
+		<td>已录入人数(人)</td>
 	</tr>
 	<tr>
-		<td>10</td>
-		<td>10</td>
-		<td>10</td>
-		<td>10</td>
-		<td>10</td>
-		<td>10</td>
+		<td>${company.companyEmpTotal}</td>
+		<td>${company.companyShouldTotal}</td>
+		<td>${company.companyAlreadyTotal}</td>
+		<td>${company.companyPredictTotal}</td>
+		<td>${company.companyHandicapTotal}</td>
+		<td>${company.companyHandicapTotal/company.companyEmpTotal}</td>
 	</tr>
 </table>
 
@@ -76,11 +85,8 @@
 <table cellspacing="0" cellpadding="0" border="" title="保障金应缴数" class="print_tab">
 	<tr>
 		<td class="print_outline">保障金应缴数</td>
-		<td colspan="6" class="print_content">￥:0.0元 大写:</td>
+		<td colspan="6" class="print_content" style="text-align: c">￥:0.0元 大写:</td>
 	</tr>
-</table>
-<!--备注-->
-<table cellspacing="0" cellpadding="0" border="" title="保障金应缴数" class="print_tab">
 	<tr>
 		<td class="print_outline">备注</td>
 		<td></td>
@@ -90,19 +96,15 @@
 
 <table class="print_tab">
 	<tr>
-		<td class="print_outline">企业负责人:</td>
-		<td class="print_content">李成果</td>
-		<td class="print_outline">统计负责人:</td>
-		<td class="print_content">李成果</td>
-		<td class="print_outline">报出日期:</td>
-		<td class="print_content">2013年07月</td>
+		<td class="print_outline" align="left">企业负责人:${company.legal}</td>
+		<td class="print_outline" align="center">统计负责人:李成果</td>
+		<td class="print_outline" align="right">报出日期:2013年07月</td>
 	</tr>
 </table>
-
+</div>
 <div class="printBut">
-	<button>打印</button>
-	<button>打印页面设置</button>
-	<button>打印预览</button>
-	<button>返回</button>
+<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','Preview');">打印预览</a> 
+<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','print');">打印</a> 
+			 <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 </div>
 <div />

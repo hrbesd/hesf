@@ -272,6 +272,9 @@ $.extend($.fn.combobox.methods, {
 		});
 	}
 });
+/**
+ * 文本框验证
+ */
 esd.common.validatebox = function(id) {
 	var Controls = $(id+".easyui-validatebox");
 	var b = true;
@@ -283,3 +286,24 @@ esd.common.validatebox = function(id) {
 	});
 	return b;
 };
+
+
+/**
+ * 打印
+ * @param MyDiv  组件
+ * @param type  类型
+ * @returns {Boolean}
+ */
+esd.common.printWindow=function(MyDiv,type){
+	if(type=='Preview'&&!-[1,]){   
+		document.all.WebBrowser.ExecWB(7,1);
+	}else{                                   
+     var newstr = document.getElementById(MyDiv).innerHTML;
+     var oldstr = document.body.innerHTML;
+     document.body.innerHTML = newstr;
+     window.print();
+     document.body.innerHTML = oldstr;
+		return false;
+	}
+};
+

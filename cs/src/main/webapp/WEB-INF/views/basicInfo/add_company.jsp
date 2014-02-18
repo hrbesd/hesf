@@ -88,8 +88,8 @@
 
 		<tr>
 			<td class="tdRight"></td>
-			<td class="tdCenter" colspan="4"><a href="javascript:basicFile.addCompany();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:esd.common.defaultOpenWindowClose()"
-				class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+			<td class="tdCenter" colspan="4"><a href="javascript:basicFile.addCompany();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+			 <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 			</td>
 		</tr>
 	</table>
