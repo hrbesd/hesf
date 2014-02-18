@@ -35,11 +35,13 @@ import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.MenuService;
 import com.esd.hesf.service.PaymentService;
 import com.esd.hesf.service.PaymentTypeService;
+import com.esd.hesf.service.ReportViewService;
 import com.esd.hesf.service.UserGroupService;
 import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
 import com.esd.hesf.service.WorkerService;
+import com.esd.hesf.viewmodels.ReportViewModel;
 import com.esd.hesf.viewmodels.WorkerViewModel;
 
 /**
@@ -92,6 +94,9 @@ public class TestController {
 
 	@Autowired
 	private PaymentTypeService ptService;
+
+	@Autowired
+	private ReportViewService rvmService;
 
 	// 菜单
 	@RequestMapping("/1")
@@ -573,6 +578,36 @@ public class TestController {
 		boolean entity = cService.update(c);
 		map.put("entity", entity);
 		return map;
-
 	}
+
+	// 统计报表--按单位性质
+	@RequestMapping("/45")
+	@ResponseBody
+	public Map<String, Object> test45() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ReportViewModel> entity = rvmService.getByCompanyType("2014");
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 统计报表--按经济类型
+	@RequestMapping("/46")
+	@ResponseBody
+	public Map<String, Object> test46() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2014");
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 统计报表--按地区
+	@RequestMapping("/47")
+	@ResponseBody
+	public Map<String, Object> test47() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ReportViewModel> entity = rvmService.getByArea("2014");
+		map.put("entity", entity);
+		return map;
+	}
+
 }
