@@ -31,27 +31,37 @@ public interface AuditCompanyViewDao {
 	 */
 	int retrieveCount(Map<String, Object> map);
 
-	/**
-	 * 查询审核报表情况--按公司类型查
-	 * 
-	 * @return
-	 */
-	List<ReportViewModel> retrieveReportByCompanyType(String year);
+//	/**
+//	 * 查询审核报表情况--按公司类型查
+//	 * 
+//	 * @return
+//	 */
+//	ReportViewModel retrieveReportByCompanyType(String year);
+//
+//	/**
+//	 * 查询审核报表情况--按公司经济类型查
+//	 * 
+//	 * @return
+//	 */
+//	List<ReportViewModel> retrieveReportByCompanyEconomyType(String year);
+//
+//	/**
+//	 * 查询审核报表情况--按地区查
+//	 * 
+//	 * @return
+//	 */
+//	List<ReportViewModel> retrieveReportByArea(String year);
 
 	/**
-	 * 查询审核报表情况--按公司经济类型查
+	 * 根据年份, (公司性质id, 地区code, 公司经济类型id)三选一得到对应不同审核状态的公司数量
 	 * 
+	 * @param map中放入year
+	 *            -String, companyType-Integer, companyEconomyType-Integer,
+	 *            areaCode-String
 	 * @return
 	 */
-	List<ReportViewModel> retrieveReportByCompanyEconomyType(String year);
-	
-	/**
-	 * 查询审核报表情况--按地区查
-	 * 
-	 * @return
-	 */
-	List<ReportViewModel> retrieveReportByArea(String year);
-	
+	ReportViewModel retrieveReport(Map<String, Object> map);
+
 	/**
 	 * 根据年份, (公司性质id, 地区code, 公司经济类型id)三选一得到对应不同审核状态的公司数量
 	 * 
