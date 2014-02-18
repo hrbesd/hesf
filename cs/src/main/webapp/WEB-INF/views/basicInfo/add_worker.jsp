@@ -136,6 +136,9 @@
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		$("#workerIdCard").val(workerIdCard);
 
+		// 出生年份--供后台查询使用
+		$("#workerBirthYear").val(year);
+		
 		//远程校验
 		//校验残疾证号是否存在，是否在其他公司
 		$.ajax({
@@ -191,8 +194,8 @@
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
-						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
+					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']" style="width: 200px" />
+						 <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
 				</div>
 			</td>
@@ -206,7 +209,9 @@
 					<option value="0">女</option>
 			</select></td>
 			<td class="">出生日期:</td>
-			<td><input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input>
+			<td>
+			<input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input>
+			<input type="hidden" id="workerBirthYear"  name="workerBirthYear"/>			
 			</td>
 
 

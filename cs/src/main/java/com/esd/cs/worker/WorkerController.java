@@ -157,8 +157,6 @@ public class WorkerController {
 		try {
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
-			//设置年份
-			worker.setWorkerBirthYear(CalendarUtil.getNowYear());
 			boolean b = workerService.save(worker, c.getCompanyCode());
 			logger.debug("addWorker:{},Result:{}",worker, b);
 			return b;
