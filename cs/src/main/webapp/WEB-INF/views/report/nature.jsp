@@ -11,16 +11,14 @@
 	printNature = {};
 	printNature.load = function() {
 		$.ajax({
-			url : 'report/notice/' + $("#year").val(),
+			url : 'report/notice/' + 	$('#companyYear').combobox("getText"),
 			type : 'post',
 			success : function(data) {
-		
-				
-//<td></td><td></td><td></td><td></td><td></td><td></td>
-//<td></td><td>已缴金额</td>
+
+			$("#printNatureTab tbody").empty();
 				for(var i=0;i<data.length;i++){
 	//																					单位性质，                                        单位总数，                                      单位总人数，                         待初单位数，
-					$("#printNatureTab").append("<tr><td>"+data[i].reportName+"</td><td>"+data[i].unitNum+"</td><td>"+data[i].empTotal+"</td><td>"+data[i].unAudit+"</td>"
+					$("#printNatureTab tbody").append("<tr><td>"+data[i].reportName+"</td><td>"+data[i].unitNum+"</td><td>"+data[i].empTotal+"</td><td>"+data[i].unAudit+"</td>"
 				//								待复审单位数，								已复核达标单位数				已复核未达标单位数								应安排人数						已安排人数
 					+"<td>"+data[i].unReAudit+"</td><td>"+data[i].unReAudit+"</td><td>"+data[i].unauditOk+"</td><td>"+data[i].shouldTotal+"</td><td>"+data[i].alreadyTotal+"</td>"
 					//				少安排人数								应缴金额												减免金额												实缴金额											已缴金额
@@ -35,25 +33,34 @@
 		});
 
 	};
+	
 	$(function() {
-		printNature.load();
+		$('#companyYear').combobox({
+			onSelect:function(param){
+				printNature.load();
+			}
+	});
+	printNature.load();
+		
+
 	});
 </script>
-<input type="hidden" value="${year}" id="year" />
 <div class="printOverall">
 	<div>
-		年审单位性质汇总表<select>
-			<option>2012</option>
-		</select>
+		年审单位性质汇总表
+		<!-- 年份 -->
+		<input id="companyYear" class="easyui-combobox" value="${year}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />年
+
 	</div>
 	<!--年审单位性质汇总表 -->
-	<table id="printNatureTab"  border="" cellspacing="0" cellpadding="0" style="margin-top: 30px">
-		<tr>
+	<table id="printNatureTab" border="" cellspacing="0" cellpadding="0" style="margin-top: 30px">
+		<thead>
+					<tr>
 			<th colspan="14">年审单位性质汇总表</th>
 		</tr>
 		<tr>
 			<th colspan="7" style="text-align: left;">制表单位:黑龙江省残疾人联合会</th>
-			<th colspan="7" style="text-align:right">制表时间:2013-08-29</th>
+			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
 			<td>单位性质</td>
@@ -71,18 +78,19 @@
 			<td>实缴金额</td>
 			<td>已缴金额</td>
 		</tr>
+		</thead>
+		<tbody >
 		
-		
-		
-		
-		<tr>
+		</tbody>
+		<tfoot>
+			<tr>
 			<td colspan="14" align="right">制表人：校验</td>
 		</tr>
+		</tfoot>
 	</table>
 
 	<div align="center" style="margin-top: 15px">
-
-		<a href="" class="easyui-linkbutton" iconCls="icon-undo">导出</a>
+		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
 
 

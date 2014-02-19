@@ -2,11 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<style type="text/css">
-#queryAuditBoolbar td {
-	width: 100px;
-}
-</style>
+
 
 <script type="text/javascript">
 	var queryAudit = {};
@@ -198,11 +194,11 @@
 				</select></td>
 			</tr>
 		</table>
-		<div>
-			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-ok">查询</a>
+			<div class="findBut">
+			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			<a href="" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 
-			<button>重置</button>
-			<button>生成excel</button>
 		</div>
 	</div>
 </div>

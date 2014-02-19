@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public class CommonUtil {
 	public static String formatData() {
-		SimpleDateFormat dateFm = new SimpleDateFormat("yy-MM-dd_HH:mm:ss"); // 格式化当前系统日期
+		SimpleDateFormat dateFm = new SimpleDateFormat("yyyy-MM-dd"); // 格式化当前系统日期
 		return dateFm.format(new java.util.Date());
 	}
 

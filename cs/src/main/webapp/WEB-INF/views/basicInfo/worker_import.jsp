@@ -20,13 +20,26 @@
 	});
 	var importWorkerFile = {};
 	importWorkerFile.submit = function() {
-		if ($("#uploadWorkerFile").val() == '' || $("#uploadWorkerFile").val() == undefined) {
-			return false;
+	
+	
+		 var str=$("#uploadWorkerFile").val();
+		 var pos = str.lastIndexOf(".");
+		 var lastname = str.substring(pos,str.length);
+		 
+ 		if(lastname.toLowerCase()==".xls" || lastname.toLowerCase()==".docx"  || lastname.toLowerCase()==".xlsm" || lastname.toLowerCase()==".xlsx" ){
+			return true;
+			
 		}
-		return true;
+		alert("文件格式不支持");
+		return false;
 	};
+	
+	
+	
+	
+	
 </script>
-<form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return ">
+<form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
 	<input type="file" id="uploadWorkerFile" name="file" style="width: 400px" /> <input type="hidden" name="companyId" id="currentCompanyId" />
 	
 	 <input type="submit" value="上传" />

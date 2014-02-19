@@ -35,7 +35,7 @@ public class HExcelSheetParser {
 			// 获取工作薄workbook
 			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

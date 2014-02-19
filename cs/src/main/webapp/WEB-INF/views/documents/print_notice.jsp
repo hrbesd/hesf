@@ -68,8 +68,8 @@
 
 
 <div class="printBut">
-<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','Preview');">打印预览</a> 
-<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','print');">打印</a> 
-			 <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+	<a href="javascript:esd.common.printWindow('printAudit','Preview')" class="easyui-linkbutton"  iconCls="icon-search" >打印预览</a>
+	<a href="javascript:esd.common.printWindow('printAudit','Preview')"  class="easyui-linkbutton"  iconCls="icon-search">打印</a> 
+	<a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" 	iconCls="icon-undo">取消</a>
 </div>
 
