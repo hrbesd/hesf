@@ -605,9 +605,12 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test47() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByArea("2014");
+		List<ReportViewModel> entity = rvmService.getByArea("2222");
 		map.put("entity", entity);
 		return map;
 	}
 
+	
+	
+	
 }
