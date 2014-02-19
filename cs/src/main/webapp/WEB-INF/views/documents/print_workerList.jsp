@@ -5,49 +5,36 @@
 
 <script type="text/javascript">
 	var printWorkerList = {};
-
-	/**	
-		加载列表数据
-	 **/
 	printWorkerList.loadData = function() {
-		var params = {};
+		params = {};
 		params.companyId = $("#companyId").val();//单位id
 		params.year = $("#year").val();//年份
-		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "", [ [ {
-			field : 'workerName',
-			title : '姓名',
-			width : 300
-		}, {
-			field : 'workerHandicapCode',
-			title : '残疾证号',
-			width : 600
-		}, {
-			field : 'workerGender',
-			title : '性别',
-			width : 250,
-			align : 'center'
-		}, {
-			field : 'workerAge',
-			title : '年龄',
-			width : 250,
-			align : 'center'
-		}, {
-			field : 'phone',
-			title : '联系电话',
-			width : 350,
-			align : 'center'
-		}, {
-			field : 'workerHandicapType',
-			title : '残疾类别',
-			width : 250,
-			align : 'center'
-		}, {
-			field : 'workerHandicapLevel',
-			title : '残疾等级',
-			width : 250,
-			align : 'center'
-		
-		} ] ], params);
+		params.page = 1;//分页--起始页
+		params.pageSize = 10;//分页--返回量
+
+		$.ajax({
+			url : "query/worker/company_worker_list",
+			type : "post",
+			data : params,
+			success : function(data) {
+				if (data == undefined) {
+					return;
+				}
+				$("#printWorkerTab tbody").empty();
+				for ( var i = 0; i < data.rows.length; i++) {
+					
+					
+					$("#printWorkerTab tbody").append("<tr><td>"+data.rows[i].workerName+"</td><td>"+data.rows[i].workerGender+"</td><td>"+data.rows[i].workerHandicapCode+"</td><td>"+data.rows[i].phone+"</td>"
+					+"<td>"+data.rows[i].workerHandicapType+"</td><td>"+data.rows[i].workerHandicapLevel+"</td><td>"+data.rows[i].currentJob+"</tr>"
+					);
+				}
+
+			},
+			error : function() {
+				alert("获取残疾数据错误");
+			}
+
+		});
 	};
 
 	$(function() {
@@ -56,12 +43,11 @@
 
 	});
 </script>
-<div>
+<div id="printAudit">
 	<table title="企业年审信息" class="print_tab">
 		<tr>
 			<td colspan="4">
-				<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2>
-			</td>
+				<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2></td>
 		</tr>
 		<tr>
 			<td style="text-align: left;" class="print_outline">企业法人代码：</td>
@@ -78,39 +64,29 @@
 		</tr>
 	</table>
 	<!-- 企业基本情况表 -->
-	<table cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
-		<tr>
-			<td style="width: 90px">姓名</td>
-			<td style="width: 40px">性别</td>
-			<td style="width: 180px">残疾证号</td>
-			<td class="" style="width: 100px">联系电话</td>
-			<td class="" style="width: 100px">残疾类别</td>
-			<td class=" " style="width: 100px">残疾等级</td>
-			<td class="" style="width: 100px">现任岗位</td>
-			<td class="" style="width: 100px">月薪</td>
+	<table id="printWorkerTab" cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
+		<thead>
+			<tr>
+				<td style="width: 90px">姓名</td>
+				<td style="width: 40px">性别</td>
+				<td style="width: 180px">残疾证号</td>
+				<td class="" style="width: 100px">联系电话</td>
+				<td class="" style="width: 100px">残疾类别</td>
+				<td class=" " style="width: 100px">残疾等级</td>
+				<td class="" style="width: 100px">现任岗位</td>
+				
 
-		</tr>
-		<tr>
-			<td>王占波</td>
-			<td>男</td>
-			<td>23010319571027093862</td>
-			<td>肢体</td>
-			<td>精神</td>
-			<td>二级</td>
-			<td>部门经理</td>
-			<td>3000.00</td>
-		</tr>
+			</tr>
+		</thead>
+		<tbody>
+	
+		</tbody>
 	</table>
 
-	<div id="workerList_panel" class="easyui-panel" style="width:850px;height:370px;background:#fafafa;"
-		data-options="">
-		<!-- 数据表格 -->
-		<table id="workerList_dataGrid" ></table>
-	</div>
 
-<div class="printBut">
-<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','Preview');">打印预览</a> 
-<a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search" onclick="esd.common.printWindow('printAudit','print');">打印</a> 
-			 <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+
 </div>
+<div class="printBut">
+	<a href="javascript:esd.common.printWindow('printAudit','Preview')" class="easyui-linkbutton" iconCls="icon-search">打印预览</a> <a href="javascript:esd.common.printWindow('printAudit','Preview')"
+		class="easyui-linkbutton" iconCls="icon-search">打印</a> <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 </div>

@@ -20,7 +20,10 @@
 	</c:if>
 	<div>
 
-		<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
+		<c:if test="${errorLength!=0}">
+					
+				<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
+		</c:if>
 	</div>
 
 </div>

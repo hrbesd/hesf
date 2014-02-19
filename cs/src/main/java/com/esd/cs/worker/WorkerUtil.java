@@ -65,27 +65,21 @@ public class WorkerUtil {
 	 * 
 	 * @param file
 	 * @return
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static Object hasParser(File file) {
+	public static Object hasParser(File file) throws FileNotFoundException, IOException {
 		try {
 			// 获取工作薄workbook
 			hWorkbook = new HSSFWorkbook(new FileInputStream(file));
 			logger.info("excel 97-2003");
 			return hWorkbook;
 		} catch (Exception e) {
-			try {
 				xWorkbook = new XSSFWorkbook(new FileInputStream(file));
 				logger.info("excel 2007-2010");
 				return xWorkbook;
-			} catch (FileNotFoundException e1) {
 			
-				e1.printStackTrace();
-			} catch (IOException e1) {
-			
-				e1.printStackTrace();
-			}
 		}
-		return null;
 	}
 
 	/**
@@ -119,8 +113,10 @@ public class WorkerUtil {
 	 * 
 	 * @param file
 	 * @return
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static List<Worker> parse(File file, int sheetNumber) {
+	public static List<Worker> parse(File file, int sheetNumber) throws FileNotFoundException, IOException {
 		List<Worker> list = null;
 		// 判断excel版本
 		Object obj = hasParser(file);
@@ -152,7 +148,7 @@ public class WorkerUtil {
 	 * 根据残疾证号 组装职工对象
 	 */
 	public static Worker assembly(Worker w) {
-		try {
+		
 			// 残疾证号
 			String handicapCode = w.getWorkerHandicapCode();
 			// 身份证号
@@ -179,10 +175,7 @@ public class WorkerUtil {
 
 			logger.debug("assemblyWorker:{}", w);
 			return w;
-		} catch (Exception e) {
-			logger.error("assemblyWorkerError:{}");
-			return null;
-		}
+	
 
 	}
 

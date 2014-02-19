@@ -168,17 +168,14 @@
 				<input type="text" style="width: 40px" 	id="companyHandicapTotal_2"  data-options="validType:['_number']" class="easyui-validatebox" />人
 				</td>
 			</tr>
-			<tr>
-				<td colspan="8">
-					<hr />
-				</td>
-			</tr>
+			
 
 		</table>
-		<div>
-			<a href="javascript:queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-ok">查询</a>
-			<button>重置</button>
-			<button>生成excel</button>
+		<div class="findBut">
+			<a href="javascript:queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+	
+			<a href="" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>
 </div>

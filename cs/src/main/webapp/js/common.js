@@ -298,12 +298,18 @@ esd.common.printWindow=function(MyDiv,type){
 	if(type=='Preview'&&!-[1,]){   
 		document.all.WebBrowser.ExecWB(7,1);
 	}else{                                   
-     var newstr = document.getElementById(MyDiv).innerHTML;
-     var oldstr = document.body.innerHTML;
-     document.body.innerHTML = newstr;
-     window.print();
-     document.body.innerHTML = oldstr;
-		return false;
+	     var newstr = document.getElementById(MyDiv).innerHTML;
+	     var oldstr = document.body.innerHTML;
+	     document.body.innerHTML = newstr;
+	     window.print();
+	     document.body.innerHTML = oldstr;
+		return;
 	}
 };
+/**
+ * 查看企业
+ */
+esd.common.viewCompany=function(id){
 
+esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+};

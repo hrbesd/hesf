@@ -51,7 +51,19 @@
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
 				if (data[0].type == "1") {
-					$.messager.alert("警告：该员工已被其他公司录用", "员工残疾证号： “" + $("#workerHandicapCode").val() + "”已被：\n ”" + data[1].companyName + "“\n公司录用。公司档案编码为：" + data[1].companyCode);
+					$('#win').window(
+							{
+								title : '警告：该员工已被其他公司录用',
+								height : 150,
+								width : 650,
+								content : "证号：" + $("#workerIdCard").val() + "”已被：" + data[1].companyName + "录用\n"
+										+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
+										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table>",
+								modal : true,
+								collapsible : false,
+								minimizable : false,
+								maximizable : false
+							});
 					return;
 					//第二种情况，员工存在，不再任何公司
 				} else if (data[0].type == "2") {
@@ -68,7 +80,7 @@
 				}
 			},
 			error : function() {
-				alet("增加残疾职工校验时发生错误。");
+				alert("增加残疾职工校验时发生错误。");
 			}
 		});
 	};
@@ -138,7 +150,7 @@
 
 		// 出生年份--供后台查询使用
 		$("#workerBirthYear").val(year);
-		
+
 		//远程校验
 		//校验残疾证号是否存在，是否在其他公司
 		$.ajax({
@@ -151,17 +163,19 @@
 				//第一种情况， 员工存在，并在其他公司内
 				if (data[0].type == "1") {
 
-					$('#win').window({
-						title : '警告：该员工已被其他公司录用',
-						height : 150,
-						width : 650,
-						content :  "证号："+$("#workerIdCard").val() + "”已被：" +data[1].companyName +"录用\n"
-								+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>"+ data[1].companyCode+"</td> <td>"+data[1].companyTaxCode+"</td><td style='width: 450px;'>"+data[1].companyName+"</td></tr></table>",
-						modal : true,
-						collapsible:false,
-						minimizable:false,
-						maximizable:false
-					});
+					$('#win').window(
+							{
+								title : '警告：该员工已被其他公司录用',
+								height : 150,
+								width : 650,
+								content : "证号：" + $("#workerIdCard").val() + "”已被：" + data[1].companyName + "录用\n"
+										+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
+										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table>",
+								modal : true,
+								collapsible : false,
+								minimizable : false,
+								maximizable : false
+							});
 					return;
 					//第二种情况，员工存在，不再任何公司
 				} else {
@@ -187,54 +201,60 @@
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
-			<td align="center"><span style="font-size: 18px;font-weight: bold;">新增残疾人</span></td>
+			<td align="center"><span style="font-size: 18px;font-weight: bold;">新增残疾人</span>
+			</td>
 		</tr>
 		<tr>
 			<td>残疾证号:</td>
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']" style="width: 200px" />
-						 <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
+					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
+						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
-				</div>
-			</td>
+				</div></td>
 		</tr>
 		<tr>
 			<td class="">姓名:</td>
-			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" /></td>
+			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
+			</td>
 			<td class="">性别:</td>
 			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="disabled:'true'">
 					<option value="1">男</option>
 					<option value="0">女</option>
-			</select></td>
-			<td class="">出生日期:</td>
-			<td>
-			<input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input>
-			<input type="hidden" id="workerBirthYear"  name="workerBirthYear"/>			
+			</select>
 			</td>
+			<td class="">出生日期:</td>
+			<td><input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
+				id="workerBirthYear" name="workerBirthYear" /></td>
 
 
 		</tr>
 		<tr>
 			<td class="">就业证号:</td>
-			<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" /></td>
+			<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" />
+			</td>
 			<td class="">残疾类别:</td>
 			<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="1"
-				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" /></td>
+				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
+			</td>
 			<td class="">残疾等级:</td>
 			<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="1"
-				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" /></td>
+				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
+			</td>
 		</tr>
 		<tr>
 			<td class="">联系电话:</td>
-			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" /></td>
+			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" />
+			</td>
 			<td class="">现任岗位:</td>
-			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" /></td>
+			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
+			</td>
 		</tr>
 		<tr>
 			<td class="">备注:</td>
-			<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea></td>
+			<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea>
+			</td>
 		</tr>
 		<!-- 
 		<tr>
@@ -245,12 +265,13 @@
 	 -->
 		<tr>
 			<td colspan="6"><a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:addWorker.close();" class="easyui-linkbutton"
-				iconCls="icon-undo">取消</a></td>
+				iconCls="icon-undo">取消</a>
+			</td>
 		</tr>
 	</table>
 </form>
 
-<div id="win"></div> 
+<div id="win"></div>
 
 
 

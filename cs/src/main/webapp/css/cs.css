@@ -126,3 +126,10 @@ textarea {
 
 	text-align: center;
 }
+
+/*查询按钮*/
+.findBut{
+	margin: 10px 0 3px 10px;
+
+	
+}

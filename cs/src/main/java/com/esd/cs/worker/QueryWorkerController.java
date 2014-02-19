@@ -174,6 +174,7 @@ public class QueryWorkerController {
 				map.put("phone", it.getPhone());// phone
 				map.put("workerHandicapType", it.getWorkerHandicapType().getHandicapType());// 残疾类别
 				map.put("workerHandicapLevel", it.getWorkerHandicapLevel().getHandicapLevel());// 残疾等级
+				map.put("currentJob", it.getCurrentJob());// 现任职位
 				list.add(map);
 			}
 			entity.put("total", total);
