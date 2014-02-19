@@ -3,26 +3,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>400</title>
 
-<link href="${contextPath}/css/404.css" rel="stylesheet" type="text/css" />
+<link href="${contextPath}/css/error.css" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
-
-	<div class="top_404">&nbsp;</div>
-	<div class="photo_404">
-		<img src="${contextPath}/images/error/400.gif" width="500" height="380" />
+	<div class="container">
+		<div class="wrong text-center">
+			<p><img src="${contextPath}/images/error/404.png"/></p>
+			<p class="wrong-num">400</p>
+			<p class="wrong-sorry">抱歉, 您的请求不正确!</p>
+			<a href="#" class="btn btn-large btn-success">返回首页</a>
+		</div>
+	
+		<!-- footer -->
+		<%@ include file="footer.jsp" %>
+		
 	</div>
-
-	<div class="wz_404">
-		<a href="${contextPath}/">&gt;&gt;返回首页</a> <a href="javascript:history.back();">&gt;返回上一页</a>
-	</div>
-	<div class="line_404">&nbsp;</div>
-
 </body>
 </html>
