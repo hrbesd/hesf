@@ -65,8 +65,8 @@ public class WorkerUtil {
 	 * 
 	 * @param file
 	 * @return
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
 	public static Object hasParser(File file) throws FileNotFoundException, IOException {
 		try {
@@ -75,10 +75,10 @@ public class WorkerUtil {
 			logger.info("excel 97-2003");
 			return hWorkbook;
 		} catch (Exception e) {
-				xWorkbook = new XSSFWorkbook(new FileInputStream(file));
-				logger.info("excel 2007-2010");
-				return xWorkbook;
-			
+			xWorkbook = new XSSFWorkbook(new FileInputStream(file));
+			logger.info("excel 2007-2010");
+			return xWorkbook;
+
 		}
 	}
 
@@ -113,8 +113,8 @@ public class WorkerUtil {
 	 * 
 	 * @param file
 	 * @return
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
 	public static List<Worker> parse(File file, int sheetNumber) throws FileNotFoundException, IOException {
 		List<Worker> list = null;
@@ -148,60 +148,59 @@ public class WorkerUtil {
 	 * 根据残疾证号 组装职工对象
 	 */
 	public static Worker assembly(Worker w) {
-		
-			// 残疾证号
-			String handicapCode = w.getWorkerHandicapCode();
-			// 身份证号
-			w.setWorkerIdCard(handicapCode.substring(0, 18));
-			int age = Integer.valueOf(handicapCode.substring(16, 17));
-			// 性别
-			if (age % 2 == 0) {
-				// 女性
-				w.setWorkerGender(0 + "");
-			} else {
-				// 男性
-				w.setWorkerGender(1 + "");
-			}
-			// 残疾类别
-			int handicapType = Integer.valueOf(handicapCode.substring(18, 19));
-			w.setWorkerHandicapType(new WorkerHandicapType(handicapType));
-			
-			// 残疾等级
-			int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
-			w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
-			// 地区
-			String ared = "30" + handicapCode.substring(0, 6);
-			w.setArea(new Area(ared));
 
-			logger.debug("assemblyWorker:{}", w);
-			return w;
-	
+		// 残疾证号
+		String handicapCode = w.getWorkerHandicapCode();
+		// 身份证号
+		w.setWorkerIdCard(handicapCode.substring(0, 18));
+		int age = Integer.valueOf(handicapCode.substring(16, 17));
+		// 性别
+		if (age % 2 == 0) {
+			// 女性
+			w.setWorkerGender(0 + "");
+		} else {
+			// 男性
+			w.setWorkerGender(1 + "");
+		}
+		// 残疾类别
+		int handicapType = Integer.valueOf(handicapCode.substring(18, 19));
+		w.setWorkerHandicapType(new WorkerHandicapType(handicapType));
+
+		// 残疾等级
+		int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
+		w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
+		// 地区
+		String ared = "30" + handicapCode.substring(0, 6);
+		w.setArea(new Area(ared));
+
+		logger.debug("assemblyWorker:{}", w);
+		return w;
 
 	}
 
-	public  List<String> ageVerifi(String workerHandicapCode,AuditParameter param) {
-		int  sex= Integer.valueOf(workerHandicapCode.substring(16, 17));
-		List<String> result=new ArrayList<String>();
-		
+	public List<String> ageVerifi(String workerHandicapCode, AuditParameter param) {
+		int sex = Integer.valueOf(workerHandicapCode.substring(16, 17));
+		List<String> result = new ArrayList<String>();
+
 		if (param != null) {
-			int age=conversionAge(workerHandicapCode);
+			int age = conversionAge(workerHandicapCode);
 			// 性别
 			if (sex % 2 == 0) {
 				// 女性
-				if (age>param.getRetireAgeFemale()) {
+				if (age > param.getRetireAgeFemale()) {
 					result.add("女性");
-					result.add(age+"");
+					result.add(age + "");
 					return result;
 				}
 			} else {
 				// 男性
-				if (age> param.getRetireAgeMale()) {
+				if (age > param.getRetireAgeMale()) {
 					result.add("男性");
-					result.add(age+"");
+					result.add(age + "");
 					return result;
 				}
 			}
-		}else{
+		} else {
 			logger.error("getNowYearERROR:{}");
 		}
 		return null;

@@ -167,7 +167,7 @@ public class QueryWorkerController {
 						map.put("retirementAge", auditParam.getRetireAgeMale());// 男退休年龄
 					}
 				}
-				
+
 				System.out.println();
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));

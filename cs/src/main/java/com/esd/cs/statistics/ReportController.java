@@ -24,10 +24,12 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.User;
 import com.esd.hesf.service.ReportViewService;
 import com.esd.hesf.viewmodels.ReportViewModel;
+
 /**
  * 报表控制器
+ * 
  * @author Administrator
- *
+ * 
  */
 @Controller
 @RequestMapping(value = "/security/report")
@@ -46,12 +48,13 @@ public class ReportController {
 	public ModelAndView nature(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Nature");
 		request.setAttribute("year", CalendarUtil.getNowYear());
-		request.setAttribute("currentTime",CommonUtil.formatData());
+		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/nature");
 	}
 
 	/**
 	 * 获取 企业性质 数据
+	 * 
 	 * @param year
 	 * @param request
 	 * @return
@@ -61,13 +64,13 @@ public class ReportController {
 	public Object get_company(@PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("printNoticeParamsYear:{}", year);
 		List<ReportViewModel> list = reportViewService.getByCompanyType(year);
-		
+
 		logger.debug("printNoticeResult:{}", list.size());
 		return list;
 	}
 
 	/**
-	 * 转到  地区报表
+	 * 转到 地区报表
 	 * 
 	 * @param request
 	 * @return
@@ -76,11 +79,13 @@ public class ReportController {
 	public ModelAndView area(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Area");
 		request.setAttribute("year", CalendarUtil.getNowYear());
-		request.setAttribute("currentTime",CommonUtil.formatData());
+		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/area");
 	}
+
 	/**
 	 * 获取 地区 数据
+	 * 
 	 * @param year
 	 * @param request
 	 * @return
@@ -94,10 +99,8 @@ public class ReportController {
 		return list;
 	}
 
-	
-
 	/**
-	 * 转到  经济类型 报表
+	 * 转到 经济类型 报表
 	 * 
 	 * @param request
 	 * @return
@@ -106,11 +109,13 @@ public class ReportController {
 	public ModelAndView economytype(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Economytype");
 		request.setAttribute("year", CalendarUtil.getNowYear());
-		request.setAttribute("currentTime",CommonUtil.formatData());
+		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/economytype");
 	}
+
 	/**
-	 * 获取  经济类型 数据
+	 * 获取 经济类型 数据
+	 * 
 	 * @param year
 	 * @param request
 	 * @return

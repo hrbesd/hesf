@@ -13,15 +13,17 @@
 
 <div style="width: 500px;margin: auto;font-size: 18;font-weight: bold;text-align: center;">
 	<c:if test="${fileLoadUpResult==''}">
-						${fileLoadUpResult}
-		</c:if>
+						----------sdfsdf
+	</c:if>
+		
+		
+		
 	<c:if test="${fileLoadUpResult!=''}">
 		导入数据总量为：${totalLength}条，导入失败：${errorLength}条，导入成功${succesLength}条。
 	</c:if>
 	<div>
 
 		<c:if test="${errorLength!=0}">
-					
 				<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
 		</c:if>
 	</div>

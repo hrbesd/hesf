@@ -288,23 +288,27 @@ esd.common.validatebox = function(id) {
 };
 
 
+
 /**
  * 打印
- * @param MyDiv  组件
- * @param type  类型
- * @returns {Boolean}
+ * <!--startprint-->  开始部分
+ * <!--endprint-->   结束部分
  */
-esd.common.printWindow=function(MyDiv,type){
-	if(type=='Preview'&&!-[1,]){   
-		document.all.WebBrowser.ExecWB(7,1);
-	}else{                                   
-	     var newstr = document.getElementById(MyDiv).innerHTML;
-	     var oldstr = document.body.innerHTML;
-	     document.body.innerHTML = newstr;
-	     window.print();
-	     document.body.innerHTML = oldstr;
-		return;
-	}
+esd.common.printWindow=function(){
+	
+		bdhtml=window.document.body.innerHTML; 
+		sprnstr="<!--startprint-->"; 
+		eprnstr="<!--endprint-->"; 
+		prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); 
+		prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); 
+		var newWindow=window.open();
+		newWindow.window.document.body.innerHTML=prnhtml; 
+		newWindow.window.document.head.innerHTML=window.document.head.innerHTML;
+		newWindow.window.print(); 
+		
+//		window.document.body.innerHTML=prnhtml; 
+//		window.print(); 
+	
 };
 /**
  * 查看企业

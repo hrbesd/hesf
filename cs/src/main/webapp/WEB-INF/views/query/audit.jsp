@@ -50,7 +50,11 @@
 			valueField : 'id',
 			textField : 'userName'
 		});
-		
+			//初始化输入元素默认值
+		var element=$(".inputElement");
+		for(var i=0;i<element.length;i++){
+			$(element[i]).val("");
+		}
 		
 	};
 
@@ -138,13 +142,13 @@
 				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
 				</td>
 				<td>档案号码:</td>
-				<td><input type="text" id="companyCode" />
+				<td><input type="text" id="companyCode" class="inputElement"/>
 				</td>
 				<td>税务号码:</td>
-				<td><input id="companyTaxCode" type="text" />
+				<td><input id="companyTaxCode" type="text" class="inputElement" />
 				</td>
 				<td>组织机构代码证:</td>
-				<td><input type="text" id="companyOrganizationCode" /></td>
+				<td><input type="text" id="companyOrganizationCode" class="inputElement"/></td>
 
 			</tr>
 			<tr>
@@ -158,19 +162,19 @@
 				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" />
 				</td>
 				<td>企业人数:</td>
-				<td><input type="text" style="width: 40px" id="companyEmpTotal_1" />-<input type="text" style="width: 40px" id="companyEmpTotal_2" />人</td>
+				<td><input type="text" style="width: 40px" id="companyEmpTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement"  />-<input type="text" style="width: 40px" id="companyEmpTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement"  />人</td>
 			</tr>
 			<tr>
 				<td>企业名称:</td>
-				<td colspan="3"><input class="longInputBox" id="companyName" />
+				<td colspan="3"><input class="longInputBox inputElement" id="companyName" />
 				</td>
 				<td>企业地址:</td>
-				<td colspan="3"><input id="companyAddress" type="text" /></td>
+				<td colspan="3"><input id="companyAddress"  class="longInputBox inputElement" type="text" /></td>
 
 			</tr>
 			<tr>
 				<td>法人代表:</td>
-				<td><input id="companyLegal" type="text" /></td>
+				<td><input id="companyLegal" type="text"   class=" inputElement"/></td>
 			</tr>
 			<tr>
 				<td colspan="8">
@@ -183,7 +187,7 @@
 				<td>缴款人:</td>
 				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="width:80,height:30,editable:false" /></td>
 				<td>超过:</td>
-				<td><input id="overYear" type="text" value="0" style="width: 60px" /> 年未初审</td>
+				<td><input id="overYear" type="text" value="0" style="width: 60px"  data-options="validType:['_number']" class="easyui-validatebox inputElement" /> 年未初审</td>
 
 				<td>是否免交:</td>
 				<td><select id="isExempt">
@@ -196,7 +200,7 @@
 		</table>
 			<div class="findBut">
 			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-			<a href="" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="javascript:queryAudit.init()"  class="easyui-linkbutton" iconCls="icon-redo">重置</a>
 			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 
 		</div>

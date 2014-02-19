@@ -7,6 +7,8 @@
 
 <script type="text/javascript">
 	var queryCompany = {};
+	
+
 	/**
 		初始化数据
 	 **/
@@ -36,6 +38,11 @@
 			valueField : 'id',
 			textField : 'text'
 		});
+		//初始化输入元素默认值
+		var element=$(".inputElement");
+		for(var i=0;i<element.length;i++){
+			$(element[i]).val("");
+		}
 	};
 
 	/*
@@ -124,13 +131,13 @@
 				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
 				</td>
 				<td>档案号码:</td>
-				<td><input type="text" id="companyCode" />
+				<td><input type="text" id="companyCode"  class="inputElement"/>
 				</td>
 				<td>税务号码:</td>
-				<td><input id="companyTaxCode" type="text" />
+				<td><input id="companyTaxCode" type="text"  class="inputElement"/>
 				</td>
 				<td>组织机构代码证:</td>
-				<td><input type="text" id="companyOrganizationCode" /></td>
+				<td><input type="text" id="companyOrganizationCode" class="inputElement" /></td>
 
 			</tr>
 			<tr>
@@ -145,27 +152,27 @@
 				</td>
 				<td>企业人数:</td>
 				<td>
-				<input type="text" style="width: 40px" 	id="companyEmpTotal_1"  data-options="validType:['_number']" class="easyui-validatebox" />-
-				<input type="text" style="width: 40px" 	id="companyEmpTotal_2"  data-options="validType:['_number']" class="easyui-validatebox" />
+				<input type="text" style="width: 40px" 	id="companyEmpTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />-
+				<input type="text" style="width: 40px" 	id="companyEmpTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />
 		
 					</td>
 			</tr>
 			<tr>
 				<td>企业名称:</td>
-				<td colspan="3"><input class="longInputBox" id="companyName" />
+				<td colspan="3"><input class="longInputBox inputElement" id="companyName"  />
 				</td>
 				<td>企业地址:</td>
-				<td colspan="3"><input class="longInputBox"  type="text" id="companyAddress" /></td>
+				<td colspan="3"><input class="longInputBox inputElement"  type="text" id="companyAddress" /></td>
 
 			</tr>
 			<tr>
 				<td>法人代表:</td>
-				<td><input id="companyLegal" type="text" /></td>
+				<td><input id="companyLegal" type="text" class="inputElement"/></td>
 				<td>残疾职工数:</td>
 				<td>
-				<input type="text" style="width: 40px" 	id="companyHandicapTotal_1"  data-options="validType:['_number']" class="easyui-validatebox" />
+				<input type="text" style="width: 40px" 	id="companyHandicapTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />
 				-
-				<input type="text" style="width: 40px" 	id="companyHandicapTotal_2"  data-options="validType:['_number']" class="easyui-validatebox" />人
+				<input type="text" style="width: 40px" 	id="companyHandicapTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />人
 				</td>
 			</tr>
 			
@@ -174,7 +181,7 @@
 		<div class="findBut">
 			<a href="javascript:queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 	
-			<a href="" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="javascript:queryCompany.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
 			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>

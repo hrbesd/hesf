@@ -28,7 +28,11 @@
 			valueField : 'id',
 			textField : 'text'
 		});
-
+	//初始化输入元素默认值
+		var element=$(".inputElement");
+		for(var i=0;i<element.length;i++){
+			$(element[i]).val("");
+		}
 	};
 	/** 
 	创建数据表格并初始化数据
@@ -119,13 +123,13 @@
 				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/company/getyears'" />
 				</td>
 				<td>残疾证号:</td>
-				<td><input type="text" id="workerFind_workerHandicapCode" />
+				<td><input type="text" id="workerFind_workerHandicapCode"  class="inputElement"/>
 				</td>
 				<td>就业证号:</td>
-				<td><input type="text" id="workerFind_careerCard" />
+				<td><input type="text" id="workerFind_careerCard" class="inputElement"/>
 				</td>
 				<td>姓名:</td>
-				<td><input type="text" id="workerFind_workerName" />
+				<td><input type="text" id="workerFind_workerName" class="inputElement"/>
 				</td>
 				<td>性别:</td>
 				<td><select id="workerFind_Gender">
@@ -138,20 +142,20 @@
 			
 			<tr>
 				<td>现任岗位:</td>
-				<td><input type="text" id="workerFind_currentJob" />
+				<td><input type="text" id="workerFind_currentJob" class="inputElement" />
 				</td>
 				<td>残疾类别:</td>
 				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" /></td>
 				<td>残疾等级:</td>
 				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:140" /></td>
 				<td>年龄:</td>
-				<td><input class="easyui-validatebox" style="width: 40px" id="workerFind_workerAge1" type="text" data-options="validType:['_number']" />-<input style="width: 40px" type="text"
-					id="workerFind_workerAge2" data-options="validType:['_number']" class="easyui-validatebox" />岁</td>
+				<td><input class="easyui-validatebox inputElement" style="width: 40px" id="workerFind_workerAge1" type="text" data-options="validType:['_number']" />-<input style="width: 40px" type="text"
+					id="workerFind_workerAge2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />岁</td>
 			</tr>
 		</table>
 			<div class="findBut">
 			<a href="javascript:queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-			<a href="" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="javascript:queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
 			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>

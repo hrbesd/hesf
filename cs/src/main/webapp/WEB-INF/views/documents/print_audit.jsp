@@ -7,17 +7,30 @@
 	printAudit.init = function() {
 
 	};
+	
+
+
 	$(function() {
-		printAudit.init();
+		
 	});
-	function f() {
-		javascript: WindowPrint.execwb(7, 1);
-	}
+
 </script>
 <input type="hidden" value="${companyId}" />
 <input type="hidden" value="${year}" />
+<!--startprint-->
+<style>
+
+.print_tab ,.printBut{
+	margin: auto;
+	width: 800px;
+	text-align: center;
+}
+.print_outline {
+width: 100px;
+}
+</style>
 <div id="printAudit">
-	<table title="企业年审信息" class="print_tab">
+	<table title="企业年审信息" class="print_tab" >
 		<tr>
 			<td colspan="4">
 				<h2 style="text-align: center;">按比例安排残疾人就业情况表</h2>
@@ -102,9 +115,10 @@
 		</tr>
 	</table>
 </div>
+<!--endprint-->
 <div class="printBut">
-	<a href="javascript:esd.common.printWindow('printAudit','Preview')" class="easyui-linkbutton"  iconCls="icon-search" >打印预览</a>
-	<a href="javascript:esd.common.printWindow('printAudit','Preview')"  class="easyui-linkbutton"  iconCls="icon-search">打印</a> 
+	<a href="javascript:esd.common.printWindow()"  class="easyui-linkbutton"  iconCls="icon-search" >打印预览</a>
+	<a href="javascript:esd.common.printWindow()"  class="easyui-linkbutton"  iconCls="icon-search">打印</a> 
 	<a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" 	iconCls="icon-undo">取消</a>
 </div>
 <div />

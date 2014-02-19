@@ -22,11 +22,10 @@
 				}
 				$("#printWorkerTab tbody").empty();
 				for ( var i = 0; i < data.rows.length; i++) {
-					
-					
-					$("#printWorkerTab tbody").append("<tr><td>"+data.rows[i].workerName+"</td><td>"+data.rows[i].workerGender+"</td><td>"+data.rows[i].workerHandicapCode+"</td><td>"+data.rows[i].phone+"</td>"
-					+"<td>"+data.rows[i].workerHandicapType+"</td><td>"+data.rows[i].workerHandicapLevel+"</td><td>"+data.rows[i].currentJob+"</tr>"
-					);
+
+					$("#printWorkerTab tbody").append(
+							"<tr><td>" + data.rows[i].workerName + "</td><td>" + data.rows[i].workerGender + "</td><td>" + data.rows[i].workerHandicapCode + "</td><td>" + data.rows[i].phone + "</td>"
+									+ "<td>" + data.rows[i].workerHandicapType + "</td><td>" + data.rows[i].workerHandicapLevel + "</td><td>" + data.rows[i].currentJob + "</tr>");
 				}
 
 			},
@@ -43,49 +42,50 @@
 
 	});
 </script>
-<div id="printAudit">
-	<table title="企业年审信息" class="print_tab">
+<!--startprint-->
+<style>
+.print_tab, .printBut {
+text-align: center;
+}
+</style>
+<table title="企业年审信息" class="print_tab">
+	<tr>
+		<td colspan="4">
+			<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2>
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;" class="print_outline">企业法人代码：</td>
+		<td class="print_content">123456789</td>
+
+		<td class="print_outline">税务编码：</td>
+		<td class="print_content">01010111</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;" class="print_outline">企业名称(盖章):</td>
+		<td class="print_content">黑龙江省北龙交通工程有限公司</td>
+		<td class="print_outline">年度</td>
+		<td class="print_content">2012年</td>
+	</tr>
+</table>
+<!-- 企业基本情况表 -->
+<table id="printWorkerTab" cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
+	<thead>
 		<tr>
-			<td colspan="4">
-				<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2></td>
+			<td style="width: 90px">姓名</td>
+			<td style="width: 40px">性别</td>
+			<td style="width: 180px">残疾证号</td>
+			<td class="" style="width: 100px">联系电话</td>
+			<td class="" style="width: 100px">残疾类别</td>
+			<td class=" " style="width: 100px">残疾等级</td>
+			<td class="" style="width: 100px">现任岗位</td>
 		</tr>
-		<tr>
-			<td style="text-align: left;" class="print_outline">企业法人代码：</td>
-			<td class="print_content">123456789</td>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+<!--endprint-->
 
-			<td class="print_outline">税务编码：</td>
-			<td class="print_content">01010111</td>
-		</tr>
-		<tr>
-			<td style="text-align: left;" class="print_outline">企业名称(盖章):</td>
-			<td class="print_content">黑龙江省北龙交通工程有限公司</td>
-			<td class="print_outline">年度</td>
-			<td class="print_content">2012年</td>
-		</tr>
-	</table>
-	<!-- 企业基本情况表 -->
-	<table id="printWorkerTab" cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
-		<thead>
-			<tr>
-				<td style="width: 90px">姓名</td>
-				<td style="width: 40px">性别</td>
-				<td style="width: 180px">残疾证号</td>
-				<td class="" style="width: 100px">联系电话</td>
-				<td class="" style="width: 100px">残疾类别</td>
-				<td class=" " style="width: 100px">残疾等级</td>
-				<td class="" style="width: 100px">现任岗位</td>
-				
-
-			</tr>
-		</thead>
-		<tbody>
-	
-		</tbody>
-	</table>
-
-
-
-</div>
 <div class="printBut">
 	<a href="javascript:esd.common.printWindow('printAudit','Preview')" class="easyui-linkbutton" iconCls="icon-search">打印预览</a> <a href="javascript:esd.common.printWindow('printAudit','Preview')"
 		class="easyui-linkbutton" iconCls="icon-search">打印</a> <a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>

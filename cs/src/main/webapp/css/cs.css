@@ -119,13 +119,6 @@ textarea {
 		margin:auto;
 		margin-top: 50px;
 	}
-	
-.printNotice{
-	width: 400px;float: left;	
-    margin: auto auto auto 30px;
-
-	text-align: center;
-}
 
 /*查询按钮*/
 .findBut{

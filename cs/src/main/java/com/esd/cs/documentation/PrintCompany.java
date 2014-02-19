@@ -79,57 +79,57 @@ public class PrintCompany {
 	 * @return
 	 */
 	@RequestMapping(value = "/audit/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView audittab(@PathVariable(value = "companyId") String companyId, 
-			@PathVariable(value = "year") String year,
-			HttpServletRequest request) {
-		logger.debug("gotoPrint_audit companyId:{}",companyId);
+	public ModelAndView audittab(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+		logger.debug("gotoPrint_audit companyId:{}", companyId);
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
-		Map<String,String> result=new HashMap<String,String>();
-		
-		
-		Company  company=companyService.getByPrimaryKey(companyId);
-		if(company==null){
-			logger.error("getPrintAuditError:{}","getCompanyNull");
+		Map<String, String> result = new HashMap<String, String>();
+
+		Company company = companyService.getByPrimaryKey(companyId);
+		if (company == null) {
+			logger.error("getPrintAuditError:{}", "getCompanyNull");
 			return null;
 		}
-		//企业基本信息
-		result.put("companyName", company.getCompanyName());//企业名称
-		
+		// 企业基本信息
+		result.put("companyName", company.getCompanyName());// 企业名称
+
 		result.put("companyBank", company.getCompanyBank());// 开户银行
 		result.put("bankAccount", company.getCompanyBankAccount());// 银行账户
 		result.put("zipCode", company.getCompanyZipCode());// 企业邮政编码
-		result.put("contactPerson", company.getCompanyContactPerson());//联系人
-		result.put("taxCode", company.getCompanyTaxCode());//税务编码
-		result.put("legal", company.getCompanyLegal());//企业法人		
-		result.put("address", company.getCompanyAddress());//企业地址		
-		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());//组织机关代码证	
-		result.put("companyPhone", company.getCompanyPhone());//电话
-		//残疾职工信息
-		result.put("companyEmpTotal", company.getCompanyEmpTotal()+"");//员工总数
-		result.put("companyHandicapTotal", company.getCompanyHandicapTotal()+"");//残疾员工总数 已录入数
-		result.put("companyPredictTotal", company.getCompanyPredictTotal()+"");// 预计残疾人数
-		result.put("companyShouldTotal", company.getCompanyShouldTotal()+"");// 应安排残疾人数
-		result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal()+"");//  已安排残疾人数
-		//保证金额度
+		result.put("contactPerson", company.getCompanyContactPerson());// 联系人
+		result.put("taxCode", company.getCompanyTaxCode());// 税务编码
+		result.put("legal", company.getCompanyLegal());// 企业法人
+		result.put("address", company.getCompanyAddress());// 企业地址
+		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());// 组织机关代码证
+		result.put("companyPhone", company.getCompanyPhone());// 电话
+		// 残疾职工信息
+		result.put("companyEmpTotal", company.getCompanyEmpTotal() + "");// 员工总数
+		result.put("companyHandicapTotal", company.getCompanyHandicapTotal() + "");// 残疾员工总数
+																					// 已录入数
+		result.put("companyPredictTotal", company.getCompanyPredictTotal() + "");// 预计残疾人数
+		result.put("companyShouldTotal", company.getCompanyShouldTotal() + "");// 应安排残疾人数
+		result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal() + "");// 已安排残疾人数
+		// 保证金额度
 		request.setAttribute("company", result);
 		return new ModelAndView("documents/print_audit");
 	}
-	
+
 	/**
 	 * 获取打印审核信息
+	 * 
 	 * @param id
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/audit/{companyId}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object workerList(@PathVariable(value = "companyId") String id,HttpServletRequest request) {
-	
+	public Object workerList(@PathVariable(value = "companyId") String id, HttpServletRequest request) {
+
 		Map<String, Object> entity = new HashMap<>();
-		
+
 		return entity;
 	}
+
 	/**
 	 * 转到打印职工列表页面
 	 * 
@@ -138,15 +138,10 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/workerlist/{companyId}", method = RequestMethod.GET)
 	public ModelAndView workerlist(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
-		logger.debug("gotoPrint_workerList,companyId:{}",companyId);
+		logger.debug("gotoPrint_workerList,companyId:{}", companyId);
 		request.setAttribute("companyId", companyId);
 		return new ModelAndView("documents/print_workerList");
 	}
-	
-	
-	
-	
-	
 
 	/**
 	 * 转到打印催缴通知书页面
@@ -155,16 +150,17 @@ public class PrintCompany {
 	 * @return
 	 */
 	@RequestMapping(value = "/notice/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView notice(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year,HttpServletRequest request) {
-		
-		logger.debug("gotoPrint_gotonotice,companyId:{},year:{}",companyId,year);
+	public ModelAndView notice(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+
+		logger.debug("gotoPrint_gotonotice,companyId:{},year:{}", companyId, year);
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
 		return new ModelAndView("documents/print_notice");
 	}
-	
+
 	/**
 	 * 获取催缴通知书页面数据
+	 * 
 	 * @param companyId
 	 * @param year
 	 * @param request
@@ -172,37 +168,36 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/notice/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object get_company(@PathVariable(value = "companyId") String companyId,
-			@PathVariable(value = "year") String year,
-			HttpServletRequest request) {
-		logger.debug("printNoticeParamsID:{},year:{}",companyId,year);
+	public Object get_company(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+		logger.debug("printNoticeParamsID:{},year:{}", companyId, year);
 		try {
-			logger.debug("getPrintNoticeInfo:{}",companyId);
-			Map<String,String> result=new HashMap<String,String>();
+			logger.debug("getPrintNoticeInfo:{}", companyId);
+			Map<String, String> result = new HashMap<String, String>();
 			Company company = companyService.getByPrimaryKey(companyId);
-			if(company==null){
-				logger.error("getPrintNoticeInfoError:{}","getCompanyNull");
+			if (company == null) {
+				logger.error("getPrintNoticeInfoError:{}", "getCompanyNull");
 				return null;
 			}
-			//企业基本信息
-			result.put("companyName", company.getCompanyName());//企业名称
-			//残疾职工信息
-			result.put("companyEmpTotal", company.getCompanyEmpTotal()+"");//员工总数
-			result.put("companyHandicapTotal", company.getCompanyHandicapTotal()+"");//残疾员工总数 已录入数
-			result.put("companyPredictTotal", company.getCompanyPredictTotal()+"");// 预计残疾人数
-			result.put("companyShouldTotal", company.getCompanyShouldTotal()+"");// 应安排残疾人数
-			result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal()+"");//  已安排残疾人数
-			
-			//初审员
+			// 企业基本信息
+			result.put("companyName", company.getCompanyName());// 企业名称
+			// 残疾职工信息
+			result.put("companyEmpTotal", company.getCompanyEmpTotal() + "");// 员工总数
+			result.put("companyHandicapTotal", company.getCompanyHandicapTotal() + "");// 残疾员工总数
+																						// 已录入数
+			result.put("companyPredictTotal", company.getCompanyPredictTotal() + "");// 预计残疾人数
+			result.put("companyShouldTotal", company.getCompanyShouldTotal() + "");// 应安排残疾人数
+			result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal() + "");// 已安排残疾人数
+
+			// 初审员
 			Audit audit = auditService.getByPrimaryKey(year, company.getCompanyCode());
-			if(audit==null){
-				logger.error("getPrintNoticeInfoError:{}","getauditNull");
+			if (audit == null) {
+				logger.error("getPrintNoticeInfoError:{}", "getauditNull");
 				return null;
 			}
-			User user=service.getByPrimaryKey(audit.getInitAuditUserId());
-			System.out.println(user.getUserName()+"-=-=-=-=-=-=-=-=-");
-			//复审员
-			//保证金额度
+			User user = service.getByPrimaryKey(audit.getInitAuditUserId());
+			System.out.println(user.getUserName() + "-=-=-=-=-=-=-=-=-");
+			// 复审员
+			// 保证金额度
 			logger.debug(" getcompany{}", company);
 			request.setAttribute("company", company);
 			return company;

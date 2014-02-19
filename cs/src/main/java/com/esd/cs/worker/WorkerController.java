@@ -158,11 +158,11 @@ public class WorkerController {
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
 			boolean b = workerService.save(worker, c.getCompanyCode());
-			logger.debug("addWorker:{},Result:{}",worker, b);
+			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("addWorkerError:{}",e.getMessage());
+			logger.error("addWorkerError:{}", e.getMessage());
 			return null;
 		}
 	}
@@ -174,7 +174,7 @@ public class WorkerController {
 			logger.error("addWorker_getCompanyError:{}", "null");
 			return false;
 		}
-		//设置年份
+		// 设置年份
 		worker.setWorkerBirthYear(CalendarUtil.getNowYear());
 		boolean b = workerService.save(worker, c.getCompanyCode());
 		logger.debug("addWorkerResult:{}", b);
@@ -246,7 +246,7 @@ public class WorkerController {
 	private boolean editWorkerUp(Worker worker, String companyId) {
 		boolean workerUpDataStatus = false, companyUpdataStatus = false;
 		try {
-			System.out.println(worker.getWorkerHandicapCode()+"====================");
+			System.out.println(worker.getWorkerHandicapCode() + "====================");
 			// 根据残疾证号获取版本号
 			Worker w = workerService.getByWorkerHandicapCode(worker.getWorkerHandicapCode());
 			if (w == null) {
@@ -312,8 +312,8 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/importworker", method = RequestMethod.POST)
 	public ModelAndView importworker(@RequestParam(value = "companyId") String companyId, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
-		logger.debug("importWorker:{}");
-		//错误信息列表
+		logger.debug("importWorkerFile:{}");
+		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list = null;
 		String url = request.getServletContext().getRealPath("/");
@@ -328,23 +328,22 @@ public class WorkerController {
 				for (int i = 0; i < list.size(); i++) {
 					Worker worker = list.get(i);
 					// 校验部分
-
 					String workerHandicapCode = worker.getWorkerHandicapCode();
 					// 员工姓名
-					String workerName = worker.getWorkerName().replace(" ", "");//取出所有空格
+					String workerName = worker.getWorkerName().replace(" ", "");// 取出所有空格
 					Worker w = new Worker();
 					w.setWorkerName(worker.getWorkerName());
 					w.setWorkerHandicapCode(workerHandicapCode);
-				
-					// 校验姓名
-					if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName,"null")) {
+
+					// 1.校验姓名
+					if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null")) {
 						// 存储错误信息
 						w.setRemark(NAMENULL);
 						workerErrorList.add(w);
 						logger.error("impoerWorkerError:{},info:{}", w, NAMENULL);
 						continue;
 					}
-					// 校验残疾证号长度
+					// 2.校验残疾证号长度
 					if (workerHandicapCode == null) {
 						// 存储错误信息
 						w.setRemark(LENGTHERROR);
@@ -353,7 +352,7 @@ public class WorkerController {
 						continue;
 					} else {
 						workerHandicapCode.replace(" ", "");// 去掉所有空格
-						// 校验残疾证号是否含有中文
+						// 3.校验残疾证号是否含有中文
 						if (CommonUtil.chineseValid(workerHandicapCode)) {
 							// 存储错误信息
 							w.setRemark(ILLEGALSTR);
@@ -361,7 +360,7 @@ public class WorkerController {
 							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 							continue;
 						}
-						// 校验残疾证号长度
+						// 4.校验残疾证号长度
 						if (!(workerHandicapCode.length() == HANDICAPCODE)) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
@@ -370,7 +369,7 @@ public class WorkerController {
 							continue;
 						}
 					}
-					// 校验部分 残疾类型校验
+					// 5.校验残疾类型
 					int handicapType = Integer.valueOf(workerHandicapCode.substring(18, 19));
 					if (handicapType > 7 || handicapType == 0) {
 						w.setRemark(TYPEERROR);
@@ -379,7 +378,7 @@ public class WorkerController {
 						continue;
 					}
 
-					// 校验残疾证号等级校验
+					// 6.校验残疾证号等级
 					int handicapLevel = Integer.valueOf(workerHandicapCode.substring(19, 20));
 					if (handicapLevel > 4 || handicapLevel == 0) {
 						w.setRemark(LEVELERROR);
@@ -387,7 +386,7 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
 						continue;
 					}
-					// 校验职工年龄校验
+					// 7.校验职工年龄
 					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getNowYear()));
 					if (ageResult != null) {
 						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。已超过退休年龄。";
@@ -396,11 +395,11 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, ageErrorInfo);
 						continue;
 					}
-					// 2.校验身份证号，重复性检测
+					// 8.校验身份证号，重复性检测
 					List<Map<String, String>> validateList = validateOrganizationCode(workerHandicapCode.substring(0, 18));
 					Map<String, String> validateResult = validateList.get(0);
 					logger.debug("LineNumber:{},validataType:{}", i, validateResult.get("type"));
-					// 第一种情况 存在，并且在其他公司内。
+					// 9.第一种情况 存在，并且在其他公司内。
 					if (StringUtils.equals(validateResult.get("type"), "1")) {
 						// 存储错误信息
 						String errinfo = "职工已被：" + validateList.get(1).get("companyName") + " 单位录用，单位档案编码为：" + validateList.get(1).get("companyCode");
@@ -409,7 +408,7 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, errinfo);
 						continue;
 					}
-					// 第二种情况：存在，并且不再任何公司。
+					// 10.第二种情况：存在，并且不再任何公司。
 					if (StringUtils.equals(validateResult.get("type"), "2")) {
 						Worker workerUp = new Worker();
 						workerUp.setWorkerName(worker.getWorkerName());
@@ -425,6 +424,7 @@ public class WorkerController {
 						}
 						continue;
 					}
+					//正常存储
 					// 第三种情况： 不存在数据库中，进行存储
 					logger.error("员工信息正常，可以进行存储：" + worker.getWorkerName());
 					Worker workerUp = new Worker();
@@ -438,6 +438,16 @@ public class WorkerController {
 						w.setRemark("员工存储时未成功");
 						workerErrorList.add(w);
 						logger.error("impoerWorkerSaveError:{}", "false");
+						// 检测是否有未导入数据
+						if (workerErrorList.size() != 0) {
+							String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
+							boolean result = PoiCreateExcel.createExcel(errorFilePath, workerErrorList);
+							String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+							// 返回错误列表文件下载地址
+							request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
+						}
+						
+						
 					}
 				}
 			} catch (IllegalStateException e) {
@@ -445,24 +455,16 @@ public class WorkerController {
 			} catch (IOException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
 			}
-
-			// 检测是否有未导入数据
-			if (workerErrorList.size() != 0) {
-				String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
-				boolean result = PoiCreateExcel.createExcel(errorFilePath, workerErrorList);
-				String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-				// 返回错误列表文件下载地址
-				request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
-			}
-
 			int totalLength = 0;
 			int errorLength = 0;
 			int succesLength = 0;
+			// 检测是否有导入失败数据
 			if (list != null) {
 				totalLength = list.size();
 				errorLength = workerErrorList.size();
 				succesLength = totalLength - errorLength;
 			}
+			//request.setAttribute("fileLoadUpResult", "文件上传失败");
 			request.setAttribute("totalLength", totalLength);// 总条数
 			request.setAttribute("errorLength", errorLength);// 失败条数
 			request.setAttribute("succesLength", succesLength);// 成功条数
