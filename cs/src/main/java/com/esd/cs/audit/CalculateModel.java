@@ -38,11 +38,17 @@ public class CalculateModel {
 	private String s_zhiNaJin;
 	private String s_shiJiaoZongJinE;
 	private String s_zhiNaJinTianShu;
+	private String message;
 
 	@Override
 	public String toString() {
-		return "calculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen=" + yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE=" + jianJiaoJinE
-				+ ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + "]";
+		return "CalculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen="
+				+ yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE="
+				+ jianJiaoJinE + ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + ", zhiNaJin=" + zhiNaJin + ", zhiNaJinTianShu=" + zhiNaJinTianShu + ", shiJiaoZongJinE="
+				+ shiJiaoZongJinE + ", year=" + year + ", companyCode=" + companyCode + ", s_zaiZhiYuanGongZongShu=" + s_zaiZhiYuanGongZongShu + ", s_yingAnPaiCanJiRen=" + s_yingAnPaiCanJiRen
+				+ ", s_yiAnPaiCanJiRen=" + s_yiAnPaiCanJiRen + ", s_yiLuRuCanJiRen=" + s_yiLuRuCanJiRen + ", s_yuDingCanJiRen=" + s_yuDingCanJiRen + ", s_shangNianDuWeiJiaoBaoZhangJin="
+				+ s_shangNianDuWeiJiaoBaoZhangJin + ", s_yingJiaoJinE=" + s_yingJiaoJinE + ", s_jianJiaoJinE=" + s_jianJiaoJinE + ", s_buJiaoJinE=" + s_buJiaoJinE + ", s_shiJiaoJinE=" + s_shiJiaoJinE
+				+ ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE=" + s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", message=" + message + "]";
 	}
 
 	public Integer getZaiZhiYuanGongZongShu() {
@@ -290,6 +296,14 @@ public class CalculateModel {
 
 	public void setS_zhiNaJinTianShu(String s_zhiNaJinTianShu) {
 		this.s_zhiNaJinTianShu = s_zhiNaJinTianShu;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }

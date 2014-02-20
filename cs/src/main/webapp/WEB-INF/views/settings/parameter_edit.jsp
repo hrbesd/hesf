@@ -34,10 +34,6 @@
 					<td>所属地区:</td>
 					<td><input name="area.code" class="easyui-combobox" data-options="value:${entity.area.code},height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
 					</td>
-					<td>滞纳金开始时间:</td>
-					<td>
-					<fmt:formatDate value="${entity.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,showSeconds:false" value="${date}" style="width:150px" /></td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>
@@ -50,8 +46,10 @@
 				<tr>
 					<td>计算基数:</td>
 					<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${entity.averageSalary}" /></td>
-					<td>支付限制天数:</td>
-					<td><input class="easyui-validatebox" name="payLimitDays" type="text" required="true" value="${entity.payLimitDays }" /></td>
+					<td>支付截至日期:</td>
+					<td>
+					<fmt:formatDate value="${entity.payCloseDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
+					<input class="easyui-datebox easyui-validatebox" name="payCloseDate" data-options="required:false,showSeconds:false" value="${date}" style="width:150px" /></td>
 					<td>职工退休年龄(女)：</td>
 					<td><input class="easyui-validatebox" name="retireAgeFemale" type="text" required="true" value="${entity.retireAgeFemale }" /></td>
 				</tr>

@@ -28,10 +28,12 @@ import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.model.User;
+import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.PaymentService;
@@ -50,6 +52,8 @@ public class PaymentController {
 	private UserService userService;
 	@Autowired
 	private PaymentTypeService paymentTypeService;
+	@Autowired
+	private AuditProcessStatusService auditProcessStatusService;
 	@Autowired
 	private CompanyService companyService;
 
@@ -84,6 +88,7 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean confirmPost(Payments payment, HttpSession session) {
 		logger.debug(payment.toString());
+
 		// payment.setPaymentDate(payment.getPaymentDate());// 缴款时间
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
@@ -101,7 +106,6 @@ public class PaymentController {
 				e.printStackTrace();
 			}
 			pay.setPaymentDate(paymentDate);
-			String a = timeformat.format(paymentDate);
 			pay.setPaymentMoney(new BigDecimal(payment.getPaymentMoney()));
 			pay.setPaymentPerson(user);
 			PaymentType paymentType = paymentTypeService.getByPrimaryKey(Integer.valueOf(payment.getPaymentType()));
@@ -110,19 +114,15 @@ public class PaymentController {
 			pay.setVersion(1);
 			Company company = companyService.getByPrimaryKey(payment.getCompanyId());
 			pay.setPaymentCompany(company);
-			paymentService.save(pay);
-			return true;
+			if (paymentService.save(pay) == true) {
+				Audit audit = auditService.getByPrimaryKey(payment.getAuditId());
+				AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
+				audit.setAuditProcessStatus(auditProcessStatus);
+				auditService.update(audit);
+				return true;
+			}
 		}
-		// } else {
-		// Integer updateUserId = payment.getPaymentPerson().getId();
-		// if (updateUserId == userId) {// 如果是相同的缴款人可以更新。否则不可以
-		// paymentService.update(payment);
-		// return true;
-		// } else {
-		// return false;
-		// }
-		// }
-		return true;
+		return false;
 	}
 
 	@RequestMapping(value = "/getPayments/{id}", method = RequestMethod.POST)

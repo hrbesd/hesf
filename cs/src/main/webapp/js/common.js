@@ -158,7 +158,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 /**
  * 通用弹出框
  */
-esd.common.window = function(id, title, width, height, url){
+esd.common.window = function(id, title, width, height, url,onCloseFun){
 	$(id).window({
 		width : width,
 		height : height,
@@ -170,6 +170,9 @@ esd.common.window = function(id, title, width, height, url){
 		maximizable : false,
 		modal : true,
 		onClose : function() {
+			if(onCloseFun!=null){
+				onCloseFun();
+			}
 			$(id).window("destroy");
 		}
 	});
@@ -179,27 +182,15 @@ esd.common.window = function(id, title, width, height, url){
  * 自定义ID的通用的编辑弹出框
  */
 esd.common.openWindow = function(id, title, width, height, url) {
-	
 	$("#main").append('<div id="' + id.substring(1) + '"></div>');
-	esd.common.window(id, title, width, height, url);
+	esd.common.window(id, title, width, height, url,null);
 };
 /**
  * 自定义ID的通用的编辑弹出框 EX
  */
 esd.common.openWindowEx = function(id, title, width, height, url,closeFun) {
  	$("#main").append('<div id="' + id.substring(1) + '"></div>');
-	$(id).window({
-		width : width,
-		height : height,
-		href : url,
-		title : title,
-		loadingMessage : '正在加载，请稍后。',
-		collapsible : false,
-		minimizable : false,
-		maximizable : false,
-		modal : true,
-		onClose :closeFun
-	});
+ 	esd.common.window(id, title, width, height, url,closeFun);
 };
 
 /**
@@ -207,7 +198,7 @@ esd.common.openWindowEx = function(id, title, width, height, url,closeFun) {
  */
 esd.common.defaultOpenWindowEx = function(title, width, height, url) {
 	$("#main").append('<div id="defaultWindow"></div>');
-	esd.common.window('#defaultWindow', title, width, height, url);
+	esd.common.window('#defaultWindow', title, width, height, url,null);
 };
 /**
  * 使用默认ID 和宽高的弹出框
