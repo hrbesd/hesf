@@ -14,12 +14,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.util.StringUtil;
+import org.aspectj.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +69,9 @@ public class WorkerController {
 	private CompanyService companyService;// 企业
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
+	@Autowired
+	Properties fileUploadPro = null;
+
 	// 身份证号长度
 	static int HANDICAPCODE = 20;
 
@@ -81,6 +90,7 @@ public class WorkerController {
 	// 提示文本
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
+	static String WORDERROR = "excel文件内部文本信息格式错误";
 
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
@@ -310,20 +320,106 @@ public class WorkerController {
 	/**
 	 * 导入残疾职工文件
 	 */
+	public Map<String, String> importfile(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 获取并解析文件类型和支持最大值
+		String fileType = "xls";
+		String maxSize = 2 + "";
+		String url = request.getServletContext().getRealPath("/");
+		// 临时目录名
+		String tempPath = url + "upload" + File.separator + "temp" + File.separator;
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		// 最大缓存
+		factory.setSizeThreshold(5 * 1024);
+		// 设置临时文件目录
+		factory.setRepository(new File(tempPath));
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		
+		Map<String,String> result=new HashMap<String,String>();
+		
+		if (maxSize != null && !"".equals(maxSize.trim())) {
+			// 文件最大上限
+			upload.setSizeMax(Integer.valueOf(maxSize) * 1024 * 1024);
+		}
+		try {
+			// 获取所有文件列表
+			List<FileItem> items = upload.parseRequest(request);
+			for (FileItem item : items) {
+				 // 如果是文件项，则保存文件到上传目录
+				if (!item.isFormField()) {
+					// 文件名
+					String fileName = item.getName();
+					// 检查文件后缀格式
+					String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+					if (fileType != null && !"".equals(fileType.trim())) {
+						boolean isRealType = false;
+						String[] arrType = fileType.split(",");
+						for (String str : arrType) {
+							if (fileEnd.equals(str.toLowerCase())) {
+								isRealType = true;
+								break;
+							}
+						}
+						if (!isRealType) {
+							// 提示错误信息:文件格式不正确
+							logger.error("loadUpWorkerFileTypeError");
+							return null;
+						}
+					}
+					// 创建文件唯一名称
+					String uuid = UUID.randomUUID().toString();
+					// 真实上传路径
+					StringBuffer sbRealPath = new StringBuffer();
+					sbRealPath.append(tempPath).append(uuid).append(".").append(fileEnd);
+					// 写入文件
+					File file = new File(sbRealPath.toString());
+					item.write(file);
+					logger.info("上传文件成功,filePath：" + file.getPath());
+					//返回文件路径
+					result.put("filePath", file.getPath());
+				}else{
+					//企业id
+					result.put("companyId", item.getString());
+				}
+			}
+		} catch (Exception e) {
+			// 提示错误:比如文件大小
+			// super.printJsMsgBack(response, );
+			result.put("fileError", "上传失败,文件大小不能超过"+maxSize+"M!");
+			logger.error("上传文件异常!");
+			return result;
+		}
+		return result;
+	}
+
+	/**
+	 * 导入残疾职工文件
+	 */
 	@RequestMapping(value = "/importworker", method = RequestMethod.POST)
-	public ModelAndView importworker(@RequestParam(value = "companyId") String companyId, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
-		logger.debug("importWorkerFile:{}");
+	public ModelAndView importworker(HttpServletRequest request, HttpServletResponse response) {
+
+		logger.debug("importWorker:{}");
+		//上传文件
+		Map<String, String> paramMap = importfile(request, response);
+		String filePath		=paramMap.get("filePath");//文件路径
+		String companyId =paramMap.get("companyId");//文件路径
+		String fileError			=paramMap.get("fileError");//错误信息
+		
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list = null;
 		String url = request.getServletContext().getRealPath("/");
-		if (file != null) {
+		if (fileError== null) {
 			try {
-				File f = new File(url + "upload" + File.separator + "temp" + File.separator + file.getOriginalFilename());
-				file.transferTo(f);
+				File f = new File(filePath);
+				//读取excel
 				list = WorkerUtil.parse(f, 0);
 				if (list == null || list.size() <= 0) {
-					logger.error("importWorkerError:{}", "getWorkerExclenull");
+					//excel文件内部文本信息格式错误
+					logger.error("importWorkerError:{}", WORDERROR);
+					request.setAttribute("errorInfo", WORDERROR);
+					// 返回成功页面
+					return new ModelAndView("basicInfo/worker_importInfo");
 				}
 				for (int i = 0; i < list.size(); i++) {
 					Worker worker = list.get(i);
@@ -424,7 +520,7 @@ public class WorkerController {
 						}
 						continue;
 					}
-					//正常存储
+					// 正常存储
 					// 第三种情况： 不存在数据库中，进行存储
 					logger.error("员工信息正常，可以进行存储：" + worker.getWorkerName());
 					Worker workerUp = new Worker();
@@ -438,18 +534,22 @@ public class WorkerController {
 						w.setRemark("员工存储时未成功");
 						workerErrorList.add(w);
 						logger.error("impoerWorkerSaveError:{}", "false");
-						// 检测是否有未导入数据
-						if (workerErrorList.size() != 0) {
-							String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
-							boolean result = PoiCreateExcel.createExcel(errorFilePath, workerErrorList);
-							String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-							// 返回错误列表文件下载地址
-							request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
-						}
-						
-						
+
 					}
 				}
+		
+				// 检测是否有未导入数据
+				if (workerErrorList.size() != 0) {
+					String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
+					boolean result = PoiCreateExcel.createExcel(errorFilePath, workerErrorList);
+					String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+					// 返回错误列表文件下载地址
+					request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
+				}
+				//删除上传文件
+				//f.delete();
+				
+				
 			} catch (IllegalStateException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
 			} catch (IOException e) {
@@ -464,23 +564,21 @@ public class WorkerController {
 				errorLength = workerErrorList.size();
 				succesLength = totalLength - errorLength;
 			}
-			//request.setAttribute("fileLoadUpResult", "文件上传失败");
 			request.setAttribute("totalLength", totalLength);// 总条数
 			request.setAttribute("errorLength", errorLength);// 失败条数
 			request.setAttribute("succesLength", succesLength);// 成功条数
+			request.setAttribute("errorInfo", "null");//没有错误信息
 			// 清理部分
 			workerErrorList.clear();// 清楚错误列表数据
 			workerErrorList = null;
-
 			// 返回成功页面
 			return new ModelAndView("basicInfo/worker_importInfo");
 		} else {
-			request.setAttribute("fileLoadUpResult", "文件上传失败");
+			request.setAttribute("errorInfo", fileError);
 			// 返回失败页面
 			logger.error("importUpLoadError");
 			return new ModelAndView("basicInfo/worker_importInfo");
 		}
-
 	}
 
 	/**

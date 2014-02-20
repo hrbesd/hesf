@@ -9,24 +9,18 @@
 <script type="text/javascript" src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
 
-
-
 <div style="width: 500px;margin: auto;font-size: 18;font-weight: bold;text-align: center;">
-	<c:if test="${fileLoadUpResult==''}">
-						----------sdfsdf
+	<c:if test="${errorInfo=='null'}">
+					导入数据总量为：${totalLength}条，导入失败：${errorLength}条，导入成功${succesLength}条。
+					<div> 
+					<c:if test="${errorLength!=0}">
+						<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
+						</c:if> 
+						</div>
 	</c:if>
-		
-		
-		
-	<c:if test="${fileLoadUpResult!=''}">
-		导入数据总量为：${totalLength}条，导入失败：${errorLength}条，导入成功${succesLength}条。
+	<c:if test="${errorInfo!='null'}">
+		<span style="font-size: 19px;" class="red_notice">${errorInfo}</span>
 	</c:if>
-	<div>
-
-		<c:if test="${errorLength!=0}">
-				<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
-		</c:if>
-	</div>
 
 </div>
 
