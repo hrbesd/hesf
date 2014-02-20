@@ -124,27 +124,44 @@ public interface CompanyService extends BaseService<Company> {
 
 	/**
 	 * 获得该企业年龄达到退休标准的残疾职工列表--方法①
-	 * @param year	--年份
-	 * @param companyCode	--公司档案code
-	 * @param page	--起始页
-	 * @param pageSize	--返回量
+	 * 
+	 * @param year
+	 *            --年份
+	 * @param companyCode
+	 *            --公司档案code
+	 * @param page
+	 *            --起始页
+	 * @param pageSize
+	 *            --返回量
 	 * @return
 	 */
 	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, String companyCode, Integer page, Integer pageSize);
-	
+
 	/**
 	 * 获得该企业年龄达到退休标准的残疾职工列表--方法②
-	 * @param companyId	--公司Id
-	 * @param page	--起始页
-	 * @param pageSize	--返回量
+	 * 
+	 * @param companyId
+	 *            --公司Id
+	 * @param page
+	 *            --起始页
+	 * @param pageSize
+	 *            --返回量
 	 * @return
 	 */
 	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据公司档案号companyCode得到该公司过去为审核的年份列表
+	 * 
 	 * @param companyCode
 	 * @return
 	 */
 	String[] getUnauditYearByCompanycode(String companyCode);
+
+	/**
+	 * 获得一个自增长的公司档案号
+	 * 
+	 * @return
+	 */
+	Integer getCompanyCode();
 }

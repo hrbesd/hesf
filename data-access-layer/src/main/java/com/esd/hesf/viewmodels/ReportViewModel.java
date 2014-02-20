@@ -196,7 +196,7 @@ public class ReportViewModel {
 	}
 
 	public Integer getCompanyType() {
-		if (alreadyAmount == null) {
+		if (companyType == null) {
 			return 0;
 		}
 		return companyType;

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditDao;
 import com.esd.hesf.dao.AuditParameterDao;
+import com.esd.hesf.dao.CompanyCodeDao;
 import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
@@ -22,6 +23,7 @@ import com.esd.hesf.model.Area;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyCode;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyYearWorker;
@@ -58,6 +60,9 @@ public class CompanyServiceImpl implements CompanyService {
 	// 审核参数表dao接口
 	@Autowired
 	private AuditParameterDao apDao;
+
+	@Autowired
+	private CompanyCodeDao ccDao;
 
 	@Override
 	public boolean save(Company t) {
@@ -414,16 +419,26 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public String[] getUnauditYearByCompanycode(String companyCode) {
-		if(companyCode == null || "".equals(companyCode)){
+		if (companyCode == null || "".equals(companyCode)) {
 			return null;
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		map.put("companyCode", companyCode);
 		map.put("year", year);
 		String[] years = auDao.retireveUnauditYearByCompanycode(map);
 		return years;
+	}
+
+	@Override
+	public Integer getCompanyCode() {
+		CompanyCode cc = new CompanyCode();
+		int k = ccDao.insert(cc);
+		if (k == 1) {
+			return cc.getId();
+		}
+		return null;
 	}
 
 }

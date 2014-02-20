@@ -610,7 +610,14 @@ public class TestController {
 		return map;
 	}
 
-	
-	
-	
+	// 统计报表--按地区
+	@RequestMapping("/48")
+	@ResponseBody
+	public Map<String, Object> test48() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer entity = cService.getCompanyCode();
+		map.put("entity", entity);
+		return map;
+	}
+
 }

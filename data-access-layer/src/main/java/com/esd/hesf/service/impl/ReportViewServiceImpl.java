@@ -49,7 +49,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 		// 返回量
 		map.put("size", Constants.SIZE);
 		List<CompanyType> tempList = ctDao.retrieveByPage(map);
-		// 2-从审核-公司 是视图表中查出对应公司性质的数据数据列表
+		// 2-从审核-公司 是视图表中查出对应公司性质的  人数和金钱方面的数据列表
 		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
 		map.put("year", year);
 		for (CompanyType t : tempList) {
@@ -97,7 +97,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 		// 1-先查询所有黑龙江地区列表
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Area> tempList = aDao.retrieveHLJ();
-		// 2-从审核-公司 是视图表中查出对应黑龙江地区的数据数据列表
+		// 2-从审核-公司 是视图表中查出对应黑龙江地区的 人数和金钱方面的数据列表
 		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
 		map.put("year", year);
 		for (Area t : tempList) {
@@ -149,7 +149,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 		// 返回量
 		map.put("size", Constants.SIZE);
 		List<CompanyEconomyType> tempList = cetDao.retrieveByPage(map);
-		// 2-从审核-公司 是视图表中查出对应公司经济类型的数据数据列表
+		// 2-从审核-公司 是视图表中查出对应公司经济类型的 人数和金钱方面的数据列表
 		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
 		map.put("year", year);
 		for (CompanyEconomyType t : tempList) {
