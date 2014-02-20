@@ -35,12 +35,16 @@
 		校验信息  并  保存残疾职工信息
 	 **/
 	addWorker.validate = function() {
-
+		//校验表单
 		if (esd.common.validatebox("#addWorkerForm") == false) {
 			return;
 		}
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
+		//根据残疾证号初始化其他组件
+		if(addWorker.initElement(workerHandicapCode)==false){
+			return;
+		}
 		//校验残疾证号是否存在，是否在其他公司
 		$.ajax({
 			url : 'worker/validate_workerHandicapCode',
@@ -90,7 +94,6 @@
 	 **/
 	addWorker.save = function() {
 		var workerHandicapCode = $("#workerHandicapCode").val();
-
 		//数据验证可以通过
 		esd.common.syncPostSubmit("#addWorkerForm", function(data) {
 			if (data == true) {
@@ -102,57 +105,78 @@
 			}
 		});
 	};
-	/**
-		获取残疾职工信息 并校验
-	 **/
-	addWorker.getData = function() {
-		//校验残疾证号长度是否符合
-		var b = $("#workerHandicapCode").validatebox('isValid');
-		if (b == false) {
-			return;
-		}
-		//获取残疾证号
-		var workerHandicapCode = $("#workerHandicapCode").val();
-
+	addWorker.initElement=function(workerHandicapCode){
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
 		if (workerType == 0) {
 			alert("残疾证号内残疾类型错误。");
-			return;
+			return false;
 		}
 		//获取残疾等级
 		var workerLeven = workerHandicapCode.substring(19, 20);
 		$("#workerHandicapLevel").combobox("setValue", workerLeven);
 		if (workerLeven == 0) {
 			alert("残疾证号内残疾等级错误。");
-			return;
+			return false;
 		}
-
 		//根据残疾证号获取出生日期
 		var year = workerHandicapCode.substring(6, 10);//年份
 		var month = workerHandicapCode.substring(10, 12);//月
 		var day = workerHandicapCode.substring(12, 14);//日
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
+		//职工当前年龄
+		var age=$("#nowYear").val()-year+1;
+
+		//判断年龄
+		if(age<16){
+				alert("职工年龄过小，不能录入。");
+				return false;
+		}
 		if (sex % 2 === 0) {
-			//偶数
+			//偶数 女性职工
 			$("#workerGender").combobox("setValue", "0");
+			if(age > $("#retireAgeFemale").val()){
+				alert("职工年龄："+age+"岁，性别：女性。已超过退休年龄");
+				return false;
+			}
 		} else {
-			//基数
+			//基数 男性
 			$("#workerGender").combobox("setValue", "1");
+				if(age > $("#retireAgeMale").val()){
+				alert("职工年龄："+age+"岁，性别：男性。已超过退休年龄");
+				return false;
+			}
 		}
 		//出生日期
 		$("#workerBirth").val(year + "-" + month + "-" + day);
 		//身份证号
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		$("#workerIdCard").val(workerIdCard);
-
 		// 出生年份--供后台查询使用
 		$("#workerBirthYear").val(year);
+		return true;
+	};
+	/**
+		残疾证号校验并校验
+	 **/
+	addWorker.handicapCodeValidate = function() {
+		//校验表单
+		var b = $("#workerHandicapCode").validatebox('isValid');
+		if (b == false) {
+			return;
+		}
+		//获取残疾证号
+		var workerHandicapCode = $("#workerHandicapCode").val();
+		//身份证号
+		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
+		//根据残疾证号初始化其他组件
+		if(addWorker.initElement(workerHandicapCode)==false){
+			return;
+		}
 
-		//远程校验
-		//校验残疾证号是否存在，是否在其他公司
+		//远程校验 校验残疾证号是否存在，是否在其他公司
 		$.ajax({
 			url : 'worker/validate_workerHandicapCode',
 			type : 'post',
@@ -162,7 +186,6 @@
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
 				if (data[0].type == "1") {
-
 					$('#win').window(
 							{
 								title : '警告：该员工已被其他公司录用',
@@ -190,13 +213,13 @@
 	};
 </script>
 
-
-
-
-
-
+	<!--  女退休年龄 -->
+	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
+	<!--  男退休年龄 -->
+	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
+	<input type="hidden" value="${nowYear}" id="nowYear"/>
 <form id="addWorkerForm" action="security/worker/add" method="post">
-	<input type="hidden" value="${companyId}" name="companyId" style="margin-top: 40px;" />
+	<input type="hidden" value="${companyId}" name="companyId"  />
 
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
@@ -210,7 +233,7 @@
 
 				<div style="float: left;width: 600px;">
 					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
-						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.getData()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
+						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
 				</div></td>
 		</tr>

@@ -29,6 +29,7 @@ import org.aspectj.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,7 +72,13 @@ public class WorkerController {
 	private AuditParameterService auditParameterService;// 年审参数
 	@Autowired
 	Properties fileUploadPro = null;
-
+	
+	
+	
+	@Value("${LoadUpFileMaxSize}")
+	String LoadUpFileMaxSize;
+	
+	
 	// 身份证号长度
 	static int HANDICAPCODE = 20;
 
@@ -90,7 +97,7 @@ public class WorkerController {
 	// 提示文本
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
-	static String WORDERROR = "excel文件内部文本信息格式错误";
+	static String WORDERROR = "excel文件内部文本信息格式错误!";
 
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
@@ -150,6 +157,12 @@ public class WorkerController {
 	public ModelAndView add_worker(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
 		// 续传企业id
 		request.setAttribute("companyId", companyId);
+		// 获取年审参数
+		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getNowYear());
+		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
+		request.setAttribute("retireAgeMale",auditParam.getRetireAgeMale());//男退休年龄
+		// 获取当前年份
+		request.setAttribute("nowYear", CalendarUtil.getNowYear());
 		logger.info("goToPage:{}", "添加残疾职工页面");
 		return new ModelAndView("basicInfo/add_worker");
 	}
@@ -319,14 +332,15 @@ public class WorkerController {
 
 	/**
 	 * 导入残疾职工文件
+	 * @param request
+	 * @param response
+	 * @return
 	 */
 	public Map<String, String> importfile(HttpServletRequest request, HttpServletResponse response) {
-		
 		// 获取并解析文件类型和支持最大值
 		String fileType = "xls";
-		String maxSize = 2 + "";
 		String url = request.getServletContext().getRealPath("/");
-		// 临时目录名
+		// 上传目录名
 		String tempPath = url + "upload" + File.separator + "temp" + File.separator;
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
@@ -334,12 +348,10 @@ public class WorkerController {
 		// 设置临时文件目录
 		factory.setRepository(new File(tempPath));
 		ServletFileUpload upload = new ServletFileUpload(factory);
-		
 		Map<String,String> result=new HashMap<String,String>();
-		
-		if (maxSize != null && !"".equals(maxSize.trim())) {
+		if (LoadUpFileMaxSize != null && !"".equals(LoadUpFileMaxSize.trim())) {
 			// 文件最大上限
-			upload.setSizeMax(Integer.valueOf(maxSize) * 1024 * 1024);
+			upload.setSizeMax(Integer.valueOf(LoadUpFileMaxSize) * 1024 * 1024);
 		}
 		try {
 			// 获取所有文件列表
@@ -377,16 +389,17 @@ public class WorkerController {
 					logger.info("上传文件成功,filePath：" + file.getPath());
 					//返回文件路径
 					result.put("filePath", file.getPath());
+					
+				//form中参数信息
 				}else{
-					//企业id
+					// item.getFieldName():获取参数key。item.getString()：获取参数value
 					result.put("companyId", item.getString());
 				}
 			}
 		} catch (Exception e) {
-			// 提示错误:比如文件大小
-			// super.printJsMsgBack(response, );
-			result.put("fileError", "上传失败,文件大小不能超过"+maxSize+"M!");
-			logger.error("上传文件异常!");
+			// 提示错误信息
+			result.put("fileError", "上传失败,文件大小不能超过"+LoadUpFileMaxSize+"M!");
+			logger.error("uplaodWorkerFileError");
 			return result;
 		}
 		return result;
@@ -534,10 +547,8 @@ public class WorkerController {
 						w.setRemark("员工存储时未成功");
 						workerErrorList.add(w);
 						logger.error("impoerWorkerSaveError:{}", "false");
-
 					}
 				}
-		
 				// 检测是否有未导入数据
 				if (workerErrorList.size() != 0) {
 					String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
@@ -547,9 +558,7 @@ public class WorkerController {
 					request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
 				}
 				//删除上传文件
-				//f.delete();
-				
-				
+				f.delete();
 			} catch (IllegalStateException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
 			} catch (IOException e) {
