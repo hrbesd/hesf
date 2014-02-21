@@ -16,7 +16,8 @@
 #startaudit_tabs td {
 	font-size: 12px;
 }
-#dd td{
+
+#account td {
 	font-size: 12px;
 }
 
@@ -48,29 +49,30 @@
 <script type="text/javascript">
 	initAudit = {};
 	initAudit.show = function(w, q) {
-		var c = "<h3>未审年度计算明细</h3>";
-		var t = "<table border='1' width='485'>";
-		var s = c+t+"<tr><th>未审年度</th><th>应缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
-		for ( var i = 0; i < w.length; i++) {
-			s = s + "<tr><td>" + w[i].year + "</td><td>" + w[i].money + "</td><td>" + w[i].days + "</td><td>" + w[i].prop + "</td><td>" + w[i].penalty + "</td><td>" + w[i].total + "</td></tr>";
+		if (w.length > 0) {
+			var c = "<h3>未审年度计算明细</h3>";
+			var t = "<table border='1' width='485'>";
+			var s = c + t + "<tr><th>未审年度</th><th>应缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
+			for ( var i = 0; i < w.length; i++) {
+				s = s + "<tr><td>" + w[i].year + "</td><td>" + w[i].money + "</td><td>" + w[i].days + "</td><td>" + w[i].prop + "</td><td>" + w[i].penalty + "</td><td>" + w[i].total + "</td></tr>";
+			}
+			var m1 = "<ul><li>应缴金额=审计年度的残疾人保障金(安排残疾人总人数按(零)计算)</li><li>滞纳金=应缴金额×逾期天数×滞纳金比例</li>" + "<li>年度总金额 = 应缴金额+滞纳金</li></ul>";
+			s = s + "</table>" + m1;
 		}
-		var m1 = "<ul><li>应缴金额=审计年度的残疾人保障金(安排残疾人总人数按(零)计算)</li><li>滞纳金=应缴金额×逾期天数×滞纳金比例</li>"+
-			"<li>年度总金额 = 应缴金额+滞纳金</li></ul>";
-		s = s+"</table>"+m1;
-		//$('#account #w').html(s);
-		var c1 = "<h3>欠缴年度计算明细</h3>";
-		s = s+c1+t+"<tr><th>欠缴年度</th><th>欠缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
-		for ( var i = 0; i < q.length; i++) {
-			s = s + "<tr><td>" + q[i].year + "</td><td>" + q[i].money + "</td><td>" + q[i].days + "</td><td>" + q[i].prop + "</td><td>" + q[i].penalty + "</td><td>" + q[i].total + "</td></tr>";
+		if (q.length > 0) {
+			var c1 = "<h3>欠缴年度计算明细</h3>";
+			s = s + c1 + t + "<tr><th>欠缴年度</th><th>欠缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
+			for ( var i = 0; i < q.length; i++) {
+				s = s + "<tr><td>" + q[i].year + "</td><td>" + q[i].money + "</td><td>" + q[i].days + "</td><td>" + q[i].prop + "</td><td>" + q[i].penalty + "</td><td>" + q[i].total + "</td></tr>";
+			}
+			var m3 = "<ul><li>滞纳金=欠缴金额×逾期天数×滞纳金比例</li><li>年度总金额 = 应缴金额+滞纳金</li></ul>";
+			//$('#account #q').html(s);
+			s = s + "</table>" + m3;
 		}
-		var m3 = "<ul><li>滞纳金=欠缴金额×逾期天数×滞纳金比例</li><li>年度总金额 = 应缴金额+滞纳金</li></ul>";
-		//$('#account #q').html(s);
-		s = s+"</table>"+m3;
-
-		$('#dd').dialog({
+		$('#account').dialog({
 			title : '未缴款明细',
 			width : 500,
-			height : 600,
+			height : 500,
 			closed : false,
 			cache : false,
 			content : s,
@@ -127,9 +129,14 @@
 				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
 
 				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				$('#message').bind("click", function() {
-					initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
-				});
+				var wl = data.weiShenMingXi.length;
+				var ql = data.qianJiaoMingXi.length;
+				if (wl != 0 || ql != 0) {
+					$('#message').css("display", "block");
+					$('#message').bind("click", function() {
+						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
+					});
+				}
 				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
 				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
 				$('#buJiaoJinE').val(data.s_buJiaoJinE);
@@ -150,10 +157,7 @@
 	initAudit.save = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
-				$.messager.alert('消息', '保存成功', 'info', function() {
-					esd.common.defaultOpenWindowClose();
-					$("#initAuditList_datagrid").datagrid('reload');
-				});
+				$.messager.alert('消息', '保存成功', 'info');
 			} else {
 				$.messager.alert('消息', '保存失败', 'info');
 			}
@@ -285,7 +289,7 @@
 				<td width="100">已安排数:</td>
 				<td width="100">已录入数</td>
 				<td width="98">预定人数</td>
-				<td><input style="height: 12px; line-height: 12px;" value="点击查看明细" type="button" id="message" />
+				<td><input style="height: 12px; line-height: 12px; display: none;" value="点击查看明细" type="button" id="message" />
 				</td>
 				<td style="vertical-align: bottom" rowspan="2"><input name="unauditYears" id="weiShenNianShu" title="未审年数" class="readonly" style="border-top: #95B8E7 2px solid;" value="${unAudityearNum}" />
 				</td>
@@ -372,7 +376,6 @@
 			iconCls="icon-save">保存</a> <a href="javascript:initAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a> <a href="javascript:initAudit.back();" class="easyui-linkbutton"
 			iconCls="icon-back">返回</a>
 	</div>
-	<div id="dd">
-	</div>
+
 </form>
 
