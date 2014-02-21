@@ -339,6 +339,7 @@ public class WorkerController {
 		String url = request.getServletContext().getRealPath("/");
 		// 上传目录名
 		String tempPath = url + "upload" + File.separator + "temp" + File.separator;
+
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
 		factory.setSizeThreshold(5 * 1024);
@@ -380,6 +381,7 @@ public class WorkerController {
 					// 真实上传路径
 					StringBuffer sbRealPath = new StringBuffer();
 					sbRealPath.append(tempPath).append(uuid).append(".").append(fileEnd);
+					
 					// 写入文件
 					File file = new File(sbRealPath.toString());
 					item.write(file);
@@ -394,6 +396,7 @@ public class WorkerController {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			// 提示错误信息
 			result.put("fileError", "上传失败,文件大小不能超过"+LoadUpFileMaxSize+"M!");
 			logger.error("uplaodWorkerFileError");
@@ -411,6 +414,7 @@ public class WorkerController {
 		logger.debug("importWorker:{}");
 		//上传文件
 		Map<String, String> paramMap = importfile(request, response);
+	
 		String filePath		=paramMap.get("filePath");//文件路径
 		String companyId =paramMap.get("companyId");//文件路径
 		String fileError			=paramMap.get("fileError");//错误信息
@@ -495,7 +499,7 @@ public class WorkerController {
 					// 7.校验职工年龄
 					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getNowYear()));
 					if (ageResult != null) {
-						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。已超过退休年龄。";
+						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。"+ ageResult.get(2).toString();
 						w.setRemark(ageErrorInfo);
 						workerErrorList.add(w);
 						logger.error("impoerWorkerError:{},info:{}", w, ageErrorInfo);

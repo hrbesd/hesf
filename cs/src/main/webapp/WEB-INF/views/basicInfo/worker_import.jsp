@@ -46,7 +46,7 @@
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>
 		<p><span  class="red_notice">*</span>
-		文件格式必须是：.xsl，xlsm，xlsx 格式。</p>
+		文件格式必须是：.xsl，.xlsm，.xlsx 格式。</p>
 	 </div>
 </form>
 <iframe name="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>

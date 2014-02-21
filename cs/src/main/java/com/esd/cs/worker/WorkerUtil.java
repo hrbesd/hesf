@@ -186,17 +186,30 @@ public class WorkerUtil {
 			int age = conversionAge(workerHandicapCode);
 			// 性别
 			if (sex % 2 == 0) {
-				// 女性
+				result.add("女性");
+				result.add(age + "");
+				// 女性 退休校验
 				if (age > param.getRetireAgeFemale()) {
-					result.add("女性");
-					result.add(age + "");
+					result.add("已超过退休年龄");
+					return result;
+				}
+				//是否达到工作年龄校验
+				if (age <16 ) {
+					result.add("年龄未达到工作年龄");
 					return result;
 				}
 			} else {
+				
+				result.add("男性");
+				result.add(age + "");
 				// 男性
 				if (age > param.getRetireAgeMale()) {
-					result.add("男性");
-					result.add(age + "");
+					result.add("已超过退休年龄");
+					return result;
+				}
+				//是否达到工作年龄校验
+				if (age <16 ) {
+					result.add("年龄未达到工作年龄");
 					return result;
 				}
 			}
