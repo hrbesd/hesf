@@ -29,7 +29,7 @@
 width: 100px;
 }
 </style>
-<div id="printAudit">
+
 	<table title="企业年审信息" class="print_tab" >
 		<tr>
 			<td colspan="4">
@@ -45,6 +45,7 @@ width: 100px;
 			<td class="print_outline" style="text-align: right;width: 150px">年度:${year}年</td>
 		</tr>
 	</table>
+	
 	<!-- 企业基本情况表 -->
 	<table cellspacing="0" cellpadding="0" border="1" title="企业年审信息" class="print_tab">
 		<tr>
@@ -69,7 +70,7 @@ width: 100px;
 	</table>
 
 	<!-- 在职职工情况 -->
-	<table cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
+	<table cellspacing="0" cellpadding="0" border=""  title="企业年审信息" class="print_tab" >
 		<tr>
 			<td rowspan="3" class="print_outline">在职职工情况</td>
 			<td rowspan="2">职工总数(人)</td>
@@ -121,4 +122,3 @@ width: 100px;
 	<a href="javascript:esd.common.printWindow()"  class="easyui-linkbutton"  iconCls="icon-search">打印</a> 
 	<a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" 	iconCls="icon-undo">取消</a>
 </div>
-<div />

@@ -55,13 +55,15 @@
 		for(var i=0;i<element.length;i++){
 			$(element[i]).val("");
 		}
+			//初始化超过X年未审企业
+			$("#overYear").val("0");
 	};
 
 	/**
 	 * 获取企业基本档案函数
 	 */
 	queryAudit.loadData = function(params) {
-		esd.common.datagrid("#queryAuditGrid", "query/company/list", "#queryAuditBoolbar", [ [ {
+		esd.common.datagrid("#queryAuditGrid", "query/audit/list", "#queryAuditBoolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 230
@@ -141,7 +143,7 @@
 	打开职工列表
 	 **/
 	printList.openWorkerList = function(id) {
-		esd.common.defaultOpenWindow("残疾职工列表", 'print/workerlist/' + id);
+		esd.common.defaultOpenWindow("残疾职工列表", 'print/workerlist/' + id + '/' + $("#year").val());
 
 	};
 	/**
@@ -219,7 +221,7 @@
 				<td>缴款人:</td>
 				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td>超过:</td>
-				<td><input id="overYear" type="text"  style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox inputElement" /> 年未初审</td>
+				<td><input id="overYear" type="text"  style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox " /> 年未初审</td>
 
 				<td>是否免交:</td>
 				<td><select id="isExempt">

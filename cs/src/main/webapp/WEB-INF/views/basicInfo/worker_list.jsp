@@ -309,23 +309,23 @@
 
 
 	</div>
-	<table>
+	<table class="workerListTip" >
 		<tr>
-			<td>企业名称:</td>
+			<td class="tipText">企业名称:</td>
 			<td id="company_name"></td>
-			<td>档案编码:</td>
+			<td class="tipText">档案编码:</td>
 			<td id="company_Code"></td>
 
-			<td>税务编码:</td>
+			<td class="tipText">税务编码:</td>
 			<td id="company_TaxCode"></td>
 		</tr>
 		<tr>
-			<td>企业总人数:</td>
+			<td class="tipText">企业总人数:</td>
 			<td id="company_EmpTotal"></td>
-			<td>已录用残疾职工人数:</td>
+			<td class="tipText">残疾职工总数:</td>
 			<td id="worker_HandicapTotal"></td>
 
-			<td>地区:</td>
+			<td class="tipText">地区:</td>
 			<td id="company_Area"></td>
 
 		</tr>

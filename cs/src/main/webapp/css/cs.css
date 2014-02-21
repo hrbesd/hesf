@@ -123,11 +123,18 @@ textarea {
 /*查询按钮*/
 .findBut{
 	margin: 10px 0 3px 10px;
-
-	
 }
-
 
 .red_notice {
     color: #FF0000;
+}
+/*提示文本*/
+.tipText{
+	width: 90px;
+/*	text-align: right;*/
+}
+.workerListTip{
+	
+	width: 850px;
+	margin-left: 10px;
 }

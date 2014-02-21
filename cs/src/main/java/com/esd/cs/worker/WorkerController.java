@@ -73,11 +73,8 @@ public class WorkerController {
 	@Autowired
 	Properties fileUploadPro = null;
 	
-	
-	
 	@Value("${LoadUpFileMaxSize}")
 	String LoadUpFileMaxSize;
-	
 	
 	// 身份证号长度
 	static int HANDICAPCODE = 20;

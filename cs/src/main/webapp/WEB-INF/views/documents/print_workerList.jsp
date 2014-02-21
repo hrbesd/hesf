@@ -9,7 +9,6 @@
 		params = {};
 		params.companyId = $("#companyId").val();//单位id
 		params.year = $("#year").val();//年份
-		
 
 		$.ajax({
 			url : "query/worker/company_worker_list",
@@ -47,26 +46,27 @@
 text-align: center;
 }
 </style>
-<table title="企业年审信息" class="print_tab">
-	<tr>
-		<td colspan="4">
-			<h2 style="text-align: center;">用人企业安排残疾人就业名单</h2>
-		</td>
-	</tr>
-	<tr>
-		<td style="text-align: left;" class="print_outline">企业法人代码：</td>
-		<td class="print_content">123456789</td>
 
-		<td class="print_outline">税务编码：</td>
-		<td class="print_content">01010111</td>
-	</tr>
-	<tr>
-		<td style="text-align: left;" class="print_outline">企业名称(盖章):</td>
-		<td class="print_content">黑龙江省北龙交通工程有限公司</td>
-		<td class="print_outline">年度</td>
-		<td class="print_content">2012年</td>
-	</tr>
-</table>
+<input type="hidden" value="${companyId}" id="companyId" />
+<input type="hidden" value="${year}" id="year" />
+<table title="企业年审信息" class="print_tab" >
+		<tr>
+			<td colspan="4">
+				<h2 style="text-align: center;">按比例安排残疾人就业情况表</h2>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: left;" class="print_outline">组织机关代码证：${company.companyOrganizationCode}</td>
+			<td class="print_outline" style="text-align: right;width: 150px">税务编码：${company.taxCode}</td>
+		</tr>
+		<tr>
+			<td style="text-align: left;" class="print_outline">企业名称(盖章):${company.companyName}</td>
+			<td class="print_outline" style="text-align: right;width: 150px">年度:${year}年</td>
+		</tr>
+	</table>
+
+
+
 <!-- 企业基本情况表 -->
 <table id="printWorkerTab" cellspacing="0" cellpadding="0" border="" title="企业年审信息" class="print_tab">
 	<thead>

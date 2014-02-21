@@ -11,7 +11,8 @@
 <div id="company_boolbar">
 	<div style="text-align: right;">
 		<a onclick="basicFile.openAddCompany()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a onclick="basicFile.openBatchDeleteCompany()" href="#"
-			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true">导入企业</a>
+			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> 
+
 	</div>
 	<!-- 快速搜索区域 -->
 	<div align="center" style="margin-bottom: 10px">

@@ -55,6 +55,8 @@
 		for(var i=0;i<element.length;i++){
 			$(element[i]).val("");
 		}
+		//初始化超过X年未审企业
+		$("#overYear").val("0");
 		
 	};
 
@@ -62,7 +64,7 @@
 	 * 获取企业基本档案函数
 	 */
 	queryAudit.loadData = function(params) {
-		esd.common.datagrid("#queryAuditGrid", "query/audit/audit_list", "#queryAuditBoolbar", [ [ {
+		esd.common.datagrid("#queryAuditGrid", "query/audit/list", "#queryAuditBoolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 230
@@ -75,9 +77,8 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="queryCompany.openViewCompany(\'' + row.id + '\')">' + value + '</a>';
-				
-				return c;
+					var v= '<a href="#" onclick="queryAudit.openViewCompany(\'' + row.id + '\')">' + value + '</a>';
+				return v;
 			}
 		}] ], params);
 
@@ -119,7 +120,14 @@
 			$('#queryAuditGrid').datagrid('load', queryAudit.getParams());
 		};
 	};
-	
+	/**
+	查看企业信息框
+	**/
+	queryAudit.openViewCompany = function(id) {
+
+		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
+		
+	};
 	$(function() {
 		queryAudit.init();
 		//加载单位档案数据
@@ -187,7 +195,7 @@
 				<td>缴款人:</td>
 				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="width:80,height:30,editable:false" /></td>
 				<td>超过:</td>
-				<td><input id="overYear" type="text" value="0" style="width: 60px"  data-options="validType:['_number']" class="easyui-validatebox inputElement" /> 年未初审</td>
+				<td><input id="overYear" type="text" value="0" style="width: 60px"  data-options="validType:['_number']" class="easyui-validatebox" /> 年未初审</td>
 
 				<td>是否免交:</td>
 				<td><select id="isExempt">

@@ -136,10 +136,24 @@ public class PrintCompany {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/workerlist/{companyId}", method = RequestMethod.GET)
-	public ModelAndView workerlist(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
+	@RequestMapping(value = "/workerlist/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView workerlist(@PathVariable(value = "companyId") String companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
 		logger.debug("gotoPrint_workerList,companyId:{}", companyId);
 		request.setAttribute("companyId", companyId);
+		Map<String, String> result = new HashMap<String, String>();
+		Company company = companyService.getByPrimaryKey(companyId);
+		if (company == null) {
+			logger.error("getPrintAuditError:{}", "getCompanyNull");
+			return null;
+		}
+		// 企业基本信息
+		result.put("companyName", company.getCompanyName());// 企业名称
+		result.put("taxCode", company.getCompanyTaxCode());// 税务编码
+		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());// 组织机关代码证
+		result.put("year", company.getYear());// 年份
+		request.setAttribute("company", result);
 		return new ModelAndView("documents/print_workerList");
 	}
 
@@ -207,4 +221,13 @@ public class PrintCompany {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value = "/detectaudit/{companyId}/{year}", method = RequestMethod.POST)
+	@ResponseBody
+	public Object detectaudit(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+		logger.debug("printNoticeParamsID:{},year:{}", companyId, year);
+		
+		return null;
+	}
+	
 }

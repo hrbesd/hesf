@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,11 @@ public class QueryAuditController {
 	@Autowired
 	private AuditService auditService;
 
+	/**
+	 * 转到查询审核数据列表页
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView queryAuditList(HttpServletRequest request) {
 		// 获取当前年份
@@ -38,6 +44,8 @@ public class QueryAuditController {
 		logger.debug("goToPage:{}", "queryAudit");
 		return new ModelAndView("query/audit");
 	}
+
+	
 
 	/**
 	 * 获取审核列表数据
@@ -48,10 +56,9 @@ public class QueryAuditController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/audit_list", method = RequestMethod.POST)
+	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> provincePost(AuditParamModel params, HttpServletRequest request) {
-
 		logger.debug("queryAuditParams:{}", params);
 
 		Map<String, Object> entity = new HashMap<>();
@@ -75,11 +82,12 @@ public class QueryAuditController {
 			paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
 																				// true免缴,
 																				// false不免缴
+		
+			paramsMap.put("page", params.getPage()); // 分页--起始页
+			paramsMap.put("pageSize", params.getRows());// 分页--返回量
 			if (!params.getIsExempt().equals("")) {
-				paramsMap.put("page", params.getPage()); // 分页--起始页
-				paramsMap.put("pageSize", params.getRows());// 分页--返回量
+				
 			}
-
 			logger.debug("queryAuditParamsEx:{}", params);
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(paramsMap);
 			Integer total = query.getNumber().intValue();// 数据总条数
@@ -87,7 +95,7 @@ public class QueryAuditController {
 			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 				Audit it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
-				map.put("id", it.getId());// id
+				map.put("id", it.getCompany().getId());// id
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
@@ -99,6 +107,7 @@ public class QueryAuditController {
 			logger.debug("queryAuditResult:{}", total);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error("queryAuditError{}", e.getMessage());
 		}
 		return entity;
