@@ -23,7 +23,6 @@ import com.esd.hesf.model.Area;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
-import com.esd.hesf.model.CompanyCode;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyYearWorker;
@@ -433,12 +432,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public Integer getCompanyCode() {
-		CompanyCode cc = new CompanyCode();
-		int k = ccDao.insert(cc);
-		if (k == 1) {
-			return cc.getId();
-		}
-		return null;
+		Integer temp = ccDao.retrieveCompanyCode();
+		temp++;
+		int k = ccDao.update(temp);
+		return temp;
 	}
 
 }

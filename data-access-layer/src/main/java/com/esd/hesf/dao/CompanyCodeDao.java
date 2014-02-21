@@ -1,13 +1,26 @@
 package com.esd.hesf.dao;
 
-import com.esd.hesf.model.CompanyCode;
-
 /**
  * 生成公司档案号dao接口
  * 
  * @author Administrator
  * 
  */
-public interface CompanyCodeDao extends BaseDao<CompanyCode> {
+public interface CompanyCodeDao {
 
+	/**
+	 * updateCompanyCode : 更新公司档案号
+	 * 
+	 * @param t
+	 * @return
+	 */
+	int update(Integer companyCode);
+
+	/**
+	 * retrieveCompanyCode : 查询公司档案号
+	 * 
+	 * @param id
+	 * @return
+	 */
+	Integer retrieveCompanyCode();
 }
