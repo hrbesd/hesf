@@ -2,6 +2,7 @@ package com.esd.cs.audit;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class CalculateModel {
 
@@ -38,7 +39,8 @@ public class CalculateModel {
 	private String s_zhiNaJin;
 	private String s_shiJiaoZongJinE;
 	private String s_zhiNaJinTianShu;
-	private String message;
+	private List<AccountModel> weiShenMingXi;
+	private List<AccountModel> qianJiaoMingXi;
 
 	@Override
 	public String toString() {
@@ -48,7 +50,8 @@ public class CalculateModel {
 				+ shiJiaoZongJinE + ", year=" + year + ", companyCode=" + companyCode + ", s_zaiZhiYuanGongZongShu=" + s_zaiZhiYuanGongZongShu + ", s_yingAnPaiCanJiRen=" + s_yingAnPaiCanJiRen
 				+ ", s_yiAnPaiCanJiRen=" + s_yiAnPaiCanJiRen + ", s_yiLuRuCanJiRen=" + s_yiLuRuCanJiRen + ", s_yuDingCanJiRen=" + s_yuDingCanJiRen + ", s_shangNianDuWeiJiaoBaoZhangJin="
 				+ s_shangNianDuWeiJiaoBaoZhangJin + ", s_yingJiaoJinE=" + s_yingJiaoJinE + ", s_jianJiaoJinE=" + s_jianJiaoJinE + ", s_buJiaoJinE=" + s_buJiaoJinE + ", s_shiJiaoJinE=" + s_shiJiaoJinE
-				+ ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE=" + s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", message=" + message + "]";
+				+ ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE=" + s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", weiShenMingXi=" + weiShenMingXi + ", qianJiaoMingXi="
+				+ qianJiaoMingXi + "]";
 	}
 
 	public Integer getZaiZhiYuanGongZongShu() {
@@ -298,12 +301,20 @@ public class CalculateModel {
 		this.s_zhiNaJinTianShu = s_zhiNaJinTianShu;
 	}
 
-	public String getMessage() {
-		return message;
+	public List<AccountModel> getWeiShenMingXi() {
+		return weiShenMingXi;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setWeiShenMingXi(List<AccountModel> weiShenMingXi) {
+		this.weiShenMingXi = weiShenMingXi;
+	}
+
+	public List<AccountModel> getQianJiaoMingXi() {
+		return qianJiaoMingXi;
+	}
+
+	public void setQianJiaoMingXi(List<AccountModel> qianJiaoMingXi) {
+		this.qianJiaoMingXi = qianJiaoMingXi;
 	}
 
 }
