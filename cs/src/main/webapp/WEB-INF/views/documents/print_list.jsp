@@ -6,9 +6,6 @@
 
 <script type="text/javascript">
 	var queryAudit = {};
-
-	
-	
 	/**
 		初始化数据
 	 **/

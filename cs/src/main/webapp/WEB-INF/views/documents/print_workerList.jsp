@@ -9,8 +9,7 @@
 		params = {};
 		params.companyId = $("#companyId").val();//单位id
 		params.year = $("#year").val();//年份
-		params.page = 1;//分页--起始页
-		params.pageSize = 10;//分页--返回量
+		
 
 		$.ajax({
 			url : "query/worker/company_worker_list",
