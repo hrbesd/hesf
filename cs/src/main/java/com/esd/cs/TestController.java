@@ -619,5 +619,15 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	// 公司表--根据档案号查
+		@RequestMapping("/49")
+		@ResponseBody
+		public Map<String, Object> test49() {
+			Map<String, Object> map = new HashMap<String, Object>();
+			boolean entity = cService.checkCompanyCode("251001");
+			map.put("entity", entity);
+			return map;
+		}
 
 }
