@@ -12,6 +12,7 @@ public class Company extends PrimaryKey_String {
 
 	private String year; // 年度
 	private String companyCode; // 档案号
+	private String companyManagement; // 主管部门
 	private String companyName; // 企业名称
 	private String companyLegal; // 企业法人
 	private String companyContactPerson; // 企业联系人
@@ -24,8 +25,8 @@ public class Company extends PrimaryKey_String {
 	private CompanyEconomyType companyEconomyType; // 企业经济类型
 	private CompanyProperty companyProperty; // 公司属性
 	private Area area; // 公司所属地区
-	private String companyPhone=""; // 企业电话
-	private String companyMobile="";// 企业联系人手机
+	private String companyPhone = ""; // 企业电话
+	private String companyMobile = "";// 企业联系人手机
 	private String companyBank;// 开户银行
 	private String companyBankAccount;// 银行账户
 	private String companyRemark;// 备注
@@ -71,6 +72,14 @@ public class Company extends PrimaryKey_String {
 
 	public void setCompanyCode(String companyCode) {
 		this.companyCode = companyCode;
+	}
+
+	public String getCompanyManagement() {
+		return companyManagement;
+	}
+
+	public void setCompanyManagement(String companyManagement) {
+		this.companyManagement = companyManagement;
 	}
 
 	public String getCompanyName() {

@@ -6,6 +6,7 @@
 		<id column="c_year" jdbcType="CHAR" property="year" />
 		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="c_id" jdbcType="VARCHAR" property="id" />
+		<result column="c_company_management" jdbcType="VARCHAR" property="companyManagement"/>
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
@@ -64,7 +65,9 @@
 	
 	<sql id="Base_Column_List">
 		<!-- company -->
-		c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+		c.id as c_id, c.year as c_year, c.company_code as c_company_code, 
+		c.company_management as c_company_management, 
+		c.company_name as c_company_name, c.company_legal as c_company_legal,
 		c.company_contact_person as c_company_contact_person, 
 		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
 		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
@@ -98,6 +101,7 @@
 	<insert id="insert" parameterType="com.esd.hesf.model.Company">
 		insert into company (id,year,
 			company_code,
+			company_management, 
 			company_name,
 			company_legal, company_contact_person,
 			company_organization_code, company_tax_code,
@@ -115,6 +119,7 @@
 		values
 			(#{id,jdbcType=VARCHAR},#{year,jdbcType=CHAR},
 			#{companyCode,jdbcType=VARCHAR},
+			#{companyManagement,jdbcType=VARCHAR},
 			#{companyName,jdbcType=VARCHAR},
 			#{companyLegal,jdbcType=VARCHAR},#{companyContactPerson,jdbcType=VARCHAR},
 			#{companyOrganizationCode,jdbcType=VARCHAR},
@@ -144,6 +149,9 @@
 			</if>
 			<if test="companyCode != null">
 				company_code,
+			</if>
+			<if test="companyManagement != null">
+				company_management,
 			</if>
 			<if test="companyName != null">
 				company_name,
@@ -234,6 +242,9 @@
 			</if>
 			<if test="year != null and year != ''">
 				#{year,jdbcType=CHAR},
+			</if>
+			<if test="companyManagement != null">
+				#{companyManagement,jdbcType=VARCHAR},
 			</if>
 			<if test="companyCode != null">
 				#{companyCode,jdbcType=VARCHAR},
@@ -328,7 +339,8 @@
 		insert into company 
 			(id, 
 			year, 
-			company_code, 
+			company_code,
+			company_management, 
 			company_name, 
 			company_legal, 
 			company_contact_person,
@@ -354,7 +366,8 @@
 			)
 		select 	(select md5(CONCAT(#{currentYear},company_code))), 
 			#{currentYear}, 
-			company_code, 
+			company_code,
+			company_management, 
 			company_name, 
 			company_legal, 
 			company_contact_person,
@@ -391,6 +404,9 @@
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Company">
 		update company
 		<set>
+			<if test="companyManagement != null">
+				company_management = #{companyManagement,jdbcType=VARCHAR},
+			</if>
 			<if test="companyName != null">
 				company_name = #{companyName,jdbcType=VARCHAR},
 			</if>
