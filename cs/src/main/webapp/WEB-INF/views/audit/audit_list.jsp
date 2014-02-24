@@ -106,7 +106,7 @@
 </div>
 <!-- 数据表格 -->
 <table id="initAuditList_datagrid"></table>
-
+<div id="account"></div>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#year').combobox({

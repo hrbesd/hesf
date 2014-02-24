@@ -43,103 +43,40 @@
 </style>
 
 <script type="text/javascript">
-	verifyAudit = {};
-	verifyAudit.initVerify = function() {
-		$('#zaiZhiYuanGongZongShu').attr("onkeyup", "value=value.replace(/\\D/g,'')");
-		$('#zaiZhiYuanGongZongShu').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#yuDingCanJiRen').attr("onkeyup", "value=value.replace(/\\D/g,'')");
-		$('#yuDingCanJiRen').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#jianJiaoJinE').attr("onkeyup", "verifyAudit.checkMoney(this)");
-		$('#jianJiaoJinE').attr("onmouseup", "verifyAudit.checkMoney(this)");
-		$('#buJiaoJinE').attr("onkeyup", "verifyAudit.checkMoney(this)");
-		$('#buJiaoJinE').attr("onmouseup", "verifyAudit.checkMoney(this)");
-	};
-
-	//输入金钱校验
-	verifyAudit.checkMoney = function(e) {
-		if (e.value == e.value2)
+	initAudit = {};
+	//拒绝
+	initAudit.refusal = function() {
+		var comment = $('textarea[name=verifyAuditComment]').val();
+		if (comment == "" || comment == null || comment == undefined) {
+			alert("拒绝必须填写 复审意见");
 			return;
-		if (e.value.search(/^\d*(?:\.\d{0,2})?$/) == -1)
-			e.value = (e.value2) ? e.value2 : '';
-		else
-			e.value2 = e.value;
-	};
-
-	verifyAudit.jisuan = function() {
-		var param = {};
-		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
-		param.yingAnPaiCanJiRen = $('#yingAnPaiCanJiRen').val();
-		param.yiAnPaiCanJiRen = $('#yiAnPaiCanJiRen').val();
-		param.yiLuRuCanJiRen = $('#yiLuRuCanJiRen').val();
-		param.yuDingCanJiRen = $('#yuDingCanJiRen').val();
-
-		param.shangNianDuWeiJiaoBaoZhangJin = $('#shangNianDuWeiJiaoBaoZhangJin').val();
-		param.yingJiaoJinE = $('#yingJiaoJinE').val();
-		param.jianJiaoJinE = $('#jianJiaoJinE').val();
-		param.buJiaoJinE = $('#buJiaoJinE').val();
-		param.shiJiaoJinE = $('#shiJiaoJinE').val();
-		param.shiJiaoJinE = $('#zhiNaJin').val();
-		param.shiJiaoJinE = $('#shiJiaoZongJinE').val();
-		param.year = $('#year').val();
-		param.companyCode = $('input[name="company.companyCode"]').val();
-		$.ajax({
-			url : 'audits/calculate',
-			type : 'POST',
-			data : param,
-			success : function(data) {
-				$('#zaiZhiYuanGongZongShu').val(data.s_zaiZhiYuanGongZongShu);
-				$('#yingAnPaiCanJiRen').val(data.s_yingAnPaiCanJiRen);
-				$('#yiAnPaiCanJiRen').val(data.s_yiAnPaiCanJiRen);
-				$('#yiLuRuCanJiRen').val(data.s_yiLuRuCanJiRen);
-				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
-
-				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
-				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
-				$('#buJiaoJinE').val(data.s_buJiaoJinE);
-				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
-				$('#zhiNaJin').val(data.s_zhiNaJin);
-				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
-				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
-
-			},
-			error : function() {
-				alert("请求错误");
-			},
-			dataType : "json",
-			async : true
-		});
-
-	};
-	verifyAudit.save = function() {
-		esd.common.syncPostSubmit("#form", function(data) {
+		}
+		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
 			if (data == true) {
-				$.messager.alert('消息', '保存成功', 'info', function() {
+				$.messager.alert('消息', '拒绝成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
 					$("#initAuditList_datagrid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '保存失败', 'info');
+				$.messager.alert('消息', '拒绝失败', 'info');
 			}
 		});
 	};
-	verifyAudit.audit = function() {
+	//复审确认
+	initAudit.verifyAudit = function() {
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/verifyAudit", function(data) {
 			if (data == true) {
-				$.messager.alert('消息', '审批成功', 'info', function() {
+				$.messager.alert('消息', '复审确认成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
 					$("#initAuditList_datagrid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '审批失败', 'info');
+				$.messager.alert('消息', '复审确认失败', 'info');
 			}
 		});
 	};
-
-	/*
-	关闭单位年审窗口
-	 */
-	verifyAudit.back = function() {
+	//返回
+	initAudit.back = function() {
 		esd.common.defaultOpenWindowClose();
 	};
 
@@ -148,8 +85,6 @@
 			$(this).attr("readonly", "readonly");
 			$(this).attr("disabled", "disabled");
 		});
-		verifyAudit.initVerify();
-
 	});
 </script>
 
@@ -335,7 +270,7 @@
 				<td colspan="3"><textarea name="initAuditComment" class="readonly" rows="3" cols="45">${entity.initAuditComment}</textarea>
 				</td>
 				<td width="100">复审意见:</td>
-				<td colspan="3"><textarea  rows="3" cols="45" class="warn" >${entity.verifyAuditComment}</textarea>
+				<td colspan="3"><textarea name="verifyAuditComment" rows="3" cols="45" class="warn" >${entity.verifyAuditComment}</textarea>
 				</td>
 			</tr>
 			<tr>
@@ -360,8 +295,8 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<input name="id" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="${entity.version}" /> <a href="javascript:verifyAudit.save();" class="easyui-linkbutton"
-			iconCls="icon-save">保存</a> <a href="javascript:verifyAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a> <a href="javascript:verifyAudit.back();" class="easyui-linkbutton"
+		<input name="id" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="${entity.version}" /> <a href="javascript:initAudit.refusal();" class="easyui-linkbutton"
+			iconCls="icon-cancel">拒绝</a> <a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a> <a href="javascript:initAudit.back();" class="easyui-linkbutton"
 			iconCls="icon-back">返回</a>
 	</div>
 </form>

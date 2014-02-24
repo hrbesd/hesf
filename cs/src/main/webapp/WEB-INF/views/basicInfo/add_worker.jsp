@@ -242,7 +242,7 @@
 			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
 			</td>
 			<td class="">性别:</td>
-			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="disabled:'true'">
+			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
 					<option value="1">男</option>
 					<option value="0">女</option>
 			</select>
@@ -259,11 +259,11 @@
 			</td>
 			<td class="">残疾类别:</td>
 			<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="1"
-				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
+				data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
 			</td>
 			<td class="">残疾等级:</td>
 			<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="1"
-				data-options="disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
+				data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
 			</td>
 		</tr>
 		<tr>

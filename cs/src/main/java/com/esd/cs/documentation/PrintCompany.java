@@ -50,13 +50,11 @@ public class PrintCompany {
 	@Autowired
 	private CompanyService companyService;// 企业
 	@Autowired
-	private CompanyTypeService companyTypeService;// 企业类型
-	@Autowired
-	private CompanyPropertyService companyPropertyService;// 企业性质
-	@Autowired
 	private AuditService auditService;// 审核对象
 	@Autowired
 	private UserService service;
+
+	
 
 	/**
 	 * 转到打印列表页面
@@ -66,8 +64,9 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
+		String s=CalendarUtil.getNowYear();
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+	request.setAttribute("nowYear", "2014");
 		logger.debug("gotoPrintList:{}", "queryAudit");
 		return new ModelAndView("documents/print_list");
 	}
@@ -222,12 +221,37 @@ public class PrintCompany {
 		return null;
 	}
 	
-	@RequestMapping(value = "/detectaudit/{companyId}/{year}", method = RequestMethod.POST)
+	
+	/**
+	 * 检测单位当年度是否审核
+	 * @param companyId
+	 * @param year
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/detect/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
 	public Object detectaudit(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("printNoticeParamsID:{},year:{}", companyId, year);
-		
-		return null;
+		try {
+			Company company = companyService.getByPrimaryKey(companyId);
+			if (company == null) {
+				logger.error("getPrintNoticeInfoError:{}", "getCompanyNull");
+				return false;
+			}
+			 Audit audit=auditService.getByPrimaryKey(year,company.getCompanyCode());
+			 if(audit==null){
+				 return false;
+			 }
+		} catch (Exception e) {
+			logger.error("detectAuditError:{}",e.getMessage());
+			 return false;
+		}
+		 logger.debug("detectAuditResult:{}","OK");
+		 return true;
 	}
 	
+	
+	
+
 }

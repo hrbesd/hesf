@@ -131,11 +131,34 @@
 
 	//打印列表对象
 	var printList = {};
+	
+	
+	/**
+		检测单位是否审核
+	**/
+	printList.detect = function(id) {
+		$.ajax({
+			url: 'security/print/detect/' + id + '/' + $("#year").val(),
+			type:'post',
+			success:function(data){
+			alert(data);
+			},error:function(){
+				alert("审核检测错误");
+			}
+		});
+		
+		
+		
 
+	};
 	/**
 	打开年审表
 	 **/
 	printList.openAuditTab = function(id) {
+	if(printList.detect()){
+		alert("单位当年度未进行审核");
+		return ;
+	}
 		esd.common.defaultOpenWindow("年审表", 'print/audit/' + id + '/' + $("#year").val());
 
 	};
@@ -173,55 +196,54 @@
 		<table>
 			<tr>
 				<td>年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
 				<td>档案号码:</td>
-				<td><input type="text" id="companyCode" class="inputElement"/>
-				</td>
+				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td>税务号码:</td>
-				<td><input id="companyTaxCode" type="text"  class="inputElement"/>
-				</td>
+				<td><input id="companyTaxCode" type="text" class="inputElement" /></td>
 				<td>组织机构代码证:</td>
-				<td><input type="text" id="companyOrganizationCode" class="inputElement" /></td>
+				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
+				</td>
 
 			</tr>
 			<tr>
 				<td>企业性质:</td>
-				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td>经济类型:</td>
-				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td>地区:</td>
-				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" />
-				</td>
+				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" /></td>
 				<td>企业人数:</td>
-				<td><input type="text" style="width: 40px" id="companyEmpTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />-<input type="text" style="width: 40px" id="companyEmpTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />人</td>
+				<td><input type="text" style="width: 40px" id="companyEmpTotal_1" data-options="validType:['_number']" class="easyui-validatebox inputElement" />-<input type="text" style="width: 40px"
+					id="companyEmpTotal_2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />人</td>
 			</tr>
 			<tr>
 				<td>企业名称:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyName" />
-				</td>
+				<td colspan="3"><input class="longInputBox inputElement" id="companyName" /></td>
 				<td>企业地址:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyAddress" type="text" /></td>
+				<td colspan="3"><input class="longInputBox inputElement" id="companyAddress" type="text" />
+				</td>
 
 			</tr>
 			<tr>
 				<td>法人代表:</td>
-				<td><input id="companyLegal" type="text" class="inputElement" /></td>
+				<td><input id="companyLegal" type="text" class="inputElement" />
+				</td>
 			</tr>
 			<tr>
 				<td colspan="8">
-					<hr /></td>
+					<hr />
+				</td>
 			</tr>
 			<tr>
 				<td>流程状态:</td>
 				<td><input id="auditProcessStatus" class="easyui-combobox" data-options="height:30,editable:false" /> 单位</td>
 
 				<td>缴款人:</td>
-				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" />
+				</td>
 				<td>超过:</td>
-				<td><input id="overYear" type="text"  style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox " /> 年未初审</td>
+				<td><input id="overYear" type="text" style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox " /> 年未初审</td>
 
 				<td>是否免交:</td>
 				<td><select id="isExempt">
@@ -229,14 +251,13 @@
 						<option value="true">是</option>
 						<option value="false">否</option>
 
-				</select></td>
+				</select>
+				</td>
 			</tr>
 		</table>
 		<div class="findBut">
-			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-			 <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
-			<a href=""
-				class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
+			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> <a
+				href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>
 </div>

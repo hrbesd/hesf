@@ -46,7 +46,11 @@
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>
 		<p><span  class="red_notice">*</span>
-		文件格式必须是：.xsl，xlsm，xlsx 格式。</p>
+		文件格式必须是：.xsl，.xlsm，.xlsx 格式。</p>
+		
+		<p>
+			http://pan.baidu.com/s/1dD3knM5
+		</p>
 	 </div>
 </form>
 <iframe name="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>
