@@ -76,6 +76,32 @@
 		</trim>
 	</insert>
 	
+	<!-- copy last year data -->
+	<insert id="insertLastYearData" parameterType="map">
+		insert into company_year_worker 
+			( 
+			year, 
+			company_code,
+			worker_id,
+			current_job,
+			<if test="userId != null and userId > 0">
+				user_id,
+			</if>
+			update_time
+			)
+		select 	#{currentYear}, 
+			company_code,
+			worker_id,
+			current_job,
+			<if test="userId != null and userId > 0">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			now()
+			from 
+			company_year_worker
+		where year = #{lastYear};
+	</insert>
+	
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="int">
 		delete from company_year_worker

@@ -172,4 +172,5 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return	true-存在	false-不存在
 	 */
 	boolean checkCompanyCode(String companyCode);
+	
 }

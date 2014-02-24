@@ -72,7 +72,7 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @param map
 	 * @return
 	 */
-	public int insertLastYearData(Map<String, String> map);
+	public int insertLastYearData(Map<String, Object> map);
 	
 	/**
 	 * 根据公司code查询存在几条数据

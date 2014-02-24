@@ -122,14 +122,16 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public boolean initAuditData(String currentYear, String lastYear) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("currentYear", currentYear);
 		map.put("lastYear", lastYear);
 		// 向公司表里插入数据
-		int k = cDao.insertLastYearData(map);
+		int j = cDao.insertLastYearData(map);
 		// 向审核表里插入数据
-		int j = dao.insertLastYearData(map);
-		return (k > 0 && j > 0) ? true : false;
+		int k = dao.insertLastYearData(map);
+		// 向公司-员工关系表中插入数据
+		int l = cywDao.insertLastYearData(map);
+		return (j > 0 && k > 0 && l > 0) ? true : false;
 	}
 
 	@Override

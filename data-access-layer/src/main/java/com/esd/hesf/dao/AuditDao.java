@@ -19,7 +19,7 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @param lastYear
 	 * @return
 	 */
-	int insertLastYearData(Map<String, String> map);
+	int insertLastYearData(Map<String, Object> map);
 
 	/**
 	 * 根据companycode和year获得一条审核数据 
