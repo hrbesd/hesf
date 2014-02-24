@@ -1,10 +1,12 @@
 package com.esd.cs.company;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,13 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.common.PoiCreateExcel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 
 @Controller
-@RequestMapping(value = "/security/query/company")
+@RequestMapping(value = "/security/query/company")       
 public class QueryCompayController {
 	private static final Logger logger = LoggerFactory.getLogger(QueryCompayController.class);
 	@Autowired
@@ -103,15 +106,40 @@ public class QueryCompayController {
 	 */
 	@RequestMapping(value = "/exportCompany", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean exportCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
+	public String exportCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		boolean b = true;
+		List<Company> company=new ArrayList<Company>();
 		for (int i = 0; i < idArr.length; i++) {
-			Company c = companyService.getByPrimaryKey(idArr[i]);
-			
+			company.add(companyService.getByPrimaryKey(idArr[i]));
 		}
-		logger.debug("deleteCompanyResults:{},paramsId:{}", b, idArr);
-		return b;
+		String url = request.getServletContext().getRealPath("/");
+		
+		
+		//创建导出文件夹
+		File uploadPath=new File(url+"upload");
+		//导出文件夹
+		String exportFolder=uploadPath+File.separator+"company";
+		File companyPath=new File(exportFolder);
+		if(!(uploadPath.exists())){
+			uploadPath.mkdir();
+		}
+		if(!(companyPath.exists())){
+			companyPath.mkdir();
+		}
+		
+		// 创建文件唯一名称
+		String uuid = UUID.randomUUID().toString();
+		String exportPath=exportFolder+File.separator+uuid+".xls";
+		String FileDownloadPath="null";
+		//导出文件
+		b=PoiCreateExcel.createComapnyExcel(exportPath,company);
+		if(b){
+			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			FileDownloadPath="http://" +destPath+ "/upload/company/"+uuid+ ".xls";
+		}
+		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArr);
+		return FileDownloadPath;
 	}
 	
 	

@@ -30,6 +30,10 @@
 			return true;
 			
 		}
+		if($("#uploadWorkerFile").val()==''){
+		alert("请选择文件。");
+		return false;
+		}
 		alert("文件格式不支持");
 		return false;
 	};
@@ -40,8 +44,8 @@
 	
 </script>
 <form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
-	<input type="file" id="uploadWorkerFile" name="file" style="width: 400px" /> 
-	<input type="hidden" name="companyId" id="currentCompanyId" />
+	<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px" /> 
+	<input type="hidden" name="companyId" id="currentCompanyId"  />
 	 <input type="submit" value="上传" />
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>

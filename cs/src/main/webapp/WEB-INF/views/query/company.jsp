@@ -113,6 +113,52 @@
 		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
 		
 	};
+	
+	/**
+	导出企业
+	**/
+	queryCompany.openExportCompany = function() {
+		
+		// 获取所有选中列
+	var selection = $("#queryCompanyGrid").datagrid('getSelections');
+	// 判断选择数目是否大于0
+	if (selection.length == 0) {
+		alert("未选择任何数据。");
+	} else {
+		// 显示确认删除对话框
+		$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
+			if (r) {
+				// 组装参数
+				var params = new Array();
+				for ( var i = 0; i < selection.length; i++) {
+					params.push(selection[i].id);
+				}
+				//发送导出请求
+				
+				$.ajax({
+					url:'query/company/exportCompany',
+					type:'post',
+					data: {
+							params : params
+						},
+					success:function(data){
+					if(data!="null"){
+			
+						window.location.href=data;
+					}else{
+					
+						alert("单位信息导出错误");
+					}
+					},error:function(){
+						alert("exportCompanyErrror");
+					}
+				});
+			}
+		});
+	}
+	};
+	
+	
 	$(function() {
 		queryCompany.init();
 		//加载单位档案数据
@@ -128,61 +174,50 @@
 		<table>
 			<tr>
 				<td>年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
 				<td>档案号码:</td>
-				<td><input type="text" id="companyCode"  class="inputElement"/>
-				</td>
+				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td>税务号码:</td>
-				<td><input id="companyTaxCode" type="text"  class="inputElement"/>
-				</td>
+				<td><input id="companyTaxCode" type="text" class="inputElement" /></td>
 				<td>组织机构代码证:</td>
-				<td><input type="text" id="companyOrganizationCode" class="inputElement" /></td>
+				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
+				</td>
 
 			</tr>
 			<tr>
 				<td>企业性质:</td>
-				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td>经济类型:</td>
-				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" />
-				</td>
+				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td>地区:</td>
-				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" />
-				</td>
+				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" /></td>
 				<td>企业人数:</td>
-				<td>
-				<input type="text" style="width: 40px" 	id="companyEmpTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />-
-				<input type="text" style="width: 40px" 	id="companyEmpTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />
-		
-					</td>
+				<td><input type="text" style="width: 40px" id="companyEmpTotal_1" data-options="validType:['_number']" class="easyui-validatebox inputElement" />- <input type="text" style="width: 40px"
+					id="companyEmpTotal_2" data-options="validType:['_number']" class="easyui-validatebox inputElement" /></td>
 			</tr>
 			<tr>
 				<td>企业名称:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyName"  />
-				</td>
+				<td colspan="3"><input class="longInputBox inputElement" id="companyName" /></td>
 				<td>企业地址:</td>
-				<td colspan="3"><input class="longInputBox inputElement"  type="text" id="companyAddress" /></td>
+				<td colspan="3"><input class="longInputBox inputElement" type="text" id="companyAddress" />
+				</td>
 
 			</tr>
 			<tr>
 				<td>法人代表:</td>
-				<td><input id="companyLegal" type="text" class="inputElement"/></td>
-				<td>残疾职工数:</td>
-				<td>
-				<input type="text" style="width: 40px" 	id="companyHandicapTotal_1"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />
-				-
-				<input type="text" style="width: 40px" 	id="companyHandicapTotal_2"  data-options="validType:['_number']" class="easyui-validatebox inputElement" />人
+				<td><input id="companyLegal" type="text" class="inputElement" />
 				</td>
+				<td>残疾职工数:</td>
+				<td><input type="text" style="width: 40px" id="companyHandicapTotal_1" data-options="validType:['_number']" class="easyui-validatebox inputElement" /> - <input type="text"
+					style="width: 40px" id="companyHandicapTotal_2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />人</td>
 			</tr>
-			
+
 
 		</table>
 		<div class="findBut">
-			<a href="javascript:queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-	
-			<a href="javascript:queryCompany.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
-			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
+			<a href="javascript:queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
+			<a href="javascript:queryCompany.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
+			<a href="javascript:queryCompany.openExportCompany()" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>
 </div>

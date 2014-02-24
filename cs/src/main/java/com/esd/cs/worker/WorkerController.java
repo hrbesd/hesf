@@ -335,8 +335,6 @@ public class WorkerController {
 	public Map<String, String> importfile(String upLoadPath,HttpServletRequest request, HttpServletResponse response) {
 		// 获取并解析文件类型和支持最大值
 		String fileType = "xls";
-		
-	
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
 		factory.setSizeThreshold(5 * 1024);
@@ -411,19 +409,20 @@ public class WorkerController {
 		
 		// 初始化上传文件目录
 		String upload="upload";
-		String temp="temp";
+		String workerFolder="worker";
+		
 		String url = request.getServletContext().getRealPath("/");
-		String upLoadPath = url + upload + File.separator + "temp" + File.separator;
+		String upLoadPath = url + upload + File.separator +workerFolder + File.separator;
 		File uploadPath=new File( url + "upload" );
-		File tempPath=new File( url + upload+File.separator+"temp");
+		File tempPath=new File(uploadPath+File.separator+workerFolder);
 		//创建 上传目录
 		if(!uploadPath.exists()){
 			logger.debug(upload+" Does not exist,Create ‘"+upload+"’ Folder");
 			uploadPath.mkdir();
-			if(!tempPath.exists()){
-				logger.debug(temp+" Does not exist,Create ‘"+temp+"’ Folder");
-				tempPath.mkdir();
-			}
+		}
+		if(!tempPath.exists()){
+			logger.debug(workerFolder+" Does not exist,Create ‘"+workerFolder+"’ Folder");
+			tempPath.mkdir();
 		}
 		
 		//上传文件
@@ -565,14 +564,13 @@ public class WorkerController {
 				}
 				// 检测是否有未导入数据
 				if (workerErrorList.size() != 0) {
-				
 					String errorFilePath = upLoadPath+ companyId + ".xls";
 					//错误列表是否创建成功
 					if(PoiCreateExcel.createExcel(errorFilePath, workerErrorList)){
 						logger.debug("upLoadErrorListCreateSuccess!");
 						String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
 						// 返回错误列表文件下载地址
-						request.setAttribute("errorFilePath", "http://" + destPath + "/"+upload+"/"+temp+"/" + companyId + ".xls");//
+						request.setAttribute("errorFilePath", "http://" + destPath + "/"+upload+"/"+workerFolder+"/" + companyId + ".xls");//
 					}else{
 						logger.error("upLoadErrorListCreateError");
 						request.setAttribute("errorInfo", CREATEERRORFILE);
