@@ -73,4 +73,11 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @return
 	 */
 	public int insertLastYearData(Map<String, String> map);
+	
+	/**
+	 * 根据公司code查询存在几条数据
+	 * @param companyCode
+	 * @return
+	 */
+	Integer retrieveCountByCompanyCode(String companyCode);
 }

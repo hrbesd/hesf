@@ -164,4 +164,12 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return
 	 */
 	Integer getCompanyCode();
+
+	/**
+	 * 根据公司档案号检查公司是否存在
+	 * 
+	 * @param companyCode
+	 * @return	true-存在	false-不存在
+	 */
+	boolean checkCompanyCode(String companyCode);
 }

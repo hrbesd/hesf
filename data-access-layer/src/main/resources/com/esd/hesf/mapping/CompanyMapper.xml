@@ -703,4 +703,8 @@
 		order by c.company_code 
 	</select>
 	
+	<!-- check exists of the companyCode -->
+	<select id="retrieveCountByCompanyCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from company where company_code = #{companyCode,jdbcType=VARCHAR}
+	</select>
 </mapper>

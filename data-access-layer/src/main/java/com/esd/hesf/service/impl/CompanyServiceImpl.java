@@ -438,4 +438,12 @@ public class CompanyServiceImpl implements CompanyService {
 		return temp;
 	}
 
+	@Override
+	public boolean checkCompanyCode(String companyCode) {
+		if (companyCode == null || "".equals(companyCode)) {
+			return false;
+		}
+		return dao.retrieveCountByCompanyCode(companyCode) > 0 ? true : false;
+	}
+
 }
