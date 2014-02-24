@@ -4,6 +4,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 
+
+
 <script type="text/javascript">
 	/*
 		残疾职工页面
@@ -63,7 +65,7 @@
 			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
-			<td>单位性质</td>
+			<td class="reportTitle"> 经济类型</td>
 			<td>单位总数</td>
 			<td>单位总人数</td>
 			<td>待初单位数</td>
@@ -92,7 +94,4 @@
 	<div align="center" style="margin-top: 15px">
 		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
-
-
-
 </div>

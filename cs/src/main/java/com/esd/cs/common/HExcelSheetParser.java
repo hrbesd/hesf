@@ -3,7 +3,7 @@
  * 
  * HADVENTURE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.esd.cs.worker;
+package com.esd.cs.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,31 +14,28 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
- * 解析excel 2003-2010
+ * 解析 excel 97-2003
  * 
  * @author zhangjianzong
  * 
  */
-public class XExcelSheetParser {
+public class HExcelSheetParser {
 	// log4j
-	private Logger logger = Logger.getLogger(XExcelSheetParser.class);
+	private Logger logger = Logger.getLogger(HExcelSheetParser.class);
 
-	private XSSFWorkbook workbook;// 工作簿
+	private HSSFWorkbook workbook;// 工作簿
 
-	public XExcelSheetParser(File file) {
+	public HExcelSheetParser(File file) {
 		try {
 			// 获取工作薄workbook
-
-			workbook = new XSSFWorkbook(new FileInputStream(file));
-			// workbook = new HSSFWorkbook(new FileInputStream(file));
+			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -49,7 +46,7 @@ public class XExcelSheetParser {
 	public List<List<Object>> getDatasInSheet(int sheetNumber) {
 		List<List<Object>> result = new ArrayList<List<Object>>();
 		// 获得指定的sheet
-		XSSFSheet sheet = workbook.getSheetAt(sheetNumber);
+		HSSFSheet sheet = workbook.getSheetAt(sheetNumber);
 		// 获得sheet总行数
 		int rowCount = sheet.getLastRowNum();
 		logger.info("found excel rows count:" + rowCount);
@@ -59,14 +56,14 @@ public class XExcelSheetParser {
 		// 遍历行row
 		for (int rowIndex = 0; rowIndex <= rowCount; rowIndex++) {
 			// 获得行对象
-			XSSFRow row = sheet.getRow(rowIndex);
+			HSSFRow row = sheet.getRow(rowIndex);
 			if (null != row) {
 				List<Object> rowData = new ArrayList<Object>();
 				// 获得本行中单元格的个数
 				int cellCount = row.getLastCellNum();
 				// 遍历列cell
-				for (short cellIndex = 0; cellIndex < cellCount; cellIndex++) {
-					XSSFCell cell = row.getCell(cellIndex);
+				for (int cellIndex = 0; cellIndex < cellCount; cellIndex++) {
+					HSSFCell cell = row.getCell(cellIndex);
 					// 获得指定单元格中的数据
 					Object cellStr = this.getCellString(cell);
 
@@ -79,8 +76,7 @@ public class XExcelSheetParser {
 		return result;
 	}
 
-	private Object getCellString(XSSFCell cell) {
-		// TODO Auto-generated method stub
+	private Object getCellString(HSSFCell cell) {
 		Object result = null;
 		if (cell != null) {
 			// 单元格类型：Numeric:0,String:1,Formula:2,Blank:3,Boolean:4,Error:5
@@ -105,10 +101,11 @@ public class XExcelSheetParser {
 				result = null;
 				break;
 			default:
-				System.out.println("枚举了所有类型");
+				logger.info("枚举了所有类型");
 				break;
 			}
 		}
 		return result;
 	}
+
 }

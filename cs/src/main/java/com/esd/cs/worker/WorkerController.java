@@ -80,7 +80,7 @@ public class WorkerController {
 	static int HANDICAPCODE = 20;
 
 	// 提示文本
-	static String LENGTHERROR = "残疾证号长度不符";
+	static String LENGTHERROR = "残疾证号长度过小";
 
 	// 提示文本
 	static String BEENHIRED = "职工已被录用";
@@ -95,7 +95,7 @@ public class WorkerController {
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
 	static String WORDERROR = "excel文件内部文本信息格式错误!";
-
+	static String CREATEERRORFILE="创建错误信息列表文件错误";
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
 	 * 
@@ -266,7 +266,6 @@ public class WorkerController {
 	private boolean editWorkerUp(Worker worker, String companyId) {
 		boolean workerUpDataStatus = false, companyUpdataStatus = false;
 		try {
-			System.out.println(worker.getWorkerHandicapCode() + "====================");
 			// 根据残疾证号获取版本号
 			Worker w = workerService.getByWorkerHandicapCode(worker.getWorkerHandicapCode());
 			if (w == null) {
@@ -333,27 +332,25 @@ public class WorkerController {
 	 * @param response
 	 * @return
 	 */
-	public Map<String, String> importfile(HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, String> importfile(String upLoadPath,HttpServletRequest request, HttpServletResponse response) {
 		// 获取并解析文件类型和支持最大值
 		String fileType = "xls";
-		String url = request.getServletContext().getRealPath("/");
-		// 上传目录名
-		String tempPath = url + "upload" + File.separator + "temp" + File.separator;
-
+		
+	
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
 		factory.setSizeThreshold(5 * 1024);
 		// 设置临时文件目录
-		factory.setRepository(new File(tempPath));
-		ServletFileUpload upload = new ServletFileUpload(factory);
+		factory.setRepository(new File(upLoadPath));
+		ServletFileUpload fileUpload = new ServletFileUpload(factory);
 		Map<String,String> result=new HashMap<String,String>();
 		if (LoadUpFileMaxSize != null && !"".equals(LoadUpFileMaxSize.trim())) {
 			// 文件最大上限
-			upload.setSizeMax(Integer.valueOf(LoadUpFileMaxSize) * 1024 * 1024);
+			fileUpload.setSizeMax(Integer.valueOf(LoadUpFileMaxSize) * 1024 * 1024);
 		}
 		try {
 			// 获取所有文件列表
-			List<FileItem> items = upload.parseRequest(request);
+			List<FileItem> items = fileUpload.parseRequest(request);
 			for (FileItem item : items) {
 				 // 如果是文件项，则保存文件到上传目录
 				if (!item.isFormField()) {
@@ -380,8 +377,7 @@ public class WorkerController {
 					String uuid = UUID.randomUUID().toString();
 					// 真实上传路径
 					StringBuffer sbRealPath = new StringBuffer();
-					sbRealPath.append(tempPath).append(uuid).append(".").append(fileEnd);
-					
+					sbRealPath.append(upLoadPath).append(uuid).append(".").append(fileEnd);
 					// 写入文件
 					File file = new File(sbRealPath.toString());
 					item.write(file);
@@ -412,17 +408,34 @@ public class WorkerController {
 	public ModelAndView importworker(HttpServletRequest request, HttpServletResponse response) {
 
 		logger.debug("importWorker:{}");
+		
+		// 初始化上传文件目录
+		String upload="upload";
+		String temp="temp";
+		String url = request.getServletContext().getRealPath("/");
+		String upLoadPath = url + upload + File.separator + "temp" + File.separator;
+		File uploadPath=new File( url + "upload" );
+		File tempPath=new File( url + upload+File.separator+"temp");
+		//创建 上传目录
+		if(!uploadPath.exists()){
+			logger.debug(upload+" Does not exist,Create ‘"+upload+"’ Folder");
+			uploadPath.mkdir();
+			if(!tempPath.exists()){
+				logger.debug(temp+" Does not exist,Create ‘"+temp+"’ Folder");
+				tempPath.mkdir();
+			}
+		}
+		
 		//上传文件
-		Map<String, String> paramMap = importfile(request, response);
-	
+		Map<String, String> paramMap = importfile(upLoadPath,request, response);
+		//上传文件返回的参数信息
 		String filePath		=paramMap.get("filePath");//文件路径
 		String companyId =paramMap.get("companyId");//文件路径
 		String fileError			=paramMap.get("fileError");//错误信息
-		
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list = null;
-		String url = request.getServletContext().getRealPath("/");
+
 		if (fileError== null) {
 			try {
 				File f = new File(filePath);
@@ -471,7 +484,7 @@ public class WorkerController {
 							continue;
 						}
 						// 4.校验残疾证号长度
-						if (!(workerHandicapCode.length() == HANDICAPCODE)) {
+						if (workerHandicapCode.length() < HANDICAPCODE) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
 							workerErrorList.add(w);
@@ -552,11 +565,18 @@ public class WorkerController {
 				}
 				// 检测是否有未导入数据
 				if (workerErrorList.size() != 0) {
-					String errorFilePath = url + "upload" + File.separator + "temp" + File.separator + companyId + ".xls";
-					boolean result = PoiCreateExcel.createExcel(errorFilePath, workerErrorList);
-					String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-					// 返回错误列表文件下载地址
-					request.setAttribute("errorFilePath", "http://" + destPath + "/upload/temp/" + companyId + ".xls");//
+				
+					String errorFilePath = upLoadPath+ companyId + ".xls";
+					//错误列表是否创建成功
+					if(PoiCreateExcel.createExcel(errorFilePath, workerErrorList)){
+						logger.debug("upLoadErrorListCreateSuccess!");
+						String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+						// 返回错误列表文件下载地址
+						request.setAttribute("errorFilePath", "http://" + destPath + "/"+upload+"/"+temp+"/" + companyId + ".xls");//
+					}else{
+						logger.error("upLoadErrorListCreateError");
+						request.setAttribute("errorInfo", CREATEERRORFILE);
+					}
 				}
 				//删除上传文件
 				f.delete();

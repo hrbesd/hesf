@@ -38,6 +38,11 @@ public class ReportController {
 	@Autowired
 	private ReportViewService reportViewService;
 
+	@RequestMapping(value = "/createExcle", method = RequestMethod.GET)
+	public ModelAndView createExcle(HttpServletRequest request) {
+	
+		return new ModelAndView("report/dowanloadArea");
+	}
 	/**
 	 * 转到 企业性质报表
 	 * 

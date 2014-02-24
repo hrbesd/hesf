@@ -13,15 +13,22 @@
 	<!-- 数据表格 -->
 	<table id="company_information"  class="companyTable" >
 		<tr>
+			<td class="tdRight">档案编码(<span class="red_notice">*</span>):</td>
+			<td >
+			<input name="companyCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyCode','param','组织机关代码证已存在']" type="text" />
+		</td>
+			</tr>
+		<tr>
 			<td class="tdRight">企业名称(<span class="red_notice">*</span>):</td>
 			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
-			<td class=""><input name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
+			<td class="">
+			<input name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
 			</td>
 			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_length[8]']" /></td>
+			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">企业性质:</td>
@@ -37,6 +44,10 @@
 			<td class="tdRight">单位类型:</td>
 			<td class="bj_belu"><input name="companyType.id" class="easyui-combobox" value="1"
 				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
+			</td>
+			<td class="tdRight">主管部门:</td>
+			<td class="bj_belu">
+			<input name="companyManagement"  />
 			</td>
 		</tr>
 		<tr>

@@ -94,4 +94,29 @@ public class QueryCompayController {
 		logger.debug("queryCompanyResult:{}", list.toString());
 		return entity;
 	}
+	
+	/**
+	 * 批量导出企业信息
+	 * @param idArr
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/exportCompany", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean exportCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
+		logger.debug("deleteCompany:{}", idArr.toString());
+		boolean b = true;
+		for (int i = 0; i < idArr.length; i++) {
+			Company c = companyService.getByPrimaryKey(idArr[i]);
+			
+		}
+		logger.debug("deleteCompanyResults:{},paramsId:{}", b, idArr);
+		return b;
+	}
+	
+	
+	
+	
+	
+	
 }

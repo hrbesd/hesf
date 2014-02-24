@@ -1,9 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="application/vnd.ms-excel" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
-
+<%
+String filename = new String(("表格名").getBytes("UTF-8"),"ISO-8859-1");
+ response.addHeader("Content-Disposition", "filename=" + filename + ".xls");%>
+<html>
+<head>
+<meta name="Generator" content="Microsoft Excel 11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
 
 <script type="text/javascript">
 	/*
@@ -14,6 +22,7 @@
 		$.ajax({
 			url : 'report/area/' + 	$('#companyYear').combobox("getText"),
 			type : 'post',
+			async:false,
 			success : function(data) {
 
 			$("#printNatureTab tbody").empty();
@@ -32,9 +41,7 @@
 			}
 
 		});
-
 	};
-	
 	$(function() {
 		$('#companyYear').combobox({
 			onSelect:function(param){
@@ -93,4 +100,8 @@
 		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
 
+
+
 </div>
+</body>
+<html>

@@ -63,7 +63,7 @@
 			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
-			<td>单位性质</td>
+			<td class="reportTitle">单位性质</td>
 			<td>单位总数</td>
 			<td>单位总人数</td>
 			<td>待初单位数</td>
