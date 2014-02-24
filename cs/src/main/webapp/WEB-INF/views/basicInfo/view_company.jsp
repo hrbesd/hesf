@@ -9,22 +9,22 @@
 	<!-- 数据表格 -->
 	<table id="edit_companyTab" class="companyTable" border="0">
 		<tr>
-			<td class="tdRight">档案编码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">档案编码 :</td>
 			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}" style="border: 0" readonly="true" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">企业名称(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">企业名称 :</td>
 			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" value="${company.companyName}" data-options="required:true" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">组织机关代码 :</td>
 			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" /> <!-- 年份 --> <input
 				name="year" type="hidden" value="${company.year}" /> <!-- 地区码 --> <input name="id" type="hidden" value="${company.id}" /> <!-- 地区码 --> <input name="version" type="hidden"
 				value="${company.version}" />
 			</td>
-			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">税务编码 :</td>
 			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" value="${company.companyTaxCode}" data-options="required:true" />
 			</td>
 		</tr>
@@ -45,23 +45,23 @@
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">企业总人数(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">企业总人数 :</td>
 			<td><input name="companyEmpTotal" class="easyui-validatebox" type="text" value="${company.companyEmpTotal}" data-options="required:true,validType:['_number']" />
 			</td>
-			<td class="tdRight">残疾职工人数(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">残疾职工人数 :</td>
 			<td><input name="companyHandicapTotal" class="inNormal easyui-validatebox" type="text" value="${company.companyHandicapTotal}" data-options="required:true,validType:['_number']" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">法人代表 :</td>
 			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" data-options="required:true" />
 			</td>
-			<td class="tdRight">联系人(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">联系人 :</td>
 			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" value="${company.companyContactPerson}" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">电话号码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">电话号码 :</td>
 			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" value="${company.companyPhone}" data-options="required:true" />
 			</td>
 			<td class="tdRight">手机号码:</td>
@@ -69,10 +69,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">开户银行(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">开户银行 :</td>
 			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" value="${company.companyBank}" data-options="required:true" />
 			</td>
-			<td class="tdRight">银行账户(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">银行账户 :</td>
 			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" value="${company.companyBankAccount}" data-options="required:true" />
 			</td>
 		</tr>
@@ -85,7 +85,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">企业地址(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">企业地址 :</td>
 			<td colspan="3"><input name="companyAddress" class="longtext easyui-validatebox" type="text" value="${company.companyAddress}" data-options="required:true" />
 			</td>
 		</tr>

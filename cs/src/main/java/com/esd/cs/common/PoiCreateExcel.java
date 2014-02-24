@@ -140,7 +140,7 @@ public class PoiCreateExcel {
 			cell.setCellValue(company.getCompanyTaxCode());
 			//企业名称
 			cell = row.createCell(2);
-			cell.setCellValue(company.getCompanyCode());
+			cell.setCellValue(company.getCompanyName());
 			//法人代表
 			cell = row.createCell(3);
 			cell.setCellValue(company.getCompanyLegal());
