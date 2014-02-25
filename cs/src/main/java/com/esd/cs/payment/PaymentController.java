@@ -64,7 +64,7 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request) {
-		String nowYear = CalendarUtil.getNowYear();
+		String nowYear = CalendarUtil.getLastYear();
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("payment/payment_list");

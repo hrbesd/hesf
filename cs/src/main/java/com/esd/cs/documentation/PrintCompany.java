@@ -64,7 +64,7 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
-		String s=CalendarUtil.getNowYear();
+		String s=CalendarUtil.getLastYear();
 		// 获取当前年份
 	request.setAttribute("nowYear", "2014");
 		logger.debug("gotoPrintList:{}", "queryAudit");

@@ -1,6 +1,7 @@
 package com.esd.cs.settings;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -82,6 +83,7 @@ public class YearAuditParameterController {
 			query = auditParameterService.getPaginationRecords(auditParameter, page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			for (Iterator<AuditParameter> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 				AuditParameter it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
@@ -90,7 +92,8 @@ public class YearAuditParameterController {
 				map.put("areaCode", it.getArea().getName());// 地区
 				map.put("averageSalary", it.getAverageSalary());// 计算基数
 				map.put("putScale", it.getPutScale());// 安置比例
-				map.put("payCloseDate", it.getPayCloseDate());// 支付截至日期
+				String payCloseDate = dateFormat.format(it.getPayCloseDate());
+				map.put("payCloseDate", payCloseDate);// 支付截至日期
 				list.add(map);
 			}
 			entity.put("total", total);
@@ -98,7 +101,7 @@ public class YearAuditParameterController {
 			logger.debug("total:{},rows:{}", total, list.toString());
 
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("error{}", e);
 		}
 		return entity;
 	}
@@ -125,7 +128,7 @@ public class YearAuditParameterController {
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	@ResponseBody
 	public Boolean checkYear() {
-		String year = CalendarUtil.getNowYear();
+		String year = CalendarUtil.getLastYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		if (auditParameter != null) {
 			return true;
@@ -141,7 +144,7 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addGet(HttpServletRequest request) {
-		String year = CalendarUtil.getNowYear();
+		String year = CalendarUtil.getLastYear();
 		request.setAttribute("year", year);
 		return new ModelAndView("settings/parameter_save");
 	}

@@ -60,7 +60,7 @@ public class CompayController {
 		// 续传用户类型
 		request.setAttribute("companyProperty", property);
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		return new ModelAndView("basicInfo/company_list");
 	}
 
@@ -190,7 +190,7 @@ public class CompayController {
 				logger.error("addCompany{}", "paramserror");
 				return false;
 			}
-			company.setYear(CalendarUtil.getNowYear());
+			company.setYear(CalendarUtil.getLastYear());
 			boolean b = companyService.save(company);
 			logger.debug("addCompany{}", b);
 			return b;

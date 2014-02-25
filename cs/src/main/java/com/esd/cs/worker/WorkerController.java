@@ -155,11 +155,11 @@ public class WorkerController {
 		// 续传企业id
 		request.setAttribute("companyId", companyId);
 		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getNowYear());
+		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getLastYear());
 		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
 		request.setAttribute("retireAgeMale",auditParam.getRetireAgeMale());//男退休年龄
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.info("goToPage:{}", "添加残疾职工页面");
 		return new ModelAndView("basicInfo/add_worker");
 	}
@@ -195,7 +195,7 @@ public class WorkerController {
 			return false;
 		}
 		// 设置年份
-		worker.setWorkerBirthYear(CalendarUtil.getNowYear());
+		worker.setWorkerBirthYear(CalendarUtil.getLastYear());
 		boolean b = workerService.save(worker, c.getCompanyCode());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -283,8 +283,8 @@ public class WorkerController {
 				// 员工信息更新成功，进行员工和录用企业之间关联更新
 				Company c = companyService.getByPrimaryKey(companyId);
 				if (c != null) {
-					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), CalendarUtil.getNowYear(), worker.getCurrentJob());
-					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getCompanyCode(), CalendarUtil.getNowYear(), worker.getCurrentJob());
+					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), CalendarUtil.getLastYear(), worker.getCurrentJob());
+					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getCompanyCode(), CalendarUtil.getLastYear(), worker.getCurrentJob());
 					if (companyUpdataStatus) {
 						logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
 					} else {
@@ -509,7 +509,7 @@ public class WorkerController {
 						continue;
 					}
 					// 7.校验职工年龄
-					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getNowYear()));
+					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getLastYear()));
 					if (ageResult != null) {
 						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。"+ ageResult.get(2).toString();
 						w.setRemark(ageErrorInfo);
@@ -635,7 +635,7 @@ public class WorkerController {
 		logger.debug("validateOrganizationCode:{}", workerIdCard);
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		Map<String, String> paramsMap = new HashMap<String, String>();
-		Company company = workerService.retrieveCompanyByWorker(CalendarUtil.getNowYear(), workerIdCard);
+		Company company = workerService.retrieveCompanyByWorker(CalendarUtil.getLastYear(), workerIdCard);
 		// 第一种情况 存在，并且在其他公司内。
 		if (company != null) {
 			paramsMap.put("type", "1");

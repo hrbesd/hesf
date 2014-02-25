@@ -19,8 +19,8 @@ public class CalendarUtil {
 
 	public static String getLastYear() {
 		Calendar cal = Calendar.getInstance();// 使用日历类
-		int year = cal.get(Calendar.YEAR - 1);// 得到年
-		return String.valueOf(year);
+		int year = cal.get(Calendar.YEAR);// 得到年
+		return String.valueOf(year-1);
 	}
 
 	public static long getDaySub(String beginDateStr, String endDateStr) {

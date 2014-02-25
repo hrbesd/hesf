@@ -78,7 +78,7 @@ public class ReportController {
 	@RequestMapping(value = "/nature", method = RequestMethod.GET)
 	public ModelAndView nature(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Nature");
-		request.setAttribute("year", CalendarUtil.getNowYear());
+		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/nature");
 	}
@@ -109,7 +109,7 @@ public class ReportController {
 	@RequestMapping(value = "/area", method = RequestMethod.GET)
 	public ModelAndView area(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Area");
-		request.setAttribute("year", CalendarUtil.getNowYear());
+		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/area");
 	}
@@ -139,7 +139,7 @@ public class ReportController {
 	@RequestMapping(value = "/economytype", method = RequestMethod.GET)
 	public ModelAndView economytype(HttpServletRequest request) {
 		logger.info("goToPage:{}", "Report_Economytype");
-		request.setAttribute("year", CalendarUtil.getNowYear());
+		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		return new ModelAndView("report/economytype");
 	}

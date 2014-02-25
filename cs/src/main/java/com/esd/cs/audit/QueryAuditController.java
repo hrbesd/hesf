@@ -40,7 +40,7 @@ public class QueryAuditController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView queryAuditList(HttpServletRequest request) {
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.debug("goToPage:{}", "queryAudit");
 		return new ModelAndView("query/audit");
 	}

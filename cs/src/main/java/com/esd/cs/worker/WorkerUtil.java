@@ -47,7 +47,7 @@ public class WorkerUtil {
 					// 初审日期
 					Integer age = Integer.valueOf(param.substring(6, 10));
 					// 当前年份
-					Integer nowYear = Integer.valueOf(CalendarUtil.getNowYear());
+					Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
 					return (nowYear - age) + 1;
 				} catch (Exception e) {
 					logger.error("conversionAge:{}", e.getMessage());
@@ -216,7 +216,7 @@ public class WorkerUtil {
 				}
 			}
 		} else {
-			logger.error("getNowYearERROR:{}");
+			logger.error("getLastYearERROR:{}");
 		}
 		return null;
 	}

@@ -40,7 +40,7 @@ public class QueryCompayController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView company_list(HttpServletRequest request) {
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getNowYear());
+		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.debug("goToPage:{}", "queryCompany");
 		return new ModelAndView("query/company");
 
