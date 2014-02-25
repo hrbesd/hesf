@@ -17,7 +17,7 @@
 	<!-- 快速搜索区域 -->
 	<div align="center" style="margin-bottom: 10px">
 		<!-- 年份 -->
-		<input id="companyYears" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />年
+		<input id="companyYears" class="easyui-combobox" value="${nowYear}"  />年
 	</div>
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
@@ -34,7 +34,15 @@
 
 <script type="text/javascript">
 	$(function() {
-		//basicFile.init();
+	//年份
+		$('#companyYears').combobox({
+			url : 'parameter/getyears',
+			valueField : 'id',
+			textField : 'text',
+			height:30,
+			editable:false,
+		});
+		
 		basicFile.loadData(basicFile.getParams());
 	});
 </script>
