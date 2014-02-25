@@ -52,7 +52,7 @@
 	</div>
 	<div id="tab-tools" data-options="fit:true,border:true">
 		<span >登录用户&nbsp;:&nbsp;${sessionScope.userName}</span> 
-		<a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-back'" onclick="view.tabs.removeAllTab()">退出</a>
+		<a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" onclick="view.tabs.removeAllTab()">退出</a>
 		<!--  
 		<label id="show"></label>
 		-->
