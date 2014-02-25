@@ -34,6 +34,25 @@
 		});
 
 	};
+		/**
+		导出
+	**/
+	printNature.exportExport = function() {
+		$.ajax({
+			url : 'report/export/area/'+$('#companyYear').combobox("getText"),
+			type : 'post',
+			success : function(data) {
+				if(data!="null"){
+					window.location.href=data;
+				}else{
+					alert("导出报表时错误。");
+				}
+			},
+			error : function() {
+				alert("导出报表时错误。");
+			}
+		});
+	};
 	
 	$(function() {
 		$('#companyYear').combobox({
@@ -60,7 +79,7 @@
 			<th colspan="14">年审地区汇总表</th>
 		</tr>
 		<tr>
-			<th colspan="7" style="text-align: left;">制表单位:黑龙江省残疾人联合会</th>
+			<th colspan="7" style="text-align: left;">制表单位:${createTabCompany}</th>
 			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
@@ -84,13 +103,13 @@
 		</tbody>
 		<tfoot>
 			<tr>
-			<td colspan="14" align="right">制表人：校验</td>
+			<td colspan="14" align="right">制表人：${createPeople}</td>
 		</tr>
 		</tfoot>
 	</table>
 
 	<div align="center" style="margin-top: 15px">
-		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
+		<a href="javascript:printNature.exportExport()" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
 
 </div>

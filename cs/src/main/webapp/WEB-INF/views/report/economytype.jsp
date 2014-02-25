@@ -10,13 +10,12 @@
 	/*
 		残疾职工页面
 	 */
-	printNature = {};
-	printNature.load = function() {
+	economytype = {};
+	economytype.load = function() {
 		$.ajax({
 			url : 'report/economytype/' + 	$('#companyYear').combobox("getText"),
 			type : 'post',
 			success : function(data) {
-
 			$("#printNatureTab tbody").empty();
 				for(var i=0;i<data.length;i++){
 	//																					单位性质，                                        单位总数，                                      单位总人数，                         待初单位数，
@@ -31,18 +30,37 @@
 			error : function() {
 				alert("获取经济类型报表数据时错误。");
 			}
-
 		});
-
+	};
+	
+	
+	/**
+		导出
+	**/
+	economytype.exportExport = function() {
+		$.ajax({
+			url : 'report/export/economytype/'+$('#companyYear').combobox("getText"),
+			type : 'post',
+			success : function(data) {
+				if(data!="null"){
+					window.location.href=data;
+				}else{
+					alert("导出报表时错误。");
+				}
+			},
+			error : function() {
+				alert("导出报表时错误。");
+			}
+		});
 	};
 	
 	$(function() {
 		$('#companyYear').combobox({
 			onSelect:function(param){
-				printNature.load();
+				economytype.load();
 			}
 	});
-	printNature.load();
+	economytype.load();
 		
 
 	});
@@ -58,10 +76,10 @@
 	<table id="printNatureTab" border="" cellspacing="0" cellpadding="0" style="margin-top: 30px">
 		<thead>
 					<tr>
-			<th colspan="14">年审单位性质汇总表</th>
+			<th colspan="14">年审经济类型汇总表</th>
 		</tr>
 		<tr>
-			<th colspan="7" style="text-align: left;">制表单位:黑龙江省残疾人联合会</th>
+			<th colspan="7" style="text-align: left;">制表单位:${createTabCompany}</th>
 			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
@@ -86,12 +104,12 @@
 		</tbody>
 		<tfoot>
 			<tr>
-			<td colspan="14" align="right">制表人：校验</td>
+			<td colspan="14" align="right">制表人：${createPeople }</td>
 		</tr>
 		</tfoot>
 	</table>
 
 	<div align="center" style="margin-top: 15px">
-		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
+		<a href="javascript:economytype.exportExport()" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
 </div>
