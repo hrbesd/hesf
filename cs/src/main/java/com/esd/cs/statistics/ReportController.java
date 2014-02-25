@@ -76,10 +76,13 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/nature", method = RequestMethod.GET)
-	public ModelAndView nature(HttpServletRequest request) {
+	public ModelAndView nature(HttpServletRequest request,HttpSession session) {
 		logger.info("goToPage:{}", "Report_Nature");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
+		
+		request.setAttribute("createTabCompany", createTabCompany);//制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
 		return new ModelAndView("report/nature");
 	}
 
@@ -107,10 +110,13 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/area", method = RequestMethod.GET)
-	public ModelAndView area(HttpServletRequest request) {
+	public ModelAndView area(HttpServletRequest request,HttpSession session) {
 		logger.info("goToPage:{}", "Report_Area");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
+		request.setAttribute("createTabCompany", createTabCompany);//制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
+		
 		return new ModelAndView("report/area");
 	}
 
@@ -137,10 +143,12 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/economytype", method = RequestMethod.GET)
-	public ModelAndView economytype(HttpServletRequest request) {
+	public ModelAndView economytype(HttpServletRequest request,HttpSession session) {
 		logger.info("goToPage:{}", "Report_Economytype");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
+		request.setAttribute("createTabCompany", createTabCompany);//制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
 		return new ModelAndView("report/economytype");
 	}
 
@@ -187,16 +195,30 @@ public class ReportController {
 		//初始化打印参数
 		ReportModel model=new ReportModel();
 		model.setCreateCompany(createTabCompany);//制表公司
-		model.setCreateData(CommonUtil.formatData());//制表日期
-		model.setCreatePeople(session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
+		model.setCreateData("制表日期："+CommonUtil.formatData());//制表日期
+		model.setCreatePeople("制表人："+session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
 		
 		//类型判断
 		//单位属性
 		if(StringUtils.equals("nature", type)){
 			 list = reportViewService.getByCompanyType(year);
 			model.setType("单位性质");//类型
-			model.setTitle(natureTitle);//标题
+			model.setTitle("年审单位性质汇总表");//标题
 		}
+		//地区
+		if(StringUtils.equals("area", type)){
+			 list = reportViewService.getByArea(year);
+			model.setType("地区");//类型
+			model.setTitle("年审地区汇总表");//标题
+		}
+		//经济类型
+		if(StringUtils.equals("economytype", type)){
+			list = reportViewService.getByArea(year);
+			model.setType("经济类型");//类型
+			model.setTitle("年审经济类型汇总表");//标题
+		}
+	
+		
 		//生成文件
 		PoiCreateExcel.createRepeaExcel(exportPath,list,model);
 		

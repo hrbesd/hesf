@@ -53,7 +53,6 @@
 				alert("导出报表时错误。");
 			}
 		});
-
 	};
 	
 	
@@ -81,7 +80,7 @@
 			<th colspan="14">年审单位性质汇总表</th>
 		</tr>
 		<tr>
-			<th colspan="7" style="text-align: left;">制表单位:黑龙江省残疾人联合会</th>
+			<th colspan="7" style="text-align: left;">制表单位:${createTabCompany}</th>
 			<th colspan="7" style="text-align:right">制表时间:${currentTime}</th>
 		</tr>
 		<tr>
@@ -106,7 +105,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-			<td colspan="14" align="right">制表人：校验</td>
+			<td colspan="14" align="right">制表人：${createPeople}</td>
 		</tr>
 		</tfoot>
 	</table>
