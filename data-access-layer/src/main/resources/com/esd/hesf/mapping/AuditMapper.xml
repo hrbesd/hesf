@@ -13,6 +13,7 @@
 		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
 		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
+		<result column="au_delay_reduction_amount" jdbcType="DECIMAL" property="delayReductionAmount" />
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUserId" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
@@ -113,7 +114,9 @@
 		<!-- audit -->
 		au.id as au_id, au.year as au_year, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
 		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
-		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, au.init_audit_user_id as au_init_audit_user_id, 
+		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
+		au.delay_reduction_amount as au_delay_reduction_amount, 
+		au.init_audit_user_id as au_init_audit_user_id, 
 		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
 		au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date , 
 		au.verify_audit_comment as au_verify_audit_comment, au.remark as au_remark, au.is_exempt as au_is_exempt,
@@ -165,6 +168,7 @@
 		insert into audit (year, company_code,area_code,
 		audit_process_status, amount_payable, reduction_amount,
 		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount, 
+		delay_reduction_amount,
 		init_audit_user_id, init_audit_date, init_audit_comment,verify_audit_user_id,
 		verify_audit_date, verify_audit_comment, remark, is_exempt,reduction_type,reducion_apply_user,
 		reduction_date, reduction_reason, reduction_answer_user,
@@ -178,6 +182,7 @@
 		#{auditProcessStatus.ID,jdbcType=INTEGER}, #{amountPayable,jdbcType=DECIMAL}, #{reductionAmount,jdbcType=DECIMAL},
 		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
+		#{delayReductionAmount,jdbcType=DECIMAL},
 		#{initAuditUserId,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
 		#{verifyAuditUserId,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
@@ -236,6 +241,9 @@
 			</if>
 			<if test="delayPayAmount != null">
 				delay_pay_amount,
+			</if>
+			<if test="delayReductionAmount != null">
+				delay_reduction_amount,
 			</if>
 			<if test="initAuditUserId != null">
 				init_audit_user_id,
@@ -342,6 +350,9 @@
 			</if>
 			<if test="delayPayAmount != null">
 				#{delayPayAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="delayReductionAmount != null">
+				#{delayReductionAmount,jdbcType=DECIMAL},
 			</if>
 			<if test="initAuditUserId != null">
 				#{initAuditUserId,jdbcType=INTEGER},
@@ -470,6 +481,9 @@
 			</if>
 			<if test="complementAmount != null">
 				complement_amount = #{complementAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="delayReductionAmount != null">
+				delay_reduction_amount = #{delayReductionAmount,jdbcType=DECIMAL},
 			</if>
 			<if test="delayPayAmount != null">
 				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
