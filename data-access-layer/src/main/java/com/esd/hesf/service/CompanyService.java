@@ -151,12 +151,13 @@ public interface CompanyService extends BaseService<Company> {
 	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize);
 
 	/**
-	 * 根据公司档案号companyCode得到该公司过去为审核的年份列表
+	 * 根据公司档案号和当前年份得到该公司过去为审核的年份列表
 	 * 
 	 * @param companyCode
+	 *            --公司档案号 year--当前审核年份
 	 * @return
 	 */
-	String[] getUnauditYearByCompanycode(String companyCode);
+	String[] getUnauditYearByCompanycode(String companyCode, String year);
 
 	/**
 	 * 获得一个自增长的公司档案号
@@ -169,8 +170,8 @@ public interface CompanyService extends BaseService<Company> {
 	 * 根据公司档案号检查公司是否存在
 	 * 
 	 * @param companyCode
-	 * @return	true-存在	false-不存在
+	 * @return true-存在 false-不存在
 	 */
 	boolean checkCompanyCode(String companyCode);
-	
+
 }
