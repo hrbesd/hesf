@@ -66,7 +66,7 @@ public class PrintCompany {
 	public ModelAndView addCompany(HttpServletRequest request) {
 		String s=CalendarUtil.getLastYear();
 		// 获取当前年份
-	request.setAttribute("nowYear", "2014");
+		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.debug("gotoPrintList:{}", "queryAudit");
 		return new ModelAndView("documents/print_list");
 	}
