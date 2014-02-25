@@ -24,6 +24,7 @@ public class CalculateModel {
 	private BigDecimal shiJiaoZongJinE;
 	private String year;
 	private String companyCode;
+	private Boolean mianZhiNaJin;
 
 	private String s_zaiZhiYuanGongZongShu;
 	private String s_yingAnPaiCanJiRen;
@@ -315,6 +316,14 @@ public class CalculateModel {
 
 	public void setQianJiaoMingXi(List<AccountModel> qianJiaoMingXi) {
 		this.qianJiaoMingXi = qianJiaoMingXi;
+	}
+
+	public Boolean getMianZhiNaJin() {
+		return mianZhiNaJin;
+	}
+
+	public void setMianZhiNaJin(Boolean mianZhiNaJin) {
+		this.mianZhiNaJin = mianZhiNaJin;
 	}
 
 }

@@ -30,6 +30,7 @@
 					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${entity.year}" /> <input class="easyui-validatebox" name="version" type="hidden"
 						value="${entity.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
 					</td>
+					<td colspan="2"><span style="color: red; font-size: 12px;">提示：默认设置为当前年度减一年</span></td>
 				</tr>
 				<tr>
 					<td>所属地区:</td>

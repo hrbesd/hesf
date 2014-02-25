@@ -28,18 +28,19 @@
 					<td>年度:</td>
 					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${year}" /> <input class="easyui-validatebox" name="version" type="hidden" value="1" />
 					</td>
+					<td colspan="2"><span style="color: red; font-size: 12px;">提示：默认设置为当前年度减一年</span></td>
 				</tr>
 				<tr>
 					<td>所属地区:</td>
 					<td><input name="area.code" class="easyui-combobox" value="10230000" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" /></td>
 					<td>滞纳金开始日期:</td>
 					<td>
-					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year}-12-01" style="width:150px" />
+					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-12-01" style="width:150px" />
 					</td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>
-					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="0.15" /></td>
+					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="0.015" /></td>
 					<td>滞纳金征收比率(%):</td>
 					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="0.005" />
 					</td>
@@ -52,7 +53,7 @@
 					<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" /></td>
 					<td>支付截至日期:</td>
 					<td>
-					<input class="easyui-datebox easyui-validatebox" name="payCloseDate" data-options="required:true,height:30,showSeconds:false" value="${year}-12-01" style="width:150px" />
+					<input class="easyui-datebox easyui-validatebox" name="payCloseDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-12-01" style="width:150px" />
 					</td>
 					<td>职工退休年龄(女)：</td>
 					<td><input class="easyui-validatebox" name="retireAgeFemale" type="text" required="true" value="51" />

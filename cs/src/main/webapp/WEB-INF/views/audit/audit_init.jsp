@@ -86,8 +86,6 @@
 		$('#yuDingCanJiRen').attr("onmouseup", "value=value.replace(/\\D/g,'')");
 		$('#jianJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
 		$('#jianJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
-		$('#buJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
-		$('#buJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
 	};
 
 	//输入金钱校验
@@ -111,10 +109,10 @@
 		param.shangNianDuWeiJiaoBaoZhangJin = $('#shangNianDuWeiJiaoBaoZhangJin').val();
 		param.yingJiaoJinE = $('#yingJiaoJinE').val();
 		param.jianJiaoJinE = $('#jianJiaoJinE').val();
-		param.buJiaoJinE = $('#buJiaoJinE').val();
 		param.shiJiaoJinE = $('#shiJiaoJinE').val();
-		param.shiJiaoJinE = $('#zhiNaJin').val();
-		param.shiJiaoJinE = $('#shiJiaoZongJinE').val();
+		param.zhiNaJin = $('#zhiNaJin').val();
+		param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
+		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('#year').val();
 		param.companyCode = $('input[name="company.companyCode"]').val();
 		$.ajax({
@@ -137,9 +135,10 @@
 						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
 					});
 				}
+				$('#isDelayPay').val(data.isDelayPay);
+				
 				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
 				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
-				$('#buJiaoJinE').val(data.s_buJiaoJinE);
 				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
 				$('#zhiNaJin').val(data.s_zhiNaJin);
 				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
@@ -157,7 +156,9 @@
 	initAudit.save = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
-				$.messager.alert('消息', '保存成功', 'info');
+				$.messager.alert('消息', '保存成功', 'info',function(data){
+					esd.common.defaultOpenWindowClose();
+				});
 			} else {
 				$.messager.alert('消息', '保存失败', 'info');
 			}
@@ -314,11 +315,14 @@
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
 				<td width="100"><input id="jianJiaoJinE" type="text" class="readonly" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
-				<td width="99">补缴金额:</td>
-				<td><input id="buJiaoJinE" type="text" class="readonly" name="complementAmount" value="${entity.complementAmount }" onblur="initAudit.jisuan()" /></td>
+				<td width="99">免滞纳金:</td>
+				<td><select id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="value:1,width:100,panelHeight:80,height:30,editable:false">
+						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
+						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
+				</select></td>
 
 				<td width="91">是否免交:</td>
-				<td><select disabled="disabled" id="cc" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:100,panelHeight:80,height:30,editable:false">
+				<td><select disabled="disabled" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:100,panelHeight:80,height:30,editable:false">
 						<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 						<option value="true" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 				</select></td>

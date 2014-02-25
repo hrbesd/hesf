@@ -159,14 +159,12 @@ public class YearAuditParameterController {
 	@ResponseBody
 	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request) {
 		logger.debug("auditParameter:{}", auditParameter);
-		BigDecimal scale = auditParameter.getPutScale();
-		BigDecimal puScale = scale.divide(new BigDecimal(Constants.PERCENTAGE));
-		logger.debug("puScale:{}", puScale);
-		auditParameter.setPutScale(puScale);
 		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
 		String lastYear = companyService.getLastYear(currentYear);// 获取上一次有效的年;
 		try {
-			auditService.initAuditData(currentYear, lastYear);
+			if (lastYear != null) {
+				auditService.initAuditData(currentYear, lastYear);
+			}
 		} catch (Exception e) {
 			logger.error("initAuditData", e);
 			return false;
