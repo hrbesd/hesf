@@ -270,7 +270,6 @@ public class CompayController {
 	@RequestMapping(value = "/validate_companyCode")
 	@ResponseBody
 	public Boolean validate_companyCode(@RequestParam(value = "param") String param, HttpServletRequest request) {
-		System.out.println("----");
 		if (companyService.checkCompanyCode(param)) {
 			logger.debug("validate_companyCode:{},Result{}", param, "fasle");
 			return false;

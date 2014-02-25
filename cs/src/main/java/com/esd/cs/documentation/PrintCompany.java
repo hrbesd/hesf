@@ -208,7 +208,6 @@ public class PrintCompany {
 				return null;
 			}
 			User user = service.getByPrimaryKey(audit.getInitAuditUserId());
-			System.out.println(user.getUserName() + "-=-=-=-=-=-=-=-=-");
 			// 复审员
 			// 保证金额度
 			logger.debug(" getcompany{}", company);

@@ -31,17 +31,39 @@
 			}
 
 		});
+	};
+	
+	
+
+	/**
+		导出
+	**/
+	printNature.exportExport = function() {
+		$.ajax({
+			url : 'report/export/nature/'+$('#companyYear').combobox("getText"),
+			type : 'post',
+			success : function(data) {
+				if(data!="null"){
+					window.location.href=data;
+				}else{
+					alert("导出报表时错误。");
+				}
+			},
+			error : function() {
+				alert("导出报表时错误。");
+			}
+		});
 
 	};
+	
 	
 	$(function() {
 		$('#companyYear').combobox({
 			onSelect:function(param){
 				printNature.load();
 			}
-	});
+		});
 	printNature.load();
-		
 
 	});
 </script>
@@ -72,7 +94,7 @@
 			<td>已复核未达标单位数</td>
 			<td>应安排人数</td>
 			<td>已安排人数</td>
-			<td>预定人数</td>
+			<td>少安排人数</td>
 			<td>应缴金额</td>
 			<td>减免金额</td>
 			<td>实缴金额</td>
@@ -90,7 +112,7 @@
 	</table>
 
 	<div align="center" style="margin-top: 15px">
-		<a href="" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
+		<a href="javascript:printNature.exportExport()" class="easyui-linkbutton" iconCls="icon-ok">导出</a>
 	</div>
 
 

@@ -1,6 +1,8 @@
 package com.esd.cs.common;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 public class CommonUtil {
 	public static String formatData() {
@@ -24,5 +26,23 @@ public class CommonUtil {
 				return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 检测文件夹是否存在，不存在则创建
+	 * @param Path
+	 * @param onePath
+	 * @param towPath
+	 */
+	static public void chineseFolder(String Path,String onePath,String towPath){
+		File oneFolder=new File(Path+onePath);
+		File towFolder=new File(oneFolder+File.separator+towPath);
+		if(!(oneFolder.exists())){
+			oneFolder.mkdir();
+		}
+		if(!(towFolder.exists())){
+			towFolder.mkdir();
+		}
+		
 	}
 }
