@@ -553,7 +553,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test42() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = cService.getUnauditYearByCompanycode("1390293306601");
+		String[] entity = cService.getUnauditYearByCompanycode("1390293306601","2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -563,7 +563,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test43() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Audit entity = auditService.getByPrimaryKey("2014", "1390293306601");
+		Audit entity = auditService.getByPrimaryKey("2013", "101001");
 		map.put("entity", entity);
 		return map;
 	}
