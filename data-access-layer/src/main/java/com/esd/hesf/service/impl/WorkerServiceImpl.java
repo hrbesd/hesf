@@ -1,6 +1,5 @@
 package com.esd.hesf.service.impl;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean save(Worker worker, String companyCode,String year) {
+	public boolean save(Worker worker, String companyCode, String year) {
 		// ①保存到职工表
 		int i = dao.insertSelective(worker);
 		if (i != 1) {
@@ -70,8 +69,6 @@ public class WorkerServiceImpl implements WorkerService {
 	public boolean delete(int id) {
 		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
 	}
-	
-	
 
 	@Override
 	public boolean update(Worker t) {
@@ -238,14 +235,12 @@ public class WorkerServiceImpl implements WorkerService {
 		return cywDao.insertSelective(cyw) == 1 ? true : false;
 	}
 
-	
 	@Override
 	public void deleteAllData() {
-		//①删除 公司-员工关系表数据
+		// ①删除 公司-员工关系表数据
 		cywDao.deleteAllData();
-		//②删除员工数据
+		// ②删除员工数据
 		dao.deleteAllData();
 	}
-	
-	
+
 }

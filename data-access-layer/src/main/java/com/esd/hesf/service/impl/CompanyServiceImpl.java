@@ -435,7 +435,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public Integer getCompanyCode() {
 		Integer temp = ccDao.retrieveCompanyCode();
 		temp++;
-		int k = ccDao.update(temp);
+		ccDao.update(temp);
 		return temp;
 	}
 
