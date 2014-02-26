@@ -210,7 +210,7 @@ public class WorkerServiceImpl implements WorkerService {
 			return null;
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("yead", year);
+		map.put("year", year);
 		map.put("workerIdCard", workerIdCard);
 		return cwvDao.retrieveCompanyByWorker(map);
 	}
