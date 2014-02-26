@@ -420,6 +420,10 @@ public class CompanyServiceImpl implements CompanyService {
 		if (companyCode == null || "".equals(companyCode) || year == null || "".equals(year)) {
 			return null;
 		}
+		//限定年份为4位长度 
+		if(year.length() != 4){
+			return null;
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyCode", companyCode);
 		map.put("year", year);
