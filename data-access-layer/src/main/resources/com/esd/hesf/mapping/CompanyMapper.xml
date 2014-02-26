@@ -6,12 +6,11 @@
 		<id column="c_year" jdbcType="CHAR" property="year" />
 		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="c_id" jdbcType="VARCHAR" property="id" />
-		<result column="c_company_management" jdbcType="VARCHAR" property="companyManagement"/>
+		<result column="c_company_management" jdbcType="VARCHAR" property="companyManagement" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
-		<result column="c_company_organization_code" jdbcType="VARCHAR"
-			property="companyOrganizationCode" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR" property="companyOrganizationCode" />
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
@@ -36,108 +35,106 @@
 		<association property="companyProperty" javaType="com.esd.hesf.model.CompanyProperty" resultMap="ResultCompanyProperty" />
 		<association property="area" javaType="com.esd.hesf.model.Area" resultMap="ResultArea" />
 	</resultMap>
-	
+
 	<!-- company type -->
 	<resultMap id="ResultCompanyType" type="com.esd.hesf.model.CompanyType">
 		<id column="t_id" jdbcType="INTEGER" property="id" />
 		<result column="t_company_type" jdbcType="VARCHAR" property="companyType" />
 	</resultMap>
-	
+
 	<!-- company economy type -->
 	<resultMap id="ResultCompanyEconomyType" type="com.esd.hesf.model.CompanyEconomyType">
 		<id column="et_id" property="id" jdbcType="INTEGER" />
-		<result column="et_company_economy_type" property="companyEconomyType"
-			jdbcType="VARCHAR" />
+		<result column="et_company_economy_type" property="companyEconomyType" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- company property -->
 	<resultMap id="ResultCompanyProperty" type="com.esd.hesf.model.CompanyProperty">
 		<id column="p_id" property="id" jdbcType="INTEGER" />
-		<result column="p_company_property" property="companyProperty"
-			jdbcType="VARCHAR" />
+		<result column="p_company_property" property="companyProperty" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- area -->
 	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
 		<id column="a_code" property="code" jdbcType="CHAR" />
 		<result column="a_name" property="name" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<sql id="Base_Column_List">
 		<!-- company -->
-		c.id as c_id, c.year as c_year, c.company_code as c_company_code, 
-		c.company_management as c_company_management, 
+		c.id as c_id, c.year as c_year, c.company_code as c_company_code,
+		c.company_management as c_company_management,
 		c.company_name as c_company_name, c.company_legal as c_company_legal,
-		c.company_contact_person as c_company_contact_person, 
+		c.company_contact_person as c_company_contact_person,
 		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
-		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
-		c.company_fax as c_company_fax, 
-		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code,
+		c.company_fax as c_company_fax,
+		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile,
 		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
-		c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
-		c.company_handicap_total as c_company_handicap_total, 
+		c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total,
+		c.company_handicap_total as c_company_handicap_total,
 		c.company_predict_total as c_company_predict_total, c.company_should_total as c_company_should_total,
-		c.company_already_total as c_company_already_total, c.create_time as c_create_time, 
-		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
+		c.company_already_total as c_company_already_total, c.create_time as c_create_time,
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
 		<!-- type -->
-		t.id as t_id, t.company_type as t_company_type, 
+		t.id as t_id, t.company_type as t_company_type,
 		<!-- economy type -->
 		et.id as et_id, et.company_economy_type as et_company_economy_type,
 		<!-- property -->
 		p.id as p_id, p.company_property as p_company_property,
 		<!-- area -->
-		a.code as a_code, a.name as a_name 
+		a.code as a_code, a.name as a_name
 	</sql>
 
 	<sql id="From_condition_list">
-		company as c, company_type as t, company_economy_type as et, company_property as p, area as a 
+		company as c, company_type as t, company_economy_type as et, company_property as p, area as a
 	</sql>
-	
+
 	<sql id="Where_condition_list">
-		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code 
+		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code
 	</sql>
 
 	<!-- insert -->
 	<insert id="insert" parameterType="com.esd.hesf.model.Company">
 		insert into company (id,year,
-			company_code,
-			company_management, 
-			company_name,
-			company_legal, company_contact_person,
-			company_organization_code, company_tax_code,
-			company_address, company_zip_code,company_fax,
-			company_type, company_economy_type,
-			company_property,
-			area_code, company_phone, company_mobile,
-			company_bank,
-			company_bank_account, company_remark,
-			company_emp_total,
-			company_handicap_total,
-			company_predict_total,company_should_total,company_already_total,
-			create_time, update_time, user_id,
-			is_active,version)
+		company_code,
+		company_management,
+		company_name,
+		company_legal, company_contact_person,
+		company_organization_code, company_tax_code,
+		company_address, company_zip_code,company_fax,
+		company_type, company_economy_type,
+		company_property,
+		area_code, company_phone, company_mobile,
+		company_bank,
+		company_bank_account, company_remark,
+		company_emp_total,
+		company_handicap_total,
+		company_predict_total,company_should_total,company_already_total,
+		create_time, update_time, user_id,
+		is_active,version)
 		values
-			(#{id,jdbcType=VARCHAR},#{year,jdbcType=CHAR},
-			#{companyCode,jdbcType=VARCHAR},
-			#{companyManagement,jdbcType=VARCHAR},
-			#{companyName,jdbcType=VARCHAR},
-			#{companyLegal,jdbcType=VARCHAR},#{companyContactPerson,jdbcType=VARCHAR},
-			#{companyOrganizationCode,jdbcType=VARCHAR},
-			#{companyTaxCode,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR},
-			#{companyZipCode,jdbcType=INTEGER},#{companyFax,jdbcType=VARCHAR},
-			#{companyType.id,jdbcType=INTEGER},
-			#{companyEconomyType.id,jdbcType=INTEGER}, #{companyProperty.id,jdbcType=INTEGER},
-			#{area.code,jdbcType=VARCHAR}, #{companyPhone,jdbcType=VARCHAR},
-			#{companyMobile,jdbcType=INTEGER},
-			#{companyBank,jdbcType=VARCHAR},
-			#{companyBankAccount,jdbcType=INTEGER}, #{companyRemark,jdbcType=VARCHAR},
-			#{companyEmpTotal,jdbcType=INTEGER},#{companyHandicapTotal,jdbcType=INTEGER},#{companyPredictTotal,jdbcType=INTEGER},
-			#{companyShouldTotal,jdbcType=INTEGER},#{companyAlreadyTotal,jdbcType=INTEGER},
-			now(),now(),
-			#{userId,jdbcType=INTEGER},
-			default,default)
+		(#{id,jdbcType=VARCHAR},#{year,jdbcType=CHAR},
+		#{companyCode,jdbcType=VARCHAR},
+		#{companyManagement,jdbcType=VARCHAR},
+		#{companyName,jdbcType=VARCHAR},
+		#{companyLegal,jdbcType=VARCHAR},#{companyContactPerson,jdbcType=VARCHAR},
+		#{companyOrganizationCode,jdbcType=VARCHAR},
+		#{companyTaxCode,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR},
+		#{companyZipCode,jdbcType=INTEGER},#{companyFax,jdbcType=VARCHAR},
+		#{companyType.id,jdbcType=INTEGER},
+		#{companyEconomyType.id,jdbcType=INTEGER}, #{companyProperty.id,jdbcType=INTEGER},
+		#{area.code,jdbcType=VARCHAR}, #{companyPhone,jdbcType=VARCHAR},
+		#{companyMobile,jdbcType=INTEGER},
+		#{companyBank,jdbcType=VARCHAR},
+		#{companyBankAccount,jdbcType=INTEGER}, #{companyRemark,jdbcType=VARCHAR},
+		#{companyEmpTotal,jdbcType=INTEGER},#{companyHandicapTotal,jdbcType=INTEGER},#{companyPredictTotal,jdbcType=INTEGER},
+		#{companyShouldTotal,jdbcType=INTEGER},#{companyAlreadyTotal,jdbcType=INTEGER},
+		now(),now(),
+		#{userId,jdbcType=INTEGER},
+		default,default)
 	</insert>
-	
+
 	<insert id="insertSelective" parameterType="com.esd.hesf.model.Company">
 		insert into company
 		<trim prefix="(" suffix=")" suffixOverrides=",">
@@ -160,7 +157,7 @@
 				company_legal,
 			</if>
 			<if test="companyContactPerson != null">
-				company_contact_person, 
+				company_contact_person,
 			</if>
 			<if test="companyOrganizationCode != null">
 				company_organization_code,
@@ -232,7 +229,7 @@
 				user_id,
 			</if>
 			<if test="isActive != null">
-				is_active, 
+				is_active,
 			</if>
 			version
 		</trim>
@@ -328,78 +325,78 @@
 				#{userId,jdbcType=INTEGER},
 			</if>
 			<if test="isActive != null">
-				#{isActive,jdbcType=BIT}, 
+				#{isActive,jdbcType=BIT},
 			</if>
 			default
 		</trim>
 	</insert>
-	
+
 	<!-- copy last year data -->
 	<insert id="insertLastYearData" parameterType="java.lang.String">
-		insert into company 
-			(id, 
-			year, 
-			company_code,
-			company_management, 
-			company_name, 
-			company_legal, 
-			company_contact_person,
-			company_organization_code, 
-			company_tax_code, 
-			company_address, 
-			company_zip_code, 
-			company_type, 
-			company_economy_type, 
-			company_property, 
-			area_code, 
-			company_phone, 
-			company_mobile, 
-			company_bank, 
-			company_bank_account, 
-			company_remark, 
-			company_emp_total, 
-	<!-- 		company_handicap_total,	 -->
-			create_time,
-			update_time, 
-			user_id, 
-			is_active
-			)
-		select 	(select md5(CONCAT(#{currentYear},company_code))), 
-			#{currentYear}, 
-			company_code,
-			company_management, 
-			company_name, 
-			company_legal, 
-			company_contact_person,
-			company_organization_code, 
-			company_tax_code, 
-			company_address, 
-			company_zip_code, 
-			company_type, 
-			company_economy_type, 
-			company_property, 
-			area_code, 
-			company_phone, 
-			company_mobile, 
-			company_bank, 
-			company_bank_account, 
-			company_remark, 
-			company_emp_total, 
-	<!-- 		company_handicap_total, 	-->
-			now(),
-			now(),
-			user_id, 
-			is_active
-			from company
+		insert into company
+		(id,
+		year,
+		company_code,
+		company_management,
+		company_name,
+		company_legal,
+		company_contact_person,
+		company_organization_code,
+		company_tax_code,
+		company_address,
+		company_zip_code,
+		company_type,
+		company_economy_type,
+		company_property,
+		area_code,
+		company_phone,
+		company_mobile,
+		company_bank,
+		company_bank_account,
+		company_remark,
+		company_emp_total,
+		<!-- company_handicap_total, -->
+		create_time,
+		update_time,
+		user_id,
+		is_active
+		)
+		select (select md5(CONCAT(#{currentYear},company_code))),
+		#{currentYear},
+		company_code,
+		company_management,
+		company_name,
+		company_legal,
+		company_contact_person,
+		company_organization_code,
+		company_tax_code,
+		company_address,
+		company_zip_code,
+		company_type,
+		company_economy_type,
+		company_property,
+		area_code,
+		company_phone,
+		company_mobile,
+		company_bank,
+		company_bank_account,
+		company_remark,
+		company_emp_total,
+		<!-- company_handicap_total, -->
+		now(),
+		now(),
+		user_id,
+		is_active
+		from company
 		where company.year = #{lastYear}
 	</insert>
-	
+
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from company
 		where id = #{id,jdbcType=VARCHAR}
 	</delete>
-	
+
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Company">
 		update company
@@ -489,35 +486,33 @@
 			<if test="isActive != null">
 				is_active = #{isActive,jdbcType=BIT},
 			</if>
-			version = version + 1 
+			version = version + 1
 		</set>
 		where id = #{id,jdbcType=VARCHAR} and version = #{version}
 	</update>
 
 	<!-- retrieve -->
-	<select id="retrieveByPrimaryKey" parameterType="java.lang.String"
-		resultMap="ResultCompany">
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.String" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />
 		from
 		<include refid="From_condition_list" />
-		where 
+		where
 		<include refid="Where_condition_list" />
 		and c.id = #{id,jdbcType=VARCHAR}
 	</select>
 
-	<select id="retrieveByYearAndCode" parameterType="map"
-		resultMap="ResultCompany">
+	<select id="retrieveByYearAndCode" parameterType="map" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />
 		from
 		<include refid="From_condition_list" />
-		where 
+		where
 		<include refid="Where_condition_list" />
 		and c.year = #{year,jdbcType=CHAR} and c.company_code = #{companyCode,jdbcType=VARCHAR}
-		order by c.company_code 
+		order by c.company_code
 	</select>
-	
+
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />
@@ -527,7 +522,7 @@
 			<include refid="Where_condition_list" />
 			<if test="company != null">
 				<if test="company.year != null and company.year != ''">
-					and c.year = #{company.year,jdbcType=CHAR} 
+					and c.year = #{company.year,jdbcType=CHAR}
 				</if>
 				<if test="company.companyCode != null and company.companyCode != ''">
 					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
@@ -540,22 +535,22 @@
 				</if>
 				<if test="company.companyType != null">
 					<if test="company.companyType.id != null and company.companyType.id > 0">
-						and c.company_type = #{company.companyType.id,jdbcType=INTEGER} 
+						and c.company_type = #{company.companyType.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.companyEconomyType != null">
 					<if test="company.companyEconomyType.id != null and company.companyEconomyType.id > 0">
-						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER} 
+						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.companyProperty != null">
 					<if test="company.companyProperty.id != null and company.companyProperty.id > 0">
-						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER} 
+						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.area != null">
 					<if test="company.area.code != null and company.area.code != ''">
-						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%') 
+						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%')
 					</if>
 				</if>
 				<if test="company.companyTaxCode!= null and company.companyTaxCode != ''">
@@ -571,45 +566,45 @@
 					and c.company_organization_code like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="company.userId != null and company.userId > 0">
-					and c.user_id = #{company.userId,jdbcType=INTEGER} 
+					and c.user_id = #{company.userId,jdbcType=INTEGER}
 				</if>
 				<choose>
 					<when test="company.isActive != null">
 						and c.is_active = #{company.isActive,jdbcType=BIT}
 					</when>
 					<otherwise>
-						and c.is_active = 0 
+						and c.is_active = 0
 					</otherwise>
 				</choose>
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
-				and c.company_emp_total &gt;= #{minTotal} 
+				and c.company_emp_total &gt;= #{minTotal}
 			</if>
 			<if test="maxTotal != null and maxTotal > 0">
-				and c.company_emp_total &lt;= #{maxTotal} 
+				and c.company_emp_total &lt;= #{maxTotal}
 			</if>
 			<!-- handicap emp total -->
 			<if test="minHandicapTotal != null and minHandicapTotal > 0">
-				and c.company_handicap_total &gt;= #{minHandicapTotal} 
+				and c.company_handicap_total &gt;= #{minHandicapTotal}
 			</if>
 			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
-				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
+				and c.company_handicap_total &lt;= #{maxHandicapTotal}
 			</if>
 		</trim>
 		order by c.company_code
 		limit #{start},#{size}
 	</select>
-	
+
 	<select id="retrieveCount" parameterType="map" resultType="java.lang.Integer">
-		select count(*) 
+		select count(*)
 		from
 		<include refid="From_condition_list" />
 		<trim prefix="where" prefixOverrides="and|or">
 			<include refid="Where_condition_list" />
 			<if test="company != null">
 				<if test="company.year != null and company.year != ''">
-					and c.year = #{company.year,jdbcType=CHAR} 
+					and c.year = #{company.year,jdbcType=CHAR}
 				</if>
 				<if test="company.companyCode != null and company.companyCode != ''">
 					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
@@ -622,22 +617,22 @@
 				</if>
 				<if test="company.companyType != null">
 					<if test="company.companyType.id != null and company.companyType.id > 0">
-						and c.company_type = #{company.companyType.id,jdbcType=INTEGER} 
+						and c.company_type = #{company.companyType.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.companyEconomyType != null">
 					<if test="company.companyEconomyType.id != null and company.companyEconomyType.id > 0">
-						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER} 
+						and c.company_economy_type = #{company.companyEconomyType.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.companyProperty != null">
 					<if test="company.companyProperty.id != null and company.companyProperty.id > 0">
-						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER} 
+						and c.company_property = #{company.companyProperty.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="company.area != null">
 					<if test="company.area.code != null and company.area.code != ''">
-						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%')  
+						and c.area_code like concat('%',#{company.area.code,jdbcType=VARCHAR},'%')
 					</if>
 				</if>
 				<if test="company.companyTaxCode!= null and company.companyTaxCode != ''">
@@ -653,56 +648,55 @@
 					and c.company_address like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="company.userId != null and company.userId > 0">
-					and c.user_id = #{company.userId,jdbcType=INTEGER} 
+					and c.user_id = #{company.userId,jdbcType=INTEGER}
 				</if>
 				<choose>
 					<when test="company.isActive != null">
 						and c.is_active = #{company.isActive,jdbcType=BIT}
 					</when>
 					<otherwise>
-						and c.is_active = 0 
+						and c.is_active = 0
 					</otherwise>
 				</choose>
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
-				and c.company_emp_total &gt;= #{minTotal} 
+				and c.company_emp_total &gt;= #{minTotal}
 			</if>
 			<if test="maxTotal != null and maxTotal > 0">
-				and c.company_emp_total &lt;= #{maxTotal} 
+				and c.company_emp_total &lt;= #{maxTotal}
 			</if>
 			<!-- handicap emp total -->
 			<if test="minHandicapTotal != null and minHandicapTotal > 0">
-				and c.company_handicap_total &gt;= #{minHandicapTotal} 
+				and c.company_handicap_total &gt;= #{minHandicapTotal}
 			</if>
 			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
-				and c.company_handicap_total &lt;= #{maxHandicapTotal} 
+				and c.company_handicap_total &lt;= #{maxHandicapTotal}
 			</if>
 		</trim>
 	</select>
-	
+
 	<select id="retrieveYears" resultType="java.lang.String">
-		select year from company group by year
+		select year from company group by year order by year desc
 	</select>
-	
+
 	<!-- get last year -->
 	<select id="retrieveLastYear" resultType="java.lang.String" parameterType="java.lang.String">
 		select year from company where year &lt; #{year,jdbcType=CHAR} group by year order by year desc limit 0,1
 	</select>
-	
+
 	<!-- get company by organizationCode -->
-	<select id="retrieveByOrganizationCode" parameterType="java.lang.String"
-		resultMap="ResultCompany">
+	<select id="retrieveByOrganizationCode" parameterType="java.lang.String" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />
 		from
 		<include refid="From_condition_list" />
-		where 
+		where
 		<include refid="Where_condition_list" />
 		and c.company_organization_code = #{companyOrganizationCode,jdbcType=INTEGER}
-		order by c.company_code 
+		order by c.company_code
 	</select>
-	
+
 	<!-- check exists of the companyCode -->
 	<select id="retrieveCountByCompanyCode" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(*) from company where company_code = #{companyCode,jdbcType=VARCHAR}
