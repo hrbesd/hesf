@@ -60,9 +60,9 @@
 								title : '警告：该员工已被其他公司录用',
 								height : 150,
 								width : 650,
-								content : "证号：" + $("#workerIdCard").val() + "”已被：" + data[1].companyName + "录用\n"
-										+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
-										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table>",
+								content : "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data[1].companyName + "”录用。</span>\n"
+										+ "\n<table  border='1' > <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
+										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table><div>",
 								modal : true,
 								collapsible : false,
 								minimizable : false,
@@ -191,9 +191,9 @@
 								title : '警告：该员工已被其他公司录用',
 								height : 150,
 								width : 650,
-								content : "证号：" + $("#workerIdCard").val() + "”已被：" + data[1].companyName + "录用\n"
-										+ "\n<table  border='1' style='margin-top: 10px;'> <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
-										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table>",
+								content :  "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data[1].companyName + "”录用。</span>\n"
+										+ "\n<table  border='1' > <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
+										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table><div>",
 								modal : true,
 								collapsible : false,
 								minimizable : false,

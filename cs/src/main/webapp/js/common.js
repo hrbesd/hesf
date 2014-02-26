@@ -267,7 +267,7 @@ $.extend($.fn.combobox.methods, {
  * 文本框验证
  */
 esd.common.validatebox = function(id) {
-	var Controls = $(id+".easyui-validatebox");
+	var Controls = $(id+" .easyui-validatebox");
 	var b = true;
 	Controls.each(function(i, n) {
 		if ($(n).validatebox('isValid') == false) {

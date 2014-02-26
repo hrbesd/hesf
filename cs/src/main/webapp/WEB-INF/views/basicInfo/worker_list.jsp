@@ -35,8 +35,9 @@
 			} ],
 			valueField : 'label',
 			textField : 'value',
-		
-			width : 78
+			height:30,
+			width : 76,
+			panelHeight:80
 		});
 
 	};
@@ -309,7 +310,7 @@
 
 
 	</div>
-	<table class="workerListTip" >
+	<table class="workerListTip">
 		<tr>
 			<td class="tipText">企业名称:</td>
 			<td id="company_name"></td>
@@ -330,24 +331,26 @@
 
 		</tr>
 	</table>
-	<div>
-		<!-- 姓名 -->
-		<input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />
-		<!-- 残疾证号 -->
-		<input id="workerFind_workerHandicapCode" type="text" style="width: 185px" />
-		<!-- 性别 -->
-		<input id="workerFind_workerGender" type="text"  data-options="height:26"/>
-		<!-- 年龄 -->
-		<input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
-			style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />
-		<!-- 电话 -->
-		<input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" />
-		<!-- 残疾类型 -->
-		<input style="width:82px" type="text" id="workerFind_workerHandicapType" data-options="height:26,panelHeight:240" class="easyui-combobox" />
-		<!-- 残疾等级 -->
-		<input style="width:82px" type="text" id="workerFind_workerHandicapLevel" data-options="height:26,panelHeight:145" class="easyui-combobox" /> <a href="javascript:workerList.findData();"
-			class="easyui-linkbutton" iconCls="icon-search">查找</a>
-	</div>
+	<table>
+		<tr>
+			<td>
+				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" /></td>
+			<td>
+				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 183px" /></td>
+			<td>
+				<!-- 性别 --> <input id="workerFind_workerGender" type="text" /></td>
+			<td>
+				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
+				style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" /></td>
+			<td>
+				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" /></td>
+			<td>
+				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" /></td>
+			<td>
+				<!-- 残疾等级 --> <input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" /> <a
+				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a></td>
+		</tr>
+	</table>
 </div>
 
 

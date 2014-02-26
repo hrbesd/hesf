@@ -33,6 +33,25 @@
 		for(var i=0;i<element.length;i++){
 			$(element[i]).val("");
 		}
+		
+		//性别
+		$('#workerFind_Gender').combobox({
+			data : [ {
+				label : '',
+				value : '请选择'
+			}, {
+				label : '1',
+				value : '男'
+			}, {
+				label : '0',
+				value : '女'
+			} ],
+			valueField : 'label',
+			textField : 'value',
+			height:30,
+			width : 76,
+			panelHeight:80
+		});
 	};
 	/** 
 	创建数据表格并初始化数据
@@ -85,7 +104,7 @@
 		params.year = $("#year").combobox("getValue");//年份
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
-		params.workerGender = $("#workerFind_Gender").val();// 性别
+		params.workerGender = $("#workerFind_Gender").combobox("getValue");// 性别
 		params.currentJob = $("#workerFind_currentJob").val();// 现任岗位
 		params.workerAge_1 = $("#workerFind_workerAge1").val();// 年龄1
 		params.workerAge_2 = $("#workerFind_workerAge2").val();// 年龄2
@@ -98,7 +117,7 @@
 	 查询数据 并校验所有输入框
 	 **/
 	queryWorker.findData = function() {
-		if (esd.common.validatebox()) {
+		if (esd.common.validatebox("#queryWorkerParams")) {
 			//重新根据参数加载数据
 			$('#queryWorker_grid').datagrid('load', queryWorker.getParams());
 		}
@@ -116,47 +135,41 @@
 <!-- 自定义菜单 -->
 <div id="queryWorker_boolbar">
 
-	<div style="">
-		<table>
+	<div class="paramsTab">
+		<table id="queryWorkerParams">
 			<tr>
-				<td>年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/company/getyears'" />
-				</td>
-				<td>残疾证号:</td>
-				<td><input type="text" id="workerFind_workerHandicapCode"  class="inputElement"/>
-				</td>
-				<td>就业证号:</td>
-				<td><input type="text" id="workerFind_careerCard" class="inputElement"/>
-				</td>
-				<td>姓名:</td>
-				<td><input type="text" id="workerFind_workerName" class="inputElement"/>
-				</td>
-				<td>性别:</td>
-				<td><select id="workerFind_Gender">
-						<option value="" selected="selected">请选择</option>
-						<option value="0">男</option>
-						<option value="1">女</option>
-				</select>
-				</td>
+				<td class="tipsText">年度:</td>
+				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/company/getyears'" /></td>
+				<td class="tipsText">残疾证号:</td>
+				<td><input type="text" id="workerFind_workerHandicapCode" class="inputElement long" /></td>
+				<td class="tipsText">就业证号:</td>
+				<td><input type="text" id="workerFind_careerCard" class="inputElement long"  /></td>
 			</tr>
-			
+
 			<tr>
-				<td>现任岗位:</td>
-				<td><input type="text" id="workerFind_currentJob" class="inputElement" />
-				</td>
-				<td>残疾类别:</td>
-				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" /></td>
-				<td>残疾等级:</td>
-				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:140" /></td>
-				<td>年龄:</td>
+				<td class="tipsText">性别:</td>
+				<td><input type="text" id="workerFind_Gender" /></td>
+
+				<td class="tipsText">现任岗位:</td>
+				<td><input type="text" id="workerFind_currentJob" class="inputElement" /></td>
+				<td class="tipsText">年龄:</td>
 				<td><input class="easyui-validatebox inputElement" style="width: 40px" id="workerFind_workerAge1" type="text" data-options="validType:['_number']" />-<input style="width: 40px" type="text"
 					id="workerFind_workerAge2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />岁</td>
 			</tr>
+			<tr>
+				<td class="tipsText">姓名:</td>
+				<td><input type="text" id="workerFind_workerName" class="inputElement" /></td>
+				<td class="tipsText">残疾类别:</td>
+				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" />
+				</td>
+				<td class="tipsText">残疾等级:</td>
+				<td><input class="easyui-combobox" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:140" />
+				</td>
+			</tr>
 		</table>
-			<div class="findBut">
-			<a href="javascript:queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-			<a href="javascript:queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
-			<a href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
+		<div class="findBut">
+			<a href="javascript:queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> <a href="javascript:queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> <a
+				href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 		</div>
 	</div>
 </div>

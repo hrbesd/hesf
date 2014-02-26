@@ -60,7 +60,7 @@ public class PoiCreateExcel {
 			Worker worker = workerList.get(i - 1);
 			// 创建一个Excel的单元格
 			HSSFRow row = sheet.createRow(i);
-			HSSFCell cell = row.createCell(i);
+			HSSFCell cell = row.createCell(0);
 			// 设置单元格的样式格式
 			cell = row.createCell(0);
 			cell.setCellValue(worker.getWorkerName());
@@ -132,7 +132,7 @@ public class PoiCreateExcel {
 			Company company = companyList.get(i - 1);
 			// 创建一个Excel的单元格
 			HSSFRow row = sheet.createRow(i);
-			HSSFCell cell = row.createCell(i);
+			HSSFCell cell = row.createCell(0);
 			// 设置单元格的样式格式
 			// 档案编码
 			cell = row.createCell(0);
@@ -165,9 +165,12 @@ public class PoiCreateExcel {
 		try {
 			FileOutputStream os = new FileOutputStream(FilePath);
 			wb.write(os);
+			os.flush();
 			os.close();
+			
 			companyList.clear();
 			companyList = null;
+			 System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -361,7 +364,11 @@ public class PoiCreateExcel {
 		try {
 			FileOutputStream os = new FileOutputStream(FilePath);
 			wb.write(os);
+			os.flush();
 			os.close();
+			companyList.clear();
+			companyList=null;
+			System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

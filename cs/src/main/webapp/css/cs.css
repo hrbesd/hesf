@@ -39,7 +39,7 @@ textarea {
 }
 /*长输入框*/
 .longInputBox {
-	width: 400px;
+	width: 406px;
 }
 
 .longtext {
@@ -131,7 +131,7 @@ textarea {
 /*提示文本*/
 .tipText{
 	width: 90px;
-text-align: right;
+	text-align: right;
 }
 .workerListTip{
 	
@@ -142,3 +142,25 @@ text-align: right;
 	width: 90px;
 }
 
+.addtip{
+	 margin-top: 5px;
+    text-align: center;
+}
+.addtip table{
+	margin: 10px auto;'
+}
+
+/*搜索参数表格*/
+
+.paramsTab{
+	width: 1000px;
+	
+}
+.paramsTab .tipsText {
+    text-align: right;
+    width: 110px;
+}
+.paramsTab .long {
+	width: 200px;
+	
+}
