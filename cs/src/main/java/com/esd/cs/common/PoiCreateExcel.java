@@ -167,10 +167,11 @@ public class PoiCreateExcel {
 			wb.write(os);
 			os.flush();
 			os.close();
-			
 			companyList.clear();
 			companyList = null;
-			 System.gc();
+			os=null;
+			wb=null;
+			System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -368,6 +369,8 @@ public class PoiCreateExcel {
 			os.close();
 			companyList.clear();
 			companyList=null;
+			os=null;
+			wb=null;
 			System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

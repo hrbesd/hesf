@@ -40,12 +40,10 @@ public class CompayController {
 
 	@Autowired
 	private CompanyService companyService;// 企业
-	@Autowired
-	private CompanyTypeService companyTypeService;// 企业类型
+
 	@Autowired
 	private CompanyPropertyService companyPropertyService;// 企业性质
-	@Autowired
-	private CompanyEconomyTypeService companyEconomyTypeService;// 企业经济类型
+
 
 	/**
 	 * 转到基本档案页面 省直 中直 机关事业

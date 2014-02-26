@@ -177,7 +177,7 @@ public class WorkerController {
 		try {
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
-			boolean b = workerService.save(worker, c.getCompanyCode());
+			boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
 		} catch (Exception e) {
@@ -196,7 +196,7 @@ public class WorkerController {
 		}
 		// 设置年份
 		worker.setWorkerBirthYear(CalendarUtil.getLastYear());
-		boolean b = workerService.save(worker, c.getCompanyCode());
+		boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
 	}
