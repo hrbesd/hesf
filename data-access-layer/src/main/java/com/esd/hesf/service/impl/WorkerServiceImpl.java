@@ -46,21 +46,17 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean save(Worker worker, String companyCode) {
+	public boolean save(Worker worker, String companyCode,String year) {
 		// ①保存到职工表
 		int i = dao.insertSelective(worker);
 		if (i != 1) {
 			return false;
 		}
-		// ②获得当前年份
-		// 获得当前年份
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		// ③保存到企业--职工 关系表
+		// ②保存到企业--职工 关系表
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(worker.getId());
 		cyw.setCompanyCode(companyCode);
-		cyw.setYear(String.valueOf(year));
+		cyw.setYear(year);
 		cyw.setCurrentJob(worker.getCurrentJob());
 		cyw.setUserId(worker.getUserId());
 		int k = cywDao.insertSelective(cyw);

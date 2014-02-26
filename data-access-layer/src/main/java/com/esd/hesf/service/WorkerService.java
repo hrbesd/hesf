@@ -19,12 +19,12 @@ public interface WorkerService extends BaseService<Worker> {
 	/**
 	 * 向一个企业中添加职工
 	 * 
-	 * @param worker
-	 * @param companyId
-	 *            --企业id
+	 * @param worker	职工对象
+	 * @param companyCode	企业档案号
+	 * @param year	职工和公司建立关系 年份
 	 * @return
 	 */
-	public boolean save(Worker worker, String companyId);
+	public boolean save(Worker worker, String companyCode,String year);
 
 	/**
 	 * 根据年度, 公司code, 和员工的相关信息 得到员工列表
