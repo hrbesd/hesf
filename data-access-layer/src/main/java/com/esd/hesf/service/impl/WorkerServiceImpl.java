@@ -136,10 +136,12 @@ public class WorkerServiceImpl implements WorkerService {
 			pageSize = Integer.parseInt(map.get("pageSize").toString());
 		}
 		// 最小年龄转化为对应的出生年月
+		System.out.println(map.get("minAge"));
 		if (map.get("minAge") != null) {
 			map.put("minBirth", KitService.getBirthFromAge(map.get("minAge").toString()));
 		}
 		// 最大年龄转化为对应的出生年月
+		System.out.println(map.get("maxAge"));
 		if (map.get("maxAge") != null) {
 			map.put("maxBirth", KitService.getBirthFromAge(map.get("maxAge").toString()));
 		}

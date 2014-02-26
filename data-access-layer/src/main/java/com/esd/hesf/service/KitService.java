@@ -67,7 +67,7 @@ public class KitService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String todayStr = sdf.format(today);
 		// 获得出生年  =  当前年 - 年龄
-		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(0, 4)) - iAge)+1);
+		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(0, 4)) - iAge));
 		// 后面的 月日时分秒信息
 //		String birthLast = todayStr.substring(4);
 		// 年和月日等信息拼接起来

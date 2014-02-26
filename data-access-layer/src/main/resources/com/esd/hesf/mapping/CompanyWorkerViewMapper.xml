@@ -148,10 +148,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt; #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt; #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="phone != null and phone != ''">
 				and w_phone like concat('%', #{phone},'%')
@@ -191,10 +191,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt; #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt; #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="phone != null and phone != ''">
 				and w_phone like concat('%', #{phone},'%')
@@ -235,10 +235,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt; #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt; #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
 				and t_id = #{workerHandicapType}
@@ -275,10 +275,10 @@
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt; #{minBirth} 
+				and w_worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt; #{maxBirth} 
+				and w_worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
 				and t_id = #{workerHandicapType}

@@ -553,7 +553,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test42() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = cService.getUnauditYearByCompanycode("1390293306601","2013");
+		String[] entity = cService.getUnauditYearByCompanycode("101001","2013");
 		map.put("entity", entity);
 		return map;
 	}
