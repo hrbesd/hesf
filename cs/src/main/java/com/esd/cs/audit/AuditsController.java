@@ -299,7 +299,7 @@ public class AuditsController {
 	 */
 	private BigDecimal getUnAudits(Boolean mian,String year, String companyCode, BigDecimal total, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		String[] unAudits = companyService.getUnauditYearByCompanycode(year, companyCode);
+		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode,year);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
@@ -478,7 +478,7 @@ public class AuditsController {
 		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
 		request.setAttribute("ageEx", workers.getNumber());
 		// 未审年度
-		String[] unAudits = companyService.getUnauditYearByCompanycode(year, companyCode);
+		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode,year);
 		StringBuilder sb = new StringBuilder();
 		for (String s : unAudits) {
 			sb.append(s).append(",");
