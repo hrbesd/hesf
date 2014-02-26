@@ -25,6 +25,7 @@ public class CalculateModel {
 	private String year;
 	private String companyCode;
 	private Boolean mianZhiNaJin;
+	private Boolean mianJiao;
 
 	private String s_zaiZhiYuanGongZongShu;
 	private String s_yingAnPaiCanJiRen;
@@ -129,6 +130,9 @@ public class CalculateModel {
 	}
 
 	public void setJianJiaoJinE(BigDecimal jianJiaoJinE) {
+		if(jianJiaoJinE==null){
+			jianJiaoJinE = new BigDecimal(0.00);
+		}
 		this.jianJiaoJinE = jianJiaoJinE;
 		this.s_jianJiaoJinE = String.valueOf(df.format(jianJiaoJinE));
 	}
@@ -324,6 +328,14 @@ public class CalculateModel {
 
 	public void setMianZhiNaJin(Boolean mianZhiNaJin) {
 		this.mianZhiNaJin = mianZhiNaJin;
+	}
+
+	public Boolean getMianJiao() {
+		return mianJiao;
+	}
+
+	public void setMianJiao(Boolean mianJiao) {
+		this.mianJiao = mianJiao;
 	}
 
 }
