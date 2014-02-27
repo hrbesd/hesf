@@ -28,7 +28,7 @@ public class Payment extends PrimaryKey_Int {
 	private Boolean billFinance; // 财政
 	private String billObsolete; // 作废票据
 	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
-	private String remark;
+	private String remark;	//备注
 	private Integer auditId; // 审核表 id
 
 	public Payment() {
