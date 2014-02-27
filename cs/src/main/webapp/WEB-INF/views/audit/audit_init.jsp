@@ -112,6 +112,7 @@
 		param.shiJiaoJinE = $('#shiJiaoJinE').val();
 		param.zhiNaJin = $('#zhiNaJin').val();
 		param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
+		param.mianJiao = $('#mianJiao').combobox('getValue');
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('#year').val();
 		param.companyCode = $('input[name="company.companyCode"]').val();
@@ -190,6 +191,16 @@
 			$(this).attr("disabled", "disabled");
 		});
 		initAudit.initVerify();
+		//初始化easyUi完成
+		$.parser.onComplete = function(){
+			$('#mianJiao').combobox({
+				onChange:initAudit.jisuan
+			});	
+			$('#mianZhiNaJin').combobox({
+				onChange:initAudit.jisuan
+			});	
+		};
+		
 
 	});
 </script>
@@ -316,15 +327,15 @@
 				<td width="100">减缴金额:</td>
 				<td width="100"><input id="jianJiaoJinE" type="text" class="readonly" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 				<td width="99">免滞纳金:</td>
-				<td><select id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="value:1,width:100,panelHeight:80,height:30,editable:false">
-						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
+				<td><select disabled="disabled" id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
+						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
 
 				<td width="91">是否免交:</td>
-				<td><select disabled="disabled" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="value:1,width:100,panelHeight:80,height:30,editable:false">
-						<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
+				<td><select disabled="disabled" id="mianJiao" style="font-size: 12px;"  class="easyui-combobox" name="isExempt" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
+						<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
 			</tr>
 			<tr>
