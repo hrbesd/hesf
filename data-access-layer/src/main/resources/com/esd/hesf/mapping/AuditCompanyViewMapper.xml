@@ -271,7 +271,7 @@
 		group by aup_id
 	</select>
 	
-	<!-- xxxxxxxxxxxx retrieve report statistics by company type -->
+	<!-- out of date method -->
 	<select id="retrieveReportByCompanyType" parameterType="java.lang.String" resultMap="ReportViewModel">
 		select
 			<include refid="report_column_list"/>
@@ -290,7 +290,7 @@
 		</where>
 	</select>
 	
-	<!-- xxxxxxxxxxxx retrieve report statistics by company economy type -->
+	<!-- out of date method -->
 	<select id="retrieveReportByCompanyEconomyType" parameterType="java.lang.String" resultMap="ReportViewModel">
 		select et_company_economy_type as report_name,
 				<include refid="report_column_list"/>
