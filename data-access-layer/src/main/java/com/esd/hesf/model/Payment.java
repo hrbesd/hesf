@@ -20,6 +20,14 @@ public class Payment extends PrimaryKey_Int {
 	private Company paymentCompany; // 付款公司
 	private String paymentBill; // 付款票据号
 	private PaymentType paymentType; // 缴款方式 关联缴款类型表
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date billPrintDate; // 打票日期
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date billExchangeDate; // 换票日期
+	private Boolean billReturn; // 返票
+	private Boolean billFinance; // 财政
+	private String billObsolete; // 作废票据
+	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
 	private String remark;
 	private Integer auditId; // 审核表 id
 
@@ -33,7 +41,8 @@ public class Payment extends PrimaryKey_Int {
 	@Override
 	public String toString() {
 		return "Payment [paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson + ", paymentCompany=" + paymentCompany + ", paymentBill=" + paymentBill
-				+ ", paymentType=" + paymentType + ", remark=" + remark + ", auditId=" + auditId + ", getId()=" + getId() + ", getIsActive()=" + getIsActive() + ", getVersion()=" + getVersion() + "]";
+				+ ", paymentType=" + paymentType + ", billPrintDate=" + billPrintDate + ", billExchangeDate=" + billExchangeDate + ", billReturn=" + billReturn + ", billFinance=" + billFinance
+				+ ", billObsolete=" + billObsolete + ", paymentExceptional=" + paymentExceptional + ", remark=" + remark + ", auditId=" + auditId + "]";
 	}
 
 	public Date getPaymentDate() {
@@ -82,6 +91,54 @@ public class Payment extends PrimaryKey_Int {
 
 	public void setPaymentType(PaymentType paymentType) {
 		this.paymentType = paymentType;
+	}
+
+	public Date getBillPrintDate() {
+		return billPrintDate;
+	}
+
+	public void setBillPrintDate(Date billPrintDate) {
+		this.billPrintDate = billPrintDate;
+	}
+
+	public Date getBillExchangeDate() {
+		return billExchangeDate;
+	}
+
+	public void setBillExchangeDate(Date billExchangeDate) {
+		this.billExchangeDate = billExchangeDate;
+	}
+
+	public Boolean getBillReturn() {
+		return billReturn;
+	}
+
+	public void setBillReturn(Boolean billReturn) {
+		this.billReturn = billReturn;
+	}
+
+	public Boolean getBillFinance() {
+		return billFinance;
+	}
+
+	public void setBillFinance(Boolean billFinance) {
+		this.billFinance = billFinance;
+	}
+
+	public String getBillObsolete() {
+		return billObsolete;
+	}
+
+	public void setBillObsolete(String billObsolete) {
+		this.billObsolete = billObsolete;
+	}
+
+	public PaymentExceptional getPaymentExceptional() {
+		return paymentExceptional;
+	}
+
+	public void setPaymentExceptional(PaymentExceptional paymentExceptional) {
+		this.paymentExceptional = paymentExceptional;
 	}
 
 	public String getRemark() {

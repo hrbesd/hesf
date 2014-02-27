@@ -17,6 +17,7 @@
 		<association property="paymentPerson" javaType="com.esd.hesf.model.User" resultMap="ResultUser" />
 		<association property="paymentCompany" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
 		<association property="paymentType" javaType="com.esd.hesf.model.PaymentType" resultMap="ResultPaymentType" />
+		<association property="paymentExceptional" javaType="com.esd.hesf.model.PaymentExceptional" resultMap="ResultPaymentExceptional" />
 	</resultMap>
 
 	<resultMap id="ResultUser" type="com.esd.hesf.model.User">
@@ -37,8 +38,7 @@
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
-		<result column="c_company_organization_code" jdbcType="VARCHAR"
-			property="companyOrganizationCode" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR" property="companyOrganizationCode" />
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
@@ -53,18 +53,24 @@
 		<result column="c_is_active" jdbcType="BIT" property="isActive" />
 		<result column="c_version" jdbcType="INTEGER" property="version" />
 	</resultMap>
-	
+
 	<resultMap id="ResultPaymentType" type="com.esd.hesf.model.PaymentType">
 		<id column="pt_id" property="id" jdbcType="INTEGER" />
 		<result column="pt_text" property="text" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
+	<resultMap id="ResultPaymentExceptional" type="com.esd.hesf.model.PaymentExceptional">
+		<id column="pe_id" property="id" jdbcType="INTEGER" />
+		<result column="pe_payment_exceptional" property="paymentExceptional" jdbcType="VARCHAR" />
+		<result column="pe_value" jdbcType="VARCHAR" property="value" />
+	</resultMap>
+
 	<sql id="Base_Column_List">
 		<!-- payment -->
 		pay.id as pay_id, pay.create_time as pay_create_time,
 		pay.update_time as pay_update_time,pay.user_id as pay_user_id,
 		pay.is_active as pay_is_active,pay.payment_date as pay_payment_date,
-		pay.payment_money as pay_payment_money, pay.payment_bill as pay_payment_bill, 
+		pay.payment_money as pay_payment_money, pay.payment_bill as pay_payment_bill,
 		pay.payment_type as pay_payment_type, pay.remark as pay_remark,
 		pay.audit_id as pay_audit_id,pay.version as pay_version,
 		<!-- user -->
@@ -75,15 +81,17 @@
 		u.user_status as u_user_status,
 		<!-- company -->
 		c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
-		c.company_contact_person as c_company_contact_person, 
+		c.company_contact_person as c_company_contact_person,
 		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
-		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
-		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code,
+		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile,
 		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
-		c.company_remark as c_company_remark, c.create_time as c_create_time, 
+		c.company_remark as c_company_remark, c.create_time as c_create_time,
 		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
 		<!-- payment type -->
-		pt.id as pt_id, pt.text as pt_text
+		pt.id as pt_id, pt.text as pt_text,
+		<!-- payment exceptional -->
+		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value
 	</sql>
 
 	<!-- insert -->
@@ -91,17 +99,17 @@
 		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into payment (create_time, update_time,
-		user_id, is_active, payment_date, payment_money,
-		payment_person,payment_company, payment_bill, payment_type, remark, audit_id, version)
+		insert into payment (create_time, update_time, user_id, is_active, payment_date, payment_money,
+		payment_person,payment_company, payment_bill, payment_type, payment_exceptional, bill_print_date,
+		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, audit_id, version)
 		values
-		(now(),now(),
-		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT},
-		now(), #{paymentMoney,jdbcType=DECIMAL},
-		#{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},#{paymentBill,jdbcType=VARCHAR},
-		#{paymentType.id,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
-		#{auditId,jdbcType=INTEGER},
-		#{version,jdbcType=INTEGER})
+		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, now(),
+		#{paymentMoney,jdbcType=DECIMAL}, #{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},
+		#{paymentBill,jdbcType=VARCHAR}, #{paymentType.id,jdbcType=INTEGER},
+		#{paymentExceptional,jdbcType=INTEGER},
+		#{billPrintDate,jdbcType=TIMESTAMP},#{billExchangeDate,jdbcType=TIMESTAMP},#{billReturn,jdbcType=BIT},
+		#{billFinance,jdbcType=BIT},#{billObsolete,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{auditId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Payment">
@@ -116,7 +124,7 @@
 				user_id,
 			</if>
 			<if test="isActive != null">
-				is_active, 
+				is_active,
 			</if>
 			payment_date,
 			<if test="paymentMoney != null">
@@ -140,6 +148,26 @@
 					payment_type,
 				</if>
 			</if>
+			<if test="paymentExceptional != null">
+				<if test="paymentExceptional.id != null and paymentExceptional.id > 0">
+					payment_exceptional,
+				</if>
+			</if>
+			<if test="billPrintDate != null">
+				bill_print_date,
+			</if>
+			<if test="billExchangeDate != null">
+				bill_exchange_date,
+			</if>
+			<if test="billReturn != null">
+				bill_return,
+			</if>
+			<if test="billFinance != null">
+				bill_finance,
+			</if>
+			<if test="billObsolete != null">
+				bill_obsolete,
+			</if>
 			<if test="remark != null">
 				remark,
 			</if>
@@ -154,7 +182,7 @@
 				#{userId,jdbcType=INTEGER},
 			</if>
 			<if test="isActive != null">
-				#{isActive,jdbcType=BIT}, 
+				#{isActive,jdbcType=BIT},
 			</if>
 			now(),
 			<if test="paymentMoney != null">
@@ -171,12 +199,32 @@
 				</if>
 			</if>
 			<if test="paymentBill != null and paymentBill != ''">
-				#{paymentBill,jdbcType=VARCHAR}, 
+				#{paymentBill,jdbcType=VARCHAR},
 			</if>
 			<if test="paymentType != null">
 				<if test="paymentType.id != null and paymentType.id > 0">
-					#{paymentType.id, jdbcType=INTEGER}, 
+					#{paymentType.id, jdbcType=INTEGER},
 				</if>
+			</if>
+			<if test="paymentExceptional != null">
+				<if test="paymentExceptional.id != null and paymentExceptional.id > 0">
+					#{paymentExceptional.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="billPrintDate != null">
+				#{billPrintDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="billExchangeDate != null">
+				#{billExchangeDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="billReturn != null">
+				#{billReturn,jdbcType=BIT},
+			</if>
+			<if test="billFinance != null">
+				#{billFinance,jdbcType=BIT},
+			</if>
+			<if test="billObsolete != null">
+				#{billObsolete,jdbcType=VARCHAR},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -184,7 +232,7 @@
 			<if test="auditId != null">
 				#{auditId,jdbcType=INTEGER},
 			</if>
-			default,
+			default
 		</trim>
 	</insert>
 
@@ -223,12 +271,32 @@
 				</if>
 			</if>
 			<if test="paymentBill != null and paymentBill != ''">
-				payment_bill = #{paymentBill,jdbcType=VARCHAR}, 
+				payment_bill = #{paymentBill,jdbcType=VARCHAR},
 			</if>
 			<if test="paymentType != null">
 				<if test="paymentType.id != null and paymentType.id > 0">
-					payment_type = #{paymentType.id,jdbcType=VARCHAR}, 
+					payment_type = #{paymentType.id,jdbcType=VARCHAR},
 				</if>
+			</if>
+			<if test="paymentExceptional != null">
+				<if test="paymentExceptional.id != null and paymentExceptional.id > 0">
+					payment_exceptional,
+				</if>
+			</if>
+			<if test="billPrintDate != null">
+				bill_print_date,
+			</if>
+			<if test="billExchangeDate != null">
+				bill_exchange_date,
+			</if>
+			<if test="billReturn != null">
+				bill_return,
+			</if>
+			<if test="billFinance != null">
+				bill_finance,
+			</if>
+			<if test="billObsolete != null">
+				bill_obsolete,
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
@@ -236,7 +304,7 @@
 			<if test="auditId != null">
 				audit_id = #{auditId,jdbcType=INTEGER},
 			</if>
-			version = version + 1,
+			version = version + 1
 		</set>
 		where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
 	</update>
@@ -252,9 +320,9 @@
 	<select id="retrieveByPage" resultMap="ResultPayment" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from payment as pay, user as u, company as c, payment_type as pt 
+		from payment as pay, user as u, company as c, payment_type as pt, payment_exceptional as pe
 		<trim prefix="where" prefixOverrides="and|or">
-			pay.payment_person = u.id and pay.payment_company = c.id and pay.payment_type = pt.id
+			pay.payment_person = u.id and pay.payment_company = c.id and pay.payment_type = pt.id and pay.payment_exceptional = pe.id 
 			<if test="payment != null">
 				<if test="payment.userId != null and payment.userId > 0">
 					and pay.user_id = #{payment.userId,jdbcType=INTEGER}
@@ -275,21 +343,26 @@
 				</if>
 				<if test="payment.paymentCompany != null">
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR} 
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
 					</if>
 					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
-						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR} 
+						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR}
 					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
-						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR} 
+						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
-					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')  
+					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="payment.paymentType != null">
 					<if test="payment.paymentType.id != null and payment.paymentType.id > 0">
-						and pay.payment_type like concat('%',#{payment.paymentType,jdbcType=VARCHAR},'%')  
+						and pay.payment_type = #{payment.paymentType,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="payment.paymentExceptional != null">
+					<if test="payment.paymentExceptional.id != null and payment.paymentExceptional.id > 0">
+						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
 				<if test="payment.auditId != null and payment.auditId > 0">
@@ -297,15 +370,15 @@
 				</if>
 			</if>
 		</trim>
-		order by pay.id  
+		order by pay.id
 		limit #{start}, #{size}
 	</select>
-	
+
 	<select id="retrieveCount" resultType="int" parameterType="map">
-		select count(*) 
-		from payment as pay, user as u, company as c, payment_type as pt 
+		select count(*)
+		from payment as pay, user as u, company as c, payment_type as pt, payment_exceptional as pe
 		<trim prefix="where" prefixOverrides="and|or">
-			pay.payment_person = u.id and pay.payment_company = c.id and pay.payment_type = pt.id 
+			pay.payment_person = u.id and pay.payment_company = c.id and pay.payment_type = pt.id and pay.payment_exceptional = pe.id 
 			<if test="payment != null">
 				<if test="payment.userId != null and payment.userId > 0">
 					and pay.user_id = #{payment.userId,jdbcType=INTEGER}
@@ -326,21 +399,26 @@
 				</if>
 				<if test="payment.paymentCompany != null">
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR} 
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
 					</if>
 					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
-						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR} 
+						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR}
 					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
-						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR} 
+						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
-					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')  
+					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="payment.paymentType != null">
 					<if test="payment.paymentType.id != null and payment.paymentType.id > 0">
-						and pay.payment_type like concat('%',#{payment.paymentType,jdbcType=VARCHAR},'%')  
+						and pay.payment_type = #{payment.paymentType,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="payment.paymentExceptional != null">
+					<if test="payment.paymentExceptional.id != null and payment.paymentExceptional.id > 0">
+						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
 				<if test="payment.auditId != null and payment.auditId > 0">
@@ -351,30 +429,30 @@
 	</select>
 
 	<select id="retrieveAlreadyPay" resultType="decimal" parameterType="com.esd.hesf.model.Payment">
-		select sum(pay.payment_money) 
-		from payment as pay, company as c 
+		select sum(pay.payment_money)
+		from payment as pay, company as c
 		<trim prefix="where" prefixOverrides="and|or">
-			pay.payment_company = c.id 
+			pay.payment_company = c.id
 			<if test="paymentCompany != null">
 				<if test="paymentCompany.id != null and paymentCompany.id != ''">
-					and pay.payment_company = #{paymentCompany.id, jdbcType=VARCHAR} 
+					and pay.payment_company = #{paymentCompany.id, jdbcType=VARCHAR}
 				</if>
 				<if test="paymentCompany.year != null and paymentCompany.year != ''">
-					and c.year = #{paymentCompany.year, jdbcType=CHAR} 
+					and c.year = #{paymentCompany.year, jdbcType=CHAR}
 				</if>
 				<if test="paymentCompany.companyCode != null and paymentCompany.companyCode != ''">
-					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR} 
+					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR}
 				</if>
 			</if>
 			<if test="auditId != null and auditId > 0">
 				and pay.audit_id = #{auditId, jdbcType=INTEGER}
 			</if>
-		</trim>	
+		</trim>
 	</select>
 
 	<select id="retrieveByCompanyAndYear" resultType="decimal" parameterType="map">
-		select sum(pay.payment_money) 
-		from company as c, payment as pay 
+		select sum(pay.payment_money)
+		from company as c, payment as pay
 		<where>
 			c.id = pay.payment_company and c.year = #{year,jdbcType=CHAR}
 			<if test="companyType != null and companyType > 0">

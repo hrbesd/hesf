@@ -4,13 +4,13 @@
 
 	<!-- return resultMap, usually used in join query -->
 	<resultMap id="BaseResultMap" type="com.esd.hesf.model.PaymentExceptional">
-		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="payment_exceptional" property="paymentExceptional" jdbcType="VARCHAR" />
-		<result column="value" jdbcType="VARCHAR" property="value" />
+		<id column="pe_id" property="id" jdbcType="INTEGER" />
+		<result column="pe_payment_exceptional" property="paymentExceptional" jdbcType="VARCHAR" />
+		<result column="pe_value" jdbcType="VARCHAR" property="value" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, payment_exceptional,value
+		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value
 	</sql>
 
 	<!-- insert -->
@@ -71,21 +71,21 @@
 	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from payment_exceptional
-		where id = #{id,jdbcType=INTEGER}
+		from payment_exceptional as pe
+		where pe.id = #{id,jdbcType=INTEGER}
 	</select>
 
 	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from payment_exceptional
+		from payment_exceptional as pe
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="paymentExceptional != null">
 				<if test="paymentExceptional.paymentExceptional != null and paymentExceptional.paymentExceptional != ''">
-					paymentExceptional = #{paymentExceptional.paymentExceptional,jdbcType=VARCHAR}
+					pe.paymentExceptional = #{paymentExceptional.paymentExceptional,jdbcType=VARCHAR}
 				</if>
 				<if test="paymentExceptional.value != null">
-					and value = #{paymentExceptional.value,jdbcType=VARCHAR}
+					and pe.value = #{paymentExceptional.value,jdbcType=VARCHAR}
 				</if>
 			</if>
 		</trim>
@@ -96,14 +96,14 @@
 	<select id="retrieveCount" resultType="int" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from payment_exceptional
+		from payment_exceptional as pe
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="paymentExceptional != null">
 				<if test="paymentExceptional.paymentExceptional != null and paymentExceptional.paymentExceptional != ''">
-					paymentExceptional = #{paymentExceptional.paymentExceptional,jdbcType=VARCHAR}
+					pe.paymentExceptional = #{paymentExceptional.paymentExceptional,jdbcType=VARCHAR}
 				</if>
 				<if test="paymentExceptional.value != null">
-					and value = #{paymentExceptional.value,jdbcType=VARCHAR}
+					and pe.value = #{paymentExceptional.value,jdbcType=VARCHAR}
 				</if>
 			</if>
 		</trim>
