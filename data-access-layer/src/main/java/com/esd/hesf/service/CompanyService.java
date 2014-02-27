@@ -164,7 +164,7 @@ public interface CompanyService extends BaseService<Company> {
 	 * 
 	 * @return
 	 */
-	Integer getCompanyCode();
+	Integer gotCompanyCode();
 
 	/**
 	 * 根据公司档案号检查公司是否存在

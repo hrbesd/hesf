@@ -420,8 +420,8 @@ public class CompanyServiceImpl implements CompanyService {
 		if (companyCode == null || "".equals(companyCode) || year == null || "".equals(year)) {
 			return null;
 		}
-		//限定年份为4位长度 
-		if(year.length() != 4){
+		// 限定年份为4位长度
+		if (year.length() != 4) {
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -432,11 +432,13 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Integer getCompanyCode() {
+	public Integer gotCompanyCode() {
 		Integer temp = ccDao.retrieveCompanyCode();
-		temp++;
-		ccDao.update(temp);
-		return temp;
+		int k = ccDao.update(temp);
+		if (k == 1) {
+			return temp;
+		}
+		return null;
 	}
 
 	@Override

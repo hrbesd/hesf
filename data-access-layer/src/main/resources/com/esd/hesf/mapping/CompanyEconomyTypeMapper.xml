@@ -85,11 +85,10 @@
 				is_active = #{isActive,jdbcType=BIT},
 			</if>
 			<if test="userId != null">
-				user_id = #{userId,jdbcType=INTEGER},
+				user_id = #{userId,jdbcType=INTEGER}
 			</if>
-			version = version + 1
 		</set>
-		where id = #{id,jdbcType=INTEGER} and version = #{version}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 
 	<!-- retrieve -->

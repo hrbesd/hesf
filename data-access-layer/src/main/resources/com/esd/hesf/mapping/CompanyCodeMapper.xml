@@ -4,12 +4,12 @@
 
 	<!-- update -->
 	<update id="update" parameterType="java.lang.Integer">
-		update company_code set id = #{companyCode,jdbcType=INTEGER}
+		update company_code set id =  id + 1;
 	</update>
 	
 	<!-- retrieve -->
 	<select id="retrieveCompanyCode" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		select id from company_code
+		select id from company_code;
 	</select>
 	
 </mapper>
