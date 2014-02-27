@@ -77,6 +77,12 @@ public class PaymentController {
 		return new ModelAndView("payment/payment_detail", "entity", audit);
 	}
 
+	@RequestMapping(value = "/add/{id}", method = RequestMethod.GET)
+	public ModelAndView addGet(@PathVariable(value = "id") Integer id) {
+		logger.debug("id:{}", id);
+		return new ModelAndView("payment/payment_detail_add", "id", id);
+	}
+
 	/**
 	 * 缴款
 	 * 

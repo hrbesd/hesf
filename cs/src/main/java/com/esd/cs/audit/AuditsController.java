@@ -139,8 +139,9 @@ public class AuditsController {
 		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);//达标
 		for(String s:unAudits){
 			Audit a = auditService.getByPrimaryKey(s, companyCode);
-			a.setAuditProcessStatus(auditProcessStatusOK);
-			a.setSupplementYear(getAudit.getYear());
+			a.setPayAmount(new BigDecimal(0));//设置实缴总金额为0
+			a.setAuditProcessStatus(auditProcessStatusOK);//设置为达标
+			a.setSupplementYear(getAudit.getYear());//设置补缴年度
 			auditService.update(a);
 		}
 		//处理未审年度结束

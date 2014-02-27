@@ -82,10 +82,10 @@
 	initAudit.initVerify = function() {
 		$('#zaiZhiYuanGongZongShu').attr("onkeyup", "value=value.replace(/\\D/g,'')");
 		$('#zaiZhiYuanGongZongShu').attr("onmouseup", "value=value.replace(/\\D/g,'')");
+		$('#zaiZhiYuanGongZongShu').attr("maxlength", "9");
 		$('#yuDingCanJiRen').attr("onkeyup", "value=value.replace(/\\D/g,'')");
 		$('#yuDingCanJiRen').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#jianJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
-		$('#jianJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
+		$('#yuDingCanJiRen').attr("maxlength", "9");
 	};
 
 	//输入金钱校验
