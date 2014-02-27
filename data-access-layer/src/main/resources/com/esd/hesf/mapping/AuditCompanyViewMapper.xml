@@ -126,10 +126,10 @@
 				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyProperty != null and companyProperty > 0">
-				and c_company_property = #{companyProperty,jdbcType=INTEGER} 
+				and p_id = #{companyProperty,jdbcType=INTEGER} 
 			</if>
 			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and c_company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
+				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
 			</if>
 			<if test="areaCode != null and areaCode != ''">
 				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
@@ -187,10 +187,10 @@
 				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyProperty != null and companyProperty > 0">
-				and c_company_property = #{companyProperty,jdbcType=INTEGER} 
+				and p_id = #{companyProperty,jdbcType=INTEGER} 
 			</if>
 			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and c_company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
+				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
 			</if>
 			<if test="areaCode != null and areaCode != ''">
 				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
