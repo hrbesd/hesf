@@ -21,6 +21,7 @@ import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
+import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
@@ -33,6 +34,7 @@ import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.MenuService;
+import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentService;
 import com.esd.hesf.service.PaymentTypeService;
 import com.esd.hesf.service.ReportViewService;
@@ -97,6 +99,9 @@ public class TestController {
 
 	@Autowired
 	private ReportViewService rvmService;
+
+	@Autowired
+	private PaymentExceptionalService peService;
 
 	// 菜单
 	@RequestMapping("/1")
@@ -616,7 +621,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test48() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Integer entity = cService.getCompanyCode();
+		Integer entity = cService.gotCompanyCode();
 		map.put("entity", entity);
 		return map;
 	}
@@ -636,22 +641,32 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test50() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Integer entity = cService.getCompanyCode();
+		Integer entity = cService.gotCompanyCode();
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	// 公司档案号自增表--获得新档案号
-		@RequestMapping("/51")
-		@ResponseBody
-		public Map<String, Object> test51() {
-			Map<String, Object> map = new HashMap<String, Object>();
-			Map<String,Object> condition = new HashMap<String,Object>();
-			condition.put("paymentPerson", 1);
-			condition.put("year", "2013");
-			PaginationRecordsAndNumber<Audit, Number> entity = auditService.getByMultiCondition(condition);
-			map.put("entity", entity);
-			return map;
-		}
+	@RequestMapping("/51")
+	@ResponseBody
+	public Map<String, Object> test51() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("paymentPerson", 1);
+		condition.put("year", "2013");
+		PaginationRecordsAndNumber<Audit, Number> entity = auditService.getByMultiCondition(condition);
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 特殊缴款方式类别--测试
+	@RequestMapping("/52")
+	@ResponseBody
+	public Map<String, Object> test52() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		PaginationRecordsAndNumber<PaymentExceptional, Number> entity = peService.getPaginationRecords(null, 1, 10);
+		map.put("entity", entity);
+		return map;
+	}
 
 }
