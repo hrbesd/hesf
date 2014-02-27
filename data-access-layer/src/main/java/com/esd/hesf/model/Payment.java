@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 付款信息
+ * 缴款表
  * 
  * @author Administrator
  * 
