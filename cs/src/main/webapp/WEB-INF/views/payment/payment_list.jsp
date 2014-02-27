@@ -21,7 +21,7 @@
 	 */
 	payment.loadData = function() {
 		var params = payment.getParams();
-		esd.common.datagrid("#payment_datagrid", "${contextPath}/security/audits/list", "#payment_boolbarTest", [ [ {
+		esd.common.datagrid("#paymentDetail_datagrid", "${contextPath}/security/audits/list", "#payment_boolbarTest", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 150
@@ -90,7 +90,7 @@
 	</table>
 </div>
 <!-- 数据表格 -->
-<table id="payment_datagrid"></table>
+<table id="paymentDetail_datagrid"></table>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#year').combobox({

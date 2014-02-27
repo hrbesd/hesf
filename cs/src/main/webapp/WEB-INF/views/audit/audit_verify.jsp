@@ -77,15 +77,6 @@
 		});
 	};
 
-	initAudit.initVerify = function() {
-		$('#zaiZhiYuanGongZongShu').attr("onkeyup", "value=value.replace(/\\D/g,'')");
-		$('#zaiZhiYuanGongZongShu').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#yuDingCanJiRen').attr("onkeyup", "value=value.replace(/\\D/g,'')");
-		$('#yuDingCanJiRen').attr("onmouseup", "value=value.replace(/\\D/g,'')");
-		$('#jianJiaoJinE').attr("onkeyup", "initAudit.checkMoney(this)");
-		$('#jianJiaoJinE').attr("onmouseup", "initAudit.checkMoney(this)");
-	};
-
 	//输入金钱校验
 	initAudit.checkMoney = function(e) {
 		if (e.value == e.value2)
@@ -95,6 +86,18 @@
 		else
 			e.value2 = e.value;
 	};
+	
+	initAudit.checkJianJiao = function(j){
+		var s = initAudit.shiJiaoZongJinE;
+		s = s.replace(".", "");
+		j = j.replace(".","");
+		if((s-j)<0){
+			$.messager.alert('警告', '"减缴金额"不能大于"实缴总金额"', 'error');
+			return false;
+		}
+		return true;
+	};
+	
 	initAudit.jisuan = function() {
 		var param = {};
 		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
@@ -113,6 +116,11 @@
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('#year').val();
 		param.companyCode = $('input[name="company.companyCode"]').val();
+		//校验
+		if(initAudit.checkJianJiao(param.jianJiaoJinE)==false){
+			return;
+		}
+		
 		$.ajax({
 			url : 'audits/calculate',
 			type : 'POST',
@@ -189,12 +197,12 @@
 		esd.common.defaultOpenWindowClose();
 	};
 
+	initAudit.shiJiaoZongJinE=0;
 	$(function() {
 		$(".readonly").each(function() {
 			$(this).attr("readonly", "readonly");
 			$(this).attr("disabled", "disabled");
 		});
-		initAudit.initVerify();
 		//初始化easyUi完成
 		$.parser.onComplete = function() {
 			$('#mianJiao').combobox({
@@ -203,6 +211,7 @@
 			$('#mianZhiNaJin').combobox({
 				onChange : initAudit.jisuan
 			});
+			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		};
 	});
 </script>
@@ -324,7 +333,7 @@
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
-				<td width="100"><input id="jianJiaoJinE" type="text" class="warn" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+				<td width="100"><input id="jianJiaoJinE" maxlength="12" type="text" class="warn easyui-numberbox" data-options="min:0,precision:2" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 				<td width="99">免滞纳金:</td>
 				<td><select id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
