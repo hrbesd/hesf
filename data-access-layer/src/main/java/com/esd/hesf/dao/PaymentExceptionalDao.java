@@ -12,5 +12,4 @@ import com.esd.hesf.model.PaymentExceptional;
  */
 public interface PaymentExceptionalDao extends BaseDao<PaymentExceptional> {
 
-	List<PaymentExceptional> getAll();
 }

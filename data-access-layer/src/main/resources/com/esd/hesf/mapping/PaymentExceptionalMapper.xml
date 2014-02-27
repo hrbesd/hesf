@@ -94,8 +94,7 @@
 	</select>
 
 	<select id="retrieveCount" resultType="int" parameterType="map">
-		select
-		<include refid="Base_Column_List" />
+		select count(*)
 		from payment_exceptional as pe
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="paymentExceptional != null">
@@ -107,7 +106,6 @@
 				</if>
 			</if>
 		</trim>
-		limit #{start}, #{size}
 	</select>
 
 </mapper>

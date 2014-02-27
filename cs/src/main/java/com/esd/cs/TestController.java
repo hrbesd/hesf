@@ -668,5 +668,15 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	// 特殊缴款方式类别--测试
+		@RequestMapping("/53")
+		@ResponseBody
+		public Map<String, Object> test53() {
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<PaymentExceptional> entity = peService.getAll();
+			map.put("entity", entity);
+			return map;
+		}
 
 }
