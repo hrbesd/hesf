@@ -77,10 +77,50 @@ public class PaymentController {
 		return new ModelAndView("payment/payment_detail", "entity", audit);
 	}
 
+	@RequestMapping(value = "/pay/{id}", method = RequestMethod.GET)
+	public ModelAndView payGet(@PathVariable(value = "id") Integer id) {
+		logger.debug("paymentId:{}", id);
+		Payment payment = paymentService.getByPrimaryKey(id);
+		return new ModelAndView("payment/payment_detail_add", "entity", payment);
+	}
+
+	/**
+	 * 获取新建缴款记录
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/add/{id}", method = RequestMethod.GET)
-	public ModelAndView addGet(@PathVariable(value = "id") Integer id) {
-		logger.debug("id:{}", id);
-		return new ModelAndView("payment/payment_detail_add", "id", id);
+	public ModelAndView addGet(@PathVariable(value = "id") Integer id, HttpSession session) {
+		logger.debug("aduitId:{}", id);
+		Payment p = new Payment();
+		p.setAuditId(id);
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		p.setPaymentPerson(user);
+		return new ModelAndView("payment/payment_detail_add", "entity", p);
+	}
+
+	/**
+	 * 插入新建缴款记录
+	 * 
+	 * @param payment
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean outPost(Payment payment, HttpSession session) {
+		logger.debug(payment.toString());
+		
+		Audit audit = auditService.getByPrimaryKey(payment.getAuditId());
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		payment.setUserId(userId);
+		payment.setPaymentPerson(user);
+		payment.setPaymentCompany(audit.getCompany());
+		Boolean b = paymentService.save(payment);
+		return b;
 	}
 
 	/**

@@ -22,6 +22,7 @@ import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyType;
+import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
@@ -31,6 +32,7 @@ import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
+import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
@@ -65,6 +67,8 @@ public class ParameterController {
 	private AuditProcessStatusService auditProcessStatusService;// 审核流程状态
 	@Autowired
 	private UserService userService;// 用户
+	@Autowired
+	private PaymentExceptionalService paymentExceptionalService;
 
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyType;
@@ -339,6 +343,26 @@ public class ParameterController {
 			logger.debug("getPayer{}", list.toString());
 			return list;
 
+		} catch (Exception e) {
+			logger.error("error:{}", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 返回 缴款特殊信息
+	 */
+	@RequestMapping(value = "/getExStatic", method = RequestMethod.POST)
+	@ResponseBody
+	public List<PaymentExceptional> getExStatic(HttpServletRequest request) {
+		List<PaymentExceptional> list = null;
+		try {
+			list = paymentExceptionalService.getAll();
+			if (list == null) {
+				list = new ArrayList<PaymentExceptional>();
+			}
+			return list;
+			
 		} catch (Exception e) {
 			logger.error("error:{}", e);
 		}

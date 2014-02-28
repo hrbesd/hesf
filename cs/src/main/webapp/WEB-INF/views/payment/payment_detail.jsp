@@ -115,7 +115,7 @@
 		esd.common.defaultOpenWindowClose();
 	};
 	payment.insert = function() {
-		esd.common.openWindow("#add","缴款",750,300,"${contextPath}/security/payment/add/${entity.id}");
+		esd.common.openWindow("#add","新建缴款记录",750,350,"${contextPath}/security/payment/add/${entity.id}");
 	};
 
 	payment.loadData = function() {
