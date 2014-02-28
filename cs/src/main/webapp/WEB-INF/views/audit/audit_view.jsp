@@ -17,6 +17,10 @@
 	font-size: 12px;
 }
 
+#account td {
+	font-size: 12px;
+}
+
 #startaudit_tabs input {
 	font-size: 12px;
 	/*height: 18px;*/
@@ -42,179 +46,6 @@
 }
 </style>
 
-<script type="text/javascript">
-	initAudit = {};
-
-	initAudit.show = function(w, q) {
-		if (w.length > 0) {
-			var c = "<h3>未审年度计算明细</h3>";
-			var t = "<table border='1' width='485'>";
-			var s = c + t + "<tr><th>未审年度</th><th>应缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
-			for ( var i = 0; i < w.length; i++) {
-				s = s + "<tr><td>" + w[i].year + "</td><td>" + w[i].money + "</td><td>" + w[i].days + "</td><td>" + w[i].prop + "</td><td>" + w[i].penalty + "</td><td>" + w[i].total + "</td></tr>";
-			}
-			var m1 = "<ul><li>应缴金额=审计年度的残疾人保障金(安排残疾人总人数按(零)计算)</li><li>滞纳金=应缴金额×逾期天数×滞纳金比例</li>" + "<li>年度总金额 = 应缴金额+滞纳金</li></ul>";
-			s = s + "</table>" + m1;
-		}
-		if (q.length > 0) {
-			var c1 = "<h3>欠缴年度计算明细</h3>";
-			s = s + c1 + t + "<tr><th>欠缴年度</th><th>欠缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
-			for ( var i = 0; i < q.length; i++) {
-				s = s + "<tr><td>" + q[i].year + "</td><td>" + q[i].money + "</td><td>" + q[i].days + "</td><td>" + q[i].prop + "</td><td>" + q[i].penalty + "</td><td>" + q[i].total + "</td></tr>";
-			}
-			var m3 = "<ul><li>滞纳金=欠缴金额×逾期天数×滞纳金比例</li><li>年度总金额 = 应缴金额+滞纳金</li></ul>";
-			//$('#account #q').html(s);
-			s = s + "</table>" + m3;
-		}
-		$('#account').dialog({
-			title : '未缴款明细',
-			width : 500,
-			height : 500,
-			closed : false,
-			cache : false,
-			content : s,
-			modal : true
-		});
-	};
-
-	//输入金钱校验
-	initAudit.checkMoney = function(e) {
-		if (e.value == e.value2)
-			return;
-		if (e.value.search(/^\d*(?:\.\d{0,2})?$/) == -1)
-			e.value = (e.value2) ? e.value2 : '';
-		else
-			e.value2 = e.value;
-	};
-	
-	initAudit.checkJianJiao = function(j){
-		var s = initAudit.shiJiaoZongJinE;
-		s = s.replace(".", "");
-		j = j.replace(".","");
-		if((s-j)<0){
-			$.messager.alert('警告', '"减缴金额"不能大于"实缴总金额"', 'error');
-			return false;
-		}
-		return true;
-	};
-	
-	initAudit.jisuan = function() {
-		var param = {};
-		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
-		param.yingAnPaiCanJiRen = $('#yingAnPaiCanJiRen').val();
-		param.yiAnPaiCanJiRen = $('#yiAnPaiCanJiRen').val();
-		param.yiLuRuCanJiRen = $('#yiLuRuCanJiRen').val();
-		param.yuDingCanJiRen = $('#yuDingCanJiRen').val();
-
-		param.shangNianDuWeiJiaoBaoZhangJin = $('#shangNianDuWeiJiaoBaoZhangJin').val();
-		param.yingJiaoJinE = $('#yingJiaoJinE').val();
-		param.jianJiaoJinE = $('#jianJiaoJinE').val();
-		param.shiJiaoJinE = $('#shiJiaoJinE').val();
-		param.zhiNaJin = $('#zhiNaJin').val();
-		param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
-		param.mianJiao = $('#mianJiao').combobox('getValue');
-		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-		param.year = $('#year').val();
-		param.companyCode = $('input[name="company.companyCode"]').val();
-		//校验
-		if(initAudit.checkJianJiao(param.jianJiaoJinE)==false){
-			return;
-		}
-		
-		$.ajax({
-			url : 'audits/calculate',
-			type : 'POST',
-			data : param,
-			success : function(data) {
-				$('#zaiZhiYuanGongZongShu').val(data.s_zaiZhiYuanGongZongShu);
-				$('#yingAnPaiCanJiRen').val(data.s_yingAnPaiCanJiRen);
-				$('#yiAnPaiCanJiRen').val(data.s_yiAnPaiCanJiRen);
-				$('#yiLuRuCanJiRen').val(data.s_yiLuRuCanJiRen);
-				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
-
-				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				var wl = data.weiShenMingXi.length;
-				var ql = data.qianJiaoMingXi.length;
-				if (wl != 0 || ql != 0) {
-					$('#message').css("display", "block");
-					$('#message').bind("click", function() {
-						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
-					});
-				}
-				$('#isDelayPay').val(data.isDelayPay);
-
-				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
-				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
-				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
-				$('#zhiNaJin').val(data.s_zhiNaJin);
-				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
-				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
-
-			},
-			error : function() {
-				alert("请求错误");
-			},
-			dataType : "json",
-			async : true
-		});
-
-	};
-
-	//拒绝
-	initAudit.refusal = function() {
-		var comment = $('textarea[name=verifyAuditComment]').val();
-		if (comment == "" || comment == null || comment == undefined) {
-			$.messager.alert('提示', '拒绝必须填写 “复审意见”', 'info');
-			return;
-		}
-		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
-			if (data == true) {
-				$.messager.alert('消息', '拒绝成功', 'info', function() {
-					esd.common.defaultOpenWindowClose();
-					$("#initAuditList_datagrid").datagrid('reload');
-				});
-			} else {
-				$.messager.alert('消息', '拒绝失败', 'info');
-			}
-		});
-	};
-
-	//复审确认
-	initAudit.verifyAudit = function() {
-		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/verifyAudit", function(data) {
-			if (data == true) {
-				$.messager.alert('消息', '复审确认成功', 'info', function() {
-					esd.common.defaultOpenWindowClose();
-					$("#initAuditList_datagrid").datagrid('reload');
-				});
-			} else {
-				$.messager.alert('消息', '复审确认失败', 'info');
-			}
-		});
-	};
-	//返回
-	initAudit.back = function() {
-		esd.common.defaultOpenWindowClose();
-	};
-
-	initAudit.shiJiaoZongJinE=0;
-	$(function() {
-		$(".readonly").each(function() {
-			$(this).attr("readonly", "readonly");
-			$(this).attr("disabled", "disabled");
-		});
-		//初始化easyUi完成
-		$.parser.onComplete = function() {
-			$('#mianJiao').combobox({
-				onChange : initAudit.jisuan
-			});
-			$('#mianZhiNaJin').combobox({
-				onChange : initAudit.jisuan
-			});
-			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-		};
-	});
-</script>
 
 <form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 2px;">
 	<!-- 年审企业表格  第二部分 -->
@@ -249,7 +80,10 @@
 				<td><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" /></td>
 				<td>企业性质:</td>
 				<td>
-			 	<select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
+					<!--
+			<input value="${entity.company.companyProperty.id}" method="GET" id="companyProperty" name="company.companyProperty.id" class="easyui-combobox"
+				data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/property'" />
+				--> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
 						<c:forEach items="${companyPropertys}" var="item">
 							<option value="${item.id}" <c:if test="${entity.company.companyProperty.id eq item.id}">selected="selected"</c:if>>${item.companyProperty }</option>
 						</c:forEach>
@@ -304,7 +138,7 @@
 			</tr>
 			<tr>
 				<td rowspan="3" style="vertical-align: bottom"><input name="company.companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.company.companyEmpTotal }"
-					class="readonly" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" /></td>
+					class="warn" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" /></td>
 				<td width="97">应按排数:</td>
 				<td width="100">已安排数:</td>
 				<td width="100">已录入数</td>
@@ -313,7 +147,7 @@
 				</td>
 				<td style="vertical-align: bottom" rowspan="2"><input name="unauditYears" id="weiShenNianShu" title="未审年数" class="readonly" style="border-top: #95B8E7 2px solid;" value="${unAudityearNum}" />
 				</td>
-				<td style="vertical-align: bottom" rowspan="2"><input name="supplementYear" title="补审年度" class="readonly" style="border-top: #95B8E7 2px solid;" value="${entity.supplementYear}" /></td>
+				<td style="vertical-align: bottom" rowspan="2"><input name="supplementYear" title="补审年度" class="readonly" style="border-top: #95B8E7 2px solid;" value="${supplementYear}" /></td>
 
 			</tr>
 			<tr>
@@ -321,7 +155,7 @@
 				<td><input type="text" class="text_short readonly" value="${entity.company.companyShouldTotal}" name="company.companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" /></td>
 				<td><input type="text" class="text_short readonly" value="${entity.company.companyAlreadyTotal}" name="company.companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" /></td>
 				<td><input id="yiLuRuCanJiRen" name="company.companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.company.companyHandicapTotal }" /></td>
-				<td><input id="yuDingCanJiRen" name="company.companyPredictTotal" value="${entity.company.companyPredictTotal }" title="预定残疾职工人数" class="readonly" onblur="initAudit.jisuan()" /></td>
+				<td><input id="yuDingCanJiRen" name="company.companyPredictTotal" value="${entity.company.companyPredictTotal }" title="预定残疾职工人数" class="warn" onblur="initAudit.jisuan()" /></td>
 				<td><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="上年度未缴保障金额度" class="readonly" value="${entity.remainAmount}" /></td>
 			</tr>
 
@@ -333,15 +167,15 @@
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
-				<td width="100"><input id="jianJiaoJinE" maxlength="12" type="text" class="warn easyui-numberbox" data-options="min:0,precision:2" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+				<td width="100"><input id="jianJiaoJinE" type="text" class="readonly" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 				<td width="99">免滞纳金:</td>
-				<td><select id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="width:100,panelHeight:80,height:30,editable:false">
+				<td><select disabled="disabled" id="mianZhiNaJin" style="font-size: 12px;" class="easyui-combobox" name="isDelayPay" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
 
 				<td width="91">是否免交:</td>
-				<td><select id="mianJiao" style="font-size: 12px;" class="easyui-combobox" name="isExempt" data-options="width:100,panelHeight:80,height:30,editable:false">
+				<td><select disabled="disabled" id="mianJiao" style="font-size: 12px;"  class="easyui-combobox" name="isExempt" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
@@ -365,7 +199,7 @@
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100">备注:</td>
-				<td colspan="6"><textarea class="readonly" name="remark" rows="2" cols="90">${entity.remark }</textarea></td>
+				<td colspan="6"><textarea name="remark" rows="2" cols="90">${entity.remark }</textarea></td>
 
 			</tr>
 		</table>
@@ -373,9 +207,9 @@
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100">初审意见:</td>
-				<td colspan="3"><textarea class="readonly" name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea></td>
+				<td colspan="3"><textarea name="initAuditComment" rows="3" cols="45">${entity.initAuditComment}</textarea></td>
 				<td width="100">复审意见:</td>
-				<td colspan="3"><textarea class="warn" rows="3" cols="45">${entity.verifyAuditComment}</textarea></td>
+				<td colspan="3"><textarea class="readonly" rows="3" cols="45">${entity.verifyAuditComment}</textarea></td>
 			</tr>
 			<tr>
 				<td class="">初审日期:</td>
@@ -385,20 +219,15 @@
 						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
 					</c:if> <input class="readonly" value="${date}" /></td>
 				<td width="100">初审人:</td>
-				<td><input type="text" class="readonly" value="${sessionScope.userRealName}" /></td>
+				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复核日期:</td>
 				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
 					value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>
-				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.id}" /></td>
+				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
 			</tr>
 		</table>
 	</div>
-	<div style="text-align: center;margin-top: 10px;">
-		<input name="id" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="${entity.version}" /> <a href="javascript:initAudit.refusal();" class="easyui-linkbutton"
-			iconCls="icon-cancel">拒绝</a> <a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a> <a href="javascript:initAudit.back();" class="easyui-linkbutton"
-			iconCls="icon-back">返回</a>
-	</div>
-</form>
 
+</form>
 

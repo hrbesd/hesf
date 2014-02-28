@@ -485,9 +485,19 @@ public class AuditsController {
 	 * 转到年审单位初审页面
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request) {
+	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request, HttpSession session) {
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
+		if (audit.getInitAuditUser() == null) {
+			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+			User user = userService.getByPrimaryKey(userId);
+			audit.setInitAuditUser(user);
+		}
+		if (audit.getVerifyAuditUser() == null && process == 2) {
+			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+			User user = userService.getByPrimaryKey(userId);
+			audit.setVerifyAuditUser(user);
+		}
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		request.setAttribute("params", auditParameter);
@@ -519,6 +529,40 @@ public class AuditsController {
 		// BigDecimal lastNotPayAmount = getUnPaidAmount(companyCode);
 		// audit.setRemainAmount(lastNotPayAmount);
 
+		return new ModelAndView("audit/audit_detail", "entity", audit);
+	}
+	/**
+	 * 查看审计页面 
+	 */
+	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+	public ModelAndView view(@PathVariable(value = "id") int id, HttpServletRequest request, HttpSession session) {
+		logger.debug("id:{}", id);
+		Audit audit = auditService.getByPrimaryKey(id);
+		String year = audit.getYear();
+		AuditParameter auditParameter = auditParameterService.getByYear(year);
+		request.setAttribute("params", auditParameter);
+		if (companyPropertys == null) {
+			companyPropertys = companyPropertyService.getAll();
+		}
+		request.setAttribute("companyPropertys", companyPropertys);
+		if (companyEconomyTypes == null) {
+			companyEconomyTypes = companyEconomyTypeService.getAll();
+		}
+		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
+		
+		String companyCode = audit.getCompany().getCompanyCode();
+		// 年龄超标
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
+		request.setAttribute("ageEx", workers.getNumber());
+		// 未审年度
+		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, year);
+		StringBuilder sb = new StringBuilder();
+		for (String s : unAudits) {
+			sb.append(s).append(",");
+		}
+		request.setAttribute("unAudityear", sb.toString());
+		request.setAttribute("unAudityearNum", unAudits.length);
+		
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}
 

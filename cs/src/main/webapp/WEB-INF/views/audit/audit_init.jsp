@@ -377,12 +377,12 @@
 						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
 					</c:if> <input class="readonly" value="${date}" /></td>
 				<td width="100">初审人:</td>
-				<td><input type="text" class="readonly" value="${sessionScope.userRealName}" /></td>
+				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复核日期:</td>
 				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
 					value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>
-				<td><input type="text" class="readonly" value="${entity.verifyAuditUserId}" /></td>
+				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
 			</tr>
 		</table>
 	</div>
