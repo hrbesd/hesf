@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.PaymentDao;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.service.Constants;
@@ -88,7 +89,7 @@ public class PaymentServiceImpl implements PaymentService {
 			return null;
 		}
 		Payment payment = new Payment();
-		payment.setAuditId(auditId);
+		payment.setAudit(new Audit(auditId));
 		return dao.retrieveAlreadyPay(payment);
 	}
 
@@ -120,7 +121,7 @@ public class PaymentServiceImpl implements PaymentService {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		Payment t = new Payment();
-		t.setAuditId(auditId);
+		t.setAudit(new Audit(auditId));
 		map.put("payment", t);
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);

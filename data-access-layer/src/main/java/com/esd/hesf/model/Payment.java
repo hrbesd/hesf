@@ -28,8 +28,8 @@ public class Payment extends PrimaryKey_Int {
 	private Boolean billFinance; // 财政
 	private String billObsolete; // 作废票据
 	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
-	private String remark;	//备注
-	private Integer auditId; // 审核表 id
+	private String remark; // 备注
+	private Audit audit; // 缴款所属于的审核对象
 
 	public Payment() {
 	}
@@ -42,7 +42,7 @@ public class Payment extends PrimaryKey_Int {
 	public String toString() {
 		return "Payment [paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson + ", paymentCompany=" + paymentCompany + ", paymentBill=" + paymentBill
 				+ ", paymentType=" + paymentType + ", billPrintDate=" + billPrintDate + ", billExchangeDate=" + billExchangeDate + ", billReturn=" + billReturn + ", billFinance=" + billFinance
-				+ ", billObsolete=" + billObsolete + ", paymentExceptional=" + paymentExceptional + ", remark=" + remark + ", auditId=" + auditId + "]";
+				+ ", billObsolete=" + billObsolete + ", paymentExceptional=" + paymentExceptional + ", remark=" + remark + ", audit=" + audit + "]";
 	}
 
 	public Date getPaymentDate() {
@@ -149,12 +149,12 @@ public class Payment extends PrimaryKey_Int {
 		this.remark = remark;
 	}
 
-	public Integer getAuditId() {
-		return auditId;
+	public Audit getAudit() {
+		return audit;
 	}
 
-	public void setAuditId(Integer auditId) {
-		this.auditId = auditId;
+	public void setAudit(Audit audit) {
+		this.audit = audit;
 	}
 
 }
