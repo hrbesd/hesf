@@ -1,6 +1,7 @@
 package com.esd.common.util;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,7 +21,21 @@ public class CalendarUtil {
 	public static String getLastYear() {
 		Calendar cal = Calendar.getInstance();// 使用日历类
 		int year = cal.get(Calendar.YEAR);// 得到年
-		return String.valueOf(year-1);
+		return String.valueOf(year - 1);
+	}
+
+	/**
+	 * yyyy-MM-dd
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String dateFormat(Date date) {
+		if (date == null) {
+			return null;
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date);
 	}
 
 	public static long getDaySub(String beginDateStr, String endDateStr) {

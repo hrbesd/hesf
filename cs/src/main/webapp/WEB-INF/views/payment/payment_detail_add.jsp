@@ -9,8 +9,8 @@
 		esd.common.syncPostSubmit("#add_form", function(data) {
 			if (data == true) {
 				$.messager.alert('消息', '保存成功', 'info', function() {
-					$("#auditPanel").window("close");
-					//$("#initAuditList_datagrid").datagrid('reload');
+					payment.add.back();
+					$("#payment_datagrid").datagrid('reload');
 				});
 			} else {
 				$.messager.alert('消息', '保存失败', 'info');
@@ -26,7 +26,7 @@
 </script>
 <div id="payment_add" style="padding: 10px 10px 10px 10px;">
 	<form id="add_form" action="${contextPath}/security/payment/add" method="post">
-		<input type="hidden" value="${entity.auditId}" name="auditId" />
+		<input type="hidden" name="audit.id" value="${entity.audit.id}"  />
 		<input type="hidden" value="1" name="version" />
 		<table border="0">
 			<tbody>

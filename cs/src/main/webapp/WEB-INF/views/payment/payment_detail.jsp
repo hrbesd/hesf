@@ -115,7 +115,10 @@
 		esd.common.defaultOpenWindowClose();
 	};
 	payment.insert = function() {
-		esd.common.openWindow("#add","新建缴款记录",750,350,"${contextPath}/security/payment/add/${entity.id}");
+		esd.common.openWindow("#add","新建缴款",750,350,"${contextPath}/security/payment/add/${entity.id}");
+	};
+	payment.confirm = function(id) {
+		esd.common.openWindow("#add","确认缴款",750,350,"${contextPath}/security/payment/confirm/"+id);
 	};
 
 	payment.loadData = function() {
@@ -127,33 +130,33 @@
 			field : 'id',
 			hidden : true
 		}, {
-			field : 'companyCode',
+			field : 'billPrintDate',
 			title : '打票日期',
-			width : 150
+			width : 110
 		}, {
-			field : 'companyTaxCode',
+			field : 'paymentMoney',
 			title : '缴费金额',
 			width : 150
 		}, {
-			field : 'companyId',
+			field : 'paymentBill',
 			title : '票据号',
 			width : 150
 		}, {
-			field : 'companyName',
+			field : 'billExchangeDate',
 			title : '换票日期',
 			width : 150
 		}, {
-			field : 'auditProcessStatus1',
+			field : 'billReturn',
 			title : '返票'
 		}, {
-			field : 'auditProcessStatus2',
+			field : 'billFinance',
 			title : '财政'
 		}, {
-			field : 'auditProcessStatus3',
+			field : 'billObsolete',
 			title : '作废票据',
 			width : 150
 		}, {
-			field : 'auditProcessStatus4',
+			field : 'remark',
 			title : '备注',
 			width : 150
 		}, {
@@ -162,9 +165,8 @@
 			width : 100,
 			align : 'center',
 			formatter : function(value, row, index) {
-				//var v = '<a href="#" onclick="initAuditList.openAudit(' + row.id + ')">';
-				//var v = '<a href="#" >确认收款</a>';
-				return '';
+				var v = '<a href="#" onclick="payment.confirm(' + row.id + ')">确认收款</a>';
+				return v;
 			}
 		} ] ]);
 	};
@@ -173,7 +175,7 @@
 	});
 </script>
 <div id="payment">
-	<input name="paymentCompany.id" type="hidden" value="${entity.company.id}" /> <input name="auditId" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="1" />
+	<input name="paymentCompany.id" type="hidden" value="${entity.company.id}" /> <input name="audit" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="1" />
 	<!-- 年审企业表格  第一部分 -->
 	<table cellspacing="0" cellpadding="0" border="0" title="企业年审信息" class="company-examined">
 		<tbody>

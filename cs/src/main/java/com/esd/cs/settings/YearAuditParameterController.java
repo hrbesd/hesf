@@ -1,7 +1,5 @@
 package com.esd.cs.settings;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,14 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.Constants;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.UserGroupService;
-import com.esd.hesf.service.UserService;
 
 /**
  * 年审参数
@@ -40,9 +36,6 @@ import com.esd.hesf.service.UserService;
 @RequestMapping(value = "/security/settings/yearAuditParameter")
 public class YearAuditParameterController {
 	private static final Logger logger = LoggerFactory.getLogger(YearAuditParameterController.class);
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private UserGroupService userGroupService;
@@ -83,7 +76,6 @@ public class YearAuditParameterController {
 			query = auditParameterService.getPaginationRecords(auditParameter, page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			for (Iterator<AuditParameter> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 				AuditParameter it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
@@ -92,7 +84,7 @@ public class YearAuditParameterController {
 				map.put("areaCode", it.getArea().getName());// 地区
 				map.put("averageSalary", it.getAverageSalary());// 计算基数
 				map.put("putScale", it.getPutScale());// 安置比例
-				String payCloseDate = dateFormat.format(it.getPayCloseDate());
+				String payCloseDate = CalendarUtil.dateFormat(it.getPayCloseDate());
 				map.put("payCloseDate", payCloseDate);// 支付截至日期
 				list.add(map);
 			}
