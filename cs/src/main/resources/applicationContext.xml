@@ -39,7 +39,7 @@
 		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.MenuServiceImpl.*(..))" advice-ref="txAdvice" />
 		<!-- <aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.ParameterServiceImpl.*(..))" advice-ref="txAdvice" /> -->
 		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.UserServiceImpl.*(..))" advice-ref="txAdvice" />
-		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.VerifyServiceImpl.*(..))" advice-ref="txAdvice" />
+		<!-- <aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.VerifyServiceImpl.*(..))" advice-ref="txAdvice" />	 -->
 	</aop:config>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
