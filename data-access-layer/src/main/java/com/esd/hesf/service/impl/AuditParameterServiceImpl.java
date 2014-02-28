@@ -51,7 +51,8 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public boolean update(AuditParameter t) {
-		return dao.updateByPrimaryKey(t) == 1 ? true : false;
+		int k = dao.updateByPrimaryKey(t);
+		if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
 	}
 
 	@Override

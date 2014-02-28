@@ -40,7 +40,7 @@ public class UserLogServiceImpl implements UserLogService {
 	@Override
 	public boolean update(UserLog t) {
 		// TODO Auto-generated method stub
-		return dao.updateByPrimaryKey(t) == 1 ? true : false;
+		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
 	}
 
 	@Override

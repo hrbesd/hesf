@@ -497,7 +497,7 @@
 				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
 			</if>
 			<if test="initAuditUser != null">
-				<if test="initAuditUser.id != null and initAuditUser > 0">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
 					init_audit_user_id = #{initAuditUser.id,jdbcType=INTEGER},
 				</if>
 			</if>

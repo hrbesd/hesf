@@ -100,7 +100,7 @@ public class AuditServiceImpl implements AuditService {
 			new HesfException("audit.auditProcessStatus.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		return dao.updateByPrimaryKey(t) == 1 ? true : false;
+		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
 	}
 
 	@Override

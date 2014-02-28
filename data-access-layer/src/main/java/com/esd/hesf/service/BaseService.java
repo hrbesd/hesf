@@ -14,7 +14,7 @@ public interface BaseService<T> {
 	 * save : 保存
 	 * 
 	 * @param t
-	 * @return
+	 * @return boolean
 	 */
 	boolean save(T t);
 
@@ -22,7 +22,7 @@ public interface BaseService<T> {
 	 * delete : 根据id删除
 	 * 
 	 * @param id
-	 * @return
+	 * @return boolean
 	 */
 	boolean delete(int id);
 
@@ -30,7 +30,7 @@ public interface BaseService<T> {
 	 * update ：根据主键更新
 	 * 
 	 * @param t
-	 * @return
+	 * @return boolean
 	 */
 	boolean update(T t);
 
@@ -38,7 +38,7 @@ public interface BaseService<T> {
 	 * getByPrimaryKey : 根据主键id查询一条数据,其中的数据已经处理成可供前台显示的
 	 * 
 	 * @param id
-	 * @return
+	 * @return T
 	 */
 	T getByPrimaryKey(int id);
 
@@ -51,7 +51,7 @@ public interface BaseService<T> {
 	 *            : 起始页数
 	 * @param pageSize
 	 *            :返回条数
-	 * @return
+	 * @return PaginationRecordsAndNumber<T, Number>
 	 */
 	PaginationRecordsAndNumber<T, Number> getPaginationRecords(T t, Integer page, Integer pageSize);
 
