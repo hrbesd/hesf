@@ -169,7 +169,6 @@ esd.common.datagridEx = function(grid, url, toolbar, columns) {
 		fit : true, // 面板大小将自适应父容器
 		fitColumns : true,// 是否显示横向滚动条，未生效
 		nowrap : true,// 如果为true，则在同一行中 。设置为true可以提高加载性能
-		idField : 'id',// 指明哪一个字段是标识字段。
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
 		checkOnSelect : false,// 单击不选择复选框

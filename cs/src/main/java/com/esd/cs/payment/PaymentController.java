@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
+import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.model.User;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -83,7 +85,31 @@ public class PaymentController {
 		Payment payment = paymentService.getByPrimaryKey(id);
 		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
-
+	/**
+	 * 获取确认
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/confirm/{id}", method = RequestMethod.GET)
+	public ModelAndView confirmGet(@PathVariable(value = "id") Integer id, HttpSession session) {
+		logger.debug("aduitId:{}", id);
+		Payment payment = paymentService.getByPrimaryKey(id);
+		return new ModelAndView("payment/payment_detail_confirm", "entity",payment);
+	}
+	/**
+	 * 确认保存
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean confirmPost(Payment payment, HttpSession session) {
+		logger.debug(payment.toString());
+		Boolean b = paymentService.update(payment);
+		return b;
+	}
 	/**
 	 * 获取新建缴款记录
 	 * 
@@ -93,12 +119,13 @@ public class PaymentController {
 	@RequestMapping(value = "/add/{id}", method = RequestMethod.GET)
 	public ModelAndView addGet(@PathVariable(value = "id") Integer id, HttpSession session) {
 		logger.debug("aduitId:{}", id);
-		Payment p = new Payment();
-		p.setAuditId(id);
+		Payment payment = new Payment();
+		Audit audit = auditService.getByPrimaryKey(id);
+		payment.setAudit(audit);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
-		p.setPaymentPerson(user);
-		return new ModelAndView("payment/payment_detail_add", "entity", p);
+		payment.setPaymentPerson(user);
+		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
 
 	/**
@@ -112,8 +139,7 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean outPost(Payment payment, HttpSession session) {
 		logger.debug(payment.toString());
-		
-		Audit audit = auditService.getByPrimaryKey(payment.getAuditId());
+		Audit audit = auditService.getByPrimaryKey(payment.getAudit().getId());
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		payment.setUserId(userId);
@@ -141,7 +167,7 @@ public class PaymentController {
 		// Payment p = paymentService.getByPrimaryKey(payment.getId());
 		if (payment.getId() == null) {
 			Payment pay = new Payment();
-			pay.setAuditId(payment.getAuditId());
+			//pay.setAudit(payment.getAuditId());
 			pay.setPaymentBill(payment.getPaymentBill());
 			String date = payment.getPaymentDate();
 			Date paymentDate = null;
@@ -176,23 +202,24 @@ public class PaymentController {
 	public Map<String, Object> getPayment(@PathVariable(value = "id") Integer id, HttpSession session) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> query = null;
-		query = paymentService.getPaymentRecord(id, 1, 999);
+		query = paymentService.getPaymentRecord(id, 1, Integer.MAX_VALUE);
 		entity.put("total", query.getNumber());
-		List<Payments> list = new ArrayList<>();
+		List<Map<String,Object>> list = new ArrayList<>();
 		for (Iterator<Payment> iterator = query.getRecords().iterator(); iterator.hasNext();) {
 			Payment it = (Payment) iterator.next();
-			Payments p = new Payments();
-			p.setId(it.getId());
-			Date nowTime = it.getPaymentDate();
-			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-			String sDate = fmt.format(nowTime);
-			p.setPaymentDate(sDate);
-			p.setPaymentBill(it.getPaymentBill());
-			p.setPaymentMoney(df.format(it.getPaymentMoney()));
-			p.setPaymentPerson(it.getPaymentPerson().getUserRealName());
-			p.setPaymentType(it.getPaymentType().getText());
-			p.setRemark(it.getRemark());
-			list.add(p);
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", it.getId());
+			map.put("billPrintDate", CalendarUtil.dateFormat(it.getBillPrintDate()));
+			map.put("paymentBill", it.getPaymentBill());
+			map.put("paymentMoney", it.getPaymentMoney());
+			map.put("billExchangeDate", CalendarUtil.dateFormat(it.getBillExchangeDate()));
+			map.put("billReturn", it.getBillReturn());
+			map.put("billFinance", it.getBillFinance());
+			map.put("billObsolete", it.getBillObsolete());
+			map.put("paymentExceptional", it.getPaymentExceptional());
+			map.put("paymentType", it.getPaymentType());
+			map.put("remark", it.getRemark());
+			list.add(map);
 		}
 		entity.put("rows", list);
 		return entity;

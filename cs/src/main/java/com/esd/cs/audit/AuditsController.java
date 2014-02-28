@@ -38,6 +38,7 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.Payment;
+import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.service.AuditParameterService;
@@ -47,6 +48,7 @@ import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.PaymentService;
+import com.esd.hesf.service.UserService;
 
 /**
  * 初审管理控制器
@@ -58,6 +60,9 @@ import com.esd.hesf.service.PaymentService;
 @RequestMapping(value = "/security/audits")
 public class AuditsController {
 	private static final Logger logger = LoggerFactory.getLogger(AuditsController.class);
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private AuditService auditService;
@@ -105,7 +110,9 @@ public class AuditsController {
 		Audit getAudit = auditService.getByPrimaryKey(id);
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
 		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
-		getAudit.setVerifyAuditUserId((Integer) session.getAttribute(Constants.USER_ID));// 添加复审ID
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		getAudit.setVerifyAuditUser(user);// 添加复审ID
 		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
@@ -126,26 +133,28 @@ public class AuditsController {
 		Audit getAudit = auditService.getByPrimaryKey(id);
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
 		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
-		getAudit.setVerifyAuditUserId((Integer) session.getAttribute(Constants.USER_ID));// 添加复审ID
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		getAudit.setVerifyAuditUser(user);// 添加复审ID
 		AuditProcessStatus auditProcessStatus = null;
 		if (getAudit.getActualAmount().signum() == 0) {
 			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
 		} else {
 			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
 		}
-		//处理未审年度
+		// 处理未审年度
 		String companyCode = getAudit.getCompany().getCompanyCode();
 		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, getAudit.getYear());
-		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);//达标
-		for(String s:unAudits){
+		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
+		for (String s : unAudits) {
 			Audit a = auditService.getByPrimaryKey(s, companyCode);
-			a.setPayAmount(new BigDecimal(0));//设置实缴总金额为0
-			a.setAuditProcessStatus(auditProcessStatusOK);//设置为达标
-			a.setSupplementYear(getAudit.getYear());//设置补缴年度
+			a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+			a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
+			a.setSupplementYear(getAudit.getYear());// 设置补缴年度
 			auditService.update(a);
 		}
-		//处理未审年度结束
-		
+		// 处理未审年度结束
+
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
@@ -170,7 +179,9 @@ public class AuditsController {
 			if (b == true) {
 				audit.setInitAuditDate(new Date()); // 添加审计时间
 				// 添加审计人
-				audit.setInitAuditUserId((Integer) session.getAttribute(Constants.USER_ID));
+				Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+				User user = userService.getByPrimaryKey(userId);
+				audit.setInitAuditUser(user);
 				// 更改审计状态
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
 				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未复审

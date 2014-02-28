@@ -5,15 +5,10 @@
  */
 package com.esd.cs.documentation;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
-import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.worker.WorkerParamModel;
-import com.esd.cs.worker.WorkerUtil;
 import com.esd.hesf.model.Audit;
-import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
-import com.esd.hesf.model.User;
 import com.esd.hesf.service.AuditService;
-import com.esd.hesf.service.CompanyEconomyTypeService;
-import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
-import com.esd.hesf.service.CompanyTypeService;
-import com.esd.hesf.service.UserService;
-import com.esd.hesf.viewmodels.WorkerViewModel;
 
 @Controller
 @RequestMapping(value = "/security/print")
@@ -51,8 +35,6 @@ public class PrintCompany {
 	private CompanyService companyService;// 企业
 	@Autowired
 	private AuditService auditService;// 审核对象
-	@Autowired
-	private UserService service;
 
 	
 
@@ -64,7 +46,6 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
-		String s=CalendarUtil.getLastYear();
 		// 获取当前年份
 		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.debug("gotoPrintList:{}", "queryAudit");
@@ -207,7 +188,7 @@ public class PrintCompany {
 				logger.error("getPrintNoticeInfoError:{}", "getauditNull");
 				return null;
 			}
-			User user = service.getByPrimaryKey(audit.getInitAuditUserId());
+			//User user = service.getByPrimaryKey(audit.getInitAuditUser().getUserId());
 			// 复审员
 			// 保证金额度
 			logger.debug(" getcompany{}", company);
