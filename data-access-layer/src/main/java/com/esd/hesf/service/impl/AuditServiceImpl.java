@@ -14,6 +14,7 @@ import com.esd.hesf.dao.AuditCompanyViewDao;
 import com.esd.hesf.dao.AuditDao;
 import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
+import com.esd.hesf.dao.UserDao;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.service.AuditService;
@@ -43,6 +44,9 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private CompanyYearWorkerDao cywDao;
 
+	@Autowired
+	private UserDao uDao;
+	
 	@Override
 	public boolean save(Audit t) {
 		return dao.insertSelective(t) == 1 ? true : false;
@@ -73,6 +77,18 @@ public class AuditServiceImpl implements AuditService {
 		int companyHandicapTotal = cywDao.retrieveCount(map);
 		// 放入审核对象公司的数据中
 		audit.getCompany().setCompanyHandicapTotal(companyHandicapTotal);
+		//查询初审人对象
+		if(audit.getInitAuditUser()!=null){
+			if(audit.getInitAuditUser().getId()!=null &&audit.getInitAuditUser().getId()>0){
+				audit.setInitAuditUser(uDao.retrieveByPrimaryKey(audit.getInitAuditUser().getId()));
+			}
+		}
+		//查询复审人对象
+		if(audit.getVerifyAuditUser()!=null){
+			if(audit.getVerifyAuditUser().getId()!=null&&audit.getVerifyAuditUser().getId()>0){
+				audit.setVerifyAuditUser(uDao.retrieveByPrimaryKey(audit.getVerifyAuditUser().getId()));
+			}
+		}
 		return audit;
 	}
 

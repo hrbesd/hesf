@@ -25,11 +25,11 @@ public class Audit extends PrimaryKey_Int {
 	private BigDecimal complementAmount; // 补缴金额
 	private BigDecimal delayPayAmount; // 滞纳金
 	private Boolean isDelayPay; // 是否减免滞纳金
-	private Integer initAuditUserId;// 初审人id
+	private User initAuditUser;// 初审人id
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date initAuditDate;// 初审日期
 	private String initAuditComment; // 初审人意见
-	private Integer verifyAuditUserId;// 复审人用户ID
+	private User verifyAuditUser;// 复审人用户ID
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date verifyAuditDate;// 复审日期
 	private String verifyAuditComment; // 初审人意见
@@ -52,6 +52,17 @@ public class Audit extends PrimaryKey_Int {
 
 	public Audit(int id) {
 		super.setId(id);
+	}
+
+	@Override
+	public String toString() {
+		return "Audit [year=" + year + ", company=" + company + ", area=" + area + ", auditProcessStatus=" + auditProcessStatus + ", amountPayable=" + amountPayable + ", reductionAmount="
+				+ reductionAmount + ", actualAmount=" + actualAmount + ", payAmount=" + payAmount + ", remainAmount=" + remainAmount + ", complementAmount=" + complementAmount + ", delayPayAmount="
+				+ delayPayAmount + ", isDelayPay=" + isDelayPay + ", initAuditUser=" + initAuditUser + ", initAuditDate=" + initAuditDate + ", initAuditComment=" + initAuditComment
+				+ ", verifyAuditUser=" + verifyAuditUser + ", verifyAuditDate=" + verifyAuditDate + ", verifyAuditComment=" + verifyAuditComment + ", remark=" + remark + ", isExempt=" + isExempt
+				+ ", reductionType=" + reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate=" + reductionDate + ", reductionReason=" + reductionReason
+				+ ", reductionAnswerUser=" + reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption=" + reductionAnswerOption + ", reductionRemark="
+				+ reductionRemark + ", unauditYears=" + unauditYears + ", supplementYear=" + supplementYear + ", delayDays=" + delayDays + "]";
 	}
 
 	public String getYear() {
@@ -150,12 +161,12 @@ public class Audit extends PrimaryKey_Int {
 		this.isDelayPay = isDelayPay;
 	}
 
-	public Integer getInitAuditUserId() {
-		return initAuditUserId;
+	public User getInitAuditUser() {
+		return initAuditUser;
 	}
 
-	public void setInitAuditUserId(Integer initAuditUserId) {
-		this.initAuditUserId = initAuditUserId;
+	public void setInitAuditUser(User initAuditUser) {
+		this.initAuditUser = initAuditUser;
 	}
 
 	public Date getInitAuditDate() {
@@ -174,12 +185,12 @@ public class Audit extends PrimaryKey_Int {
 		this.initAuditComment = initAuditComment;
 	}
 
-	public Integer getVerifyAuditUserId() {
-		return verifyAuditUserId;
+	public User getVerifyAuditUser() {
+		return verifyAuditUser;
 	}
 
-	public void setVerifyAuditUserId(Integer verifyAuditUserId) {
-		this.verifyAuditUserId = verifyAuditUserId;
+	public void setVerifyAuditUser(User verifyAuditUser) {
+		this.verifyAuditUser = verifyAuditUser;
 	}
 
 	public Date getVerifyAuditDate() {
@@ -276,15 +287,6 @@ public class Audit extends PrimaryKey_Int {
 
 	public void setReductionRemark(String reductionRemark) {
 		this.reductionRemark = reductionRemark;
-	}
-
-	@Override
-	public String toString() {
-		return "Audit [year=" + year + ", company=" + company + ", area=" + area + ", auditProcessStatus=" + auditProcessStatus + ", amountPayable=" + amountPayable + ", reductionAmount="
-				+ reductionAmount + ", actualAmount=" + actualAmount + ", payAmount=" + payAmount + ", remainAmount=" + remainAmount + ", initAuditUserId=" + initAuditUserId + ", initAuditDate="
-				+ initAuditDate + ", verifyAuditUserId=" + verifyAuditUserId + ", verifyAuditDate=" + verifyAuditDate + ", remark=" + remark + ", isExempt=" + isExempt + ", reductionType="
-				+ reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate=" + reductionDate + ", reductionReason=" + reductionReason + ", reductionAnswerUser="
-				+ reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption=" + reductionAnswerOption + ", reductionRemark=" + reductionRemark + "]";
 	}
 
 	public Integer getUnauditYears() {

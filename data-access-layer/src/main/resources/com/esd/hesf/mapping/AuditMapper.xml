@@ -14,10 +14,10 @@
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
 		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
 		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
-		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUserId" />
+		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
-		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUserId" />
+		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
 		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
@@ -183,8 +183,8 @@
 		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
 		#{isDelayPay,jdbcType=BIT},
-		#{initAuditUserId,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
-		#{verifyAuditUserId,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
+		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
+		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
 		#{reductionType,jdbcType=INTEGER},#{reducionApplyUser,jdbcType=VARCHAR},
 		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR}, #{reductionAnswerUser,jdbcType=VARCHAR},
@@ -245,8 +245,10 @@
 			<if test="isDelayPay != null">
 				is_delay_pay,
 			</if>
-			<if test="initAuditUserId != null">
-				init_audit_user_id,
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
+					init_audit_user_id,
+				</if>
 			</if>
 			<if test="initAuditDate != null">
 				init_audit_date,
@@ -254,8 +256,10 @@
 			<if test="initAuditComment != null">
 				init_audit_comment,
 			</if>
-			<if test="verifyAuditUserId != null">
-				verify_audit_user_id,
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					verify_audit_user_id,
+				</if>
 			</if>
 			<if test="verifyAuditDate != null">
 				verify_audit_date,
@@ -354,8 +358,10 @@
 			<if test="isDelayPay != null">
 				#{isDelayPay,jdbcType=BIT},
 			</if>
-			<if test="initAuditUserId != null">
-				#{initAuditUserId,jdbcType=INTEGER},
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
+					#{initAuditUser.id,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="initAuditDate != null">
 				#{initAuditDate,jdbcType=TIMESTAMP},
@@ -363,8 +369,10 @@
 			<if test="initAuditComment != null and initAuditComment != ''">
 				#{initAuditComment,jdbcType=VARCHAR},
 			</if>
-			<if test="verifyAuditUserId != null">
-				#{verifyAuditUserId,jdbcType=INTEGER},
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					#{verifyAuditUser.id,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="verifyAuditDate != null">
 				#{verifyAuditDate,jdbcType=TIMESTAMP},
@@ -488,8 +496,10 @@
 			<if test="delayPayAmount != null">
 				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
 			</if>
-			<if test="initAuditUserId != null">
-				init_audit_user_id = #{initAuditUserId,jdbcType=INTEGER},
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser > 0">
+					init_audit_user_id = #{initAuditUser.id,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="initAuditDate != null">
 				init_audit_date = #{initAuditDate,jdbcType=TIMESTAMP},
@@ -497,8 +507,10 @@
 			<if test="initAuditComment != null">
 				init_audit_comment = #{initAuditComment,jdbcType=VARCHAR},
 			</if>
-			<if test="verifyAuditUserId != null">
-				verify_audit_user_id = #{verifyAuditUserId,jdbcType=INTEGER},
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					verify_audit_user_id = #{verifyAuditUserId,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="verifyAuditDate != null">
 				verify_audit_date = #{verifyAuditDate,jdbcType=TIMESTAMP},
