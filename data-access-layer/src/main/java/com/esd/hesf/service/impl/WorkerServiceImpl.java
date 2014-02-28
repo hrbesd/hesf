@@ -16,6 +16,7 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.KitService;
 import com.esd.hesf.service.WorkerService;
 import com.esd.hesf.viewmodels.WorkerViewModel;
@@ -40,8 +41,10 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public boolean save(Worker t) {
-		t.setArea(new Area("10230000"));
-		return dao.insertSelective(t) == 1 ? true : false;
+		if(t.getArea()==null){
+			t.setArea(new Area("10230000"));
+		}
+		int k = dao.insertSelective(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

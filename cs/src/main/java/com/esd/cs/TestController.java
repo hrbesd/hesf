@@ -148,7 +148,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test5() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Area> entity = aService.getSubArea("10230000");
+		List<Area> entity = aService.getSubArea("");
 		map.put("entity", entity);
 		return map;
 	}
@@ -447,7 +447,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test31() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Audit entity = auditService.getByPrimaryKey(137);
+		Audit entity = auditService.getByPrimaryKey(41340);
 		map.put("entity", entity);
 		return map;
 	}
@@ -517,7 +517,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test38() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecord("0e79797525f95737da607bfc2079a010", 1, 30);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecord(41343, 1, 999);
 		map.put("entity", entity);
 		return map;
 	}
@@ -668,15 +668,27 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	// 特殊缴款方式类别--测试
-		@RequestMapping("/53")
-		@ResponseBody
-		public Map<String, Object> test53() {
-			Map<String, Object> map = new HashMap<String, Object>();
-			List<PaymentExceptional> entity = peService.getAll();
-			map.put("entity", entity);
-			return map;
-		}
+	@RequestMapping("/53")
+	@ResponseBody
+	public Map<String, Object> test53() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<PaymentExceptional> entity = peService.getAll();
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 缴款表--更新新
+	@RequestMapping("/54")
+	@ResponseBody
+	public Map<String, Object> test54() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Payment p = pService.getByPrimaryKey(39);
+		p.setRemark("slkdjf");
+		boolean entity = pService.update(p);
+		map.put("entity", entity);
+		return map;
+	}
 
 }
