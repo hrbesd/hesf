@@ -14,6 +14,7 @@ import com.esd.hesf.dao.CompanyPropertyDao;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 公司属性 service实现类
@@ -31,8 +32,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 
 	@Override
 	public boolean save(CompanyProperty t) {
-		// TODO Auto-generated method stub
-		return dao.insert(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

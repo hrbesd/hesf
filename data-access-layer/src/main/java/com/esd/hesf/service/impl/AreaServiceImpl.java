@@ -12,6 +12,7 @@ import com.esd.hesf.dao.AreaDao;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.KitService;
 
 /**
@@ -28,7 +29,7 @@ public class AreaServiceImpl implements AreaService {
 
 	@Override
 	public boolean save(Area t) {
-		return dao.insert(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override
@@ -61,7 +62,8 @@ public class AreaServiceImpl implements AreaService {
 
 	@Override
 	public List<Area> getSubArea(String code) {
-		if (code == null) {
+		if (code == null || "".equals(code)) {
+			new HesfException("code", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		code = KitService.areaCodeForSql(code);
@@ -72,7 +74,5 @@ public class AreaServiceImpl implements AreaService {
 	public List<Area> getHeiLongjiangCities() {
 		return dao.retrieveHLJ();
 	}
-	
-	
 
 }

@@ -509,7 +509,7 @@
 			</if>
 			<if test="verifyAuditUser != null">
 				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
-					verify_audit_user_id = #{verifyAuditUserId,jdbcType=INTEGER},
+					verify_audit_user_id = #{verifyAuditUser.id,jdbcType=INTEGER},
 				</if>
 			</if>
 			<if test="verifyAuditDate != null">

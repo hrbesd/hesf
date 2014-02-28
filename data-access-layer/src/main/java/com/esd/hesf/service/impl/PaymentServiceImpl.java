@@ -14,6 +14,7 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.PaymentService;
 
 /**
@@ -45,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		// 验证缴款金额
 
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

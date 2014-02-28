@@ -11,6 +11,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.UserLogDao;
 import com.esd.hesf.model.UserLog;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.UserLogService;
 
 /**
@@ -27,8 +28,7 @@ public class UserLogServiceImpl implements UserLogService {
 
 	@Override
 	public boolean save(UserLog t) {
-		// TODO Auto-generated method stub
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

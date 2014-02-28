@@ -28,6 +28,7 @@ import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.KitService;
 
 /**
@@ -65,6 +66,68 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public boolean save(Company t) {
 		t.setId(KitService.getUUID());
+		if (t.getYear() == null) {
+			new HesfException("company.year", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyCode() == null) {
+			new HesfException("company.companyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyCode() == null) {
+			new HesfException("company.companyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyName() == null) {
+			new HesfException("company.companyName", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyLegal() == null) {
+			new HesfException("company.companyLegal", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyOrganizationCode() == null) {
+			new HesfException("company.companyOrganizationCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyType() == null) {
+			new HesfException("company.companyType", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyType().getId() == null) {
+			new HesfException("company.companyType.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyEconomyType() == null) {
+			new HesfException("company.companyEconomyType", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyEconomyType().getId() == null) {
+			new HesfException("company.companyEconomyType.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyProperty() == null) {
+			new HesfException("company.companyProperty", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyProperty().getId() == null) {
+			new HesfException("company.companyProperty.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyProperty() == null) {
+			new HesfException("company.companyProperty", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompanyProperty().getId() == null) {
+			new HesfException("company.companyProperty.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getArea() == null) {
+			new HesfException("company.area", HesfException.type_null).printStackTrace();
+		}
+		if (t.getArea().getCode() == null) {
+			new HesfException("company.companyProperty.id", HesfException.type_null).printStackTrace();
+		}
 		// 保存公司
 		int i = dao.insertSelective(t);
 		// 向审核表中插入信息
@@ -73,7 +136,7 @@ public class CompanyServiceImpl implements CompanyService {
 		audit.setCompany(t);
 		audit.setArea(t.getArea());
 		int k = auDao.insertSelective(audit);
-		return (i == 1 && k == 1) ? true : false;
+		if(k!=1 || i!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

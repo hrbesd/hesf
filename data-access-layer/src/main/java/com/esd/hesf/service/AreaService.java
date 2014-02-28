@@ -24,6 +24,7 @@ public interface AreaService extends BaseService<Area> {
 	 * 
 	 * @param code
 	 * @return
+	 * @throws HesfException 
 	 */
 	public List<Area> getSubArea(String code);
 

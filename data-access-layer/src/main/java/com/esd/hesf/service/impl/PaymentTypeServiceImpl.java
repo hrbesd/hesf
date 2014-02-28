@@ -11,6 +11,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.PaymentTypeDao;
 import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.PaymentTypeService;
 
 /**
@@ -26,7 +27,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 
 	@Override
 	public boolean save(PaymentType t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

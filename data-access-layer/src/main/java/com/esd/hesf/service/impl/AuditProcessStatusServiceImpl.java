@@ -12,6 +12,7 @@ import com.esd.hesf.dao.AuditProcessStatusDao;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 审核进程状态 service实现类
@@ -27,7 +28,7 @@ public class AuditProcessStatusServiceImpl implements AuditProcessStatusService 
 
 	@Override
 	public boolean save(AuditProcessStatus t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

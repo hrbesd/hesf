@@ -12,6 +12,7 @@ import com.esd.hesf.dao.CompanyTypeDao;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 公司类型 service实现类
@@ -27,7 +28,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
 	@Override
 	public boolean save(CompanyType t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

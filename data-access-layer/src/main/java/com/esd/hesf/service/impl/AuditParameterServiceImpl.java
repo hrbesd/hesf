@@ -1,6 +1,5 @@
 package com.esd.hesf.service.impl;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 年审参数 servcie接口实现类
@@ -37,7 +37,11 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public boolean save(AuditParameter t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		if (t.getYear() == null) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override
@@ -57,7 +61,6 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public PaginationRecordsAndNumber<AuditParameter, Number> getPaginationRecords(AuditParameter t, Integer page, Integer pageSize) {
-		log.debug(t.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("auditParameter", t);
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
@@ -81,6 +84,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	@Override
 	public AuditParameter getByYear(String year) {
 		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		return dao.retrieveByYear(year);
@@ -88,10 +92,10 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public List<WorkerCalculator> getSpecialSetting(String year) {
-		//如果year为空的话, 则查询当前年份的
-		if(year == null ||"".equals(year)){
-			Calendar cal = Calendar.getInstance();
-			year = String.valueOf(cal.get(Calendar.YEAR));
+		// 如果year为空的话, 则查询当前年份的
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
 		}
 		return wcDao.retrieveSpecialSetting(year);
 	}
@@ -99,15 +103,19 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	@Override
 	public int getSpecialCount(String companyCode, String year, int workerHandicapType, int workerHandicapLevel) {
 		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
 			return -1;
 		}
 		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
 			return -1;
 		}
 		if (workerHandicapType <= 0) {
+			new HesfException("workerHandicapType", HesfException.type_number_negative).printStackTrace();
 			return -1;
 		}
 		if (workerHandicapLevel <= 0) {
+			new HesfException("workerHandicapLevel", HesfException.type_number_negative).printStackTrace();
 			return -1;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();

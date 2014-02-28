@@ -19,6 +19,7 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 审核service 实现类
@@ -46,10 +47,30 @@ public class AuditServiceImpl implements AuditService {
 
 	@Autowired
 	private UserDao uDao;
-	
+
 	@Override
 	public boolean save(Audit t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		if (t.getCompany() == null) {
+			new HesfException("audit.company", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompany().getYear() == null) {
+			new HesfException("audit.company.year", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompany().getCompanyCode() == null) {
+			new HesfException("audit.company.companyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getAuditProcessStatus() == null) {
+			new HesfException("audit.auditProcessStatus", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getAuditProcessStatus().getId() == null) {
+			new HesfException("audit.auditProcessStatus.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override
@@ -59,6 +80,26 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public boolean update(Audit t) {
+		if (t.getCompany() == null) {
+			new HesfException("audit.company", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompany().getYear() == null) {
+			new HesfException("audit.company.year", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getCompany().getCompanyCode() == null) {
+			new HesfException("audit.company.companyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getAuditProcessStatus() == null) {
+			new HesfException("audit.auditProcessStatus", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getAuditProcessStatus().getId() == null) {
+			new HesfException("audit.auditProcessStatus.id", HesfException.type_null).printStackTrace();
+			return false;
+		}
 		return dao.updateByPrimaryKey(t) == 1 ? true : false;
 	}
 
@@ -66,6 +107,7 @@ public class AuditServiceImpl implements AuditService {
 	public Audit getByPrimaryKey(int id) {
 		Audit audit = dao.retrieveByPrimaryKey(id);
 		if (audit == null) {
+			new HesfException("没有找到对应id的Audit对象", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		// 查询该公司当年度残疾职工人数
@@ -77,15 +119,15 @@ public class AuditServiceImpl implements AuditService {
 		int companyHandicapTotal = cywDao.retrieveCount(map);
 		// 放入审核对象公司的数据中
 		audit.getCompany().setCompanyHandicapTotal(companyHandicapTotal);
-		//查询初审人对象
-		if(audit.getInitAuditUser()!=null){
-			if(audit.getInitAuditUser().getId()!=null &&audit.getInitAuditUser().getId()>0){
+		// 查询初审人对象
+		if (audit.getInitAuditUser() != null) {
+			if (audit.getInitAuditUser().getId() != null && audit.getInitAuditUser().getId() > 0) {
 				audit.setInitAuditUser(uDao.retrieveByPrimaryKey(audit.getInitAuditUser().getId()));
 			}
 		}
-		//查询复审人对象
-		if(audit.getVerifyAuditUser()!=null){
-			if(audit.getVerifyAuditUser().getId()!=null&&audit.getVerifyAuditUser().getId()>0){
+		// 查询复审人对象
+		if (audit.getVerifyAuditUser() != null) {
+			if (audit.getVerifyAuditUser().getId() != null && audit.getVerifyAuditUser().getId() > 0) {
 				audit.setVerifyAuditUser(uDao.retrieveByPrimaryKey(audit.getVerifyAuditUser().getId()));
 			}
 		}
@@ -94,7 +136,12 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public Audit getByPrimaryKey(String year, String companyCode) {
-		if (year == null || "".equals(year) || companyCode == null || "".equals(companyCode)) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
+		}
+		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -143,10 +190,19 @@ public class AuditServiceImpl implements AuditService {
 		map.put("lastYear", lastYear);
 		// 向公司表里插入数据
 		int j = cDao.insertLastYearData(map);
+		if (j <= 0) {
+			new HesfException("向公司表里插入数据		失败").printStackTrace();
+		}
 		// 向审核表里插入数据
 		int k = dao.insertLastYearData(map);
+		if (k <= 0) {
+			new HesfException("向审核表里插入数据		失败").printStackTrace();
+		}
 		// 向公司-员工关系表中插入数据
 		int l = cywDao.insertLastYearData(map);
+		if (l <= 0) {
+			new HesfException("向公司-员工关系表中插入数据		失败").printStackTrace();
+		}
 		return (j > 0 && k > 0 && l > 0) ? true : false;
 	}
 

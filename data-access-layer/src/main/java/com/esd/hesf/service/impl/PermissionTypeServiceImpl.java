@@ -11,6 +11,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.PermissionTypeDao;
 import com.esd.hesf.model.PermissionType;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.PermissionTypeService;
 
 /**
@@ -27,7 +28,7 @@ public class PermissionTypeServiceImpl implements PermissionTypeService {
 
 	@Override
 	public boolean save(PermissionType t) {
-		return dao.insert(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

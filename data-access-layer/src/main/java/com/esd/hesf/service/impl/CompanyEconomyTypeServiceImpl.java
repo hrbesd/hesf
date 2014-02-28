@@ -14,6 +14,7 @@ import com.esd.hesf.dao.CompanyEconomyTypeDao;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 
 /**
  * 公司类型 service实现类
@@ -31,7 +32,7 @@ public class CompanyEconomyTypeServiceImpl implements CompanyEconomyTypeService 
 
 	@Override
 	public boolean save(CompanyEconomyType t) {
-		return dao.insert(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override

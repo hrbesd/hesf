@@ -12,10 +12,10 @@
 		<result column="au_pay_amount" jdbcType="DECIMAL" property="payAmount" />
 		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
-		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUserId" />
+		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
-		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUserId" />
+		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
 		<result column="au_remark" jdbcType="VARCHAR" property="remark" />

@@ -11,6 +11,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.UserGroupDao;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.UserGroupService;
 
 /**
@@ -27,7 +28,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
 	@Override
 	public boolean save(UserGroup t) {
-		return dao.insertSelective(t) == 1 ? true : false;
+		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
 	}
 
 	@Override
