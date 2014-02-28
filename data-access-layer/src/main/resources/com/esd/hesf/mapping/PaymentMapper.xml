@@ -302,23 +302,23 @@
 			</if>
 			<if test="paymentExceptional != null">
 				<if test="paymentExceptional.id != null and paymentExceptional.id > 0">
-					payment_exceptional,
+					payment_exceptional = #{paymentExceptional.id,jdbcType=INTEGER},
 				</if>
 			</if>
 			<if test="billPrintDate != null">
-				bill_print_date,
+				bill_print_date = #{billPrintDate,jdbcType=TIMESTAMP},
 			</if>
 			<if test="billExchangeDate != null">
-				bill_exchange_date,
+				bill_exchange_date = #{billExchangeDate,jdbcType=TIMESTAMP},
 			</if>
 			<if test="billReturn != null">
-				bill_return,
+				bill_return = #{billReturn,jdbcType=BIT},
 			</if>
 			<if test="billFinance != null">
-				bill_finance,
+				bill_finance = #{billFinance,jdbcType=BIT},
 			</if>
 			<if test="billObsolete != null">
-				bill_obsolete,
+				bill_obsolete = #{billObsolete,jdbcType=VARCHAR},
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
