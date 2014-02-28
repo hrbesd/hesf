@@ -32,6 +32,7 @@
 <div id="payment_add" style="padding: 10px 10px 10px 10px;">
 	<form id="add_form" action="${contextPath}/security/payment/confirm" method="post">
 		<input type="hidden" value="${entity.audit.id}" name="audit.id" />
+		<input type="hidden" value="${entity.id}" name="id" />
 		<input type="hidden" value="${entity.version}" name="version" />
 		<input type="hidden" value="${entity.paymentPerson.id}" name="paymentPerson.id" />
 		<table border="0">

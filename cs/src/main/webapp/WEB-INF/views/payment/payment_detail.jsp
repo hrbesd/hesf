@@ -147,10 +147,27 @@
 			width : 150
 		}, {
 			field : 'billReturn',
-			title : '返票'
+			title : '返票',
+			align : 'center',
+			formatter : function(value, row, index) {
+				var val='<span style="">B</span>';
+				if(value== false){
+					val='F';
+				}
+				alert(value);
+				return val;
+			}
 		}, {
 			field : 'billFinance',
-			title : '财政'
+			title : '财政',
+			align : 'center',
+			formatter : function(value, row, index) {
+				var val='A';
+				if(value==false){
+					val='F';
+				}
+				return val;
+			}
 		}, {
 			field : 'billObsolete',
 			title : '作废票据',
