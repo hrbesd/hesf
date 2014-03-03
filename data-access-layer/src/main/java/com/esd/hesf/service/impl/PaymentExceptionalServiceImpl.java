@@ -24,7 +24,7 @@ public class PaymentExceptionalServiceImpl implements PaymentExceptionalService 
 	public boolean save(PaymentExceptional t) {
 		int k = dao.insert(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail);
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
 			return false;
 		}
 		return true;
@@ -32,17 +32,31 @@ public class PaymentExceptionalServiceImpl implements PaymentExceptionalService 
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(PaymentExceptional t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public PaymentExceptional getByPrimaryKey(int id) {
-		return dao.retrieveByPrimaryKey(id);
+		PaymentExceptional t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override

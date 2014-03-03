@@ -32,23 +32,41 @@ public class CompanyEconomyTypeServiceImpl implements CompanyEconomyTypeService 
 
 	@Override
 	public boolean save(CompanyEconomyType t) {
-		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insert(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(CompanyEconomyType t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public CompanyEconomyType getByPrimaryKey(int id) {
-		// 此处可以编写相应的逻辑代码
-		return dao.retrieveByPrimaryKey(id);
+		CompanyEconomyType t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override

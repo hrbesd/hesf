@@ -28,22 +28,41 @@ public class UserGroupServiceImpl implements UserGroupService {
 
 	@Override
 	public boolean save(UserGroup t) {
-		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insert(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(UserGroup t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public UserGroup getByPrimaryKey(int id) {
-		return dao.retrieveByPrimaryKey(id);
+		UserGroup t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override

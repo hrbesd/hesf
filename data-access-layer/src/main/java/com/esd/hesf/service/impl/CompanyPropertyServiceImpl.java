@@ -32,25 +32,43 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 
 	@Override
 	public boolean save(CompanyProperty t) {
-		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insert(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(CompanyProperty t) {
 		// TODO Auto-generated method stub
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public CompanyProperty getByPrimaryKey(int id) {
-		// TODO Auto-generated method stub
-		return dao.retrieveByPrimaryKey(id);
+		CompanyProperty t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override

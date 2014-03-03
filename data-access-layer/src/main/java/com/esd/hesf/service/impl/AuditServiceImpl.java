@@ -70,12 +70,22 @@ public class AuditServiceImpl implements AuditService {
 			new HesfException("audit.auditProcessStatus.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		int k = dao.insertSelective(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insertSelective(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -100,14 +110,19 @@ public class AuditServiceImpl implements AuditService {
 			new HesfException("audit.auditProcessStatus.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public Audit getByPrimaryKey(int id) {
 		Audit audit = dao.retrieveByPrimaryKey(id);
 		if (audit == null) {
-			new HesfException("没有找到对应id的Audit对象", HesfException.type_null).printStackTrace();
+			new HesfException("没有找到对应id的Audit对象", HesfException.type_no_data).printStackTrace();
 			return null;
 		}
 		// 查询该公司当年度残疾职工人数
@@ -208,7 +223,6 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public PaginationRecordsAndNumber<Audit, Number> getByMultiCondition(Map<String, Object> map) {
-		System.out.println("AuditServiceImpl		getByMultiCondition" + map);
 		if (map == null) {
 			map = new HashMap<String, Object>();
 		}

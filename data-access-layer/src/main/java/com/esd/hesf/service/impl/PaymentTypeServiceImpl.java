@@ -15,7 +15,8 @@ import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.PaymentTypeService;
 
 /**
- * 	缴款类型 service实现类
+ * 缴款类型 service实现类
+ * 
  * @author Administrator
  * 
  */
@@ -27,22 +28,41 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 
 	@Override
 	public boolean save(PaymentType t) {
-		int k = dao.insert(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insert(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(PaymentType t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public PaymentType getByPrimaryKey(int id) {
-		return dao.retrieveByPrimaryKey(id);
+		PaymentType t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override

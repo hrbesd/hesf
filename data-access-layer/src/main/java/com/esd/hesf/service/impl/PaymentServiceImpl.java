@@ -46,22 +46,41 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		// 验证缴款金额
 
-		int k = dao.insertSelective(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insertSelective(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(Payment t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public Payment getByPrimaryKey(int id) {
-		return dao.retrieveByPrimaryKey(id);
+		Payment t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override
@@ -87,6 +106,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public BigDecimal getAlreadyPay(Integer auditId) {
 		if (auditId == null || auditId <= 0) {
+			new HesfException("auditId", HesfException.type_number_negative).printStackTrace();
 			return null;
 		}
 		Payment payment = new Payment();
@@ -97,16 +117,22 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public BigDecimal getAlreadyPay(String companyId) {
 		if (companyId == null || "".equals(companyId)) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Payment payment = new Payment();
 		payment.setPaymentCompany(new Company(companyId));
 		return dao.retrieveAlreadyPay(payment);
 	}
-	
+
 	@Override
 	public BigDecimal getAlreadyPay(String year, String companyCode) {
-		if (year == null || "".equals(year) || companyCode == null || "".equals(companyCode)) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
+		}
+		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Payment payment = new Payment();
@@ -117,6 +143,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(Integer auditId, Integer page, Integer pageSize) {
 		if (auditId == null || auditId <= 0) {
+			new HesfException("auditId", HesfException.type_number_negative).printStackTrace();
 			return null;
 		}
 		// 将参数放入到map中
@@ -142,6 +169,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String companyId, Integer page, Integer pageSize) {
 		if (companyId == null || "".equals(companyId)) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		// 将参数放入到map中
@@ -163,10 +191,15 @@ public class PaymentServiceImpl implements PaymentService {
 		prn.setRecords(list);
 		return prn;
 	}
-	
+
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String year, String companyCode, Integer page, Integer pageSize) {
-		if (year == null || "".equals(year) || companyCode == null || "".equals(companyCode)) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
+		}
+		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		// 将参数放入到map中

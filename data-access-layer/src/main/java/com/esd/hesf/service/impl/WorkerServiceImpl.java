@@ -41,10 +41,15 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public boolean save(Worker t) {
-		if(t.getArea()==null){
+		if (t.getArea() == null) {
 			t.setArea(new Area("10230000"));
 		}
-		int k = dao.insertSelective(t);if(k!=1){new HesfException(t.getClass().getName(),HesfException.type_fail);return false;}return true;
+		int k = dao.insertSelective(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -70,17 +75,31 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public boolean delete(int id) {
-		return dao.deleteByPrimaryKey(id) == 1 ? true : false;
+		int k = dao.deleteByPrimaryKey(id);
+		if (k != 1) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean update(Worker t) {
-		int k = dao.updateByPrimaryKey(t);if(k!=1){ new HesfException(t.getClass().getName(),HesfException.type_fail); return false; } return true;
+		int k = dao.updateByPrimaryKey(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public Worker getByPrimaryKey(int id) {
-		return dao.retrieveByPrimaryKey(id);
+		Worker t = dao.retrieveByPrimaryKey(id);
+		if (t == null) {
+			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+		}
+		return t;
 	}
 
 	@Override
@@ -204,7 +223,12 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public Company retrieveCompanyByWorker(String year, String workerIdCard) {
-		if (year == null || workerIdCard == null || "".equals(year) || "".equals(workerIdCard)) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
+		}
+		if (workerIdCard == null || "".equals(workerIdCard)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -227,7 +251,16 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public boolean changeCompany(int workerId, String targetCompanyCode, String currentYear, String currentJob) {
-		if (workerId <= 0 || targetCompanyCode == null || "".equals(targetCompanyCode) || currentYear == null || "".equals(currentYear)) {
+		if (workerId <= 0) {
+			new HesfException("workerId", HesfException.type_number_negative).printStackTrace();
+			return false;
+		}
+		if (targetCompanyCode == null || "".equals(targetCompanyCode)) {
+			new HesfException("targetCompanyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (currentYear == null || "".equals(currentYear)) {
+			new HesfException("currentYear", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
@@ -235,7 +268,11 @@ public class WorkerServiceImpl implements WorkerService {
 		cyw.setCompanyCode(targetCompanyCode);
 		cyw.setYear(currentYear);
 		cyw.setCurrentJob(currentJob);
-		return cywDao.insertSelective(cyw) == 1 ? true : false;
+		boolean bl = cywDao.insertSelective(cyw) == 1 ? true : false;
+		if (!bl) {
+			new HesfException("向员工--公司关系表  插入数据失败!").printStackTrace();
+		}
+		return bl;
 	}
 
 	@Override
