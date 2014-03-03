@@ -11,13 +11,13 @@
 <div id="company_boolbar">
 	<div style="text-align: right;">
 		<a onclick="basicFile.openAddCompany()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a onclick="basicFile.openBatchDeleteCompany()" href="#"
-			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> 
+			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
 
 	</div>
 	<!-- 快速搜索区域 -->
 	<div align="center" style="margin-bottom: 10px">
 		<!-- 年份 -->
-		<input id="companyYears" class="easyui-combobox" value="${nowYear}"  />年
+		<input id="companyYears" class="easyui-combobox" value="${nowYear}" />年
 	</div>
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
@@ -33,16 +33,20 @@
 <table id="company_grid"></table>
 
 <script type="text/javascript">
+	//组件解析完成
+	$.parser.onComplete = function() {
+		//加载数据
+		basicFile.loadData(basicFile.getParams());
+	};
+
 	$(function() {
-	//年份
+		//年份
 		$('#companyYears').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',
 			textField : 'text',
-			height:30,
-			editable:false,
+			height : 30,
+			editable : false,
 		});
-		
-		basicFile.loadData(basicFile.getParams());
 	});
 </script>

@@ -54,15 +54,17 @@
 		});
 	};
 	
+	//组件解析完成
+	$.parser.onComplete=function(){
+		//加载数据
+		printNature.load();
+	};
 	$(function() {
 		$('#companyYear').combobox({
 			onSelect:function(param){
 				printNature.load();
 			}
 	});
-	printNature.load();
-		
-
 	});
 </script>
 <div class="printOverall">

@@ -107,7 +107,14 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean confirmPost(Payment payment, HttpSession session) {
 		logger.debug(payment.toString());
-		Boolean b = paymentService.update(payment);
+		Payment queryPayment = paymentService.getByPrimaryKey(payment.getId());
+		queryPayment.setBillExchangeDate(payment.getBillExchangeDate());//回票时间
+		queryPayment.setBillReturn(payment.getBillReturn());//返票
+		queryPayment.setBillFinance(payment.getBillFinance());//财务
+		queryPayment.setPaymentExceptional(payment.getPaymentExceptional());//特殊情况
+		queryPayment.setBillObsolete(payment.getBillObsolete());//作费票据
+		queryPayment.setRemark(payment.getRemark());
+		Boolean b = paymentService.update(queryPayment);
 		return b;
 	}
 	/**

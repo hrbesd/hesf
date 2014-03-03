@@ -288,11 +288,16 @@
 		});
 
 	};
+	
+		//组件解析完成
+	$.parser.onComplete=function(){
+		//加载数据
+		workerList.loadData(workerList.getParams());
+	};
 	$(function() {
 		//初始化组件
 		workerList.init();
-		//加载数据
-		workerList.loadData(workerList.getParams());
+		
 		//获取企业信息
 		workerList.getCompany();
 	});

@@ -29,7 +29,7 @@ import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 
 @Controller
-@RequestMapping(value = "/security/query/company")       
+@RequestMapping(value = "/security/query/company")
 public class QueryCompayController {
 	private static final Logger logger = LoggerFactory.getLogger(QueryCompayController.class);
 	@Autowired
@@ -97,9 +97,10 @@ public class QueryCompayController {
 		logger.debug("queryCompanyResult:{}", list.toString());
 		return entity;
 	}
-	
+
 	/**
 	 * 批量导出企业信息
+	 * 
 	 * @param idArr
 	 * @param request
 	 * @return
@@ -109,42 +110,36 @@ public class QueryCompayController {
 	public String exportCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		boolean b = true;
-		List<Company> company=new ArrayList<Company>();
+		List<Company> company = new ArrayList<Company>();
 		for (int i = 0; i < idArr.length; i++) {
 			company.add(companyService.getByPrimaryKey(idArr[i]));
 		}
 		String url = request.getServletContext().getRealPath("/");
-		
-		
-		//创建导出文件夹
-		File uploadPath=new File(url+"upload");
-		//导出文件夹
-		String exportFolder=uploadPath+File.separator+"company";
-		File companyPath=new File(exportFolder);
-		if(!(uploadPath.exists())){
+
+		// 创建导出文件夹
+		File uploadPath = new File(url + "upload");
+		// 导出文件夹
+		String exportFolder = uploadPath + File.separator + "company";
+		File companyPath = new File(exportFolder);
+		if (!(uploadPath.exists())) {
 			uploadPath.mkdir();
 		}
-		if(!(companyPath.exists())){
+		if (!(companyPath.exists())) {
 			companyPath.mkdir();
 		}
-		
+
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
-		String exportPath=exportFolder+File.separator+uuid+".xls";
-		String FileDownloadPath="null";
-		//导出文件
-		b=PoiCreateExcel.createComapnyExcel(exportPath,company);
-		if(b){
+		String exportPath = exportFolder + File.separator + uuid + ".xls";
+		String FileDownloadPath = "null";
+		// 导出文件
+		b = PoiCreateExcel.createComapnyExcel(exportPath, company);
+		if (b) {
 			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-			FileDownloadPath="http://" +destPath+ "/upload/company/"+uuid+ ".xls";
+			FileDownloadPath = "http://" + destPath + "/upload/company/" + uuid + ".xls";
 		}
 		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArr);
 		return FileDownloadPath;
 	}
-	
-	
-	
-	
-	
-	
+
 }

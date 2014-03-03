@@ -72,15 +72,17 @@ public class WorkerController {
 	private AuditParameterService auditParameterService;// 年审参数
 	@Autowired
 	Properties fileUploadPro = null;
-	
+
 	@Value("${LoadUpFileMaxSize}")
 	String LoadUpFileMaxSize;
-	
-	// 身份证号长度
-	static int HANDICAPCODE = 20;
+
+	// 残疾证号最大长度
+	static int MAX_HANDICAPCODE = 22;
+	// 残疾证号最小长度
+	static int MIN_HANDICAPCODE = 20;
 
 	// 提示文本
-	static String LENGTHERROR = "残疾证号长度过小";
+	static String LENGTHERROR = "残疾证号长度不符";
 
 	// 提示文本
 	static String BEENHIRED = "职工已被录用";
@@ -95,7 +97,8 @@ public class WorkerController {
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
 	static String WORDERROR = "excel文件内部文本信息格式错误!";
-	static String CREATEERRORFILE="创建错误信息列表文件错误";
+	static String CREATEERRORFILE = "创建错误信息列表文件错误";
+
 	/**
 	 * 转到残疾职工列表页面 初审时利用tab标签页的post方式获取。 所以get和post都可以请求，
 	 * 
@@ -157,7 +160,7 @@ public class WorkerController {
 		// 获取年审参数
 		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getLastYear());
 		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
-		request.setAttribute("retireAgeMale",auditParam.getRetireAgeMale());//男退休年龄
+		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
 		// 获取当前年份
 		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.info("goToPage:{}", "添加残疾职工页面");
@@ -196,6 +199,7 @@ public class WorkerController {
 		}
 		// 设置年份
 		worker.setWorkerBirthYear(CalendarUtil.getLastYear());
+		logger.error("-------------:{}",worker);
 		boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -328,11 +332,12 @@ public class WorkerController {
 
 	/**
 	 * 导入残疾职工文件
+	 * 
 	 * @param request
 	 * @param response
 	 * @return
 	 */
-	public Map<String, String> importfile(String upLoadPath,HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, String> importfile(String upLoadPath, HttpServletRequest request, HttpServletResponse response) {
 		// 获取并解析文件类型和支持最大值
 		String fileType = "xls";
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -341,7 +346,7 @@ public class WorkerController {
 		// 设置临时文件目录
 		factory.setRepository(new File(upLoadPath));
 		ServletFileUpload fileUpload = new ServletFileUpload(factory);
-		Map<String,String> result=new HashMap<String,String>();
+		Map<String, String> result = new HashMap<String, String>();
 		if (LoadUpFileMaxSize != null && !"".equals(LoadUpFileMaxSize.trim())) {
 			// 文件最大上限
 			fileUpload.setSizeMax(Integer.valueOf(LoadUpFileMaxSize) * 1024 * 1024);
@@ -350,7 +355,7 @@ public class WorkerController {
 			// 获取所有文件列表
 			List<FileItem> items = fileUpload.parseRequest(request);
 			for (FileItem item : items) {
-				 // 如果是文件项，则保存文件到上传目录
+				// 如果是文件项，则保存文件到上传目录
 				if (!item.isFormField()) {
 					// 文件名
 					String fileName = item.getName();
@@ -380,11 +385,11 @@ public class WorkerController {
 					File file = new File(sbRealPath.toString());
 					item.write(file);
 					logger.info("上传文件成功,filePath：" + file.getPath());
-					//返回文件路径
+					// 返回文件路径
 					result.put("filePath", file.getPath());
-					
-				//form中参数信息
-				}else{
+
+					// form中参数信息
+				} else {
 					// item.getFieldName():获取参数key。item.getString()：获取参数value
 					result.put("companyId", item.getString());
 				}
@@ -392,7 +397,7 @@ public class WorkerController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// 提示错误信息
-			result.put("fileError", "上传失败,文件大小不能超过"+LoadUpFileMaxSize+"M!");
+			result.put("fileError", "上传失败,文件大小不能超过" + LoadUpFileMaxSize + "M!");
 			logger.error("uplaodWorkerFileError");
 			return result;
 		}
@@ -406,42 +411,42 @@ public class WorkerController {
 	public ModelAndView importworker(HttpServletRequest request, HttpServletResponse response) {
 
 		logger.debug("importWorker:{}");
-		
+
 		// 初始化上传文件目录
-		String upload="upload";
-		String workerFolder="worker";
-		
+		String upload = "upload";
+		String workerFolder = "worker";
+
 		String url = request.getServletContext().getRealPath("/");
-		String upLoadPath = url + upload + File.separator +workerFolder + File.separator;
-		File uploadPath=new File( url + "upload" );
-		File tempPath=new File(uploadPath+File.separator+workerFolder);
-		//创建 上传目录
-		if(!uploadPath.exists()){
-			logger.debug(upload+" Does not exist,Create ‘"+upload+"’ Folder");
+		String upLoadPath = url + upload + File.separator + workerFolder + File.separator;
+		File uploadPath = new File(url + "upload");
+		File tempPath = new File(uploadPath + File.separator + workerFolder);
+		// 创建 上传目录
+		if (!uploadPath.exists()) {
+			logger.debug(upload + " Does not exist,Create ‘" + upload + "’ Folder");
 			uploadPath.mkdir();
 		}
-		if(!tempPath.exists()){
-			logger.debug(workerFolder+" Does not exist,Create ‘"+workerFolder+"’ Folder");
+		if (!tempPath.exists()) {
+			logger.debug(workerFolder + " Does not exist,Create ‘" + workerFolder + "’ Folder");
 			tempPath.mkdir();
 		}
-		
-		//上传文件
-		Map<String, String> paramMap = importfile(upLoadPath,request, response);
-		//上传文件返回的参数信息
-		String filePath		=paramMap.get("filePath");//文件路径
-		String companyId =paramMap.get("companyId");//文件路径
-		String fileError			=paramMap.get("fileError");//错误信息
+
+		// 上传文件
+		Map<String, String> paramMap = importfile(upLoadPath, request, response);
+		// 上传文件返回的参数信息
+		String filePath = paramMap.get("filePath");// 文件路径
+		String companyId = paramMap.get("companyId");// 文件路径
+		String fileError = paramMap.get("fileError");// 错误信息
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list = null;
 
-		if (fileError== null) {
+		if (fileError == null) {
 			try {
 				File f = new File(filePath);
-				//读取excel
+				// 读取excel
 				list = WorkerUtil.parse(f, 0);
 				if (list == null || list.size() <= 0) {
-					//excel文件内部文本信息格式错误
+					// excel文件内部文本信息格式错误
 					logger.error("importWorkerError:{}", WORDERROR);
 					request.setAttribute("errorInfo", WORDERROR);
 					// 返回成功页面
@@ -452,7 +457,7 @@ public class WorkerController {
 					// 校验部分
 					String workerHandicapCode = worker.getWorkerHandicapCode();
 					// 员工姓名
-					String workerName = worker.getWorkerName().replace(" ", "");// 取出所有空格
+					String workerName = worker.getWorkerName().replace(" ", "");//去除所有空格
 					Worker w = new Worker();
 					w.setWorkerName(worker.getWorkerName());
 					w.setWorkerHandicapCode(workerHandicapCode);
@@ -465,8 +470,8 @@ public class WorkerController {
 						logger.error("impoerWorkerError:{},info:{}", w, NAMENULL);
 						continue;
 					}
-					// 2.校验残疾证号长度
-					if (workerHandicapCode == null) {
+					// 2.校验残疾证号是否为空
+					if (StringUtils.isBlank(workerHandicapCode) || StringUtils.equals(workerHandicapCode, "null")) {
 						// 存储错误信息
 						w.setRemark(LENGTHERROR);
 						workerErrorList.add(w);
@@ -474,7 +479,15 @@ public class WorkerController {
 						continue;
 					} else {
 						workerHandicapCode.replace(" ", "");// 去掉所有空格
-						// 3.校验残疾证号是否含有中文
+						// 3.校验残疾证号长度
+						if (workerHandicapCode.length() < MIN_HANDICAPCODE && workerHandicapCode.length()>MAX_HANDICAPCODE) {
+							// 存储错误信息
+							w.setRemark(LENGTHERROR);
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
+							continue;
+						}
+						//4.校验残疾证号是否含有中文
 						if (CommonUtil.chineseValid(workerHandicapCode)) {
 							// 存储错误信息
 							w.setRemark(ILLEGALSTR);
@@ -482,15 +495,9 @@ public class WorkerController {
 							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 							continue;
 						}
-						// 4.校验残疾证号长度
-						if (workerHandicapCode.length() < HANDICAPCODE) {
-							// 存储错误信息
-							w.setRemark(LENGTHERROR);
-							workerErrorList.add(w);
-							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
-							continue;
-						}
 					}
+					
+					
 					// 5.校验残疾类型
 					int handicapType = Integer.valueOf(workerHandicapCode.substring(18, 19));
 					if (handicapType > 7 || handicapType == 0) {
@@ -511,7 +518,7 @@ public class WorkerController {
 					// 7.校验职工年龄
 					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getLastYear()));
 					if (ageResult != null) {
-						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。"+ ageResult.get(2).toString();
+						String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。" + ageResult.get(2).toString();
 						w.setRemark(ageErrorInfo);
 						workerErrorList.add(w);
 						logger.error("impoerWorkerError:{},info:{}", w, ageErrorInfo);
@@ -564,19 +571,19 @@ public class WorkerController {
 				}
 				// 检测是否有未导入数据
 				if (workerErrorList.size() != 0) {
-					String errorFilePath = upLoadPath+ companyId + ".xls";
-					//错误列表是否创建成功
-					if(PoiCreateExcel.createExcel(errorFilePath, workerErrorList)){
+					String errorFilePath = upLoadPath + companyId + ".xls";
+					// 错误列表是否创建成功
+					if (PoiCreateExcel.createExcel(errorFilePath, workerErrorList)) {
 						logger.debug("upLoadErrorListCreateSuccess!");
 						String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
 						// 返回错误列表文件下载地址
-						request.setAttribute("errorFilePath", "http://" + destPath + "/"+upload+"/"+workerFolder+"/" + companyId + ".xls");//
-					}else{
+						request.setAttribute("errorFilePath", "http://" + destPath + "/" + upload + "/" + workerFolder + "/" + companyId + ".xls");//
+					} else {
 						logger.error("upLoadErrorListCreateError");
 						request.setAttribute("errorInfo", CREATEERRORFILE);
 					}
 				}
-				//删除上传文件
+				// 删除上传文件
 				f.delete();
 			} catch (IllegalStateException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
@@ -587,15 +594,26 @@ public class WorkerController {
 			int errorLength = 0;
 			int succesLength = 0;
 			// 检测是否有导入失败数据
+			if(workerErrorList!=null){
+				errorLength = workerErrorList.size();
+			}
 			if (list != null) {
 				totalLength = list.size();
-				errorLength = workerErrorList.size();
 				succesLength = totalLength - errorLength;
 			}
 			request.setAttribute("totalLength", totalLength);// 总条数
 			request.setAttribute("errorLength", errorLength);// 失败条数
 			request.setAttribute("succesLength", succesLength);// 成功条数
-			request.setAttribute("errorInfo", "null");//没有错误信息
+			request.setAttribute("errorInfo", "null");// 没有错误信息
+			
+			logger.error("totalLength:{}", totalLength);// 总条数
+			logger.error("errorLength:{}", errorLength);// 失败条数
+			logger.error("succesLength:{}", succesLength);// 成功条数
+			
+			
+			
+			
+			
 			// 清理部分
 			workerErrorList.clear();// 清楚错误列表数据
 			workerErrorList = null;

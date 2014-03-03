@@ -63,18 +63,18 @@
 			} ],
 			valueField : 'label',
 			textField : 'value',
-			height:30,
+			height : 30,
 			width : 140,
-			panelHeight:80
+			panelHeight : 80
 		});
-	
+
 		//初始化输入元素默认值
-		var element=$(".inputElement");
-		for(var i=0;i<element.length;i++){
+		var element = $(".inputElement");
+		for ( var i = 0; i < element.length; i++) {
 			$(element[i]).val("");
 		}
-			//初始化超过X年未审企业
-			$("#overYear").val("0");
+		//初始化超过X年未审企业
+		$("#overYear").val("0");
 	};
 
 	/**
@@ -149,34 +149,31 @@
 
 	//打印列表对象
 	var printList = {};
-	
-	
+
 	/**
 		检测单位是否审核
-	**/
+	 **/
 	printList.detect = function(id) {
 		$.ajax({
-			url: 'security/print/detect/' + id + '/' + $("#year").val(),
-			type:'post',
-			success:function(data){
-			alert(data);
-			},error:function(){
+			url : 'security/print/detect/' + id + '/' + $("#year").val(),
+			type : 'post',
+			success : function(data) {
+				alert(data);
+			},
+			error : function() {
 				alert("审核检测错误");
 			}
 		});
-		
-		
-		
 
 	};
 	/**
 	打开年审表
 	 **/
 	printList.openAuditTab = function(id) {
-	if(printList.detect()){
-		alert("单位当年度未进行审核");
-		return ;
-	}
+		if (printList.detect()) {
+			alert("单位当年度未进行审核");
+			return;
+		}
 		esd.common.defaultOpenWindow("年审表", 'print/audit/' + id + '/' + $("#year").val());
 
 	};
@@ -195,10 +192,14 @@
 
 	};
 
-	$(function() {
-		queryAudit.init();
+	//组件解析完成
+	$.parser.onComplete = function() {
 		//加载单位档案数据
 		queryAudit.loadData(queryAudit.getParams());
+	};
+
+	$(function() {
+		queryAudit.init();
 
 	});
 </script>
@@ -210,8 +211,8 @@
 
 <!-- 自定义菜单 -->
 <div id="queryAuditBoolbar">
-	<div  class="paramsTab">
-		<table id="printListParams" >
+	<div class="paramsTab">
+		<table id="printListParams">
 			<tr>
 				<td class="tipsText">年度:</td>
 				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
@@ -230,7 +231,7 @@
 				<td class="tipsText">经济类型:</td>
 				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td class="tipsText">地区:</td>
-				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false"  value="10230000" /></td>
+				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" /></td>
 				<td class="tipsText">企业人数:</td>
 				<td><input type="text" style="width: 40px" id="companyEmpTotal_1" data-options="validType:['_number']" class="easyui-validatebox inputElement" />-<input type="text" style="width: 40px"
 					id="companyEmpTotal_2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />人</td>
@@ -247,8 +248,8 @@
 				<td class="tipsText">法人代表:</td>
 				<td><input id="companyLegal" type="text" class="inputElement" />
 				</td>
-		
-			
+
+
 
 				<td class="tipsText">缴款人:</td>
 				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" />
@@ -257,14 +258,13 @@
 				<td><input id="overYear" type="text" style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox " /> 年未初审</td>
 
 				<td class="tipsText">是否免交:</td>
-				<td>
-				<input type="text" id="isExempt"/>
-				
+				<td><input type="text" id="isExempt" />
 				</td>
 			</tr>
 			<tr>
-					<td class="tipsText">流程状态:</td>
-				<td><input id="auditProcessStatus" class="easyui-combobox" data-options="height:30,editable:false" /> </td>
+				<td class="tipsText">流程状态:</td>
+				<td><input id="auditProcessStatus" class="easyui-combobox" data-options="height:30,editable:false" />
+				</td>
 			</tr>
 		</table>
 		<div class="findBut">

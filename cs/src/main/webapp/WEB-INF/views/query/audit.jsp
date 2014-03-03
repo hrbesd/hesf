@@ -124,7 +124,7 @@
 		params.paymentPerson=$("#paymentPerson").combobox("getValue");// 缴款人
 		
 		params.overYear=$("#overYear").val(); // 超过指定年度未初审的企业
-		params.isExempt=$("#isExempt").val();// 是否免交
+		params.isExempt=$("#isExempt").combobox("getValue");// 是否免交
 		return params;
 	};
 
@@ -146,11 +146,15 @@
 		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
 		
 	};
-	$(function() {
-		queryAudit.init();
+	
+	//组件解析完成
+	$.parser.onComplete=function(){
 		//加载单位档案数据
 		queryAudit.loadData(queryAudit.getParams());
-
+	};
+	$(function() {
+		queryAudit.init();
+		
 	});
 </script>
 

@@ -27,22 +27,23 @@ public class CommonUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 检测文件夹是否存在，不存在则创建
+	 * 
 	 * @param Path
 	 * @param onePath
 	 * @param towPath
 	 */
-	static public void chineseFolder(String Path,String onePath,String towPath){
-		File oneFolder=new File(Path+onePath);
-		File towFolder=new File(oneFolder+File.separator+towPath);
-		if(!(oneFolder.exists())){
+	static public void chineseFolder(String Path, String onePath, String towPath) {
+		File oneFolder = new File(Path + onePath);
+		File towFolder = new File(oneFolder + File.separator + towPath);
+		if (!(oneFolder.exists())) {
 			oneFolder.mkdir();
 		}
-		if(!(towFolder.exists())){
+		if (!(towFolder.exists())) {
 			towFolder.mkdir();
 		}
-		
+
 	}
 }

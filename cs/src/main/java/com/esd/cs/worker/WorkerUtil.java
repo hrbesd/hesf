@@ -36,13 +36,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class WorkerUtil {
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
-	public static Integer DISABILITYCARDLENGTH = 20;// 身份证位数
+	public static Integer DnISABILITYCARDLENGTH = 20;// 身份证位数
 	private static final Logger logger = LoggerFactory.getLogger(WorkerUtil.class);
 
 	// 返回职工年龄
 	public static Integer conversionAge(String param) {
 		if (param != null) {
-			if (!(param.length() < DISABILITYCARDLENGTH)) {
 				try {
 					// 初审日期
 					Integer age = Integer.valueOf(param.substring(6, 10));
@@ -52,7 +51,6 @@ public class WorkerUtil {
 				} catch (Exception e) {
 					logger.error("conversionAge:{}", e.getMessage());
 				}
-			}
 		}
 		logger.error("conversionAge:{}", -1);
 		return -1;
@@ -195,13 +193,13 @@ public class WorkerUtil {
 					result.add("已超过退休年龄");
 					return result;
 				}
-				//是否达到工作年龄校验
-				if (age <16 ) {
+				// 是否达到工作年龄校验
+				if (age < 16) {
 					result.add("年龄未达到工作年龄");
 					return result;
 				}
 			} else {
-				
+
 				result.add("男性");
 				result.add(age + "");
 				// 男性
@@ -209,8 +207,8 @@ public class WorkerUtil {
 					result.add("已超过退休年龄");
 					return result;
 				}
-				//是否达到工作年龄校验
-				if (age <16 ) {
+				// 是否达到工作年龄校验
+				if (age < 16) {
 					result.add("年龄未达到工作年龄");
 					return result;
 				}

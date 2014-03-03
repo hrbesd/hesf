@@ -47,28 +47,26 @@ public class ReportController {
 
 	@RequestMapping(value = "/createExcle", method = RequestMethod.GET)
 	public ModelAndView createExcle(HttpServletRequest request) {
-	
+
 		return new ModelAndView("report/dowanloadArea");
 	}
-	
-	//一级路径
+
+	// 一级路径
 	@Value("${uploadPath}")
 	String uploadPath;
-	
-	//二级路径
+
+	// 二级路径
 	@Value("${companyPath}")
 	String companyPath;
 
-	//制表单位
+	// 制表单位
 	@Value("${createTabCompany}")
 	String createTabCompany;
-	
-	//年审单位性质汇总表
+
+	// 年审单位性质汇总表
 	@Value("${natureTitle}")
 	String natureTitle;
-	
-	
-	
+
 	/**
 	 * 转到 企业性质报表
 	 * 
@@ -76,13 +74,13 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/nature", method = RequestMethod.GET)
-	public ModelAndView nature(HttpServletRequest request,HttpSession session) {
+	public ModelAndView nature(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Nature");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
-		
-		request.setAttribute("createTabCompany", createTabCompany);//制表公司
-		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
+
+		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
 		return new ModelAndView("report/nature");
 	}
 
@@ -110,13 +108,13 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/area", method = RequestMethod.GET)
-	public ModelAndView area(HttpServletRequest request,HttpSession session) {
+	public ModelAndView area(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Area");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
-		request.setAttribute("createTabCompany", createTabCompany);//制表公司
-		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
-		
+		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
+
 		return new ModelAndView("report/area");
 	}
 
@@ -143,12 +141,12 @@ public class ReportController {
 	 * @return
 	 */
 	@RequestMapping(value = "/economytype", method = RequestMethod.GET)
-	public ModelAndView economytype(HttpServletRequest request,HttpSession session) {
+	public ModelAndView economytype(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Economytype");
 		request.setAttribute("year", CalendarUtil.getLastYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
-		request.setAttribute("createTabCompany", createTabCompany);//制表公司
-		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
+		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
+		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
 		return new ModelAndView("report/economytype");
 	}
 
@@ -167,10 +165,10 @@ public class ReportController {
 		logger.debug("printEconomytypeResult:{}", list.size());
 		return list;
 	}
-	
-	
+
 	/**
 	 * 导出报表
+	 * 
 	 * @param type
 	 * @param year
 	 * @param request
@@ -178,54 +176,51 @@ public class ReportController {
 	 */
 	@RequestMapping(value = "/export/{type}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@PathVariable(value = "type") String type,
-									@PathVariable(value = "year") String year, 
-									HttpServletRequest request,HttpSession session) {
-		
-		List<ReportViewModel> list=null;
-		//初始化路径信息
+	public String export(@PathVariable(value = "type") String type, @PathVariable(value = "year") String year, HttpServletRequest request, HttpSession session) {
+
+		List<ReportViewModel> list = null;
+		// 初始化路径信息
 		String url = request.getServletContext().getRealPath("/");
-		//检测并创建文件夹
-		CommonUtil.chineseFolder(url,uploadPath,companyPath);
+		// 检测并创建文件夹
+		CommonUtil.chineseFolder(url, uploadPath, companyPath);
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
-		//文件生成路径
-		String exportPath=url+uploadPath+File.separator+companyPath+File.separator+uuid+".xls";
-		
-		//初始化打印参数
-		ReportModel model=new ReportModel();
-		model.setCreateCompany(createTabCompany);//制表公司
-		model.setCreateData("制表日期："+CommonUtil.formatData());//制表日期
-		model.setCreatePeople("制表人："+session.getAttribute(Constants.USER_REAL_NAME).toString());//制表人
-		
-		//类型判断
-		//单位属性
-		if(StringUtils.equals("nature", type)){
-			 list = reportViewService.getByCompanyType(year);
-			model.setType("单位性质");//类型
-			model.setTitle("年审单位性质汇总表");//标题
+		// 文件生成路径
+		String exportPath = url + uploadPath + File.separator + companyPath + File.separator + uuid + ".xls";
+
+		// 初始化打印参数
+		ReportModel model = new ReportModel();
+		model.setCreateCompany(createTabCompany);// 制表公司
+		model.setCreateData("制表日期：" + CommonUtil.formatData());// 制表日期
+		model.setCreatePeople("制表人：" + session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
+
+		// 类型判断
+		// 单位属性
+		if (StringUtils.equals("nature", type)) {
+			list = reportViewService.getByCompanyType(year);
+			model.setType("单位性质");// 类型
+			model.setTitle("年审单位性质汇总表");// 标题
 		}
-		//地区
-		if(StringUtils.equals("area", type)){
-			 list = reportViewService.getByArea(year);
-			model.setType("地区");//类型
-			model.setTitle("年审地区汇总表");//标题
-		}
-		//经济类型
-		if(StringUtils.equals("economytype", type)){
+		// 地区
+		if (StringUtils.equals("area", type)) {
 			list = reportViewService.getByArea(year);
-			model.setType("经济类型");//类型
-			model.setTitle("年审经济类型汇总表");//标题
+			model.setType("地区");// 类型
+			model.setTitle("年审地区汇总表");// 标题
 		}
-	
-		
-		//生成文件
-		PoiCreateExcel.createRepeaExcel(exportPath,list,model);
-		
+		// 经济类型
+		if (StringUtils.equals("economytype", type)) {
+			list = reportViewService.getByArea(year);
+			model.setType("经济类型");// 类型
+			model.setTitle("年审经济类型汇总表");// 标题
+		}
+
+		// 生成文件
+		PoiCreateExcel.createRepeaExcel(exportPath, list, model);
+
 		String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
 		// 返回文件下载地址
-		String loaddown="http://" + destPath + "/"+uploadPath+"/"+companyPath+"/" + uuid + ".xls";
+		String loaddown = "http://" + destPath + "/" + uploadPath + "/" + companyPath + "/" + uuid + ".xls";
 		return loaddown;
 	}
-	
+
 }

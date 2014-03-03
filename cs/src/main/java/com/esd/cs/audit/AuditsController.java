@@ -177,7 +177,7 @@ public class AuditsController {
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
-				audit.setInitAuditDate(new Date()); // 添加审计时间
+				audit.setInitAuditDate(new Date()); // 添加初审计时间
 				// 添加审计人
 				Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 				User user = userService.getByPrimaryKey(userId);

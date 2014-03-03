@@ -44,7 +44,6 @@ public class CompayController {
 	@Autowired
 	private CompanyPropertyService companyPropertyService;// 企业性质
 
-
 	/**
 	 * 转到基本档案页面 省直 中直 机关事业
 	 * 
@@ -261,6 +260,7 @@ public class CompayController {
 
 	/**
 	 * 验证 档案编码
+	 * 
 	 * @param param
 	 * @param request
 	 * @return
@@ -276,5 +276,5 @@ public class CompayController {
 			return true;
 		}
 	}
-	
+
 }
