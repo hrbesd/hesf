@@ -7,15 +7,15 @@
 		<result column="pay_create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="pay_update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="pay_user_id" property="userId" jdbcType="INTEGER" />
-		<result column="pay_is_active" property="isActive" jdbcType="BIT" />
+		<result column="pay_is_active" jdbcType="BIT" property="isActive" />
 		<result column="pay_payment_date" property="paymentDate" jdbcType="TIMESTAMP" />
 		<result column="pay_payment_money" property="paymentMoney" jdbcType="DECIMAL" />
 		<result column="pay_payment_bill" property="paymentBill" jdbcType="VARCHAR" />
 		<result column="pay_bill_print_date" property="billPrintDate" jdbcType="TIMESTAMP" />
 		<result column="pay_bill_exchange_date" property="billExchangeDate" jdbcType="TIMESTAMP" />
-		<result column="pay_bill_return " property="billReturn" jdbcType="BIT" />
-		<result column="pay_bill_finance " property="billFinance" jdbcType="BIT" />
-		<result column="pay_bill_obsolete " property="billObsolete" jdbcType="VARCHAR" />
+		<result column="pay_bill_return" jdbcType="BIT" property="billReturn" />
+		<result column="pay_bill_finance" jdbcType="BIT" property="billFinance" />
+		<result column="pay_bill_obsolete" property="billObsolete" jdbcType="VARCHAR" />
 		<result column="pay_remark" property="remark" jdbcType="VARCHAR" />
 		<result column="pay_version" property="version" jdbcType="INTEGER" />
 		<association property="paymentPerson" javaType="com.esd.hesf.model.User" resultMap="ResultUser" />

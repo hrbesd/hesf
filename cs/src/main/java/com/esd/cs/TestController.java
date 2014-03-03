@@ -684,9 +684,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test54() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Payment p = pService.getByPrimaryKey(39);
-		p.setRemark("slkdjf");
-		boolean entity = pService.update(p);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
