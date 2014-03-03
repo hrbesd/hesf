@@ -26,4 +26,9 @@ public class Constants {
 	public static final Integer PROCESS_STATIC_BFJK = 4;// 已缴款
 	public static final Integer PROCESS_STATIC_YJK = 5;// 部分缴款
 	public static final Integer PROCESS_STATIC_OK = 6;// 达标
+	
+	public static final Integer PAYMENT_EXCEPTIONAL_NORMAL = 1;
+	
+	
+	
 }

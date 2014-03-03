@@ -311,7 +311,7 @@
 				<td colspan="4" width="200">职残疾职工情况</td>
 
 
-				<td width="98">未缴金额:</td>
+				<td width="98">补缴金额:</td>
 				<td width="91">未审年数:</td>
 				<td>补审年度:</td>
 			</tr>

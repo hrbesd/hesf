@@ -1,6 +1,5 @@
 package com.esd.cs.common;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +22,7 @@ import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.PaymentExceptional;
+import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
@@ -33,6 +33,7 @@ import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.PaymentExceptionalService;
+import com.esd.hesf.service.PaymentTypeService;
 import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
@@ -69,6 +70,8 @@ public class ParameterController {
 	private UserService userService;// 用户
 	@Autowired
 	private PaymentExceptionalService paymentExceptionalService;
+	@Autowired
+	private PaymentTypeService paymentTypeService;
 
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyType;
@@ -362,7 +365,27 @@ public class ParameterController {
 				list = new ArrayList<PaymentExceptional>();
 			}
 			return list;
-			
+
+		} catch (Exception e) {
+			logger.error("error:{}", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 返回 缴款方式
+	 */
+	@RequestMapping(value = "/getPaymentType", method = RequestMethod.POST)
+	@ResponseBody
+	public List<PaymentType> getPaymentType(HttpServletRequest request) {
+		List<PaymentType> list = null;
+		try {
+			list = paymentTypeService.getAll();
+			if (list == null) {
+				list = new ArrayList<PaymentType>();
+			}
+			return list;
+
 		} catch (Exception e) {
 			logger.error("error:{}", e);
 		}

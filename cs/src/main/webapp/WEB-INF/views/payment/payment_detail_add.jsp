@@ -11,6 +11,7 @@
 				$.messager.alert('消息', '保存成功', 'info', function() {
 					payment.add.back();
 					$("#payment_datagrid").datagrid('reload');
+					payment.getBalance();
 				});
 			} else {
 				$.messager.alert('消息', '保存失败', 'info');
@@ -31,8 +32,10 @@
 		<table border="0">
 			<tbody>
 				<tr>
-					<td>缴款人:</td>
+					<td>收款人:</td>
 					<td><input type="text" readonly="readonly" class="readonly" value="${entity.paymentPerson.userRealName}" data-options="required:true" /></td>
+					<td>缴款方式:</td>
+					<td><input name="paymentType.id" class="easyui-combobox" data-options="value:1,height:30,editable:false,valueField:'id',textField:'text',url:'parameter/getPaymentType'" /></td>
 				</tr>
 				<tr>
 					<td>出票时间:</td>
@@ -41,7 +44,7 @@
 					<td>票据号:</td>
 					<td><input name="paymentBill" type="text" class="easyui-validatebox" data-options="required:true" value="${entity.paymentBill }" /></td>
 					<td>缴费金额:</td>
-					<td><input name="paymentMoney" type="text" maxlength="16" class="easyui-numberbox" data-options="required:true,min:0,precision:2" value="${entity.paymentMoney }" /></td>
+					<td><input name="paymentMoney" type="text" maxlength="16" class="easyui-numberbox" data-options="required:true,precision:2" value="${entity.paymentMoney }" /></td>
 				</tr>
 			</tbody>
 		</table>
