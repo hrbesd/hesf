@@ -63,10 +63,6 @@ public class ReportController {
 	@Value("${createTabCompany}")
 	String createTabCompany;
 
-	// 年审单位性质汇总表
-	@Value("${natureTitle}")
-	String natureTitle;
-
 	/**
 	 * 转到 企业性质报表
 	 * 

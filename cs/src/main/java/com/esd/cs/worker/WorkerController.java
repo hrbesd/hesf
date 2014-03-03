@@ -178,14 +178,15 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
 		try {
+			logger.debug("add:{}",worker);
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
 			boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("addWorkerError:{}", e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -373,7 +374,8 @@ public class WorkerController {
 						if (!isRealType) {
 							// 提示错误信息:文件格式不正确
 							logger.error("loadUpWorkerFileTypeError");
-							return null;
+						//	result.put("fileError","文件版本不支持");
+							//return result;
 						}
 					}
 					// 创建文件唯一名称
@@ -615,6 +617,8 @@ public class WorkerController {
 			
 			
 			// 清理部分
+			list.clear();
+			list=null;
 			workerErrorList.clear();// 清楚错误列表数据
 			workerErrorList = null;
 			// 返回成功页面
@@ -666,7 +670,10 @@ public class WorkerController {
 			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "trpe:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
 			return list;
 		} else {
+			
+			
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
+			logger.error("workerIdCard:{},obg:{}"+workerIdCard,w);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
 				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");

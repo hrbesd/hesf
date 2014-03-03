@@ -126,6 +126,8 @@ public class WorkerUtil {
 		list = new ArrayList<Worker>();
 
 		if (obj instanceof HSSFWorkbook) {// 97-2003
+			logger.debug("excelFileType:{}","97-2003");
+			
 			HExcelSheetParser parser = new HExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
 			for (int i = 1; i < datas.size(); i++) {
@@ -133,6 +135,7 @@ public class WorkerUtil {
 				list.add(parseRow(row));
 			}
 		} else if (obj instanceof XSSFWorkbook) { // 2003-2010
+			logger.debug("excelFileType:{}"," 2003-2010");
 			XExcelSheetParser parser = new XExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
 			for (int i = 1; i < datas.size(); i++) {
@@ -169,9 +172,7 @@ public class WorkerUtil {
 		// 残疾等级
 		int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
 		w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
-		// 地区
-		String ared = "30" + handicapCode.substring(0, 6);
-		w.setArea(new Area(ared));
+	
 
 		logger.debug("assemblyWorker:{}", w);
 		return w;

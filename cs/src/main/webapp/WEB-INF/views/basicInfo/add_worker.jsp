@@ -156,6 +156,8 @@
 		$("#workerIdCard").val(workerIdCard);
 		// 出生年份--供后台查询使用
 		$("#workerBirthYear").val(year);
+		
+	
 		return true;
 	};
 	/**
@@ -218,9 +220,10 @@
 	<!--  男退休年龄 -->
 	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
 	<input type="hidden" value="${nowYear}" id="nowYear"/>
+	
 <form id="addWorkerForm" action="security/worker/add" method="post">
 	<input type="hidden" value="${companyId}" name="companyId"  />
-
+	
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
