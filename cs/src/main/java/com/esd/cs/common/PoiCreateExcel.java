@@ -73,8 +73,7 @@ public class PoiCreateExcel {
 			FileOutputStream os = new FileOutputStream(FilePath);
 			wb.write(os);
 			os.close();
-			workerList.clear();
-			workerList = null;
+		
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -169,8 +168,8 @@ public class PoiCreateExcel {
 			os.close();
 			companyList.clear();
 			companyList = null;
-			os=null;
-			wb=null;
+			os = null;
+			wb = null;
 			System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -355,11 +354,11 @@ public class PoiCreateExcel {
 		// 报表依据类型名
 		sheet.addMergedRegion(new CellRangeAddress(companyList.size() + 3, companyList.size() + 3, 0, 13));// 四个参数分别是：起始行，起始列，结束行，结束列
 		cell = row.createCell(0);
-		//设置样式
+		// 设置样式
 		HSSFCellStyle styleFoot = wb.createCellStyle();
 		styleFoot.setAlignment(CellStyle.ALIGN_RIGHT);// 水平居右
 		cell.setCellStyle(styleFoot);
-		//设置文本
+		// 设置文本
 		cell.setCellValue(model.getCreatePeople());
 
 		try {
@@ -368,9 +367,9 @@ public class PoiCreateExcel {
 			os.flush();
 			os.close();
 			companyList.clear();
-			companyList=null;
-			os=null;
-			wb=null;
+			companyList = null;
+			os = null;
+			wb = null;
 			System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -151,14 +151,13 @@ textarea {
 }
 
 /*搜索参数表格*/
-
 .paramsTab{
 	width: 1000px;
 	
 }
 .paramsTab .tipsText {
     text-align: right;
-    width: 110px;
+    width: 70px;
 }
 .paramsTab .long {
 	width: 200px;

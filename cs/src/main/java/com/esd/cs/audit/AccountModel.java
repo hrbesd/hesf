@@ -2,12 +2,12 @@ package com.esd.cs.audit;
 
 public class AccountModel {
 
-	String year="";// 未审年度
-	String money="";// 应缴金额
-	String days="";// 逾期天数
-	String prop="";// 滞纳金比例
-	String penalty="";// 滞纳金
-	String total="";// 年度总金额
+	String year = "";// 未审年度
+	String money = "";// 应缴金额
+	String days = "";// 逾期天数
+	String prop = "";// 滞纳金比例
+	String penalty = "";// 滞纳金
+	String total = "";// 年度总金额
 
 	public String getYear() {
 		return year;

@@ -122,12 +122,16 @@
 			$('#queryWorker_grid').datagrid('load', queryWorker.getParams());
 		}
 	};
-
+	//组件解析完成
+	$.parser.onComplete=function(){
+		//创建数据表格并初始化数据
+		queryWorker.loadData(queryWorker.getParams());
+	};
+	
 	$(function() {
 		//初始化组件
 		queryWorker.init();
-		//创建数据表格并初始化数据
-		queryWorker.loadData(queryWorker.getParams());
+		
 	});
 </script>
 

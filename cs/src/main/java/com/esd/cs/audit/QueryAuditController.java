@@ -35,6 +35,7 @@ public class QueryAuditController {
 
 	/**
 	 * 转到查询审核数据列表页
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -45,8 +46,6 @@ public class QueryAuditController {
 		logger.debug("goToPage:{}", "queryAudit");
 		return new ModelAndView("query/audit");
 	}
-
-	
 
 	/**
 	 * 获取审核列表数据
@@ -79,9 +78,9 @@ public class QueryAuditController {
 			paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
 			paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
 			paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
-			String overYear=params.getOverYear();// 超过几年未初审的公司
-			if(StringUtils.isBlank(overYear)){
-				overYear="0";
+			String overYear = params.getOverYear();// 超过几年未初审的公司
+			if (StringUtils.isBlank(overYear)) {
+				overYear = "0";
 			}
 			paramsMap.put("overYear", overYear);// 超过几年未初审的公司
 			paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
@@ -89,7 +88,7 @@ public class QueryAuditController {
 																				// false不免缴
 			paramsMap.put("page", params.getPage()); // 分页--起始页
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
-		
+
 			logger.debug("queryAuditParamsEx:{}", params);
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(paramsMap);
 			Integer total = query.getNumber().intValue();// 数据总条数

@@ -54,13 +54,18 @@
 		});
 	};
 	
+	//组件解析完成
+	$.parser.onComplete=function(){
+		//加载数据
+		economytype.load();
+	};
 	$(function() {
 		$('#companyYear').combobox({
 			onSelect:function(param){
 				economytype.load();
 			}
 	});
-	economytype.load();
+	
 		
 
 	});

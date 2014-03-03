@@ -46,14 +46,10 @@ public class CalculateModel {
 
 	@Override
 	public String toString() {
-		return "CalculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen="
-				+ yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE="
-				+ jianJiaoJinE + ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + ", zhiNaJin=" + zhiNaJin + ", zhiNaJinTianShu=" + zhiNaJinTianShu + ", shiJiaoZongJinE="
-				+ shiJiaoZongJinE + ", year=" + year + ", companyCode=" + companyCode + ", s_zaiZhiYuanGongZongShu=" + s_zaiZhiYuanGongZongShu + ", s_yingAnPaiCanJiRen=" + s_yingAnPaiCanJiRen
-				+ ", s_yiAnPaiCanJiRen=" + s_yiAnPaiCanJiRen + ", s_yiLuRuCanJiRen=" + s_yiLuRuCanJiRen + ", s_yuDingCanJiRen=" + s_yuDingCanJiRen + ", s_shangNianDuWeiJiaoBaoZhangJin="
-				+ s_shangNianDuWeiJiaoBaoZhangJin + ", s_yingJiaoJinE=" + s_yingJiaoJinE + ", s_jianJiaoJinE=" + s_jianJiaoJinE + ", s_buJiaoJinE=" + s_buJiaoJinE + ", s_shiJiaoJinE=" + s_shiJiaoJinE
-				+ ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE=" + s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", weiShenMingXi=" + weiShenMingXi + ", qianJiaoMingXi="
-				+ qianJiaoMingXi + "]";
+		return "CalculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen=" + yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE=" + jianJiaoJinE
+				+ ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + ", zhiNaJin=" + zhiNaJin + ", zhiNaJinTianShu=" + zhiNaJinTianShu + ", shiJiaoZongJinE=" + shiJiaoZongJinE + ", year=" + year + ", companyCode=" + companyCode + ", s_zaiZhiYuanGongZongShu=" + s_zaiZhiYuanGongZongShu + ", s_yingAnPaiCanJiRen=" + s_yingAnPaiCanJiRen + ", s_yiAnPaiCanJiRen=" + s_yiAnPaiCanJiRen
+				+ ", s_yiLuRuCanJiRen=" + s_yiLuRuCanJiRen + ", s_yuDingCanJiRen=" + s_yuDingCanJiRen + ", s_shangNianDuWeiJiaoBaoZhangJin=" + s_shangNianDuWeiJiaoBaoZhangJin + ", s_yingJiaoJinE=" + s_yingJiaoJinE + ", s_jianJiaoJinE=" + s_jianJiaoJinE + ", s_buJiaoJinE=" + s_buJiaoJinE + ", s_shiJiaoJinE=" + s_shiJiaoJinE + ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE="
+				+ s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", weiShenMingXi=" + weiShenMingXi + ", qianJiaoMingXi=" + qianJiaoMingXi + "]";
 	}
 
 	public Integer getZaiZhiYuanGongZongShu() {
@@ -130,7 +126,7 @@ public class CalculateModel {
 	}
 
 	public void setJianJiaoJinE(BigDecimal jianJiaoJinE) {
-		if(jianJiaoJinE==null){
+		if (jianJiaoJinE == null) {
 			jianJiaoJinE = new BigDecimal(0.00);
 		}
 		this.jianJiaoJinE = jianJiaoJinE;

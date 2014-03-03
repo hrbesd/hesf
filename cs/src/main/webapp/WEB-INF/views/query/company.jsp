@@ -7,8 +7,6 @@
 
 <script type="text/javascript">
 	var queryCompany = {};
-	
-
 	/**
 		初始化数据
 	 **/
@@ -157,12 +155,15 @@
 		});
 	}
 	};
-	
+	//组件解析完成
+	$.parser.onComplete=function(){
+		//加载单位档案数据
+		queryCompany.loadData(queryCompany.getParams());
+	};
 	
 	$(function() {
 		queryCompany.init();
-		//加载单位档案数据
-		queryCompany.loadData(queryCompany.getParams());
+		
 
 	});
 </script>

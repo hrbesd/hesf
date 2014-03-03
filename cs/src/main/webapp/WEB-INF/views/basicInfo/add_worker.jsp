@@ -27,7 +27,7 @@
 		$("#addWorkerForm #currentJob").val("");//部门
 		$("#addWorkerForm #remark").val("");//备注
 		$("#addWorkerForm #verification").val("");//验证
-		$("#workerGender").combobox("setValue", "0");//性别
+		$("#workerGender").combobox("setValue", "1");//性别
 		$("#workerHandicapType").combobox("setValue", "1");//残疾类别
 		$("#workerHandicapLevel").combobox("setValue", "1");//残疾等级
 	};
@@ -232,7 +232,7 @@
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['_length[20]']"
+					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
 						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
 				</div></td>
