@@ -178,7 +178,7 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
 		try {
-			logger.debug("add:{}",worker);
+			logger.debug("add:{}", worker);
 			String companyId = request.getParameter("companyId");
 			Company c = companyService.getByPrimaryKey(companyId);
 			boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
@@ -200,7 +200,6 @@ public class WorkerController {
 		}
 		// 设置年份
 		worker.setWorkerBirthYear(CalendarUtil.getLastYear());
-		logger.error("-------------:{}",worker);
 		boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -348,7 +347,8 @@ public class WorkerController {
 		factory.setRepository(new File(upLoadPath));
 		ServletFileUpload fileUpload = new ServletFileUpload(factory);
 		Map<String, String> result = new HashMap<String, String>();
-		if (LoadUpFileMaxSize != null && !"".equals(LoadUpFileMaxSize.trim())) {
+
+		if (LoadUpFileMaxSize != null && !StringUtils.equals(LoadUpFileMaxSize.trim(), "")) {
 			// 文件最大上限
 			fileUpload.setSizeMax(Integer.valueOf(LoadUpFileMaxSize) * 1024 * 1024);
 		}
@@ -362,21 +362,8 @@ public class WorkerController {
 					String fileName = item.getName();
 					// 检查文件后缀格式
 					String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-					if (fileType != null && !"".equals(fileType.trim())) {
-						boolean isRealType = false;
-						String[] arrType = fileType.split(",");
-						for (String str : arrType) {
-							if (fileEnd.equals(str.toLowerCase())) {
-								isRealType = true;
-								break;
-							}
-						}
-						if (!isRealType) {
-							// 提示错误信息:文件格式不正确
-							logger.error("loadUpWorkerFileTypeError");
-						//	result.put("fileError","文件版本不支持");
-							//return result;
-						}
+					if (fileType == null && "".equals(fileType.trim())) {	
+						result.put("fileError", "文件后缀名错误！");
 					}
 					// 创建文件唯一名称
 					String uuid = UUID.randomUUID().toString();
@@ -390,7 +377,7 @@ public class WorkerController {
 					// 返回文件路径
 					result.put("filePath", file.getPath());
 
-					// form中参数信息
+				// form中参数信息
 				} else {
 					// item.getFieldName():获取参数key。item.getString()：获取参数value
 					result.put("companyId", item.getString());
@@ -434,6 +421,7 @@ public class WorkerController {
 
 		// 上传文件
 		Map<String, String> paramMap = importfile(upLoadPath, request, response);
+		
 		// 上传文件返回的参数信息
 		String filePath = paramMap.get("filePath");// 文件路径
 		String companyId = paramMap.get("companyId");// 文件路径
@@ -459,7 +447,7 @@ public class WorkerController {
 					// 校验部分
 					String workerHandicapCode = worker.getWorkerHandicapCode();
 					// 员工姓名
-					String workerName = worker.getWorkerName().replace(" ", "");//去除所有空格
+					String workerName = worker.getWorkerName().replace(" ", "");// 去除所有空格
 					Worker w = new Worker();
 					w.setWorkerName(worker.getWorkerName());
 					w.setWorkerHandicapCode(workerHandicapCode);
@@ -482,14 +470,14 @@ public class WorkerController {
 					} else {
 						workerHandicapCode.replace(" ", "");// 去掉所有空格
 						// 3.校验残疾证号长度
-						if (workerHandicapCode.length() < MIN_HANDICAPCODE && workerHandicapCode.length()>MAX_HANDICAPCODE) {
+						if (workerHandicapCode.length() < MIN_HANDICAPCODE || workerHandicapCode.length() > MAX_HANDICAPCODE) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
 							workerErrorList.add(w);
 							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 							continue;
 						}
-						//4.校验残疾证号是否含有中文
+						// 4.校验残疾证号是否含有中文
 						if (CommonUtil.chineseValid(workerHandicapCode)) {
 							// 存储错误信息
 							w.setRemark(ILLEGALSTR);
@@ -498,8 +486,7 @@ public class WorkerController {
 							continue;
 						}
 					}
-					
-					
+
 					// 5.校验残疾类型
 					int handicapType = Integer.valueOf(workerHandicapCode.substring(18, 19));
 					if (handicapType > 7 || handicapType == 0) {
@@ -596,7 +583,7 @@ public class WorkerController {
 			int errorLength = 0;
 			int succesLength = 0;
 			// 检测是否有导入失败数据
-			if(workerErrorList!=null){
+			if (workerErrorList != null) {
 				errorLength = workerErrorList.size();
 			}
 			if (list != null) {
@@ -607,18 +594,14 @@ public class WorkerController {
 			request.setAttribute("errorLength", errorLength);// 失败条数
 			request.setAttribute("succesLength", succesLength);// 成功条数
 			request.setAttribute("errorInfo", "null");// 没有错误信息
-			
+
 			logger.error("totalLength:{}", totalLength);// 总条数
 			logger.error("errorLength:{}", errorLength);// 失败条数
 			logger.error("succesLength:{}", succesLength);// 成功条数
-			
-			
-			
-			
-			
+
 			// 清理部分
 			list.clear();
-			list=null;
+			list = null;
 			workerErrorList.clear();// 清楚错误列表数据
 			workerErrorList = null;
 			// 返回成功页面
@@ -670,10 +653,9 @@ public class WorkerController {
 			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "trpe:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
 			return list;
 		} else {
-			
-			
+
 			Worker w = workerService.getByWorkerIdCard(workerIdCard);
-			logger.error("workerIdCard:{},obg:{}"+workerIdCard,w);
+			logger.error("workerIdCard:{},obg:{}" + workerIdCard, w);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
 				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");

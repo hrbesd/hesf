@@ -50,7 +50,7 @@
 			valueField : 'id',
 			textField : 'userName'
 		});
-		//性别
+		//是否免交
 		$('#isExempt').combobox({
 			data : [ {
 				label : '',
@@ -64,6 +64,7 @@
 			} ],
 			valueField : 'label',
 			textField : 'value',
+			editable:false,
 			height:30,
 			width : 140,
 			panelHeight:80

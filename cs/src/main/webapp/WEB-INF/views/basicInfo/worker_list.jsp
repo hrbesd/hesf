@@ -13,13 +13,15 @@
 			url : 'parameter/workerHandicapTypeService',
 			valueField : 'id',
 			textField : 'handicapType',
+			editable:false
 		});
 
 		//残疾等级
 		$('#workerFind_workerHandicapLevel').combobox({
 			url : 'parameter/workerHandicapLevelService',
 			valueField : 'id',
-			textField : 'handicapLevel'
+			textField : 'handicapLevel',
+			editable:false
 		});
 		//性别
 		$('#workerFind_workerGender').combobox({
@@ -35,6 +37,7 @@
 			} ],
 			valueField : 'label',
 			textField : 'value',
+			editable:false,
 			height:30,
 			width : 76,
 			panelHeight:80

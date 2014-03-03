@@ -26,7 +26,7 @@
 		 var pos = str.lastIndexOf(".");
 		 var lastname = str.substring(pos,str.length);
 		 
- 		if(lastname.toLowerCase()==".xls" || lastname.toLowerCase()==".docx"  || lastname.toLowerCase()==".xlsm" || lastname.toLowerCase()==".xlsx" ){
+ 		if(lastname.toLowerCase()==".xls" || lastname.toLowerCase()==".xlsx" ){
 			return true;
 			
 		}
@@ -50,7 +50,7 @@
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>
 		<p><span  class="red_notice">*</span>
-		文件格式必须是：.xsl格式。</p>
+		文件格式必须是：.xsl ,.xlsx格式。</p>
 		
 	 </div>
 </form>

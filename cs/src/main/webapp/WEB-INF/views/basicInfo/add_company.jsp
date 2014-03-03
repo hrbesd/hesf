@@ -67,7 +67,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">电话号码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" data-options="required:true"  /></td>
 			<td class="tdRight">手机号码:</td>
 			<td><input name="companyMobile" class="easyui-validatebox" type="text" data-options="validType:['_number']" /></td>
 		</tr>

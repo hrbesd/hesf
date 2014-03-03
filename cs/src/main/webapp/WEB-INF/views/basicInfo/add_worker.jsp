@@ -35,14 +35,14 @@
 		校验信息  并  保存残疾职工信息
 	 **/
 	addWorker.validate = function() {
-		//校验表单
-		if (esd.common.validatebox("#addWorkerForm") == false) {
-			return;
-		}
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		//根据残疾证号初始化其他组件
 		if(addWorker.initElement(workerHandicapCode)==false){
+			return;
+		}
+		//校验表单
+		if (esd.common.validatebox("#addWorkerForm") == false) {
 			return;
 		}
 		//校验残疾证号是否存在，是否在其他公司
@@ -109,14 +109,14 @@
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
-		if (workerType == 0) {
+		if (workerType == 0 || workerType>7) {
 			alert("残疾证号内残疾类型错误。");
 			return false;
 		}
 		//获取残疾等级
 		var workerLeven = workerHandicapCode.substring(19, 20);
 		$("#workerHandicapLevel").combobox("setValue", workerLeven);
-		if (workerLeven == 0) {
+		if (workerLeven == 0 || workerLeven>4 ) {
 			alert("残疾证号内残疾等级错误。");
 			return false;
 		}
@@ -177,6 +177,8 @@
 		if(addWorker.initElement(workerHandicapCode)==false){
 			return;
 		}
+	
+	
 
 		//远程校验 校验残疾证号是否存在，是否在其他公司
 		$.ajax({
@@ -251,7 +253,7 @@
 			</select>
 			</td>
 			<td class="">出生日期:</td>
-			<td><input class="easyui-validatebox" type="text" class="easyui-datebox" data-options="required:true,disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
+			<td><input  readonly ="readonly"  type="text" data-options="disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
 				id="workerBirthYear" name="workerBirthYear" /></td>
 
 
@@ -271,7 +273,7 @@
 		</tr>
 		<tr>
 			<td class="">联系电话:</td>
-			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" />
+			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="validType:['_number']" />
 			</td>
 			<td class="">现任岗位:</td>
 			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />

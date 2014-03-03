@@ -39,7 +39,7 @@
 		<tr>
 			<td class="tdRight">单位类别:</td>
 			<td class="bj_belu"><input value="${company.companyType.id}" id="companyType" name="companyType.id" class="easyui-combobox iniTcompanyType"
-				data-options="height:30,ditable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
+				data-options="height:30,editable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
 			</td>
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
