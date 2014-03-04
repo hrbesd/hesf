@@ -76,7 +76,7 @@
 			closed : false,
 			cache : false,
 			content : s,
-			modal : true
+			modal : true,
 		});
 	};
 	initAudit.initVerify = function() {

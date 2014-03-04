@@ -2,10 +2,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<table id="initAuditList_datagrid"></table>
+<div id="account"></div>
 <script type="text/javascript">
 	initAuditList = {};
-
 	initAuditList.getParams = function() {
 		var params = {};
 		params.year = $('#year').combobox('getValue');
@@ -105,10 +105,9 @@
 	</table>
 </div>
 <!-- 数据表格 -->
-<table id="initAuditList_datagrid"></table>
-<div id="account"></div>
+
 <script type="text/javascript">
-	$(document).ready(function() {
+	$.parser.onComplete = function(){
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',
@@ -120,8 +119,7 @@
 			textField : 'auditProcessStatus',
 			value:'${process}' 
 		});
-	
 		initAuditList.loadData();
-	});
+	};
 </script>
 

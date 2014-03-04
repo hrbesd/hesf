@@ -149,7 +149,7 @@
 		esd.common.openWindow("#add", "查看缴款", 750, 350, "${contextPath}/security/payment/view/" + id);
 	};
 
-	payment.loadData = function() {
+	payment.loadPaymentData = function() {
 		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.id}", [ {
 			text : '新建缴款记录',
 			iconCls : 'icon-add',
@@ -246,7 +246,7 @@
 	};
 	$(function() {
 		payment.getBalance();
-		payment.loadData();
+		payment.loadPaymentData();
 	});
 </script>
 <div id="payment">

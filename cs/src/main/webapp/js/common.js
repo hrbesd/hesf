@@ -118,7 +118,8 @@ esd.common.datagrid = function(grid, url, toolbar, columns) {
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
 		checkOnSelect : false,// 单击不选择复选框
-
+		selectOnCheck : false,
+		singleSelect : true,
 		frozenColumns : [ [ {// 复选框
 			field : 'id',
 			checkbox : true
@@ -146,6 +147,8 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
 		checkOnSelect : false,// 单击不选择复选框
+		selectOnCheck : false,
+		singleSelect : true,
 		queryParams : params,
 		frozenColumns : [ [ {// 复选框
 			field : 'id',
@@ -172,6 +175,8 @@ esd.common.datagridEx = function(grid, url, toolbar, columns) {
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
 		checkOnSelect : false,// 单击不选择复选框
+		selectOnCheck : false,
+		singleSelect : true,
 		columns : columns,
 		toolbar : toolbar
 	});

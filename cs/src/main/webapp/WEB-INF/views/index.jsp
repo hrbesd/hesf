@@ -42,17 +42,18 @@
 		<!-- 主菜单 -->
 		<ul id="main_menu" data-options="url:'/cs/security/menus'"></ul>
 	</div>
+	<!-- 右侧主体部分 -->
+	<div id="super" data-options="region:'center',border:true,title:'残疾人就业保障金'">
+		<div id="main" class="easyui-tabs" data-options="tools:'#tab-tools',fit:true,border:false"></div>
+	</div>
 	<!-- 底部 -->
 	<div data-options="region:'south',border:true" style="height:40px;text-align:center; padding:10px;">
 		<div style="font-size: 12px;">© 2013 hrbesd.com, Inc. 哈尔滨亿时代数码科技开发有限公司, All rights reserved. 黑ICP备10202513号</div>
 	</div>
-	<!-- 右侧主体部分 -->
-	<div data-options="region:'center',border:true,title:'残疾人就业保障金'">
-		<div id="main" class="easyui-tabs" data-options="tools:'#tab-tools',fit:true,border:false"></div>
-	</div>
+
 	<div id="tab-tools" data-options="fit:true,border:true">
-		<span >登录用户&nbsp;:&nbsp;${sessionScope.userName}</span> 
-		<a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" onclick="view.tabs.removeAllTab()">退出</a>
+		<span>登录用户&nbsp;:&nbsp;${sessionScope.userName}</span> <a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'"
+			onclick="view.tabs.removeAllTab()">退出</a>
 		<!--  
 		<label id="show"></label>
 		-->

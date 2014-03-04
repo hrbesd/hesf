@@ -44,7 +44,6 @@
 
 <script type="text/javascript">
 	initAudit = {};
-
 	initAudit.show = function(w, q) {
 		if (w.length > 0) {
 			var c = "<h3>未审年度计算明细</h3>";
@@ -67,13 +66,13 @@
 			s = s + "</table>" + m3;
 		}
 		$('#account').dialog({
-			title : '未缴款明细',
+			title : '补缴款明细',
 			width : 500,
 			height : 500,
 			closed : false,
 			cache : false,
 			content : s,
-			modal : true
+			modal : true,
 		});
 	};
 
@@ -97,7 +96,6 @@
 		}
 		return true;
 	};
-
 	initAudit.jisuan = function() {
 		var param = {};
 		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
@@ -196,7 +194,6 @@
 	initAudit.back = function() {
 		esd.common.defaultOpenWindowClose();
 	};
-
 	initAudit.shiJiaoZongJinE = 0;
 	$(function() {
 		$(".readonly").each(function() {

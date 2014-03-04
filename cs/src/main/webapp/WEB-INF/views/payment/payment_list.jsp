@@ -91,8 +91,9 @@
 </div>
 <!-- 数据表格 -->
 <table id="paymentDetail_datagrid"></table>
+<table id="account"></table>
 <script type="text/javascript">
-	$(document).ready(function() {
+	$.parser.onComplete = function(){
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',
@@ -105,6 +106,6 @@
 			value : '${process}'
 		});
 		payment.loadData();
-	});
+	};
 </script>
 
