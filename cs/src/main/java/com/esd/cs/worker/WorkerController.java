@@ -269,6 +269,7 @@ public class WorkerController {
 
 	private boolean editWorkerUp(Worker worker, String companyId) {
 		boolean workerUpDataStatus = false, companyUpdataStatus = false;
+		logger.debug("upWorker:{},companyId:{}",worker,companyId);
 		try {
 			// 根据残疾证号获取版本号
 			Worker w = workerService.getByWorkerHandicapCode(worker.getWorkerHandicapCode());
@@ -532,7 +533,7 @@ public class WorkerController {
 						workerUp.setWorkerName(worker.getWorkerName());
 						workerUp.setWorkerHandicapCode(workerHandicapCode);
 						logger.debug("impoerWorkerUp:{},companyId:{}", workerUp, companyId);
-						if (editWorkerUp(workerUp, companyId)) {
+						if (editWorkerUp(WorkerUtil.assembly(workerUp), companyId)) {
 							logger.debug("impoerWorkerUp:{}", "success");
 						} else {
 							w.setRemark("员工存在数据库内，更新时未成功");

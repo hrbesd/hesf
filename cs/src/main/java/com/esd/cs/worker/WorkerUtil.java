@@ -173,7 +173,15 @@ public class WorkerUtil {
 		int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
 		w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
 	
-
+		//出生日期
+		String year = handicapCode.substring(6, 10);//年份
+		String month = handicapCode.substring(10, 12);//月
+		String day = handicapCode.substring(12, 14);//日
+		
+		w.setWorkerBirth(year+"-"+month+"-"+day);
+		// 出生年份--供后台查询使用
+		w.setWorkerBirthYear(year);
+		
 		logger.debug("assemblyWorker:{}", w);
 		return w;
 

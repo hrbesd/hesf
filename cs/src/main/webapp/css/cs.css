@@ -122,7 +122,7 @@ textarea {
 
 /*查询按钮*/
 .findBut{
-	margin: 10px 0 3px 10px;
+ margin: 4px 0 8px 26px;
 }
 
 .red_notice {
@@ -157,9 +157,14 @@ textarea {
 }
 .paramsTab .tipsText {
     text-align: right;
-    width: 70px;
+    width: 110px;
 }
 .paramsTab .long {
 	width: 200px;
 	
 }
+
+.tipsTextShort{
+text-align: right;
+    width: 60px;
+    }
