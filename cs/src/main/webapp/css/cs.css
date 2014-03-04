@@ -133,10 +133,17 @@ textarea {
 	width: 90px;
 	text-align: right;
 }
+
+/*提示文本*/
+.tipTextEx{
+	width: 90px;
+	text-align: center;
+}
 .workerListTip{
-	
-	width: 850px;
+	background-color: #E0ECFF;
 	margin-left: 10px;
+	width: 863px;
+	margin: 0 auto;
 }
 .reportTitle{
 	width: 90px;
@@ -168,3 +175,10 @@ textarea {
 text-align: right;
     width: 60px;
     }
+.workerListTip td{
+	height:30px;
+	font-size:12px;
+	 border: 1px solid #95B8E7;
+	  padding-left: 2px;
+}
+    

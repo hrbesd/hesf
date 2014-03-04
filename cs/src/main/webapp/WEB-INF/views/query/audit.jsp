@@ -143,8 +143,8 @@
 	查看企业信息框
 	**/
 	queryAudit.openViewCompany = function(id) {
+	esd.common.defaultOpenWindowEx("查看年审信息", 920, 600, "${contextPath}/security/audits/view/" + id );
 
-		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
 		
 	};
 	

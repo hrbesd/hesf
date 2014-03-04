@@ -312,13 +312,8 @@
 <input type="hidden" id="year" value="${year}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
-	<div style="text-align: right; margin: 7px;">
-		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" iconCls="icon-ok">添加</a> <a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" iconCls="icon-ok">删除</a>
-		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
-
-
-	</div>
-	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
+	
+	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0" style="margin: 10px auto 0;">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
 			<td id="company_name"></td>

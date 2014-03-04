@@ -44,13 +44,14 @@
 	
 </script>
 <form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
-	<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px" /> 
+	<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px"  accept="application/vnd.ms-excel"/>
+	 
 	<input type="hidden" name="companyId" id="currentCompanyId"  />
 	 <input type="submit" value="上传" />
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>
 		<p><span  class="red_notice">*</span>
-		文件格式必须是：.xsl ,.xlsx格式。</p>
+		文件格式必须是：.xls ,.xlsx格式。</p>
 		
 	 </div>
 </form>
