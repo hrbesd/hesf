@@ -565,7 +565,7 @@ public class AuditsController {
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
 		
-		return new ModelAndView("audit/audit_detail", "entity", audit);
+		return new ModelAndView("audit/audit_view", "entity", audit);
 	}
 
 }

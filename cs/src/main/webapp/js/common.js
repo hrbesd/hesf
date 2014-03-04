@@ -136,7 +136,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
-		pageList : [ 20, 40, 60, 1000],
+		pageList : [ 20, 40, 60, 80],
 		border : false,// 不显示边框
 		pagination : true, // 是否显示分页栏
 		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
