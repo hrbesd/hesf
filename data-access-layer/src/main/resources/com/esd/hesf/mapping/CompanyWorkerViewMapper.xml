@@ -173,7 +173,7 @@
 				c_id = #{companyId} 
 			</if>
 			<if test="year != null and year != ''">
-				cyw_year = #{year,jdbcType=VARCHAR}
+				and cyw_year = #{year,jdbcType=VARCHAR}
 			</if>
 			<if test="companyCode != null and companyCode != ''">
 				and c_company_code = #{companyCode,jdbcType=VARCHAR}

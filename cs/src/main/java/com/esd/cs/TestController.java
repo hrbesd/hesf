@@ -224,14 +224,14 @@ public class TestController {
 	public Map<String, Object> test13() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		// paramMap.put("year", "2014");
-		// paramMap.put("companyCode", "1390293306601");
+		 paramMap.put("year", "2013");
+		 paramMap.put("companyId", 1490);
 		// paramMap.put("workerHandicapCode", "66"); // 残疾证号
 		// paramMap.put("careerCard", "67"); // 就业证号
 		// paramMap.put("workerName", "67"); // 姓名
 		// paramMap.put("workerGender", "1"); // 性别
-		paramMap.put("minAge", 26); // 最小年龄
-		paramMap.put("maxAge", 30); // 最大年龄
+//		paramMap.put("minAge", 26); // 最小年龄
+//		paramMap.put("maxAge", 30); // 最大年龄
 		// paramMap.put("workerHandicapType", 1); // 残疾类别 对应的id
 		// paramMap.put("workerHandicapLevel", 1); // 残疾等级 对应的id
 		// paramMap.put("page", 1); // 分页--起始页 ******************************
@@ -398,8 +398,8 @@ public class TestController {
 		// paramMap.put("workerName", "67"); // 姓名
 		// paramMap.put("workerGender", "1"); // 性别
 		// paramMap.put("currentJob", "67"); // 当前岗位
-//		paramMap.put("minAge", 10); // 最大年龄
-//		paramMap.put("maxAge", 25); // 最小年龄
+		// paramMap.put("minAge", 10); // 最大年龄
+		// paramMap.put("maxAge", 25); // 最小年龄
 		// paramMap.put("workerHandicapType", 1); // 残疾类别 对应的id
 		// paramMap.put("workerHandicapLevel", 1); // 残疾等级 对应的id
 		// paramMap.put("page", 1); // 分页--起始页 ******************************
@@ -497,7 +497,7 @@ public class TestController {
 	public Map<String, Object> test36() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		BigDecimal entity = pService.getAlreadyPayByAudit(47634);
-//		BigDecimal entity = pService.getAlreadyPayByCompany(11);
+		// BigDecimal entity = pService.getAlreadyPayByCompany(11);
 		map.put("entity", entity);
 		return map;
 	}
@@ -549,7 +549,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test41() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("2013", 1366, 1,20);
+		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("2013", 1366, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -689,4 +689,13 @@ public class TestController {
 		return map;
 	}
 
+	// 员工-年度-企业 表 根据公司id, 年 查询人数
+	@RequestMapping("/55")
+	@ResponseBody
+	public Map<String, Object> test55() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer entity = cService.getWorkerHandicapTotal(1794, "2013");
+		map.put("entity", entity);
+		return map;
+	}
 }
