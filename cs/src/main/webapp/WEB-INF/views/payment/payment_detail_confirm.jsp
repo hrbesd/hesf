@@ -12,8 +12,9 @@
 					if (data == true) {
 						$.messager.alert('消息', '确认缴款成功', 'info', function() {
 							payment.add.back();
-							$("#payment_datagrid").datagrid('reload');
 							payment.getBalance();
+							$("#payment_datagrid").datagrid('reload');
+							$("#paymentList_datagrid").datagrid('reload');
 						});
 					} else {
 						$.messager.alert('消息', '确认缴款失败', 'info');

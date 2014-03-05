@@ -6,7 +6,6 @@
 <script type="text/javascript">
 	payment = {};
 	payment.getParams = function() {
-		alert('fff');
 		var params = {};
 		params.year = $('#year').combobox('getValue');
 		params.process = $('#process').combobox('getValue');
@@ -104,7 +103,6 @@
 			textField : 'auditProcessStatus',
 			value : '${process}'
 		});
-		alert("aa");
 		payment.loadData();
 	};
 </script>

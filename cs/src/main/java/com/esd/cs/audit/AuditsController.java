@@ -144,14 +144,16 @@ public class AuditsController {
 		}
 		// 处理未审年度
 		Integer companyId = getAudit.getCompany().getId();
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
 		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
-		for (String year : unAudits) {
-			Audit a = auditService.getByPrimaryKey(year,companyId);
-			a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
-			a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
-			a.setSupplementYear(getAudit.getYear());// 设置补缴年度
-			auditService.update(a);
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
+		if (unAudits != null) {
+			for (String year : unAudits) {
+				Audit a = auditService.getByPrimaryKey(year, companyId);
+				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
+				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
+				auditService.update(a);
+			}
 		}
 		// 处理未审年度结束
 
@@ -328,7 +330,6 @@ public class AuditsController {
 	 */
 	private BigDecimal getUnAudits(Boolean mian, String year, Integer companyId, BigDecimal total, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
@@ -337,26 +338,29 @@ public class AuditsController {
 		BigDecimal putScale = auditParameter.getPutScale();
 		// 本地区上年度职工年人均工资数*(职工总人数*残疾人安排比例)未审按一个也没有安排计算所以不减 应安排
 		BigDecimal payableAmount = averageSalary.multiply(total.multiply(putScale));
-		for (String unYear : unAudits) {
-			AuditParameter oldAuditParameter = auditParameterService.getByYear(unYear);
-			Date payCloseDate = oldAuditParameter.getPayCloseDate();
-			int days = CalendarUtil.getDaySub(payCloseDate, new Date());
-			// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
-			BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-			if (mian) {
-				penalty = new BigDecimal("0.00");
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
+		if (unAudits != null) {
+			for (String unYear : unAudits) {
+				AuditParameter oldAuditParameter = auditParameterService.getByYear(unYear);
+				Date payCloseDate = oldAuditParameter.getPayCloseDate();
+				int days = CalendarUtil.getDaySub(payCloseDate, new Date());
+				// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
+				BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
+				if (mian) {
+					penalty = new BigDecimal("0.00");
+				}
+				BigDecimal unYearTotal = payableAmount.add(penalty);
+				logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
+				AccountModel am = new AccountModel();
+				am.setYear(unYear);
+				am.setDays(String.valueOf(days));
+				am.setMoney(df.format(payableAmount));
+				am.setPenalty(df.format(penalty));
+				am.setProp(df4.format(oldAuditParameter.getAuditDelayRate()));
+				am.setTotal(df.format(unYearTotal));
+				sb.add(am);
+				amount = amount.add(unYearTotal);
 			}
-			BigDecimal unYearTotal = payableAmount.add(penalty);
-			logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
-			AccountModel am = new AccountModel();
-			am.setYear(unYear);
-			am.setDays(String.valueOf(days));
-			am.setMoney(df.format(payableAmount));
-			am.setPenalty(df.format(penalty));
-			am.setProp(df4.format(oldAuditParameter.getAuditDelayRate()));
-			am.setTotal(df.format(unYearTotal));
-			sb.add(am);
-			amount = amount.add(unYearTotal);
 		}
 		if (amount.compareTo(new BigDecimal(0.00)) != 0) {
 			AccountModel am = new AccountModel();
@@ -387,8 +391,10 @@ public class AuditsController {
 			// 查询支付记录
 			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
 			BigDecimal paymentTotal = new BigDecimal(0);
-			for (Payment p : payments.getRecords()) {
-				paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
+			if (payments != null) {
+				for (Payment p : payments.getRecords()) {
+					paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
+				}
 			}
 			BigDecimal qj = a.getPayAmount().subtract(paymentTotal);
 			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
@@ -470,6 +476,7 @@ public class AuditsController {
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());// 流程状态
+				map.put("auditProcessStatusId", it.getAuditProcessStatus().getId());// 流程状态
 				list.add(map);
 			}
 			entity.put("total", total);
@@ -532,8 +539,9 @@ public class AuditsController {
 
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}
+
 	/**
-	 * 查看审计页面 
+	 * 查看审计页面
 	 */
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
 	public ModelAndView view(@PathVariable(value = "id") int id, HttpServletRequest request, HttpSession session) {
@@ -550,7 +558,7 @@ public class AuditsController {
 			companyEconomyTypes = companyEconomyTypeService.getAll();
 		}
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
-		
+
 		Integer companyId = audit.getCompany().getId();
 		// 年龄超标
 		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
@@ -563,7 +571,7 @@ public class AuditsController {
 		}
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
-		
+
 		return new ModelAndView("audit/audit_view", "entity", audit);
 	}
 

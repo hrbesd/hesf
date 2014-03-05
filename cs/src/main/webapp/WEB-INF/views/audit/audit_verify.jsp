@@ -113,7 +113,7 @@
 		param.mianJiao = $('#mianJiao').combobox('getValue');
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('#year').val();
-		param.companyCode = $('input[name="company.companyCode"]').val();
+		param.companyId = $('#companyId').val();
 		//校验
 		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
 			return;
@@ -223,7 +223,7 @@
 					name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
 				</td>
 				<td>年审年度:</td>
-				<td><input name="company.year" class="readonly" type="text" value="${entity.company.year}" />
+				<td><input class="readonly" type="text" value="${entity.year}" />
 				</td>
 				<td>未审年度:</td>
 				<td><input type="text" readonly="readonly" <c:if test="${unAudityearNum==0}">value="无" class="readonly"</c:if> <c:if test="${unAudityearNum>0}">value="${unAudityear}" class="error"</c:if> />
@@ -313,7 +313,7 @@
 				<td>补审年度:</td>
 			</tr>
 			<tr>
-				<td rowspan="3" style="vertical-align: bottom"><input name="company.companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.company.companyEmpTotal }"
+				<td rowspan="3" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.companyEmpTotal }"
 					class="readonly" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" />
 				</td>
 				<td width="97">应按排数:</td>
@@ -329,13 +329,13 @@
 			</tr>
 			<tr>
 
-				<td><input type="text" class="text_short readonly" value="${entity.company.companyShouldTotal}" name="company.companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" />
+				<td><input type="text" class="text_short readonly" value="${entity.companyShouldTotal}" name="companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" />
 				</td>
-				<td><input type="text" class="text_short readonly" value="${entity.company.companyAlreadyTotal}" name="company.companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" />
+				<td><input type="text" class="text_short readonly" value="${entity.companyAlreadyTotal}" name="companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" />
 				</td>
-				<td><input id="yiLuRuCanJiRen" name="company.companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.company.companyHandicapTotal }" />
+				<td><input id="yiLuRuCanJiRen" name="companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.companyHandicapTotal }" />
 				</td>
-				<td><input id="yuDingCanJiRen" name="company.companyPredictTotal" value="${entity.company.companyPredictTotal }" title="预定残疾职工人数" class="readonly" onblur="initAudit.jisuan()" />
+				<td><input id="yuDingCanJiRen" name="companyPredictTotal" value="${entity.companyPredictTotal }" title="预定残疾职工人数" class="readonly" onblur="initAudit.jisuan()" />
 				</td>
 				<td><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="上年度未缴保障金额度" class="readonly" value="${entity.remainAmount}" />
 				</td>
@@ -392,7 +392,7 @@
 				<td colspan="3"><textarea class="readonly" name="initAuditComment" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea>
 				</td>
 				<td width="100">复审意见:</td>
-				<td colspan="3"><textarea class="warn" rows="3" cols="45" style="height: 60px;">${entity.verifyAuditComment}</textarea>
+				<td colspan="3"><textarea name="verifyAuditComment" class="warn" rows="3" cols="45" style="height: 60px;">${entity.verifyAuditComment}</textarea>
 				</td>
 			</tr>
 			<tr>
