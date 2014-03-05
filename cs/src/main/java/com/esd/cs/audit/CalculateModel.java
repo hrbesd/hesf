@@ -23,7 +23,7 @@ public class CalculateModel {
 	private Integer zhiNaJinTianShu;
 	private BigDecimal shiJiaoZongJinE;
 	private String year;
-	private String companyCode;
+	private Integer companyId;
 	private Boolean mianZhiNaJin;
 	private Boolean mianJiao;
 
@@ -43,14 +43,6 @@ public class CalculateModel {
 	private String s_zhiNaJinTianShu;
 	private List<AccountModel> weiShenMingXi;
 	private List<AccountModel> qianJiaoMingXi;
-
-	@Override
-	public String toString() {
-		return "CalculateModel [zaiZhiYuanGongZongShu=" + zaiZhiYuanGongZongShu + ", yingAnPaiCanJiRen=" + yingAnPaiCanJiRen + ", yiAnPaiCanJiRen=" + yiAnPaiCanJiRen + ", yiLuRuCanJiRen=" + yiLuRuCanJiRen + ", yuDingCanJiRen=" + yuDingCanJiRen + ", shangNianDuWeiJiaoBaoZhangJin=" + shangNianDuWeiJiaoBaoZhangJin + ", yingJiaoJinE=" + yingJiaoJinE + ", jianJiaoJinE=" + jianJiaoJinE
-				+ ", buJiaoJinE=" + buJiaoJinE + ", shiJiaoJinE=" + shiJiaoJinE + ", zhiNaJin=" + zhiNaJin + ", zhiNaJinTianShu=" + zhiNaJinTianShu + ", shiJiaoZongJinE=" + shiJiaoZongJinE + ", year=" + year + ", companyCode=" + companyCode + ", s_zaiZhiYuanGongZongShu=" + s_zaiZhiYuanGongZongShu + ", s_yingAnPaiCanJiRen=" + s_yingAnPaiCanJiRen + ", s_yiAnPaiCanJiRen=" + s_yiAnPaiCanJiRen
-				+ ", s_yiLuRuCanJiRen=" + s_yiLuRuCanJiRen + ", s_yuDingCanJiRen=" + s_yuDingCanJiRen + ", s_shangNianDuWeiJiaoBaoZhangJin=" + s_shangNianDuWeiJiaoBaoZhangJin + ", s_yingJiaoJinE=" + s_yingJiaoJinE + ", s_jianJiaoJinE=" + s_jianJiaoJinE + ", s_buJiaoJinE=" + s_buJiaoJinE + ", s_shiJiaoJinE=" + s_shiJiaoJinE + ", s_zhiNaJin=" + s_zhiNaJin + ", s_shiJiaoZongJinE="
-				+ s_shiJiaoZongJinE + ", s_zhiNaJinTianShu=" + s_zhiNaJinTianShu + ", weiShenMingXi=" + weiShenMingXi + ", qianJiaoMingXi=" + qianJiaoMingXi + "]";
-	}
 
 	public Integer getZaiZhiYuanGongZongShu() {
 		return zaiZhiYuanGongZongShu;
@@ -240,12 +232,12 @@ public class CalculateModel {
 		this.s_shiJiaoJinE = s_shiJiaoJinE;
 	}
 
-	public String getCompanyCode() {
-		return companyCode;
+	public Integer getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompanyCode(String companyCode) {
-		this.companyCode = companyCode;
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
 
 	public BigDecimal getZhiNaJin() {

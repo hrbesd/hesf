@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +28,14 @@ import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.PaymentType;
 import com.esd.hesf.model.User;
+import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
@@ -61,6 +62,8 @@ public class PaymentController {
 	private CompanyService companyService;
 	@Autowired
 	private PaymentExceptionalService paymentExceptionalService;
+	@Autowired
+	private AuditParameterService auditParameterService;
 
 	private DecimalFormat df = new DecimalFormat("0.00");
 
@@ -76,10 +79,31 @@ public class PaymentController {
 	}
 
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable(value = "id") Integer id) {
+	public ModelAndView editGet(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
-		return new ModelAndView("payment/payment_detail", "entity", audit);
+		AuditParameter auditParameter = auditParameterService.getByYear(audit.getYear());
+		Map<String, String> entity = new HashMap<String, String>();
+		entity.put("id", String.valueOf(audit.getId()));
+		entity.put("companyId", String.valueOf(audit.getCompany().getId()));
+		entity.put("companyCode", audit.getCompany().getCompanyCode());
+		entity.put("companyTaxCode", audit.getCompany().getCompanyTaxCode());
+		entity.put("companyName", audit.getCompany().getCompanyTaxCode());
+		entity.put("year", audit.getYear());
+		entity.put("amountPayable", df.format(audit.getAmountPayable()));
+		entity.put("remainAmount", df.format(audit.getRemainAmount()));
+		entity.put("reductionAmount", df.format(audit.getReductionAmount()));
+		entity.put("actualAmount", df.format(audit.getActualAmount()));
+		entity.put("delayPayAmount", df.format(audit.getDelayPayAmount()));
+		entity.put("remark", audit.getRemark());
+		entity.put("companyEmpTotal", String.valueOf(audit.getCompanyEmpTotal()));
+		entity.put("averageSalary", df.format(auditParameter.getAverageSalary()));
+		entity.put("companyShouldTotal", String.valueOf(audit.getCompanyShouldTotal()));
+		entity.put("companyAlreadyTotal", String.valueOf(audit.getCompanyAlreadyTotal()));
+		entity.put("companyHandicapTotal", String.valueOf(audit.getCompanyHandicapTotal()));
+		entity.put("companyPredictTotal", String.valueOf(audit.getCompanyPredictTotal()));
+
+		return new ModelAndView("payment/payment_detail", "entity", entity);
 	}
 
 	@RequestMapping(value = "/pay/{id}", method = RequestMethod.GET)
@@ -120,9 +144,7 @@ public class PaymentController {
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
 		Boolean b = paymentService.update(queryPayment);
-		
-		
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecord(queryPayment.getAudit().getId(), 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecordByAudit(queryPayment.getAudit().getId(), 1, Integer.MAX_VALUE);
 		BigDecimal payments = new BigDecimal(0.00);
 		for (Payment pt : query.getRecords()) {
 			if (pt.getBillReturn() == Boolean.TRUE) {
@@ -142,7 +164,6 @@ public class PaymentController {
 			}
 		}
 
-		
 		return b;
 	}
 
@@ -174,7 +195,7 @@ public class PaymentController {
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		payment.setPaymentPerson(user);
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecord(id, 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
 		BigDecimal readyPayments = new BigDecimal(0.00);
 		for (Payment pt : query.getRecords()) {
 			if (pt.getBillReturn() == Boolean.FALSE) {
@@ -244,7 +265,7 @@ public class PaymentController {
 			pay.setPaymentType(paymentType);
 			pay.setRemark(payment.getRemark());
 			pay.setVersion(1);
-			Company company = companyService.getByPrimaryKey(payment.getCompanyId());
+			Company company = companyService.getByPrimaryKey(payment.getId());
 			pay.setPaymentCompany(company);
 			if (paymentService.save(pay) == true) {
 				Audit audit = auditService.getByPrimaryKey(payment.getAuditId());
@@ -262,7 +283,7 @@ public class PaymentController {
 	public Map<String, Object> getPayment(@PathVariable(value = "id") Integer id, HttpSession session) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> query = null;
-		query = paymentService.getPaymentRecord(id, 1, Integer.MAX_VALUE);
+		query = paymentService.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
 		entity.put("total", query.getNumber());
 		List<Map<String, Object>> list = new ArrayList<>();
 		for (Iterator<Payment> iterator = query.getRecords().iterator(); iterator.hasNext();) {
@@ -290,7 +311,7 @@ public class PaymentController {
 	@ResponseBody
 	public Map<String, Object> getBalance(@PathVariable(value = "auditId") Integer auditId) {
 		Map<String, Object> entity = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecord(auditId, 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecordByAudit(auditId, 1, Integer.MAX_VALUE);
 		BigDecimal payments = new BigDecimal(0.00);
 		BigDecimal readyPayments = new BigDecimal(0.00);
 		for (Payment payment : query.getRecords()) {

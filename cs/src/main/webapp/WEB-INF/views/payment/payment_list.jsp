@@ -5,8 +5,8 @@
 
 <script type="text/javascript">
 	payment = {};
-
 	payment.getParams = function() {
+		alert('fff');
 		var params = {};
 		params.year = $('#year').combobox('getValue');
 		params.process = $('#process').combobox('getValue');
@@ -21,7 +21,7 @@
 	 */
 	payment.loadData = function() {
 		var params = payment.getParams();
-		esd.common.datagrid("#paymentDetail_datagrid", "${contextPath}/security/audits/list", "#payment_boolbarTest", [ [ {
+		esd.common.datagrid("#paymentList_datagrid", "${contextPath}/security/audits/list", "#paymentList_boolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 150
@@ -66,7 +66,7 @@
 	};
 </script>
 <!-- 自定义菜单 -->
-<div id="payment_boolbarTest" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
+<div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
 	<table width="100%" border="0">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
@@ -90,8 +90,7 @@
 	</table>
 </div>
 <!-- 数据表格 -->
-<table id="paymentDetail_datagrid"></table>
-<table id="account"></table>
+<table id="paymentList_datagrid"></table>
 <script type="text/javascript">
 	$.parser.onComplete = function(){
 		$('#year').combobox({
@@ -105,6 +104,7 @@
 			textField : 'auditProcessStatus',
 			value : '${process}'
 		});
+		alert("aa");
 		payment.loadData();
 	};
 </script>

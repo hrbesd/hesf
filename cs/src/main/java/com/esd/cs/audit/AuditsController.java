@@ -143,11 +143,11 @@ public class AuditsController {
 			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
 		}
 		// 处理未审年度
-		String companyCode = getAudit.getCompany().getCompanyCode();
-		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, getAudit.getYear());
+		Integer companyId = getAudit.getCompany().getId();
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
 		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
-		for (String s : unAudits) {
-			Audit a = auditService.getByPrimaryKey(s, companyCode);
+		for (String year : unAudits) {
+			Audit a = auditService.getByPrimaryKey(year,companyId);
 			a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
 			a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
 			a.setSupplementYear(getAudit.getYear());// 设置补缴年度
@@ -202,7 +202,6 @@ public class AuditsController {
 		Company company = audit.getCompany();
 		if (company != null) {
 			logger.debug(company.toString());
-			logger.debug("getCompanyAlreadyTotal:{}", company.getCompanyAlreadyTotal());
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
@@ -225,7 +224,7 @@ public class AuditsController {
 	@ResponseBody
 	public CalculateModel calculateModel(CalculateModel calculateModel) {
 		logger.debug(calculateModel.toString());
-		String companyCode = calculateModel.getCompanyCode();
+		Integer companyId = calculateModel.getCompanyId();
 		String year = calculateModel.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 
@@ -249,7 +248,7 @@ public class AuditsController {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
 			Integer lvl = workerCalculator.getLvl();
-			Integer num = auditParameterService.getSpecialCount(companyCode, year, type, lvl);
+			Integer num = auditParameterService.getSpecialCount(companyId, year, type, lvl);
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
 		}
@@ -277,10 +276,10 @@ public class AuditsController {
 		// 获得未缴金额 --------需要计算
 		Boolean mian = calculateModel.getMianZhiNaJin();
 		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
-		BigDecimal qianJiao = getUnpaid(mian, companyCode, qianJiaoMingXi);// 获得欠缴
+		BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);// 获得欠缴
 		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
 		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
-		BigDecimal weiShen = getUnAudits(mian, year, companyCode, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
+		BigDecimal weiShen = getUnAudits(mian, year, companyId, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
 		calculateModel.setWeiShenMingXi(weiShenMingXi);
 		logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
 		// 未缴金额 =欠缴+未审
@@ -327,9 +326,9 @@ public class AuditsController {
 	 * @param total
 	 * @return
 	 */
-	private BigDecimal getUnAudits(Boolean mian, String year, String companyCode, BigDecimal total, List<AccountModel> sb) {
+	private BigDecimal getUnAudits(Boolean mian, String year, Integer companyId, BigDecimal total, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, year);
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
@@ -373,20 +372,20 @@ public class AuditsController {
 	 * @param companyCode
 	 * @return
 	 */
-	private BigDecimal getUnpaid(Boolean mian, String companyCode, List<AccountModel> sb) {
+	private BigDecimal getUnpaid(Boolean mian, Integer companyId, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
 		// 未缴金额
 		Audit param = new Audit();
 		Company company = new Company();
-		company.setCompanyCode(companyCode);
+		company.setId(companyId);
 		param.setCompany(company);
 		AuditProcessStatus aps = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
 		param.setAuditProcessStatus(aps);
 		PaginationRecordsAndNumber<Audit, Number> query = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
 		for (Audit a : query.getRecords()) {
-			String year = a.getCompany().getYear();
+			String year = a.getYear();
 			// 查询支付记录
-			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecord(year, companyCode, 1, Integer.MAX_VALUE);
+			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
 			BigDecimal paymentTotal = new BigDecimal(0);
 			for (Payment p : payments.getRecords()) {
 				paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
@@ -513,12 +512,12 @@ public class AuditsController {
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
 		request.setAttribute("process", process);
 
-		String companyCode = audit.getCompany().getCompanyCode();
+		Integer companyId = audit.getCompany().getId();
 		// 年龄超标
-		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
 		request.setAttribute("ageEx", workers.getNumber());
 		// 未审年度
-		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, year);
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
 		StringBuilder sb = new StringBuilder();
 		for (String s : unAudits) {
 			sb.append(s).append(",");
@@ -552,12 +551,12 @@ public class AuditsController {
 		}
 		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
 		
-		String companyCode = audit.getCompany().getCompanyCode();
+		Integer companyId = audit.getCompany().getId();
 		// 年龄超标
-		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyCode, 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
 		request.setAttribute("ageEx", workers.getNumber());
 		// 未审年度
-		String[] unAudits = companyService.getUnauditYearByCompanycode(companyCode, year);
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
 		StringBuilder sb = new StringBuilder();
 		for (String s : unAudits) {
 			sb.append(s).append(",");

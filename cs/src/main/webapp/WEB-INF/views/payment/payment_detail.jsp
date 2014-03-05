@@ -125,7 +125,7 @@
 			if (data == true) {
 				$.messager.alert('消息', '审批成功', 'info', function() {
 					$("#auditPanel").window("close");
-					$("#initAuditList_datagrid").datagrid('reload');
+					$("#payment_datagrid").datagrid('reload');
 				});
 			} else {
 				$.messager.alert('消息', '审批失败', 'info');
@@ -244,27 +244,27 @@
 			}
 		} ] ]);
 	};
-	$(function() {
+	$.parser.onComplete = function(){
 		payment.getBalance();
 		payment.loadPaymentData();
-	});
+	};
 </script>
 <div id="payment">
-	<input name="paymentCompany.id" type="hidden" value="${entity.company.id}" /> <input id="auditId" name="audit.id" type="hidden" value="${entity.id}" /> <input name="version" type="hidden" value="1" />
+	<input id="auditId" type="hidden" value="${entity.id}" />
 	<!-- 年审企业表格  第一部分 -->
 	<table cellspacing="0" cellpadding="0" border="0" title="企业年审信息" class="company-examined">
 		<tbody>
 			<tr>
 				<td class="td_short">档案号码:</td>
-				<td class="bj_belu readonly" style="width: 200px;" colspan="3">${entity.company.companyCode}</td>
+				<td class="bj_belu readonly" style="width: 200px;" colspan="3">${entity.companyCode}</td>
 				<td class="td_short">税务代码:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.company.companyTaxCode}</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.companyTaxCode}</td>
 			</tr>
 			<tr>
 				<td class="td_short">单位名称:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.company.companyName}</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.companyName}</td>
 				<td class="td_short">年审年度:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.company.year}</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.year}</td>
 			</tr>
 			<tr>
 				<td class="td_short">应缴金额:</td>
@@ -292,8 +292,10 @@
 				<td class="td_short" rowspan="3">备注:</td>
 				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>
 				</td>
-				<td class="td_short" colspan="3">公司职工总人数:</td>
-				<td class="td_short readonly">${entity.company.companyEmpTotal }</td>
+				<td class="td_short" >职工总人数:</td>
+				<td class="td_short readonly">${entity.companyEmpTotal }</td>
+				<td class="td_short" >年人均工资:</td>
+				<td class="td_short readonly">${entity.companyEmpTotal }</td>
 			</tr>
 			<tr>
 				<td class="td_short">应按排数:</td>
@@ -302,10 +304,10 @@
 				<td class="td_short">预定人数:</td>
 			</tr>
 			<tr>
-				<td class="td_short readonly">${entity.company.companyShouldTotal}</td>
-				<td class="td_short readonly">${entity.company.companyAlreadyTotal}</td>
-				<td class="td_short readonly">${entity.company.companyHandicapTotal }</td>
-				<td class="td_short readonly">${entity.company.companyPredictTotal }</td>
+				<td class="td_short readonly">${entity.companyShouldTotal}</td>
+				<td class="td_short readonly">${entity.companyAlreadyTotal}</td>
+				<td class="td_short readonly">${entity.companyHandicapTotal }</td>
+				<td class="td_short readonly">${entity.companyPredictTotal }</td>
 			</tr>
 		</tbody>
 	</table>
