@@ -1,7 +1,5 @@
 package com.esd.hesf.dao;
 
-import java.util.List;
-
 import com.esd.hesf.model.PaymentExceptional;
 
 /**

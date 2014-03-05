@@ -17,7 +17,7 @@ public class Audit extends PrimaryKey_Int {
 	private Company company; // 关联公司
 	private Area area; // 地区
 	private AuditProcessStatus auditProcessStatus; // 审核状态
-	
+
 	/**
 	 * 新添加的5个字段
 	 */
@@ -26,8 +26,7 @@ public class Audit extends PrimaryKey_Int {
 	private Integer companyPredictTotal; // 预计残疾人数
 	private BigDecimal companyShouldTotal; // 应安排残疾人数
 	private Integer companyAlreadyTotal; // 已安排残疾人数
-	
-	
+
 	private BigDecimal amountPayable; // 应缴金额
 	private BigDecimal reductionAmount;// 减缴金额
 	private BigDecimal actualAmount;// 实际应缴金额
@@ -57,6 +56,7 @@ public class Audit extends PrimaryKey_Int {
 	private Integer unauditYears; // 未审年数
 	private String supplementYear; // 补审年份
 	private Integer delayDays; // 缴纳滞纳金天数
+	private Integer refuseTimes; // 复审拒绝次数 --初始化值为0, 每次+1
 
 	public Audit() {
 	}
@@ -365,6 +365,12 @@ public class Audit extends PrimaryKey_Int {
 		this.delayDays = delayDays;
 	}
 
+	public Integer getRefuseTimes() {
+		return refuseTimes;
+	}
 
-	
+	public void setRefuseTimes(Integer refuseTimes) {
+		this.refuseTimes = refuseTimes;
+	}
+
 }

@@ -22,6 +22,7 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return
 	 */
 	public boolean save(Company company,String year);
+	
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);
 
