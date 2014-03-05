@@ -47,7 +47,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -67,7 +67,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public Menu getByPrimaryKey(int id) {
+	public Menu getByPrimaryKey(Integer id) {
 		Menu t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();

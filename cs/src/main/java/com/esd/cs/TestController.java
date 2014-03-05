@@ -138,7 +138,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test4() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = cService.getYears();
+		String[] entity = auditService.getYears();
 		map.put("entity", entity);
 		return map;
 	}
@@ -148,7 +148,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test5() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Area> entity = aService.getSubArea("");
+		List<Area> entity = aService.getSubArea("10230000");
 		map.put("entity", entity);
 		return map;
 	}
@@ -178,7 +178,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test10() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getCompanyByOrganizationCode("22222221");
+		Company entity = cService.getCompanyByOrganizationCode("123");
 		map.put("entity", entity);
 		return map;
 	}
@@ -213,7 +213,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test12() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Worker entity = wService.getByPrimaryKey(1);
+		Worker entity = wService.getByPrimaryKey(18496);
 		map.put("entity", entity);
 		return map;
 	}
@@ -280,7 +280,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test17() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Worker entity = wService.getByPrimaryKey(1);
+		Worker entity = wService.getByPrimaryKey(26884);
 		entity.setWorkerAddress("红旗大街");
 		boolean bl = wService.update(entity);
 		map.put("entity", bl);
@@ -302,7 +302,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test19() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = cService.deleteWorkerFromCompany("2014", "21", 20);
+		boolean entity = cService.deleteWorkerFromCompany("2013", 1366, 26884);
 		map.put("entity", entity);
 		return map;
 	}
@@ -322,7 +322,7 @@ public class TestController {
 	public ModelAndView test21() {
 		ModelAndView mav = new ModelAndView("/test");
 		// Map<String, Object> map = new HashMap<String, Object>();
-		AuditParameter entity = apService.getByPrimaryKey(7);
+		AuditParameter entity = apService.getByPrimaryKey(24);
 		mav.addObject("entity", entity);
 		// map.put("entity", entity);
 		return mav;
@@ -398,8 +398,8 @@ public class TestController {
 		// paramMap.put("workerName", "67"); // 姓名
 		// paramMap.put("workerGender", "1"); // 性别
 		// paramMap.put("currentJob", "67"); // 当前岗位
-		paramMap.put("minAge", 10); // 最大年龄
-		paramMap.put("maxAge", 25); // 最小年龄
+//		paramMap.put("minAge", 10); // 最大年龄
+//		paramMap.put("maxAge", 25); // 最小年龄
 		// paramMap.put("workerHandicapType", 1); // 残疾类别 对应的id
 		// paramMap.put("workerHandicapLevel", 1); // 残疾等级 对应的id
 		// paramMap.put("page", 1); // 分页--起始页 ******************************
@@ -415,9 +415,8 @@ public class TestController {
 	@RequestMapping("/28")
 	@ResponseBody
 	public Map<String, Object> test28() {
-		System.out.println(123123);
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getByYearAndCode("2014", "1390373258624");
+		Company entity = cService.getByCompanyCode("101007");
 		map.put("entity", entity);
 		return map;
 	}
@@ -427,8 +426,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test29() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Audit entity = auditService.getByPrimaryKey(136);
-		map.put("entity", entity.getCompany().getCompanyHandicapTotal() + "   " + entity.getYear());
+		Audit entity = auditService.getByPrimaryKey(47634);
+		map.put("entity", entity.getCompanyHandicapTotal() + "   " + entity.getYear());
 		return map;
 	}
 
@@ -447,7 +446,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test31() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Audit entity = auditService.getByPrimaryKey(41340);
+		Audit entity = auditService.getByPrimaryKey(47634);
 		map.put("entity", entity);
 		return map;
 	}
@@ -457,7 +456,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test32() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = wService.retrieveCompanyByWorker("2014", "222301198805294637");
+		Company entity = wService.retrieveCompanyByWorker("2013", "232623196309160029");
 		map.put("entity", entity);
 		return map;
 	}
@@ -467,7 +466,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test33() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Worker entity = wService.getByWorkerHandicapCode("23230119850529463720");
+		Worker entity = wService.getByWorkerHandicapCode("23262319630916002943");
 		map.put("entity", entity + " ********* ");
 		return map;
 	}
@@ -477,7 +476,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test34() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<WorkerCalculator> entity = apService.getSpecialSetting("2014");
+		List<WorkerCalculator> entity = apService.getSpecialSetting("2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -487,7 +486,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test35() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		int entity = apService.getSpecialCount("1390293306601", "2014", 1, 1);
+		int entity = apService.getSpecialCount(1366, "2013", 1, 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -497,7 +496,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test36() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity = pService.getAlreadyPay("2014", "1390293713906");
+		BigDecimal entity = pService.getAlreadyPayByAudit(47634);
+//		BigDecimal entity = pService.getAlreadyPayByCompany(11);
 		map.put("entity", entity);
 		return map;
 	}
@@ -507,7 +507,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test37() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = wService.changeCompany(16, "1390293306601", "2014", "城管");
+		boolean entity = wService.changeCompany(18496, 1370, "2013", "城管");
 		map.put("entity", entity);
 		return map;
 	}
@@ -517,7 +517,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test38() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecord(41343, 1, 999);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecordByAudit(47634, 1, 999);
 		map.put("entity", entity);
 		return map;
 	}
@@ -549,7 +549,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test41() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("768f0b92051a002df8b347c9f4dd70cd", 1, 20);
+		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("2013", 1366, 1,20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -559,7 +559,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test42() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = cService.getUnauditYearByCompanycode("101001", "2013");
+		String[] entity = cService.getUnauditYearByCompany(1366, "2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -569,7 +569,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test43() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Audit entity = auditService.getByPrimaryKey("2013", "101001");
+		Audit entity = auditService.getByPrimaryKey("2013", 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -579,7 +579,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test44() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company c = cService.getByPrimaryKey("636e88c06f5acd0858fd782dasdd674b");
+		Company c = cService.getByPrimaryKey(1366);
 		c.setCompanyContactPerson("虎头人");
 		boolean entity = cService.update(c);
 		map.put("entity", entity);
@@ -591,7 +591,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test45() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByCompanyType("2014");
+		List<ReportViewModel> entity = rvmService.getByCompanyType("2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -601,7 +601,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test46() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2014");
+		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -611,7 +611,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test47() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByArea("2222");
+		List<ReportViewModel> entity = rvmService.getByArea("10230000");
 		map.put("entity", entity);
 		return map;
 	}
@@ -631,7 +631,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test49() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = cService.checkCompanyCode("251001");
+		Company entity = cService.getByCompanyCode("101001");
 		map.put("entity", entity);
 		return map;
 	}

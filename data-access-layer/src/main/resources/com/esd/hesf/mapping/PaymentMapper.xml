@@ -37,9 +37,8 @@
 	</resultMap>
 
 	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
-		<id column="c_year" jdbcType="CHAR" property="year" />
-		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
-		<result column="c_id" jdbcType="VARCHAR" property="id" />
+		<id column="c_id" jdbcType="INTEGER" property="id" />
+		<result column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
@@ -92,7 +91,7 @@
 		<!-- user -->
 		u.id as u_id, u.user_name as u_user_name, u.user_real_name as u_user_real_name, u.user_password as u_user_password, u.user_email as u_user_email, u.user_mobile as u_user_mobile, u.user_phone as u_user_phone, u.user_status as u_user_status, 
 		<!-- company -->
-		c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, c.company_contact_person as c_company_contact_person, c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code, c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account, c.company_remark as c_company_remark, c.create_time as c_create_time, c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
+		c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, c.company_contact_person as c_company_contact_person, c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code, c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account, c.company_remark as c_company_remark, c.create_time as c_create_time, c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
 		<!-- payment type -->
 		pt.id as pt_id, pt.text as pt_text, 
 		<!-- payment exceptional -->
@@ -371,9 +370,6 @@
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
 						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
 					</if>
-					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
-						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR}
-					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
 						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
 					</if>
@@ -432,9 +428,6 @@
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
 						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
 					</if>
-					<if test="payment.paymentCompany.year != null and payment.paymentCompany.year != ''">
-						and c.year = #{payment.paymentCompany.year, jdbcType=CHAR}
-					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
 						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
 					</if>
@@ -473,9 +466,6 @@
 				<if test="paymentCompany.id != null and paymentCompany.id != ''">
 					and pay.payment_company = #{paymentCompany.id, jdbcType=VARCHAR}
 				</if>
-				<if test="paymentCompany.year != null and paymentCompany.year != ''">
-					and c.year = #{paymentCompany.year, jdbcType=CHAR}
-				</if>
 				<if test="paymentCompany.companyCode != null and paymentCompany.companyCode != ''">
 					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR}
 				</if>
@@ -490,9 +480,9 @@
 
 	<select id="retrieveByCompanyAndYear" resultType="decimal" parameterType="map">
 		select sum(pay.payment_money)
-		from company as c, payment as pay
+		from company as c, payment as pay, audit as au 
 		<where>
-			c.id = pay.payment_company and c.year = #{year,jdbcType=CHAR}
+			c.id = pay.payment_company and pay.audit_id = au.id 
 			<if test="companyType != null and companyType > 0">
 				and c.company_type = #{companyType,jdbcType=INTEGER}
 			</if>
@@ -502,6 +492,7 @@
 			<if test="areaCode != null and areaCode != ''">
 				and c.area_code = #{areaCode,jdbcType=CHAR}
 			</if>
+			and au.year = #{year,jdbcType=CHAR}
 		</where>
 	</select>
 </mapper>

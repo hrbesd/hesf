@@ -1,16 +1,13 @@
 package com.esd.hesf.model;
 
-import java.math.BigDecimal;
-
 /**
  * 公司类
  * 
  * @author Administrator
  * 
  */
-public class Company extends PrimaryKey_String {
+public class Company extends PrimaryKey_Int {
 
-	private String year; // 年度
 	private String companyCode; // 档案号
 	private String companyManagement; // 主管部门
 	private String companyName; // 企业名称
@@ -30,40 +27,21 @@ public class Company extends PrimaryKey_String {
 	private String companyBank;// 开户银行
 	private String companyBankAccount;// 银行账户
 	private String companyRemark;// 备注
-	private Integer companyEmpTotal;// 员工总数
-	private Integer companyHandicapTotal;// 残疾员工总数 已录入数
-	private Integer companyPredictTotal; // 预计残疾人数
-	private BigDecimal companyShouldTotal; // 应安排残疾人数
-	private Integer companyAlreadyTotal; // 已安排残疾人数
-
-	@Override
-	public String toString() {
-		return "Company [year=" + year + ", companyCode=" + companyCode + ", companyName=" + companyName + ", companyLegal=" + companyLegal + ", companyContactPerson=" + companyContactPerson
-				+ ", companyOrganizationCode=" + companyOrganizationCode + ", companyTaxCode=" + companyTaxCode + ", companyAddress=" + companyAddress + ", companyZipCode=" + companyZipCode
-				+ ", companyType=" + companyType + ", companyEconomyType=" + companyEconomyType + ", companyProperty=" + companyProperty + ", area=" + area + ", companyPhone=" + companyPhone
-				+ ", companyMobile=" + companyMobile + ", companyBank=" + companyBank + ", companyBankAccount=" + companyBankAccount + ", companyRemark=" + companyRemark + ", companyEmpTotal="
-				+ companyEmpTotal + ", companyHandicapTotal=" + companyHandicapTotal + ", companyPredictTotal=" + companyPredictTotal + ", companyShouldTotal=" + companyShouldTotal
-				+ ", companyAlreadyTotal=" + companyAlreadyTotal + ", getId()=" + getId() + "]";
-	}
 
 	public Company() {
 	}
 
-	public Company(String id) {
+	public Company(Integer id) {
 		super.setId(id);
 	}
 
-	public Company(String year, String companyCode) {
-		this.year = year;
-		this.companyCode = companyCode;
-	}
-
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
+	@Override
+	public String toString() {
+		return "Company [companyCode=" + companyCode + ", companyManagement=" + companyManagement + ", companyName=" + companyName + ", companyLegal=" + companyLegal + ", companyContactPerson="
+				+ companyContactPerson + ", companyOrganizationCode=" + companyOrganizationCode + ", companyTaxCode=" + companyTaxCode + ", companyAddress=" + companyAddress + ", companyZipCode="
+				+ companyZipCode + ", companyFax=" + companyFax + ", companyType=" + companyType + ", companyEconomyType=" + companyEconomyType + ", companyProperty=" + companyProperty + ", area="
+				+ area + ", companyPhone=" + companyPhone + ", companyMobile=" + companyMobile + ", companyBank=" + companyBank + ", companyBankAccount=" + companyBankAccount + ", companyRemark="
+				+ companyRemark + "]";
 	}
 
 	public String getCompanyCode() {
@@ -216,46 +194,6 @@ public class Company extends PrimaryKey_String {
 
 	public void setCompanyRemark(String companyRemark) {
 		this.companyRemark = companyRemark;
-	}
-
-	public Integer getCompanyEmpTotal() {
-		return companyEmpTotal;
-	}
-
-	public void setCompanyEmpTotal(Integer companyEmpTotal) {
-		this.companyEmpTotal = companyEmpTotal;
-	}
-
-	public Integer getCompanyHandicapTotal() {
-		return companyHandicapTotal;
-	}
-
-	public void setCompanyHandicapTotal(Integer companyHandicapTotal) {
-		this.companyHandicapTotal = companyHandicapTotal;
-	}
-
-	public Integer getCompanyPredictTotal() {
-		return companyPredictTotal;
-	}
-
-	public void setCompanyPredictTotal(Integer companyPredictTotal) {
-		this.companyPredictTotal = companyPredictTotal;
-	}
-
-	public BigDecimal getCompanyShouldTotal() {
-		return companyShouldTotal;
-	}
-
-	public void setCompanyShouldTotal(BigDecimal companyShouldTotal) {
-		this.companyShouldTotal = companyShouldTotal;
-	}
-
-	public Integer getCompanyAlreadyTotal() {
-		return companyAlreadyTotal;
-	}
-
-	public void setCompanyAlreadyTotal(Integer companyAlreadyTotal) {
-		this.companyAlreadyTotal = companyAlreadyTotal;
 	}
 
 }

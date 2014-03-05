@@ -37,7 +37,7 @@ public class UserLogServiceImpl implements UserLogService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		// TODO Auto-generated method stub
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
@@ -59,7 +59,7 @@ public class UserLogServiceImpl implements UserLogService {
 	}
 
 	@Override
-	public UserLog getByPrimaryKey(int id) {
+	public UserLog getByPrimaryKey(Integer id) {
 		UserLog t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();

@@ -24,7 +24,7 @@ public interface BaseService<T> {
 	 * @param id
 	 * @return boolean
 	 */
-	boolean delete(int id);
+	boolean delete(Integer id);
 
 	/**
 	 * update ：根据主键更新
@@ -40,7 +40,7 @@ public interface BaseService<T> {
 	 * @param id
 	 * @return T
 	 */
-	T getByPrimaryKey(int id);
+	T getByPrimaryKey(Integer id);
 
 	/**
 	 * getPaginationRecords: 分页查询

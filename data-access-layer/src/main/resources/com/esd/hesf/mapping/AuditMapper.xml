@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.esd.hesf.dao.AuditDao">
-	
+
 	<!-- result of audit -->
 	<resultMap id="ResultAudit" type="com.esd.hesf.model.Audit">
 		<id column="au_id" jdbcType="INTEGER" property="id" />
 		<result column="au_year" jdbcType="CHAR" property="year" />
+		<result column="au_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
+		<result column="au_company_handicap_total" jdbcType="INTEGER" property="companyHandicapTotal" />
+		<result column="au_company_predict_total" jdbcType="INTEGER" property="companyPredictTotal" />
+		<result column="au_company_should_total" jdbcType="DECIMAL" property="companyShouldTotal" />
+		<result column="au_company_already_total" jdbcType="INTEGER" property="companyAlreadyTotal" />
 		<result column="au_amount_payable" jdbcType="DECIMAL" property="amountPayable" />
 		<result column="au_reduction_amount" jdbcType="DECIMAL" property="reductionAmount" />
 		<result column="au_actual_amount" jdbcType="DECIMAL" property="actualAmount" />
@@ -28,8 +33,7 @@
 		<result column="au_reduction_reason" jdbcType="VARCHAR" property="reductionReason" />
 		<result column="au_reduction_answer_user" jdbcType="VARCHAR" property="reductionAnswerUser" />
 		<result column="au_reduction_answer_date" jdbcType="VARCHAR" property="reductionAnswerDate" />
-		<result column="au_reduction_answer_option" jdbcType="VARCHAR"
-			property="reductionAnswerOption" />
+		<result column="au_reduction_answer_option" jdbcType="VARCHAR" property="reductionAnswerOption" />
 		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
 		<result column="au_unaudit_years" jdbcType="INTEGER" property="unauditYears" />
 		<result column="au_supplement_year" jdbcType="CHAR" property="supplementYear" />
@@ -39,11 +43,11 @@
 		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
 		<result column="au_is_active" jdbcType="BIT" property="isActive" />
 		<result column="au_version" jdbcType="INTEGER" property="version" />
-		<association property="company" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany"/>
+		<association property="company" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
 		<association property="area" javaType="com.esd.hesf.model.Area" resultMap="ResultArea" />
- 		<association property="auditProcessStatus" javaType="com.esd.hesf.model.AuditProcessStatus" resultMap="ResultAuditProcessStatus" />
+		<association property="auditProcessStatus" javaType="com.esd.hesf.model.AuditProcessStatus" resultMap="ResultAuditProcessStatus" />
 	</resultMap>
-	
+
 	<!-- company -->
 	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
 		<id column="c_year" jdbcType="CHAR" property="year" />
@@ -52,8 +56,7 @@
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
-		<result column="c_company_organization_code" jdbcType="VARCHAR"
-			property="companyOrganizationCode" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR" property="companyOrganizationCode" />
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
@@ -62,84 +65,83 @@
 		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
 		<result column="c_company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
 		<result column="c_company_remark" jdbcType="VARCHAR" property="companyRemark" />
-		<result column="c_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
-		<result column="c_company_handicap_total" jdbcType="INTEGER" property="companyHandicapTotal" />
-		<result column="c_company_predict_total" jdbcType="INTEGER" property="companyPredictTotal" />
-		<result column="c_company_should_total" jdbcType="DECIMAL" property="companyShouldTotal" />
-		<result column="c_company_already_total" jdbcType="INTEGER" property="companyAlreadyTotal" />
 		<result column="c_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="c_user_id" jdbcType="INTEGER" property="userId" />
 		<result column="c_is_active" jdbcType="BIT" property="isActive" />
 		<result column="c_version" jdbcType="INTEGER" property="version" />
 		<association property="companyType" javaType="com.esd.hesf.model.CompanyType" resultMap="ResultCompanyType" />
- 		<association property="companyEconomyType" javaType="com.esd.hesf.model.CompanyEconomyType" resultMap="ResultCompanyEconomyType" />
- 		<association property="companyProperty" javaType="com.esd.hesf.model.CompanyProperty" resultMap="ResultCompanyProperty" />
+		<association property="companyEconomyType" javaType="com.esd.hesf.model.CompanyEconomyType" resultMap="ResultCompanyEconomyType" />
+		<association property="companyProperty" javaType="com.esd.hesf.model.CompanyProperty" resultMap="ResultCompanyProperty" />
 	</resultMap>
-	
+
 	<!-- company type -->
 	<resultMap id="ResultCompanyType" type="com.esd.hesf.model.CompanyType">
 		<id column="t_id" jdbcType="INTEGER" property="id" />
 		<result column="t_company_type" jdbcType="VARCHAR" property="companyType" />
 	</resultMap>
-	
+
 	<!-- company economy type -->
 	<resultMap id="ResultCompanyEconomyType" type="com.esd.hesf.model.CompanyEconomyType">
 		<id column="et_id" property="id" jdbcType="INTEGER" />
-		<result column="et_company_economy_type" property="companyEconomyType"
-			jdbcType="VARCHAR" />
+		<result column="et_company_economy_type" property="companyEconomyType" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- company property -->
 	<resultMap id="ResultCompanyProperty" type="com.esd.hesf.model.CompanyProperty">
 		<id column="p_id" property="id" jdbcType="INTEGER" />
-		<result column="p_company_property" property="companyProperty"
-			jdbcType="VARCHAR" />
+		<result column="p_company_property" property="companyProperty" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- audit process -->
 	<resultMap id="ResultAuditProcessStatus" type="com.esd.hesf.model.AuditProcessStatus">
 		<id column="aup_id" property="id" jdbcType="INTEGER" />
-		<result column="aup_audit_process_status" property="auditProcessStatus"
-			jdbcType="VARCHAR" />
+		<result column="aup_audit_process_status" property="auditProcessStatus" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- area -->
 	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
 		<id column="a_code" jdbcType="CHAR" property="code" />
 		<result column="a_name" jdbcType="VARCHAR" property="name" />
 	</resultMap>
-	
+
 	<sql id="Base_Column_List">
 		<!-- audit -->
-		au.id as au_id, au.year as au_year, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
-		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
-		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
-		au.is_delay_pay as au_is_delay_pay, 
-		au.init_audit_user_id as au_init_audit_user_id, 
+		au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+		au.company_handicap_total as au_company_handicap_total,
+		au.company_predict_total as au_company_predict_total,
+		au.company_should_total as au_company_should_total,
+		au.company_already_total as au_company_already_total, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount,
+		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount,
+		au.is_delay_pay as au_is_delay_pay,
+		au.init_audit_user_id as au_init_audit_user_id,
 		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
-		au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date , 
+		au.verify_audit_user_id as
+		au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
 		au.verify_audit_comment as au_verify_audit_comment, au.remark as au_remark, au.is_exempt as au_is_exempt,
-		au.reduction_type as au_reduction_type,  au.reducion_apply_user as au_reducion_apply_user, 
+		au.reduction_type as
+		au_reduction_type, au.reducion_apply_user as au_reducion_apply_user,
 		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
-		au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+		au.reduction_answer_user as
+		au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date,
 		au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
-		au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year,
-		au.delay_days as au_delay_days, 
-		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
-		au.is_active as au_is_active, au.version as au_version,
+		au.unaudit_years
+		as au_unaudit_years, au.supplement_year as au_supplement_year,
+		au.delay_days as
+		au_delay_days,
+		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id,
+		au.is_active
+		as au_is_active, au.version as au_version,
 		<!-- company -->
-		c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
+		c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
 		c.company_contact_person as c_company_contact_person,
 		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
-		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
-		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+		c.company_address as c_company_address, c.company_zip_code as
+		c_company_zip_code, c.company_phone as c_company_phone, c.company_mobile as c_company_mobile,
 		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
-		c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
-		c.company_handicap_total as c_company_handicap_total, 
-		c.company_predict_total as c_company_predict_total, c.company_should_total as c_company_should_total,
-		c.company_already_total as c_company_already_total, c.create_time as c_create_time, 
-		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
+		c.company_remark as c_company_remark, c.create_time as c_create_time,
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
 		<!-- company type -->
 		t.id as t_id, t.company_type as t_company_type,
 		<!-- economy type -->
@@ -151,47 +153,56 @@
 		<!-- area -->
 		a.code as a_code, a.name as a_name
 	</sql>
-	
+
 	<sql id="From_List">
-		audit as au, company as c, company_type as t, company_economy_type as et, company_property as p, audit_process_status as aup, area as a 
+		audit as au, company as c, company_type as t, company_economy_type as et, company_property as p, audit_process_status as aup, area as a
 	</sql>
-	
+
 	<sql id="Where_List">
-		au.year = c.year and au.company_code = c.company_code and c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and au.audit_process_status = aup.id and au.area_code = a.code 
+		au.company_id = c.id and c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and au.audit_process_status = aup.id and
+		au.area_code = a.code
 	</sql>
-	
+
 	<!-- insert -->
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Audit">
 		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into audit (year, company_code,area_code,
-		audit_process_status, amount_payable, reduction_amount,
-		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount, 
+		insert into audit (year, company_id, company_emp_total,
+		company_handicap_total,
+		company_predict_total,company_should_total,company_already_total,area_code,
+		audit_process_status, amount_payable,
+		reduction_amount,
+		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount,
 		is_delay_pay,
 		init_audit_user_id, init_audit_date, init_audit_comment,verify_audit_user_id,
 		verify_audit_date, verify_audit_comment, remark, is_exempt,reduction_type,reducion_apply_user,
-		reduction_date, reduction_reason, reduction_answer_user,
+		reduction_date,
+		reduction_reason, reduction_answer_user,
 		reduction_answer_date, reduction_answer_option,
-		reduction_remark, unaudit_years,supplement_year,delay_days, 
+		reduction_remark, unaudit_years,supplement_year,delay_days,
 		create_time, update_time,
 		user_id, is_active, version
 		)
 		values (#{year,jdbcType=CHAR},
-		#{company.companyCode,jdbcType=VARCHAR},#{area.code,jdbcType=CHAR},
-		#{auditProcessStatus.ID,jdbcType=INTEGER}, #{amountPayable,jdbcType=DECIMAL}, #{reductionAmount,jdbcType=DECIMAL},
+		#{company.companyCode,jdbcType=VARCHAR},#{companyEmpTotal,jdbcType=INTEGER},#{companyHandicapTotal,jdbcType=INTEGER},#{companyPredictTotal,jdbcType=INTEGER},
+		#{companyShouldTotal,jdbcType=INTEGER},#{companyAlreadyTotal,jdbcType=INTEGER},#{area.code,jdbcType=CHAR},
+		#{auditProcessStatus.ID,jdbcType=INTEGER}, #{amountPayable,jdbcType=DECIMAL},
+		#{reductionAmount,jdbcType=DECIMAL},
 		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
 		#{isDelayPay,jdbcType=BIT},
-		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
+		#{initAuditUser.id,jdbcType=INTEGER},
+		#{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
 		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
 		#{reductionType,jdbcType=INTEGER},#{reducionApplyUser,jdbcType=VARCHAR},
-		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR}, #{reductionAnswerUser,jdbcType=VARCHAR},
+		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR},
+		#{reductionAnswerUser,jdbcType=VARCHAR},
 		#{reductionAnswerDate,jdbcType=VARCHAR},
 		#{reductionAnswerOption,jdbcType=VARCHAR},
 		#{reductionRemark,jdbcType=VARCHAR}, #{unauditYears,jdbcType=INTEGER},
-		#{supplementYear,jdbcType=CHAR}, #{delayDays,jdbcType=INTEGER}, 
+		#{supplementYear,jdbcType=CHAR}, #{delayDays,jdbcType=INTEGER},
 		now(),now(),
 		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{version,jdbcType=INTEGER}
 		)
@@ -207,9 +218,24 @@
 				year,
 			</if>
 			<if test="company != null">
-				<if test="company.companyCode != null and company.companyCode != ''">
-					company_code,
+				<if test="company.id != null and company.id > 0">
+					company_id,
 				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total,
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total,
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total,
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total,
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total,
 			</if>
 			<if test="area != null">
 				<if test="area.code != null and area.code  != ''">
@@ -320,9 +346,24 @@
 				#{year,jdbcType=CHAR},
 			</if>
 			<if test="company != null">
-				<if test="company.companyCode != null and company.companyCode != ''">
-					#{company.companyCode,jdbcType=VARCHAR},
+				<if test="company.id != null and company.id > 0">
+					#{company.id,jdbcType=INTEGER},
 				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				#{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				#{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				#{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				#{companyShouldTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				#{companyAlreadyTotal,jdbcType=INTEGER},
 			</if>
 			<if test="area != null">
 				<if test="area.code != null and area.code  != ''">
@@ -353,7 +394,7 @@
 				#{complementAmount,jdbcType=DECIMAL},
 			</if>
 			<if test="delayPayAmount != null">
-				#{delayPayAmount,jdbcType=DECIMAL}, 
+				#{delayPayAmount,jdbcType=DECIMAL},
 			</if>
 			<if test="isDelayPay != null">
 				#{isDelayPay,jdbcType=BIT},
@@ -430,26 +471,26 @@
 		</trim>
 	</insert>
 
-	<!-- copy last year data -->
+	<!-- copy last year data : to be continued -->
 	<insert id="insertLastYearData" parameterType="map">
-		insert into audit 
-			( 
-			year, 
-			company_code
-			)
-		select 	#{currentYear}, 
-			company_code
-			from 
-			hesf.company 
-		where company.year = #{lastYear};
+		insert into audit
+		(
+		year,
+		company_id
+		)
+		select #{currentYear},
+		company_id
+		from
+		hesf.audit
+		where audit.year = #{lastYear};
 	</insert>
-	
+
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from audit
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	
+
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Audit">
 		update audit
@@ -458,9 +499,24 @@
 				year = #{year,jdbcType=CHAR},
 			</if>
 			<if test="company != null">
-				<if test="company.companyCode != null and company.companyCode != ''">
-					company_code = #{company.companyCode,jdbcType=INTEGER},
+				<if test="company.id != null and company.id > 0">
+					company_id = #{company.id,jdbcType=INTEGER},
 				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total = #{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total = #{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total = #{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total = #{companyShouldTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total = #{companyAlreadyTotal,jdbcType=INTEGER},
 			</if>
 			<if test="area != null">
 				<if test="area.code != null and area.code  != ''">
@@ -571,28 +627,37 @@
 	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />
-		from 
+		from
 		<include refid="From_List" />
-		where 
+		where
 		<include refid="Where_List" />
 		and au.id = #{id,jdbcType=INTEGER}
 	</select>
-	
-	<select id="retrieveByYearAndCompanyCode" parameterType="map" resultMap="ResultAudit">
+
+	<select id="retrieveByYearAndCompanyId" parameterType="map" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />
-		from 
+		from
 		<include refid="From_List" />
-		where 
+		where
 		<include refid="Where_List" />
-		and au.year = #{year,jdbcType=CHAR}
-		and c.company_code = #{companyCode,jdbcType=VARCHAR}
+		and au.year = #{year,jdbcType=CHAR} and c.id = #{companyId,jdbcType=INTEGER}
 	</select>
-	
+
+	<select id="retrieveByCompany" parameterType="int" resultMap="ResultAudit">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_List" />
+		where
+		<include refid="Where_List" />
+		and c.id = #{companyId,jdbcType=INTEGER}
+	</select>
+
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />
-		from 
+		from
 		<include refid="From_List" />
 		<trim prefix="where" prefixOverrides="and|or">
 			<include refid="Where_List" />
@@ -601,30 +666,35 @@
 					and au.year = #{audit.year,jdbcType=CHAR}
 				</if>
 				<if test="audit.company != null">
-					<if test="audit.company.companyCode != null and audit.company.companyCode != ''">
-						and au.company_code  = #{audit.company.companyCode,jdbcType=CHAR}
+					<if test="audit.company.id != null and audit.company.id > 0">
+						and au.company_id = #{audit.company.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="audit.auditProcessStatus != null">
 					<if test="audit.auditProcessStatus.id != null and audit.auditProcessStatus.id > 0 ">
-						and au.audit_process_status  = #{audit.auditProcessStatus.id,jdbcType=CHAR}
+						and au.audit_process_status = #{audit.auditProcessStatus.id,jdbcType=CHAR}
 					</if>
 				</if>
 				<if test="audit.reductionType != null and audit.reductionType > 0">
-					and au.reduction_type = #{audit.reductionType,jdbcType=INTEGER} 
+					and au.reduction_type = #{audit.reductionType,jdbcType=INTEGER}
 				</if>
-				<if test="audit.isActive != null">
-					and au.is_active = #{audit.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="audit.isActive != null">
+						and au.is_active = #{audit.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and au.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
 		</trim>
-		order by au.company_code 
+		order by c.company_code
 		limit #{start},#{size}
 	</select>
-	
+
 	<select id="retrieveCount" parameterType="map" resultType="int">
-		select count(*) 
-		from 
+		select count(*)
+		from
 		<include refid="From_List" />
 		<trim prefix="where" prefixOverrides="and|or">
 			<include refid="Where_List" />
@@ -633,29 +703,39 @@
 					and au.year = #{audit.year,jdbcType=CHAR}
 				</if>
 				<if test="audit.company != null">
-					<if test="audit.company.companyCode != null and audit.company.companyCode != ''">
-						and au.company_code  = #{audit.company.companyCode,jdbcType=CHAR}
+					<if test="audit.company.id != null and audit.company.id > 0">
+						and au.company_id = #{audit.company.id,jdbcType=INTEGER}
 					</if>
 				</if>
 				<if test="audit.auditProcessStatus != null">
 					<if test="audit.auditProcessStatus.id != null and audit.auditProcessStatus.id > 0 ">
-						and au.audit_process_status  = #{audit.auditProcessStatus.id,jdbcType=CHAR}
+						and au.audit_process_status = #{audit.auditProcessStatus.id,jdbcType=CHAR}
 					</if>
 				</if>
 				<if test="audit.reductionType != null and audit.reductionType > 0">
-					and au.reduction_type = #{reductionType,jdbcType=INTEGER} 
+					and au.reduction_type = #{reductionType,jdbcType=INTEGER}
 				</if>
-				<if test="audit.isActive != null">
-					and au.is_active = #{audit.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="audit.isActive != null">
+						and au.is_active = #{audit.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and au.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
 		</trim>
 	</select>
 
+	<select id="retrieveYears" resultType="java.lang.String">
+		select year from audit group by year order by year desc
+	</select>
+	
 	<!-- retireve unaudit years by companyCode -->
 	<select id="retireveUnauditYearByCompanycode" parameterType="map" resultType="java.lang.String">
-		select  year from  audit 
-		where company_code = #{companyCode,jdbcType=VARCHAR} and audit_process_status in (1,2) and year &lt; #{year,jdbcType=CHAR}
-		order by year 
+		select year from audit
+		where company_id = #{companyId,jdbcType=INTEGER} and audit_process_status in (1,2) and
+		year &lt; #{year,jdbcType=CHAR}
+		order by year
 	</select>
 </mapper>

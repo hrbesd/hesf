@@ -17,6 +17,17 @@ public class Audit extends PrimaryKey_Int {
 	private Company company; // 关联公司
 	private Area area; // 地区
 	private AuditProcessStatus auditProcessStatus; // 审核状态
+	
+	/**
+	 * 新添加的5个字段
+	 */
+	private Integer companyEmpTotal;// 员工总数
+	private Integer companyHandicapTotal;// 残疾员工总数 已录入数
+	private Integer companyPredictTotal; // 预计残疾人数
+	private BigDecimal companyShouldTotal; // 应安排残疾人数
+	private Integer companyAlreadyTotal; // 已安排残疾人数
+	
+	
 	private BigDecimal amountPayable; // 应缴金额
 	private BigDecimal reductionAmount;// 减缴金额
 	private BigDecimal actualAmount;// 实际应缴金额
@@ -56,13 +67,14 @@ public class Audit extends PrimaryKey_Int {
 
 	@Override
 	public String toString() {
-		return "Audit [year=" + year + ", company=" + company + ", area=" + area + ", auditProcessStatus=" + auditProcessStatus + ", amountPayable=" + amountPayable + ", reductionAmount="
-				+ reductionAmount + ", actualAmount=" + actualAmount + ", payAmount=" + payAmount + ", remainAmount=" + remainAmount + ", complementAmount=" + complementAmount + ", delayPayAmount="
-				+ delayPayAmount + ", isDelayPay=" + isDelayPay + ", initAuditUser=" + initAuditUser + ", initAuditDate=" + initAuditDate + ", initAuditComment=" + initAuditComment
-				+ ", verifyAuditUser=" + verifyAuditUser + ", verifyAuditDate=" + verifyAuditDate + ", verifyAuditComment=" + verifyAuditComment + ", remark=" + remark + ", isExempt=" + isExempt
-				+ ", reductionType=" + reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate=" + reductionDate + ", reductionReason=" + reductionReason
-				+ ", reductionAnswerUser=" + reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption=" + reductionAnswerOption + ", reductionRemark="
-				+ reductionRemark + ", unauditYears=" + unauditYears + ", supplementYear=" + supplementYear + ", delayDays=" + delayDays + "]";
+		return "Audit [year=" + year + ", company=" + company + ", area=" + area + ", auditProcessStatus=" + auditProcessStatus + ", companyEmpTotal=" + companyEmpTotal + ", companyHandicapTotal="
+				+ companyHandicapTotal + ", companyPredictTotal=" + companyPredictTotal + ", companyShouldTotal=" + companyShouldTotal + ", companyAlreadyTotal=" + companyAlreadyTotal
+				+ ", amountPayable=" + amountPayable + ", reductionAmount=" + reductionAmount + ", actualAmount=" + actualAmount + ", payAmount=" + payAmount + ", remainAmount=" + remainAmount
+				+ ", complementAmount=" + complementAmount + ", delayPayAmount=" + delayPayAmount + ", isDelayPay=" + isDelayPay + ", initAuditUser=" + initAuditUser + ", initAuditDate="
+				+ initAuditDate + ", initAuditComment=" + initAuditComment + ", verifyAuditUser=" + verifyAuditUser + ", verifyAuditDate=" + verifyAuditDate + ", verifyAuditComment="
+				+ verifyAuditComment + ", remark=" + remark + ", isExempt=" + isExempt + ", reductionType=" + reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate="
+				+ reductionDate + ", reductionReason=" + reductionReason + ", reductionAnswerUser=" + reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption="
+				+ reductionAnswerOption + ", reductionRemark=" + reductionRemark + ", unauditYears=" + unauditYears + ", supplementYear=" + supplementYear + ", delayDays=" + delayDays + "]";
 	}
 
 	public String getYear() {
@@ -95,6 +107,46 @@ public class Audit extends PrimaryKey_Int {
 
 	public void setAuditProcessStatus(AuditProcessStatus auditProcessStatus) {
 		this.auditProcessStatus = auditProcessStatus;
+	}
+
+	public Integer getCompanyEmpTotal() {
+		return companyEmpTotal;
+	}
+
+	public void setCompanyEmpTotal(Integer companyEmpTotal) {
+		this.companyEmpTotal = companyEmpTotal;
+	}
+
+	public Integer getCompanyHandicapTotal() {
+		return companyHandicapTotal;
+	}
+
+	public void setCompanyHandicapTotal(Integer companyHandicapTotal) {
+		this.companyHandicapTotal = companyHandicapTotal;
+	}
+
+	public Integer getCompanyPredictTotal() {
+		return companyPredictTotal;
+	}
+
+	public void setCompanyPredictTotal(Integer companyPredictTotal) {
+		this.companyPredictTotal = companyPredictTotal;
+	}
+
+	public BigDecimal getCompanyShouldTotal() {
+		return companyShouldTotal;
+	}
+
+	public void setCompanyShouldTotal(BigDecimal companyShouldTotal) {
+		this.companyShouldTotal = companyShouldTotal;
+	}
+
+	public Integer getCompanyAlreadyTotal() {
+		return companyAlreadyTotal;
+	}
+
+	public void setCompanyAlreadyTotal(Integer companyAlreadyTotal) {
+		this.companyAlreadyTotal = companyAlreadyTotal;
 	}
 
 	public BigDecimal getAmountPayable() {
@@ -313,4 +365,6 @@ public class Audit extends PrimaryKey_Int {
 		this.delayDays = delayDays;
 	}
 
+
+	
 }

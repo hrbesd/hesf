@@ -37,7 +37,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -57,7 +57,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	}
 
 	@Override
-	public PaymentType getByPrimaryKey(int id) {
+	public PaymentType getByPrimaryKey(Integer id) {
 		PaymentType t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();

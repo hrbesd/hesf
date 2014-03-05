@@ -15,6 +15,13 @@ import com.esd.hesf.model.Worker;
  */
 public interface CompanyService extends BaseService<Company> {
 
+	/**
+	 * 保存一个企业: 保存企业用此方法!
+	 * @param company
+	 * @param year
+	 * @return
+	 */
+	public boolean save(Company company,String year);
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);
 
@@ -25,36 +32,11 @@ public interface CompanyService extends BaseService<Company> {
 	public String getDocumentCode();
 
 	/**
-	 * delete : 根据id删除
-	 * 
-	 * @param id
-	 * @return
-	 */
-	boolean delete(String id);
-
-	/**
-	 * getByPrimaryKey : 根据主键id查询一个公司
-	 * 
-	 * @param id
-	 * @return
-	 */
-	Company getByPrimaryKey(String id);
-
-	/**
-	 * 根据 年份和公司code获得一个公司对象
-	 * 
-	 * @param year
+	 * 根据公司档案号code 得到一个公司对象,如不存在则返回null
 	 * @param companyCode
 	 * @return
 	 */
-	Company getByYearAndCode(String year, String companyCode);
-
-	/**
-	 * 得到所有审核年度列表
-	 * 
-	 * @return
-	 */
-	public String[] getYears();
+	Company getByCompanyCode(String companyCode);
 
 	/**
 	 * 得到有公司数据的最近一个年份
@@ -95,13 +77,13 @@ public interface CompanyService extends BaseService<Company> {
 	 * 
 	 * @param year
 	 *            年度
-	 * @param companyCode
-	 *            公司档案code
+	 * @param companyId
+	 *            公司id
 	 * @param workerId
 	 *            员工id
 	 * @return
 	 */
-	public boolean deleteWorkerFromCompany(String year, String companyCode, int workerId);
+	public boolean deleteWorkerFromCompany(String year, Integer companyId, Integer workerId);
 
 	/**
 	 * 多条件查询 公司 数据
@@ -116,48 +98,35 @@ public interface CompanyService extends BaseService<Company> {
 	/**
 	 * 查询 指定公司指定年度残疾职工人数
 	 * 
-	 * @param companyCode
+	 * @param companyId
 	 * @param year
 	 * @return
 	 */
-	int getWorkerHandicapTotal(String companyCode, String year);
+	int getWorkerHandicapTotal(Integer companyId, String year);
 
 	/**
-	 * 获得该企业年龄达到退休标准的残疾职工列表--方法①
+	 * 获得该企业年龄达到退休标准的残疾职工列表
 	 * 
 	 * @param year
 	 *            --年份
-	 * @param companyCode
-	 *            --公司档案code
-	 * @param page
-	 *            --起始页
-	 * @param pageSize
-	 *            --返回量
-	 * @return
-	 */
-	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, String companyCode, Integer page, Integer pageSize);
-
-	/**
-	 * 获得该企业年龄达到退休标准的残疾职工列表--方法②
-	 * 
 	 * @param companyId
-	 *            --公司Id
+	 *            --公司id
 	 * @param page
 	 *            --起始页
 	 * @param pageSize
 	 *            --返回量
 	 * @return
 	 */
-	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize);
+	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, Integer companyId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据公司档案号和当前年份得到该公司过去为审核的年份列表
 	 * 
-	 * @param companyCode
-	 *            --公司档案号 year--当前审核年份
+	 * @param companyId --公司id 
+	 *            year --当前审核年份
 	 * @return
 	 */
-	String[] getUnauditYearByCompanycode(String companyCode, String year);
+	String[] getUnauditYearByCompany(Integer companyId, String year);
 
 	/**
 	 * 获得一个自增长的公司档案号
@@ -165,13 +134,5 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return
 	 */
 	Integer gotCompanyCode();
-
-	/**
-	 * 根据公司档案号检查公司是否存在
-	 * 
-	 * @param companyCode
-	 * @return true-存在 false-不存在
-	 */
-	boolean checkCompanyCode(String companyCode);
 
 }

@@ -55,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -75,7 +75,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public Payment getByPrimaryKey(int id) {
+	public Payment getByPrimaryKey(Integer id) {
 		Payment t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -104,7 +104,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getAlreadyPay(Integer auditId) {
+	public BigDecimal getAlreadyPayByAudit(Integer auditId) {
 		if (auditId == null || auditId <= 0) {
 			new HesfException("auditId", HesfException.type_number_negative).printStackTrace();
 			return null;
@@ -115,7 +115,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getAlreadyPay(String companyId) {
+	public BigDecimal getAlreadyPayByCompany(Integer companyId) {
 		if (companyId == null || "".equals(companyId)) {
 			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
@@ -126,22 +126,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getAlreadyPay(String year, String companyCode) {
-		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		Payment payment = new Payment();
-		payment.setPaymentCompany(new Company(year, companyCode));
-		return dao.retrieveAlreadyPay(payment);
-	}
-
-	@Override
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(Integer auditId, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAudit(Integer auditId, Integer page, Integer pageSize) {
 		if (auditId == null || auditId <= 0) {
 			new HesfException("auditId", HesfException.type_number_negative).printStackTrace();
 			return null;
@@ -167,8 +152,8 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String companyId, Integer page, Integer pageSize) {
-		if (companyId == null || "".equals(companyId)) {
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByCompany(Integer companyId, Integer page, Integer pageSize) {
+		if (companyId == null || companyId <=0) {
 			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
 		}
@@ -176,36 +161,6 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Payment t = new Payment();
 		t.setPaymentCompany(new Company(companyId));
-		map.put("payment", t);
-		// 起始索引值
-		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
-		// 返回量
-		map.put("size", pageSize);
-		// 返回的数据
-		List<Payment> list = dao.retrieveByPage(map);
-		// 数据条数
-		int count = dao.retrieveCount(map);
-		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
-		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
-		prn.setNumber(count);
-		prn.setRecords(list);
-		return prn;
-	}
-
-	@Override
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String year, String companyCode, Integer page, Integer pageSize) {
-		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		// 将参数放入到map中
-		Map<String, Object> map = new HashMap<String, Object>();
-		Payment t = new Payment();
-		t.setPaymentCompany(new Company(year, companyCode));
 		map.put("payment", t);
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
