@@ -145,8 +145,6 @@
 	<div class="paramsTab">
 		<table id="queryWorkerParams">
 			<tr>
-				<td class="tipsText">年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/company/getyears'" /></td>
 				<td class="tipsText">残疾证号:</td>
 				<td><input type="text" id="workerFind_workerHandicapCode" class="inputElement long" /></td>
 				<td class="tipsText">就业证号:</td>

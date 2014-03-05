@@ -31,11 +31,7 @@
 			textField : 'name',
 		});
 
-		$('#year').combobox({
-			url : 'parameter/getyears',
-			valueField : 'id',
-			textField : 'text'
-		});
+		
 		//初始化输入元素默认值
 		var element=$(".inputElement");
 		for(var i=0;i<element.length;i++){
@@ -78,7 +74,6 @@
 	 **/
 	queryCompany.getParams = function() {
 		var params = {};
-		params.year = $("#year").combobox("getValue"); // 年度
 		params.companyCode = $("#companyCode").val(); // 档案号码
 		params.companyTaxCode = $("#companyTaxCode").val();// 税务编码
 		params.companyOrganizationCode = $("#companyOrganizationCode").val();// 组织机构代码证号
@@ -174,8 +169,6 @@
 	<div class="paramsTab">
 		<table>
 			<tr>
-				<td class="tipsText">年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
 				<td class="tipsText">档案号码:</td>
 				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td class="tipsText">税务号码:</td>

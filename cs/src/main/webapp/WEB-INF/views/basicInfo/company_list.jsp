@@ -14,11 +14,7 @@
 			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
 
 	</div>
-	<!-- 快速搜索区域 -->
-	<div align="center" style="margin-bottom: 10px">
-		<!-- 年份 -->
-		<input id="companyYears" class="easyui-combobox" value="${nowYear}" />年
-	</div>
+
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
 		<input id="companyCode" type="text" style="width: 14%;margin-left: 50px" />
@@ -39,14 +35,4 @@
 		basicFile.loadData(basicFile.getParams());
 	};
 
-	$(function() {
-		//年份
-		$('#companyYears').combobox({
-			url : 'parameter/getyears',
-			valueField : 'id',
-			textField : 'text',
-			height : 30,
-			editable : false,
-		});
-	});
 </script>

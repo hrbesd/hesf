@@ -5,6 +5,7 @@
  */
 package com.esd.cs.documentation;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class PrintCompany {
 	 * @return
 	 */
 	@RequestMapping(value = "/audit/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView audittab(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	public ModelAndView audittab(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("gotoPrint_audit companyId:{}", companyId);
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
@@ -82,13 +83,19 @@ public class PrintCompany {
 		result.put("address", company.getCompanyAddress());// 企业地址
 		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());// 组织机关代码证
 		result.put("companyPhone", company.getCompanyPhone());// 电话
+		
+		Audit audit= auditService.getByPrimaryKey(CalendarUtil.getLastYear(), companyId);
+		if(audit==null){
+			logger.error("get_comapnmy_information:{}","null");
+			return null;
+		}
 		// 残疾职工信息
-		result.put("companyEmpTotal", company.getCompanyEmpTotal() + "");// 员工总数
-		result.put("companyHandicapTotal", company.getCompanyHandicapTotal() + "");// 残疾员工总数
-																					// 已录入数
-		result.put("companyPredictTotal", company.getCompanyPredictTotal() + "");// 预计残疾人数
-		result.put("companyShouldTotal", company.getCompanyShouldTotal() + "");// 应安排残疾人数
-		result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal() + "");// 已安排残疾人数
+		result.put("companyEmpTotal", audit.getCompanyEmpTotal() + "");// 员工总数
+		result.put("companyHandicapTotal",(audit.getCompanyHandicapTotal() +audit.getCompanyAlreadyTotal() )+ "");// 残疾员工总数
+		result.put("companyPredictTotal", audit.getCompanyPredictTotal() + "");// 预计残疾人数
+		result.put("companyShouldTotal", audit.getCompanyShouldTotal() + "");// 应安排残疾人数
+		result.put("companyAlreadyTotal", audit.getCompanyAlreadyTotal() + "");// 已安排残疾人数
+
 		// 保证金额度
 		request.setAttribute("company", result);
 		return new ModelAndView("documents/print_audit");
@@ -117,7 +124,7 @@ public class PrintCompany {
 	 * @return
 	 */
 	@RequestMapping(value = "/workerlist/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView workerlist(@PathVariable(value = "companyId") String companyId,
+	public ModelAndView workerlist(@PathVariable(value = "companyId") Integer companyId,
 			@PathVariable(value = "year") String year,
 			HttpServletRequest request) {
 		logger.debug("gotoPrint_workerList,companyId:{}", companyId);
@@ -132,7 +139,6 @@ public class PrintCompany {
 		result.put("companyName", company.getCompanyName());// 企业名称
 		result.put("taxCode", company.getCompanyTaxCode());// 税务编码
 		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());// 组织机关代码证
-		result.put("year", company.getYear());// 年份
 		request.setAttribute("company", result);
 		return new ModelAndView("documents/print_workerList");
 	}
@@ -162,7 +168,7 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/notice/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object get_company(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	public Object get_company(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("printNoticeParamsID:{},year:{}", companyId, year);
 		try {
 			logger.debug("getPrintNoticeInfo:{}", companyId);
@@ -174,20 +180,27 @@ public class PrintCompany {
 			}
 			// 企业基本信息
 			result.put("companyName", company.getCompanyName());// 企业名称
-			// 残疾职工信息
-			result.put("companyEmpTotal", company.getCompanyEmpTotal() + "");// 员工总数
-			result.put("companyHandicapTotal", company.getCompanyHandicapTotal() + "");// 残疾员工总数
-																						// 已录入数
-			result.put("companyPredictTotal", company.getCompanyPredictTotal() + "");// 预计残疾人数
-			result.put("companyShouldTotal", company.getCompanyShouldTotal() + "");// 应安排残疾人数
-			result.put("companyAlreadyTotal", company.getCompanyAlreadyTotal() + "");// 已安排残疾人数
-
-			// 初审员
-			Audit audit = auditService.getByPrimaryKey(year, company.getCompanyCode());
-			if (audit == null) {
-				logger.error("getPrintNoticeInfoError:{}", "getauditNull");
+			
+			Audit audit= auditService.getByPrimaryKey(CalendarUtil.getLastYear(), companyId);
+			if(audit==null){
+				logger.error("get_comapnmy_information:{}","null");
 				return null;
 			}
+			// 残疾职工信息
+			result.put("companyEmpTotal", audit.getCompanyEmpTotal() + "");// 员工总数
+			result.put("companyHandicapTotal",(audit.getCompanyHandicapTotal() +audit.getCompanyAlreadyTotal() )+ "");// 残疾员工总数
+			result.put("companyPredictTotal", audit.getCompanyPredictTotal() + "");// 预计残疾人数
+			result.put("companyShouldTotal", audit.getCompanyShouldTotal() + "");// 应安排残疾人数
+			result.put("companyAlreadyTotal", audit.getCompanyAlreadyTotal() + "");// 已安排残疾人数
+			
+
+
+			// 初审员
+//			Audit audit = auditService.getByPrimaryKey(year, company.getId());
+//			if (audit == null) {
+//				logger.error("getPrintNoticeInfoError:{}", "getauditNull");
+//				return null;
+//			}
 			//User user = service.getByPrimaryKey(audit.getInitAuditUser().getUserId());
 			// 复审员
 			// 保证金额度
@@ -211,7 +224,7 @@ public class PrintCompany {
 	 */
 	@RequestMapping(value = "/detect/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object detectaudit(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	public Object detectaudit(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("printNoticeParamsID:{},year:{}", companyId, year);
 		try {
 			Company company = companyService.getByPrimaryKey(companyId);
@@ -219,7 +232,7 @@ public class PrintCompany {
 				logger.error("getPrintNoticeInfoError:{}", "getCompanyNull");
 				return false;
 			}
-			 Audit audit=auditService.getByPrimaryKey(year,company.getCompanyCode());
+			 Audit audit=auditService.getByPrimaryKey(year,company.getId());
 			 if(audit==null){
 				 return false;
 			 }

@@ -28,6 +28,7 @@ import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditProcessStatusService;
+import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
@@ -61,7 +62,7 @@ public class ParameterController {
 	@Autowired
 	private WorkerHandicapLevelService workerHandicapLevelService;// 残疾等级
 	@Autowired
-	private CompanyService companyService; // 公司
+	private AuditService auditService; // 审核
 	@Autowired
 	private AreaService areaService;// 地区
 	@Autowired
@@ -89,7 +90,7 @@ public class ParameterController {
 		logger.debug("getYears");
 		List<Map<String, String>> list = new ArrayList<>();
 		try {
-			String[] arr = companyService.getYears();
+			String[] arr = auditService.getYears();
 			for (String str : arr) {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("text", str);

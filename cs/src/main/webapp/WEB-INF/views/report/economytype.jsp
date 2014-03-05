@@ -15,6 +15,7 @@
 		$.ajax({
 			url : 'report/economytype/' + 	$('#companyYear').combobox("getText"),
 			type : 'post',
+			async:false,
 			success : function(data) {
 			$("#printNatureTab tbody").empty();
 				for(var i=0;i<data.length;i++){

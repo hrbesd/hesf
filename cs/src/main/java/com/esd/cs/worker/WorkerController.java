@@ -44,6 +44,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.common.CommonUtil;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Area;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
@@ -68,10 +69,12 @@ public class WorkerController {
 	private WorkerService workerService;// 工作者
 	@Autowired
 	private CompanyService companyService;// 企业
+	
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
-	@Autowired
-	Properties fileUploadPro = null;
+	
+	
+
 
 	@Value("${LoadUpFileMaxSize}")
 	String LoadUpFileMaxSize;
@@ -96,7 +99,7 @@ public class WorkerController {
 	// 提示文本
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
-	static String WORDERROR = "excel文件内部文本信息格式错误!";
+	static String WORDERROR = "excel文件内部内容格式错误!";
 	static String CREATEERRORFILE = "创建错误信息列表文件错误";
 
 	/**
@@ -125,30 +128,7 @@ public class WorkerController {
 
 	}
 
-	@RequestMapping(value = "/get_comapnmy_information/{companyId}/{year}", method = RequestMethod.POST)
-	@ResponseBody
-	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 
-		logger.debug("get_comapnmy_information:{},year:{}", companyId, year);
-		List<Map<String, String>> list = null;
-		Map<String, String> map;
-		Company c = companyService.getByPrimaryKey(companyId);
-		if (c != null) {
-			map = new HashMap<String, String>();
-			list = new ArrayList<Map<String, String>>();
-			map.put("companyName", c.getCompanyName());// 企业名称
-			map.put("companyCode", c.getCompanyCode());// 档案编码
-			map.put("companyTaxCode", c.getCompanyTaxCode());// 税务编码
-			map.put("companyEmpTotal", c.getCompanyEmpTotal() + "");// 员工总人数
-			map.put("companyEconomyType", c.getCompanyEconomyType().getCompanyEconomyType());// 经济类型
-			map.put("companyArea", c.getArea().getName());// 地区
-			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(c.getCompanyCode(), year) + "");// 残疾职工总人数
-			list.add(map);
-			return list;
-		}
-
-		return null;
-	}
 
 	/**
 	 * 转到增加残疾职工页面
@@ -179,9 +159,10 @@ public class WorkerController {
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
 		try {
 			logger.debug("add:{}", worker);
-			String companyId = request.getParameter("companyId");
+			Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 			Company c = companyService.getByPrimaryKey(companyId);
-			boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
+			
+			boolean b = workerService.save(worker, c.getId(), CalendarUtil.getLastYear());
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
 		} catch (Exception e) {
@@ -191,8 +172,9 @@ public class WorkerController {
 		}
 	}
 
-	private boolean addWorker(Worker worker, String companyId) {
+	private boolean addWorker(Worker worker, Integer companyId) {
 		logger.debug("addWorkerParams:{},companyId:{}", worker, companyId);
+		
 		Company c = companyService.getByPrimaryKey(companyId);
 		if (c == null) {
 			logger.error("addWorker_getCompanyError:{}", "null");
@@ -200,7 +182,7 @@ public class WorkerController {
 		}
 		// 设置年份
 		worker.setWorkerBirthYear(CalendarUtil.getLastYear());
-		boolean b = workerService.save(worker, c.getCompanyCode(), CalendarUtil.getLastYear());
+		boolean b = workerService.save(worker, c.getId(), CalendarUtil.getLastYear());
 		logger.debug("addWorkerResult:{}", b);
 		return b;
 	}
@@ -262,12 +244,12 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean edit_worker_up(Worker worker, HttpServletRequest request) {
 		logger.debug("editUpdata:{}", worker);
-		String companyId = request.getParameter("companyId");
+		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 
 		return editWorkerUp(worker, companyId);
 	}
 
-	private boolean editWorkerUp(Worker worker, String companyId) {
+	private boolean editWorkerUp(Worker worker, Integer companyId) {
 		boolean workerUpDataStatus = false, companyUpdataStatus = false;
 		logger.debug("upWorker:{},companyId:{}",worker,companyId);
 		try {
@@ -289,7 +271,7 @@ public class WorkerController {
 				Company c = companyService.getByPrimaryKey(companyId);
 				if (c != null) {
 					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), CalendarUtil.getLastYear(), worker.getCurrentJob());
-					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getCompanyCode(), CalendarUtil.getLastYear(), worker.getCurrentJob());
+					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getId(), CalendarUtil.getLastYear(), worker.getCurrentJob());
 					if (companyUpdataStatus) {
 						logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
 					} else {
@@ -315,14 +297,14 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") String companyId, @RequestParam(value = "year") String year,
+	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "year") String year,
 
 	HttpServletRequest request) {
 
 		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, year, companyId);
 		try {
 			for (int i = 0; i < params.length; i++) {
-				boolean b = companyService.deleteWorkerFromCompany(year, companyService.getByPrimaryKey(companyId).getCompanyCode(), params[i]);
+				boolean b = companyService.deleteWorkerFromCompany(year, companyId, params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
 			}
 		} catch (Exception e) {
@@ -385,10 +367,10 @@ public class WorkerController {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+		
 			// 提示错误信息
 			result.put("fileError", "上传失败,文件大小不能超过" + LoadUpFileMaxSize + "M!");
-			logger.error("uplaodWorkerFileError");
+			logger.error("uplaodWorkerFileError:{}",e.getMessage());
 			return result;
 		}
 		return result;
@@ -425,7 +407,7 @@ public class WorkerController {
 		
 		// 上传文件返回的参数信息
 		String filePath = paramMap.get("filePath");// 文件路径
-		String companyId = paramMap.get("companyId");// 文件路径
+		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// 文件路径
 		String fileError = paramMap.get("fileError");// 错误信息
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();

@@ -14,8 +14,9 @@
 		$.ajax({
 			url : 'report/area/' + 	$('#companyYear').combobox("getText"),
 			type : 'post',
+			async:false,
 			success : function(data) {
-
+				
 			$("#printNatureTab tbody").empty();
 				for(var i=0;i<data.length;i++){
 	//																					单位性质，                                        单位总数，                                      单位总人数，                         待初单位数，

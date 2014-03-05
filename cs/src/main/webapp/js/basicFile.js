@@ -14,7 +14,6 @@ basicFile.getParams = function() {
 	params.companyCode = $("#companyCode").val();// 档案号
 	params.companyTaxCode = $("#companyTaxCode").val();// 税务编码
 	params.companyName = $("#companyName").val();// 企业名称
-	params.year = $("#companyYears").combobox("getValue");// 获取年份
 	return params;
 };
 /**

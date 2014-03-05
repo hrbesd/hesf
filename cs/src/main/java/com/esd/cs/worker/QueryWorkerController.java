@@ -41,8 +41,6 @@ public class QueryWorkerController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView worker_list(HttpServletRequest request) {
-		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getLastYear());
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("query/worker");
 
@@ -59,7 +57,6 @@ public class QueryWorkerController {
 			AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getLastYear());
 
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			paramsMap.put("year", params.getYear()); // 年度
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
 			paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名

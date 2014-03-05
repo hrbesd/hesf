@@ -52,7 +52,6 @@ public class QueryCompayController {
 
 		logger.debug("queryCompanyParams{}", params);
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("year", params.getYear()); // 年度
 		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
 		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
 		paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
@@ -107,7 +106,7 @@ public class QueryCompayController {
 	 */
 	@RequestMapping(value = "/exportCompany", method = RequestMethod.POST)
 	@ResponseBody
-	public String exportCompany(@RequestParam(value = "params[]") String idArr[], HttpServletRequest request) {
+	public String exportCompany(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		boolean b = true;
 		List<Company> company = new ArrayList<Company>();

@@ -267,7 +267,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'worker/get_comapnmy_information/' + $("#companyId").val() + '/' + $("#year").val(),
+			url : 'worker/getinformation/' + $("#companyId").val() ,
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -309,7 +309,6 @@
 <table id="workerList_dataGrid"></table>
 
 <input type="hidden" id="companyId" value="${companyId}" />
-<input type="hidden" id="year" value="${year}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
 	<div style="text-align: right; margin: 7px;">
