@@ -27,7 +27,7 @@ public interface WorkerService extends BaseService<Worker> {
 	public boolean save(Worker worker, Integer companyId,String year);
 
 	/**
-	 * 根据年度, 公司code, 和员工的相关信息 得到员工列表
+	 * 根据年度, 公司id, 和员工的相关信息 得到员工列表
 	 * @param map 参数map 详见 com.esd.hesf.ExampleMap类中的 example_worker() 里面的描述
 	 * 测试样例见  com.esd.cs.TestController 的测试方法13
 	 * @return

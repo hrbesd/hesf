@@ -38,10 +38,10 @@ public class ExampleMap {
 	public void example_worker() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 如果查询一个公司里的残疾员工的话, 要么填下面两个属性, 要么填公司id companyId!
-		map.put("companyCode", "1390293306601");// 公司code
 		map.put("year", "2001"); // 年度
+		map.put("companyId", 1366);
+//		map.put("companyCode", "1390293306601");// 公司id					//已被删除
 
-		map.put("companyId", "768f0b92051a002df8b347c9f4dd70cd");
 		/**********************************************************/
 		/************ 以上字段为查询公司里的残疾人用 ******************/
 
