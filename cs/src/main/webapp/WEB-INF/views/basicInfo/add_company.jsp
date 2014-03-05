@@ -50,14 +50,7 @@
 			<input name="companyManagement"  />
 			</td>
 		</tr>
-		<tr>
-			<td class="tdRight">职工总人数(<span class="red_notice">*</span>):</td>
-			<td><input id="companyEmpTotal" name="companyEmpTotal" data-options="required:true,validType:['_number']" class="inNormal easyui-validatebox" name="amount" type="text" />
-			</td>
-			<td class="tdRight">残疾职工人数(<span class="red_notice">*</span>):</td>
-			<td><input id="companyHandicapTotal" name="companyHandicapTotal" data-options="required:true,validType:['_number']" class="easyui-validatebox" name="amount" type="text" />
-			</td>
-		</tr>
+		
 		<tr>
 			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
 			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
