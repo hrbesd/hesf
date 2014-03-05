@@ -97,6 +97,7 @@ public class QueryAuditController {
 				Audit it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
+				map.put("companyId", it.getCompany().getId());// id
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称

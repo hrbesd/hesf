@@ -82,7 +82,12 @@
 	 * 获取企业基本档案函数
 	 */
 	queryAudit.loadData = function(params) {
-		esd.common.datagrid("#queryAuditGrid", "query/audit/list", "#queryAuditBoolbar", [ [ {
+		esd.common.datagrid("#queryAuditGrid", "query/audit/list", "#queryAuditBoolbar", [ [
+		 {
+			field : 'companyId',
+			hidden:true
+		}, 
+		 {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 230
@@ -95,7 +100,7 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="esd.common.viewCompany(\'' + row.id + '\')">' + value + '</a>';
+				var c = '<a href="#" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 
 				return c;
 			}

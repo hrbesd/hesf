@@ -45,14 +45,7 @@
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
 		</tr>
-		<tr>
-			<td class="tdRight">企业总人数 :</td>
-			<td><input name="companyEmpTotal" class="easyui-validatebox" type="text" value="${companyEmpTotal}" data-options="required:true,validType:['_number']" />
-			</td>
-			<td class="tdRight">残疾职工人数 :</td>
-			<td><input name="companyHandicapTotal" class="inNormal easyui-validatebox" type="text" value="${workerHandicapTotal}" data-options="required:true,validType:['_number']" />
-			</td>
-		</tr>
+		
 		<tr>
 			<td class="tdRight">法人代表 :</td>
 			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" data-options="required:true" />

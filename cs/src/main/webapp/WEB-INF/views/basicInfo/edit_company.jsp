@@ -10,7 +10,7 @@
 	<table id="edit_companyTab" class="companyTable" border="0">
 		<tr>
 			<td class="tdRight">档案编码:</td>
-			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}" style="border: 0" readonly="true" />
+			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}" style="border: 0;hei" readonly="true" />
 			</td>
 		</tr>
 		<tr>
@@ -45,14 +45,6 @@
 			</td>
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
-		</tr>
-		<tr>
-			<td class="tdRight">企业总人数(<span class="red_notice">*</span>):</td>
-			<td><input name="companyEmpTotal" class="easyui-validatebox" type="text" value="${companyEmpTotal}" data-options="required:true,validType:['_number']" />
-			</td>
-			<td class="tdRight">残疾职工人数(<span class="red_notice">*</span>):</td>
-			<td><input name="companyHandicapTotal" class="inNormal easyui-validatebox" type="text" value="${workerHandicapTotal}" data-options="required:true,validType:['_number']" />
-			</td>
 		</tr>
 		<tr>
 			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
