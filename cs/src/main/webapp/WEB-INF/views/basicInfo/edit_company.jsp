@@ -20,8 +20,10 @@
 		</tr>
 		<tr>
 			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" /> <!-- 年份 --> <input
-				name="year" type="hidden" value="${company.year}" /> <!-- 地区码 --> <input name="id" type="hidden" value="${company.id}" /> <!-- 地区码 --> <input name="version" type="hidden"
+			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" />
+	
+				 <!-- 地区码 --> <input name="id" type="hidden" value="${company.id}" /> 
+				<!-- 地区码 --> <input name="version" type="hidden"
 				value="${company.version}" />
 			</td>
 			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
@@ -46,10 +48,10 @@
 		</tr>
 		<tr>
 			<td class="tdRight">企业总人数(<span class="red_notice">*</span>):</td>
-			<td><input name="companyEmpTotal" class="easyui-validatebox" type="text" value="${company.companyEmpTotal}" data-options="required:true,validType:['_number']" />
+			<td><input name="companyEmpTotal" class="easyui-validatebox" type="text" value="${companyEmpTotal}" data-options="required:true,validType:['_number']" />
 			</td>
 			<td class="tdRight">残疾职工人数(<span class="red_notice">*</span>):</td>
-			<td><input name="companyHandicapTotal" class="inNormal easyui-validatebox" type="text" value="${company.companyHandicapTotal}" data-options="required:true,validType:['_number']" />
+			<td><input name="companyHandicapTotal" class="inNormal easyui-validatebox" type="text" value="${workerHandicapTotal}" data-options="required:true,validType:['_number']" />
 			</td>
 		</tr>
 		<tr>

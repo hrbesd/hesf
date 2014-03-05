@@ -10,8 +10,8 @@
 <!-- 自定义菜单 -->
 <div id="company_boolbar">
 	<div style="text-align: right;">
-		<a onclick="basicFile.openAddCompany()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a onclick="basicFile.openBatchDeleteCompany()" href="#"
-			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
+		<a onclick="basicFile.openAddCompany()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a>
+		 <a onclick="basicFile.openBatchDeleteCompany()" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
 
 	</div>
 

@@ -297,12 +297,17 @@
 		//加载数据
 		workerList.loadData(workerList.getParams());
 	};
+	//获取企业信息
+		$('#workerList_dataGrid').datagrid({
+			onLoadSuccess: function(){
+				workerList.getCompany();
+		}
+		});
 	$(function() {
 		//初始化组件
 		workerList.init();
+
 		
-		//获取企业信息
-		workerList.getCompany();
 	});
 </script>
 <!-- 数据表格 -->
@@ -311,12 +316,7 @@
 <input type="hidden" id="companyId" value="${companyId}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
-	<div style="text-align: right; margin: 7px;">
-		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" iconCls="icon-ok">添加</a> <a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" iconCls="icon-ok">删除</a>
-		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" iconCls="icon-ok">导入文件</a>
-
-
-	</div>
+	
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
@@ -358,6 +358,12 @@
 				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a></td>
 		</tr>
 	</table>
+	<div style="text-align: right; margin: 7px;">
+		
+		<a href="javascript:workerList.openAddWorker();"  class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a>
+		<a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
+		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">导入文件</a>
+	</div>
 </div>
 
 
