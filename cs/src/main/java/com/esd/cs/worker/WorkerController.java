@@ -108,13 +108,11 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/list/{companyId}/{year}")
-	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	@RequestMapping(value = "/list/{companyId}")
+	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
-		request.setAttribute("year", year);
-
 		// 获取年审参数
-		AuditParameter param = auditParameterService.getByYear(year);
+		AuditParameter param = auditParameterService.getByYear(CalendarUtil.getLastYear());
 		if (param != null) {
 			// 男职工退休年龄
 			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());

@@ -222,11 +222,17 @@ public class CompayController {
 		}
 	}
 
+	/**
+	 * 根据企业id 获取企业信息
+	 * @param companyId
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/getinformation/{companyId}", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId,HttpServletRequest request) {
 
-		logger.debug("get_comapnmy_information:{}", companyId);
+		logger.debug("getComapnmyInformation:{}", companyId);
 		List<Map<String, String>> list = null;
 		Map<String, String> map;
 		Company c = companyService.getByPrimaryKey(companyId);
@@ -244,8 +250,10 @@ public class CompayController {
 				return null;
 			}
 			map.put("companyEmpTotal",audit.getCompanyEmpTotal() + "");// 员工总人数
-			map.put("workerHandicapTotal", audit.getCompanyHandicapTotal() + "");// 残疾职工总人数
+
+			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId, CalendarUtil.getLastYear())+ "");// 残疾职工总人数
 			list.add(map);
+			logger.debug("getComapnmyInformation:{}", list);
 			return list;
 		}
 

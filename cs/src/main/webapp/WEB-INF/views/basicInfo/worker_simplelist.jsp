@@ -159,7 +159,6 @@
 
 		params = {};
 		params.companyId = $("#companyId").val();//单位id
-		params.year = $("#year").val();//年份
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
 		params.workerGender = $("#workerFind_workerGender").combobox("getValue");// 性别
@@ -187,7 +186,7 @@
 	 **/
 	workerList.openAddWorker = function() {
 
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/'+$("#companyId").val());
 	};
 
 	/**
@@ -267,7 +266,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'worker/get_comapnmy_information/' + $("#companyId").val() + '/' + $("#year").val(),
+			url : 'company/getinformation/' + $("#companyId").val() ,
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -285,7 +284,6 @@
 
 			},
 			error : function() {
-
 				alert("残疾职工列表，获取企业信息错误。");
 			}
 		});
@@ -297,23 +295,27 @@
 		//加载数据
 		workerList.loadData(workerList.getParams());
 	};
+	//获取企业信息
+		$('#workerList_dataGrid').datagrid({
+			onLoadSuccess: function(){
+				workerList.getCompany();
+		}
+		});
 	$(function() {
 		//初始化组件
 		workerList.init();
+
 		
-		//获取企业信息
-		workerList.getCompany();
 	});
 </script>
 <!-- 数据表格 -->
 <table id="workerList_dataGrid"></table>
 
 <input type="hidden" id="companyId" value="${companyId}" />
-<input type="hidden" id="year" value="${year}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
 	
-	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0" style="margin: 10px auto 0;">
+	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
 			<td id="company_name"></td>
@@ -329,11 +331,12 @@
 			<td class="tipTextEx">残疾职工总数:</td>
 			<td id="worker_HandicapTotal"></td>
 
-			<td class="tipTextEx">地区:</td>
+			<td class="tipTextEx">地区:<br /></td>
 			<td id="company_Area"></td>
 
 		</tr>
 	</table>
+
 	<table>
 		<tr>
 			<td>
@@ -354,6 +357,7 @@
 				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a></td>
 		</tr>
 	</table>
+	
 </div>
 
 

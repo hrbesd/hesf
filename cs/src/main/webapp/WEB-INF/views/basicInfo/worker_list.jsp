@@ -159,7 +159,6 @@
 
 		params = {};
 		params.companyId = $("#companyId").val();//单位id
-		params.year = $("#year").val();//年份
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
 		params.workerGender = $("#workerFind_workerGender").combobox("getValue");// 性别
@@ -187,7 +186,7 @@
 	 **/
 	workerList.openAddWorker = function() {
 
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/'+$("#companyId").val());
 	};
 
 	/**
@@ -267,7 +266,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'worker/getinformation/' + $("#companyId").val() ,
+			url : 'company/getinformation/' + $("#companyId").val() ,
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -285,7 +284,6 @@
 
 			},
 			error : function() {
-
 				alert("残疾职工列表，获取企业信息错误。");
 			}
 		});
@@ -338,6 +336,12 @@
 
 		</tr>
 	</table>
+	<div style="text-align: right; margin: 7px;">
+		
+		<a href="javascript:workerList.openAddWorker();"  class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a>
+		<a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
+		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">导入文件</a>
+	</div>
 	<table>
 		<tr>
 			<td>
@@ -358,12 +362,7 @@
 				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a></td>
 		</tr>
 	</table>
-	<div style="text-align: right; margin: 7px;">
-		
-		<a href="javascript:workerList.openAddWorker();"  class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a>
-		<a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
-		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">导入文件</a>
-	</div>
+	
 </div>
 
 

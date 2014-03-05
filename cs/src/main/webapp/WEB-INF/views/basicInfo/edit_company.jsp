@@ -10,7 +10,7 @@
 	<table id="edit_companyTab" class="companyTable" border="0">
 		<tr>
 			<td class="tdRight">档案编码:</td>
-			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}" style="border: 0;hei" readonly="true" />
+			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}"   data-options="required:true" />
 			</td>
 		</tr>
 		<tr>

@@ -143,8 +143,8 @@ basicFile.editCompany = function() {
  */
 basicFile.openCompanyStaff = function(id) {
 	// 获取年份
-	basicFile.companyYears = $("#companyYears").combobox("getValue");
-	esd.common.defaultOpenWindow("企业残疾职工列表", 'worker/list/' + id + '/' + basicFile.companyYears);
+
+	esd.common.defaultOpenWindow("企业残疾职工列表", 'worker/list/' + id);
 };
 /**
  * 单条删除企业数据

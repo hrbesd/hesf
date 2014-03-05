@@ -10,7 +10,7 @@
 	<table id="edit_companyTab" class="companyTable" border="0">
 		<tr>
 			<td class="tdRight">档案编码 :</td>
-			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}" style="border: 0" readonly="true" />
+			<td class="texttd"><input name="companyCode" class="inNormal" type="text" value="${company.companyCode}"   data-options="required:true" />
 			</td>
 		</tr>
 		<tr>
@@ -95,8 +95,8 @@
 
 		<tr>
 			<td class="tdRight"></td>
-			<td class="tdCenter" colspan="4"> <a href="javascript:esd.common.defaultOpenWindowClose();"
-				class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+			<td class="tdCenter" colspan="4">
+			 <a href="javascript:esd.common.defaultOpenWindowClose();" 	class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 			</td>
 		</tr>
 	</table>

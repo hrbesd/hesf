@@ -110,10 +110,10 @@
 			width : 370,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var e = '<a  href="#" onclick="printList.openAuditTab(\'' + row.id + '\')">年审表</a> ';
-				var d = '<a href="#" onclick="printList.openWorkerList(\'' + row.id + '\')">残疾职工表</a> ';
-				var v = '<a href="#" onclick="printList.openNotice(\'' + row.id + '\')">缴款通知书</a> ';
-				return e + d + v;
+				var e = '<a  href="#" onclick="printList.openAuditTab(\'' + row.companyId + '\')">年审表</a> ';
+				var d = '<a href="#" onclick="printList.openWorkerList(\'' + row.companyId + '\')">残疾职工表</a> ';
+			
+				return e + d ;
 			}
 		} ] ], params);
 
@@ -176,10 +176,12 @@
 	打开年审表
 	 **/
 	printList.openAuditTab = function(id) {
+		/*
 		if (printList.detect()) {
 			alert("单位当年度未进行审核");
 			return;
 		}
+		*/
 		esd.common.defaultOpenWindow("年审表", 'print/audit/' + id + '/' + $("#year").val());
 
 	};
@@ -274,8 +276,9 @@
 			</tr>
 		</table>
 		<div class="findBut">
-			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> <a
-				href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
+			  <a	href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
+			 <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 		</div>
 	</div>
 </div>
