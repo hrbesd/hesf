@@ -27,7 +27,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param auditId	大于0的正整数
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(Integer auditId);
+	BigDecimal getAlreadyPayByAudit(Integer auditId);
 	
 	/**
 	 * 根据公司id, 得到已经付款的金额
@@ -35,16 +35,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyId	公司id
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(String companyId);
-
-	/**
-	 * 根据年份(year),公司code(companyCode) , 得到已经付款的金额 
-	 * 
-	 * @param year	非空
-	 * @param companyCode	非空
-	 * @return
-	 */
-	BigDecimal getAlreadyPay(String year, String companyCode);
+	BigDecimal getAlreadyPayByCompany(Integer companyId);
 
 	/**
 	 * 根据审核id, 得到缴款列表
@@ -54,7 +45,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param pageSize	返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(Integer auditId, Integer page, Integer pageSize);
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAudit(Integer auditId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据公司id, 得到缴款列表
@@ -64,17 +55,6 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param pageSize	返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String companyId, Integer page, Integer pageSize);
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByCompany(Integer companyId, Integer page, Integer pageSize);
 	
-	/**
-	 * 根据年份(year),公司code(companyCode) , 得到缴款列表 年份, 公司code都为必填项
-	 * 
-	 * @param year	非空
-	 * @param companyCode	非空
-	 * @param page	页数
-	 * @param pageSize	返回量
-	 * @return
-	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecord(String year, String companyCode, Integer page, Integer pageSize);
-
 }

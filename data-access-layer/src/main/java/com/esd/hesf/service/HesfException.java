@@ -20,7 +20,7 @@ public class HesfException extends Exception {
 	/**
 	 * 操作失败
 	 */
-	public static final String type_fail = " 操作失败!";
+	public static final String type_fail = " 操作失败或者没有找到对应的数据!";
 	
 	/**
 	 * 没有找到数据

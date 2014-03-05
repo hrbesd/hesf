@@ -41,7 +41,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		// TODO Auto-generated method stub
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
@@ -63,7 +63,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 	}
 
 	@Override
-	public CompanyProperty getByPrimaryKey(int id) {
+	public CompanyProperty getByPrimaryKey(Integer id) {
 		CompanyProperty t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();

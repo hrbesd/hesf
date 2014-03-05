@@ -50,7 +50,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -70,7 +70,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	}
 
 	@Override
-	public AuditParameter getByPrimaryKey(int id) {
+	public AuditParameter getByPrimaryKey(Integer id) {
 		AuditParameter t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -120,9 +120,9 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	}
 
 	@Override
-	public int getSpecialCount(String companyCode, String year, int workerHandicapType, int workerHandicapLevel) {
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+	public int getSpecialCount(Integer companyId, String year, int workerHandicapType, int workerHandicapLevel) {
+		if (companyId == null || companyId<=0) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return -1;
 		}
 		if (year == null || "".equals(year)) {
@@ -138,7 +138,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 			return -1;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("companyCode", companyCode);
+		map.put("companyId", companyId);
 		map.put("year", year);
 		map.put("workerHandicapType", workerHandicapType);
 		map.put("workerHandicapLevel", workerHandicapLevel);

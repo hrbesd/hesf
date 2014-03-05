@@ -22,13 +22,20 @@ public interface AuditService extends BaseService<Audit> {
 	public List<Audit> getAll();
 
 	/**
-	 * 根据年份year, 公司档案号companyCode获得一条审核数据
+	 * 得到所有审核年度列表
 	 * 
-	 * @param year
-	 * @param companyCode
 	 * @return
 	 */
-	Audit getByPrimaryKey(String year, String companyCode);
+	public String[] getYears();
+	
+	/**
+	 * 根据年份year, 公司id companyId获得一条审核数据
+	 * 
+	 * @param year
+	 * @param companyId
+	 * @return
+	 */
+	Audit getByPrimaryKey(String year, Integer companyId);
 
 	/**
 	 * 初始化审计参数--包括复制上年度公司信息和想审计表中插入要审计的公司数据

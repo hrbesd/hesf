@@ -61,7 +61,7 @@ public interface CompanyWorkerViewDao {
 	 * 根据相应参数得到公司已经达到退休年龄的职工列表
 	 * 
 	 * @param map
-	 *            参数 ：公司-id, year-年份,公司档案code-companyCode,
+	 *            参数 : companyid-公司id, year-年份
 	 *            男女分别最大的生日起始时间-maxMaleBirth和maxFemaleBirth
 	 * @return 员工列表
 	 */

@@ -4,9 +4,8 @@
 	
 	<!-- result of company -->
 	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
-		<id column="c_id" jdbcType="VARCHAR" property="id" />
-		<id column="c_year" jdbcType="CHAR" property="year" />
-		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
+		<id column="c_id" jdbcType="INTEGER" property="id" />
+		<result column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
@@ -85,7 +84,6 @@
 		<result column="a_name" property="area.name" jdbcType="VARCHAR" />
 		<!-- company -->
 		<result column="c_id" jdbcType="VARCHAR" property="company.id" />
-		<result column="c_year" jdbcType="CHAR" property="company.year" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="company.companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="company.companyLegal" />
@@ -101,7 +99,7 @@
 
 	<!-- company -->
 	<sql id="Column_List_company">
-		c_id, c_year, c_company_code, c_company_name, c_company_legal, c_company_organization_code,
+		c_id, c_company_code, c_company_name, c_company_legal, c_company_organization_code,
 		c_company_contact_person,
 		c_company_tax_code, c_company_address, c_company_zip_code, c_company_phone, c_company_mobile,
 		c_company_bank, c_company_bank_account, c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active,
@@ -128,11 +126,11 @@
 		<include refid="Column_List_worker"/> 
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
-			<if test="companyId != null and companyId != ''">
+			<if test="companyId != null and companyId > 0">
 				c_id = #{companyId} 
 			</if>
 			<if test="year != null and year != ''">
-				and c_year = #{year,jdbcType=VARCHAR}
+				and cyw_year = #{year,jdbcType=CHAR}
 			</if>
 			<if test="companyCode != null and companyCode != ''">
 				and c_company_code = #{companyCode,jdbcType=VARCHAR}
@@ -171,11 +169,11 @@
 		select count(*) 
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
-			<if test="companyId != null and companyId != ''">
+			<if test="companyId != null and companyId > 0 ">
 				c_id = #{companyId} 
 			</if>
 			<if test="year != null and year != ''">
-				c_year = #{year,jdbcType=VARCHAR}
+				cyw_year = #{year,jdbcType=VARCHAR}
 			</if>
 			<if test="companyCode != null and companyCode != ''">
 				and c_company_code = #{companyCode,jdbcType=VARCHAR}
@@ -310,7 +308,7 @@
 	<!-- retrieve retired workers of a company -->
 	<select id="retrieveRetiredWorkerByCompany" parameterType="map" resultMap="ResultWorker">
 		select	<include refid="Column_List_worker"/> 
-		from (select * from  company_worker_view where c_year = #{year,jdbcType=VARCHAR} and c_company_code = #{companyCode,jdbcType=VARCHAR}) as cwv 
+		from (select * from  company_worker_view where c_id =#{companyId,jdbcType=INTEGER} and cyw_year = #{year,jdbcType=CHAR}) as cwv 
 		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
 		order by cwv.w_id  
 		limit #{start},#{size}
@@ -318,7 +316,7 @@
 	
 	<select id="retrieveRetiredWorkerByCompanyCount" parameterType="map" resultType="int">
 		select count(*) 
-		from (select * from  company_worker_view where c_year = #{year,jdbcType=VARCHAR} and c_company_code = #{companyCode,jdbcType=VARCHAR}) as cwv 
+		from (select * from  company_worker_view where c_id =#{companyId,jdbcType=INTEGER} and cyw_year = #{year,jdbcType=CHAR}) as cwv 
 		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
 	</select>
 	
@@ -327,16 +325,15 @@
 	<select id="ooxx">
 		create view company_worker_view
 		as
-		(select c.id as c_id, c.year as c_year, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
+		(select c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
 				c.company_contact_person as c_company_contact_person,
 				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
 				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
 				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
 				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
-				c.company_remark as c_company_remark, c.company_emp_total as c_company_emp_total, 
-				c.company_handicap_total as c_company_handicap_total, c.create_time as c_create_time, 
+				c.company_remark as c_company_remark, c.create_time as c_create_time, 
 				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
-		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_code as cyw_company_code,
+		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_id as cyw_company_id,
 				cyw.current_job as cyw_current_job, cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
 				cyw.is_active as cyw_is_active, cyw.user_id as cyw_user_id,
 		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
@@ -350,6 +347,6 @@
 		l.id as l_id, l.handicap_level as l_handicap_level,
 		a.code as a_code, a.name as a_name
 		from company as c, company_year_worker as cyw ,worker as w, worker_handicap_type as t, worker_handicap_level as l, area as a
-		where c.company_code = cyw.company_code and c.year = cyw.year and cyw.worker_id = w.id and w.worker_handicap_type = t.id and w.worker_handicap_level = l.id and w.area_code = a.code)
+		where c.id = cyw.company_id and cyw.worker_id = w.id and w.worker_handicap_type = t.id and w.worker_handicap_level = l.id and w.area_code = a.code)
 	</select>
 </mapper>

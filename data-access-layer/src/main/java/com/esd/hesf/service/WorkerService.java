@@ -20,11 +20,11 @@ public interface WorkerService extends BaseService<Worker> {
 	 * 向一个企业中添加职工
 	 * 
 	 * @param worker	职工对象
-	 * @param companyCode	企业档案号
+	 * @param companyId	企业id
 	 * @param year	职工和公司建立关系 年份
 	 * @return
 	 */
-	public boolean save(Worker worker, String companyCode,String year);
+	public boolean save(Worker worker, Integer companyId,String year);
 
 	/**
 	 * 根据年度, 公司code, 和员工的相关信息 得到员工列表
@@ -66,14 +66,14 @@ public interface WorkerService extends BaseService<Worker> {
 	public Worker getByWorkerHandicapCode(String workerHandicapCode);
 	
 	/**
-	 * 残疾员工  进入一家公司
+	 * 更改残疾员工 所在公司
 	 * @param workerId	残疾员工id--非空
-	 * @param targetCompanyCode	跳转目标公司档案号--非空
+	 * @param targetCompanyCode	跳转目标公司id--非空
 	 * @param currentYear	当前年份--非空
 	 * @param currentJob	新职位名称, 可为空
 	 * @return
 	 */
-	public boolean changeCompany(int workerId,String targetCompanyCode,String currentYear,String currentJob);
+	public boolean changeCompany(Integer workerId,Integer targetCompanyId,String currentYear,String currentJob);
 	
 
 	/**

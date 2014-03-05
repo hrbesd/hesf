@@ -38,7 +38,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail);
@@ -58,7 +58,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public Area getByPrimaryKey(int id) {
+	public Area getByPrimaryKey(Integer id) {
 		Area t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail);

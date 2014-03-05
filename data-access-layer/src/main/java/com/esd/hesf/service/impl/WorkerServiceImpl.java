@@ -53,7 +53,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean save(Worker worker, String companyCode, String year) {
+	public boolean save(Worker worker, Integer companyId, String year) {
 		// ①保存到职工表
 		int i = dao.insertSelective(worker);
 		if (i != 1) {
@@ -62,7 +62,7 @@ public class WorkerServiceImpl implements WorkerService {
 		// ②保存到企业--职工 关系表
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(worker.getId());
-		cyw.setCompanyCode(companyCode);
+		cyw.setCompanyId(companyId);
 		cyw.setYear(year);
 		cyw.setCurrentJob(worker.getCurrentJob());
 		cyw.setUserId(worker.getUserId());
@@ -74,7 +74,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -94,7 +94,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public Worker getByPrimaryKey(int id) {
+	public Worker getByPrimaryKey(Integer id) {
 		Worker t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -228,7 +228,7 @@ public class WorkerServiceImpl implements WorkerService {
 			return null;
 		}
 		if (workerIdCard == null || "".equals(workerIdCard)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+			new HesfException("workerIdCard", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -250,13 +250,13 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean changeCompany(int workerId, String targetCompanyCode, String currentYear, String currentJob) {
-		if (workerId <= 0) {
+	public boolean changeCompany(Integer workerId, Integer targetCompanyId, String currentYear, String currentJob) {
+		if (workerId == null ||workerId <= 0) {
 			new HesfException("workerId", HesfException.type_number_negative).printStackTrace();
 			return false;
 		}
-		if (targetCompanyCode == null || "".equals(targetCompanyCode)) {
-			new HesfException("targetCompanyCode", HesfException.type_null).printStackTrace();
+		if (targetCompanyId == null || targetCompanyId<=0) {
+			new HesfException("targetCompanyId", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		if (currentYear == null || "".equals(currentYear)) {
@@ -265,7 +265,7 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(workerId);
-		cyw.setCompanyCode(targetCompanyCode);
+		cyw.setCompanyId(targetCompanyId);
 		cyw.setYear(currentYear);
 		cyw.setCurrentJob(currentJob);
 		boolean bl = cywDao.insertSelective(cyw) == 1 ? true : false;

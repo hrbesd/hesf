@@ -24,6 +24,7 @@ import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
+import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.CompanyService;
@@ -63,15 +64,16 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private CompanyCodeDao ccDao;
 
+	
 	@Override
 	public boolean save(Company t) {
-		t.setId(KitService.getUUID());
-		if (t.getYear() == null) {
-			new HesfException("company.year", HesfException.type_null).printStackTrace();
-			return false;
-		}
-		if (t.getCompanyCode() == null) {
-			new HesfException("company.companyCode", HesfException.type_null).printStackTrace();
+		return false;
+	}
+
+	@Override
+	public boolean save(Company t,String year) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		if (t.getCompanyCode() == null) {
@@ -94,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
 			new HesfException("company.companyType", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		if (t.getCompanyType().getId() == null) {
+		if (t.getCompanyType().getId() == null ||t.getCompanyType().getId()<=0) {
 			new HesfException("company.companyType.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
@@ -102,7 +104,7 @@ public class CompanyServiceImpl implements CompanyService {
 			new HesfException("company.companyEconomyType", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		if (t.getCompanyEconomyType().getId() == null) {
+		if (t.getCompanyEconomyType().getId() == null ||t.getCompanyEconomyType().getId()<=0) {
 			new HesfException("company.companyEconomyType.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
@@ -110,15 +112,7 @@ public class CompanyServiceImpl implements CompanyService {
 			new HesfException("company.companyProperty", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		if (t.getCompanyProperty().getId() == null) {
-			new HesfException("company.companyProperty.id", HesfException.type_null).printStackTrace();
-			return false;
-		}
-		if (t.getCompanyProperty() == null) {
-			new HesfException("company.companyProperty", HesfException.type_null).printStackTrace();
-			return false;
-		}
-		if (t.getCompanyProperty().getId() == null) {
+		if (t.getCompanyProperty().getId() == null ||t.getCompanyProperty().getId()<=0) {
 			new HesfException("company.companyProperty.id", HesfException.type_null).printStackTrace();
 			return false;
 		}
@@ -132,7 +126,7 @@ public class CompanyServiceImpl implements CompanyService {
 		int i = dao.insertSelective(t);
 		// 向审核表中插入信息
 		Audit audit = new Audit();
-		audit.setYear(t.getYear());
+		audit.setYear(year);
 		audit.setCompany(t);
 		audit.setArea(t.getArea());
 		int k = auDao.insertSelective(audit);
@@ -144,7 +138,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public boolean delete(String id) {
+	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -164,28 +158,12 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public Company getByPrimaryKey(String id) {
+	public Company getByPrimaryKey(Integer id) {
 		Company t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
 		}
 		return t;
-	}
-
-	@Override
-	public Company getByYearAndCode(String year, String companyCode) {
-		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("year", year);
-		map.put("companyCode", companyCode);
-		return dao.retrieveByYearAndCode(map);
 	}
 
 	@Override
@@ -215,16 +193,6 @@ public class CompanyServiceImpl implements CompanyService {
 		prn.setNumber(count);
 		prn.setRecords(list);
 		return prn;
-	}
-
-	// 得到所有审核年度
-	@Override
-	public String[] getYears() {
-		String[] arr = dao.retrieveYears();
-		if (arr == null) {
-			return null;
-		}
-		return arr;
 	}
 
 	// 得到有数据的上一年份
@@ -321,16 +289,6 @@ public class CompanyServiceImpl implements CompanyService {
 		return list.get(0);
 	}
 
-	@Override
-	public boolean delete(int id) {
-		return false;
-	}
-
-	@Override
-	public Company getByPrimaryKey(int id) {
-		return null;
-	}
-
 	// @Override
 	// public boolean copyLatYearData(String currentYear, String lastYear) {
 	// Map<String, String> map = new HashMap<String, String>();
@@ -341,14 +299,14 @@ public class CompanyServiceImpl implements CompanyService {
 	// }
 
 	@Override
-	public boolean deleteWorkerFromCompany(String year, String companyCode, int workerId) {
+	public boolean deleteWorkerFromCompany(String year, Integer companyId, Integer workerId) {
 		// 三个参数都不能为空
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+		if (companyId == null || companyId <= 0) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		if (workerId <= 0) {
@@ -357,7 +315,7 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setYear(year);
-		cyw.setCompanyCode(companyCode);
+		cyw.setCompanyId(companyId);
 		cyw.setWorkerId(workerId);
 		boolean bl = cywDao.deleteBySelfObject(cyw) == 1 ? true : false;
 		if (!bl) {
@@ -381,9 +339,6 @@ public class CompanyServiceImpl implements CompanyService {
 			pageSize = Integer.parseInt(map.get("pageSize").toString());
 		}
 		Company t = new Company();
-		if (map.get("year") != null) {
-			t.setYear(map.get("year").toString());
-		}
 		if (map.get("companyCode") != null) {
 			t.setCompanyCode(map.get("companyCode").toString());
 		}
@@ -398,6 +353,9 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		if (map.get("companyEconomyType") != null) {
 			t.setCompanyEconomyType(new CompanyEconomyType(Integer.parseInt(map.get("companyEconomyType").toString())));
+		}
+		if (map.get("companyType") != null) {
+			t.setCompanyType(new CompanyType(Integer.parseInt(map.get("companyType").toString())));
 		}
 		if (map.get("areaCode") != null) {
 			// 地区处理, xxxx 暂时不启用
@@ -432,17 +390,17 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public int getWorkerHandicapTotal(String companyCode, String year) {
+	public int getWorkerHandicapTotal(Integer companyId, String year) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return -1;
 		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+		if (companyId == null || companyId<=0) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return -1;
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
-		cyw.setCompanyCode(companyCode);
+		cyw.setCompanyId(companyId);
 		cyw.setYear(year);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyYearWorker", cyw);
@@ -450,49 +408,15 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, String companyCode, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, Integer companyId, Integer page, Integer pageSize) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
 		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+		if (companyId == null || companyId <= 0) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
 		}
-		// 得到对应年份的参数
-		AuditParameter ap = apDao.retrieveByYear(year);
-		// 计算男女各自的最大出生日期
-		String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale() + "");
-		String maxFemaleBirth = KitService.getBirthFromAge(ap.getRetireAgeFemale() + "");
-		// 参数map
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("year", year);
-		map.put("companyCode", companyCode);
-		map.put("maxMaleBirth", maxMaleBirth);
-		map.put("maxFemaleBirth", maxFemaleBirth);
-		// 起始索引值
-		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
-		// 返回量
-		map.put("size", pageSize);
-		// 返回的数据
-		List<Worker> list = cwvDao.retrieveRetiredWorkerByCompany(map);
-		// 数据条数
-		int count = cwvDao.retrieveRetiredWorkerByCompanyCount(map);
-		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
-		PaginationRecordsAndNumber<Worker, Number> prn = new PaginationRecordsAndNumber<Worker, Number>();
-		prn.setNumber(count);
-		prn.setRecords(list);
-		return prn;
-	}
-
-	@Override
-	public PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String companyId, Integer page, Integer pageSize) {
-		if (companyId == null || "".equals(companyId)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
-			return null;
-		}
-		Company company = dao.retrieveByPrimaryKey(companyId);
-		String year = company.getYear();
 		// 得到对应年份的参数
 		AuditParameter ap = apDao.retrieveByYear(year);
 		// 计算男女各自的最大出生日期
@@ -520,17 +444,17 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public String[] getUnauditYearByCompanycode(String companyCode, String year) {
+	public String[] getUnauditYearByCompany(Integer companyId, String year) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
 		}
-		if (companyCode == null || "".equals(companyCode)) {
-			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+		if (companyId == null || companyId<=0) {
+			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("companyCode", companyCode);
+		map.put("companyId", companyId);
 		map.put("year", year);
 		String[] years = auDao.retireveUnauditYearByCompanycode(map);
 		return years;
@@ -547,11 +471,12 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public boolean checkCompanyCode(String companyCode) {
+	public Company getByCompanyCode(String companyCode) {
 		if (companyCode == null || "".equals(companyCode)) {
-			return false;
+			new HesfException("companyCode",HesfException.type_null);
+			return null;
 		}
-		return dao.retrieveCountByCompanyCode(companyCode) > 0 ? true : false;
+		return dao.retrieveByCompanyCode(companyCode);
 	}
 
 }
