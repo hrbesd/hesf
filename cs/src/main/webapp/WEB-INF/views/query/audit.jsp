@@ -100,7 +100,7 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="javascript:void(0);" onclick="initAuditList.openViewCompany(" + row.companyId + ")">' + value + '</a>';
+				var c = '<a href="javascript:void(0);" onclick="queryAudit.openViewCompany(' + row.companyId + ')">' + value + '</a>';
 				return c;
 			}
 		}, {
