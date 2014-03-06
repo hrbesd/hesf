@@ -82,7 +82,7 @@
 				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />
 			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
 			<td width="80" style="text-align: right;">实缴金额:</td>
 			<td width="150"><input type="text" id="money" />

@@ -116,6 +116,7 @@ public class AuditsController {
 		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
+		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
 		auditService.update(getAudit);
 		return true;
 	}
@@ -475,8 +476,13 @@ public class AuditsController {
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());// 流程状态
+				String statusName = it.getAuditProcessStatus().getAuditProcessStatus();
+				if (it.getRefuseTimes() > 0) {
+					statusName = statusName + "(" + it.getRefuseTimes() + ")";
+				}
+				map.put("auditProcessStatus", statusName);// 流程状态
 				map.put("auditProcessStatusId", it.getAuditProcessStatus().getId());// 流程状态
+
 				list.add(map);
 			}
 			entity.put("total", total);
