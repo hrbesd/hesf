@@ -13,8 +13,8 @@
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
-		<result column="c_company_fax" jdbcType="CHAR" property="companyFax" />
 		<result column="c_company_phone" jdbcType="VARCHAR" property="companyPhone" />
+		<result column="c_company_fax" jdbcType="CHAR" property="companyFax" />
 		<result column="c_company_mobile" jdbcType="VARCHAR" property="companyMobile" />
 		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
 		<result column="c_company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />

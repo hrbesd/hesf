@@ -4,6 +4,7 @@
 
 	<!-- return the audit result with company info -->
 	<resultMap id="AuditCompanyViewModel" type="com.esd.hesf.model.Audit">
+		<!-- audit -->
 		<id column="au_id" jdbcType="INTEGER" property="id" />
 		<result column="au_year" jdbcType="CHAR" property="year" />
 		<result column="au_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
@@ -17,6 +18,8 @@
 		<result column="au_pay_amount" jdbcType="DECIMAL" property="payAmount" />
 		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
+		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
+		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
@@ -31,8 +34,7 @@
 		<result column="au_reduction_reason" jdbcType="VARCHAR" property="reductionReason" />
 		<result column="au_reduction_answer_user" jdbcType="VARCHAR" property="reductionAnswerUser" />
 		<result column="au_reduction_answer_date" jdbcType="VARCHAR" property="reductionAnswerDate" />
-		<result column="au_reduction_answer_option" jdbcType="VARCHAR"
-			property="reductionAnswerOption" />
+		<result column="au_reduction_answer_option" jdbcType="VARCHAR" property="reductionAnswerOption" />
 		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
 		<result column="au_unaudit_years" jdbcType="INTEGER" property="unauditYears" />
 		<result column="au_supplement_year" jdbcType="CHAR" property="supplementYear" />
@@ -43,7 +45,13 @@
 		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
 		<result column="au_is_active" jdbcType="BIT" property="isActive" />
 		<result column="au_version" jdbcType="INTEGER" property="version" />
+		<!-- auditProcessStatus -->
+		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
+		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
+		<!-- company -->
 		<result column="c_id" jdbcType="INTEGER" property="company.id" />
+		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
+		<result column="c_company_management" jdbcType="VARCHAR" property="company.companyManagement" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="company.companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="company.companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="company.companyContactPerson" />
@@ -53,12 +61,28 @@
 		<result column="c_company_address" jdbcType="VARCHAR" property="company.companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="company.companyZipCode" />
 		<result column="c_company_phone" jdbcType="VARCHAR" property="company.companyPhone" />
+		<result column="c_company_fax" jdbcType="VARCHAR" property="company.companyFax" />
 		<result column="c_company_mobile" jdbcType="VARCHAR" property="company.companyMobile" />
 		<result column="c_company_bank" jdbcType="VARCHAR" property="company.companyBank" />
 		<result column="c_company_bank_account" jdbcType="VARCHAR" property="company.companyBankAccount" />
 		<result column="c_company_remark" jdbcType="VARCHAR" property="company.companyRemark" />
-		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
-		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
+		<result column="c_create_time" jdbcType="TIMESTAMP" property="company.createTime" />
+		<result column="c_update_time" jdbcType="TIMESTAMP" property="company.updateTime" />
+		<result column="c_user_id" jdbcType="INTEGER" property="company.userId" />
+		<result column="c_is_active" jdbcType="BIT" property="company.isActive" />
+		<result column="c_version" jdbcType="INTEGER" property="company.version" />
+		<!-- companyType -->
+		<result column="t_id" jdbcType="INTEGER" property="company.companyType.id" />
+		<result column="t_company_type" jdbcType="VARCHAR" property="company.companyType.companyType" />
+		<!-- companyEconomyType -->
+		<result column="et_id" jdbcType="INTEGER" property="company.companyEconomyType.id" />
+		<result column="et_company_economy_type" jdbcType="VARCHAR" property="company.companyEconomyType.companyEconomyType" />
+		<!-- companyProperty -->
+		<result column="p_id" jdbcType="INTEGER" property="company.companyProperty.id" />
+		<result column="p_company_property" jdbcType="VARCHAR" property="company.companyProperty.companyProperty" />
+		<!-- area -->
+		<result column="a_code" jdbcType="CHAR" property="company.area.code" />
+		<result column="a_name" jdbcType="VARCHAR" property="company.area.name" />
 	</resultMap>
 	
 	<resultMap id="ReportViewModel" type="com.esd.hesf.viewmodels.ReportViewModel">
@@ -88,10 +112,10 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		c_id, c_company_code, c_company_name, c_company_legal, c_company_contact_person, 
+		c_id, c_company_code, c_company_management,c_company_name, c_company_legal, c_company_contact_person, 
 			c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
-			c_company_phone, c_company_mobile, c_company_bank, c_company_bank_account,
-			c_company_remark, c_user_id, c_is_active, c_version,
+			c_company_phone, c_company_fax, c_company_mobile, c_company_bank, c_company_bank_account,
+			c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active, c_version,
 		t_id, t_company_type, 
 		et_id, et_company_economy_type,
 		p_id, p_company_property,
@@ -100,11 +124,13 @@
 			au_company_predict_total, au_company_should_total,
 			au_company_already_total,
 			au_amount_payable, au_reduction_amount, au_actual_amount,
-			au_pay_amount, au_remain_amount, au_init_audit_user_id, au_init_audit_date, 
-			au_verify_audit_user_id, au_verify_audit_date, au_remark, au_is_exempt, 
+			au_pay_amount, au_remain_amount, au_complement_amount, au_delay_pay_amount,
+			au_is_delay_pay, au_init_audit_user_id, au_init_audit_date, au_init_audit_comment,
+			au_verify_audit_user_id, au_verify_audit_date, au_verify_audit_comment, au_remark, au_is_exempt, 
 			au_reduction_type, au_reducion_apply_user, au_reduction_date, au_reduction_reason,
 			au_reduction_answer_user, au_reduction_answer_date, 
-			au_reduction_answer_option, au_reduction_remark,
+			au_reduction_answer_option, au_reduction_remark, au_unaudit_years, au_supplement_year,
+			au_delay_days, au_refuse_times, 
 			au_create_time,au_update_time, au_user_id, 
 			au_is_active, au_version,
 		aup_id, aup_audit_process_status
@@ -344,7 +370,8 @@
 	
 	<insert id="create_4">
 		create view audit_company_view as 
-		select	c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+		select	c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
+				c.company_name as c_company_name, c.company_legal as c_company_legal,
 				c.company_contact_person as c_company_contact_person, 
 				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
 				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
@@ -365,9 +392,10 @@
 					au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
 					au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
 					au.is_delay_pay as au_is_delay_pay, 
-					au.init_audit_user_id as au_init_audit_user_id, 
-					au.init_audit_date as au_init_audit_date, au.verify_audit_user_id as au_verify_audit_user_id,
-					au.verify_audit_date as au_verify_audit_date , au.remark as au_remark, 
+					au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
+					au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
+					au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+					au.remark as au_remark, 
 					au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
 					au.reducion_apply_user as au_reducion_apply_user, 
 					au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,

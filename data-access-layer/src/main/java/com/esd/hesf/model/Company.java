@@ -22,8 +22,8 @@ public class Company extends PrimaryKey_Int {
 	private CompanyEconomyType companyEconomyType; // 企业经济类型
 	private CompanyProperty companyProperty; // 公司属性
 	private Area area; // 公司所属地区
-	private String companyPhone = ""; // 企业电话
-	private String companyMobile = "";// 企业联系人手机
+	private String companyPhone; // 企业电话
+	private String companyMobile;// 企业联系人手机
 	private String companyBank;// 开户银行
 	private String companyBankAccount;// 银行账户
 	private String companyRemark;// 备注
