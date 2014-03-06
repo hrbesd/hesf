@@ -102,31 +102,7 @@ esd.common.syncPostSubmitBoolean = function(id, url) {
  * 创建通用的列表控件
  */
 esd.common.datagrid = function(grid, url, toolbar, columns) {
-	$(grid).datagrid({
-		url : url,
-		// iconCls : 'icon-save',
-		type : 'POST',
-		pageSize : 20,
-		pageList : [ 20, 40, 60, 80],
-		border : false,// 不显示边框
-		pagination : true, // 是否显示分页栏
-		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
-		fit : true, // 面板大小将自适应父容器
-		fitColumns : true,// 是否显示横向滚动条，未生效
-		nowrap : true,// 如果为true，则在同一行中 。设置为true可以提高加载性能
-		idField : 'id',// 指明哪一个字段是标识字段。
-		rownumbers : true,// 显示行号
-		striped : true,// 奇偶行使用不同背景色
-		checkOnSelect : false,// 单击不选择复选框
-		selectOnCheck : false,
-		singleSelect : true,
-		frozenColumns : [ [ {// 复选框
-			field : 'id',
-			checkbox : true
-		}, ] ],
-		columns : columns,
-		toolbar : toolbar
-	});
+	esd.common.datagrid(grid, url, toolbar, columns, null);
 };
 
 /**
@@ -136,7 +112,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
-		pageList : [ 20, 40, 60, 80],
+		pageList : [ 20, 40, 60, 80 ],
 		border : false,// 不显示边框
 		pagination : true, // 是否显示分页栏
 		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
@@ -165,7 +141,7 @@ esd.common.datagridEx = function(grid, url, toolbar, columns) {
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
-		pageList : [ 20, 40, 60, 1000],
+		pageList : [ 20, 40, 60, 1000 ],
 		border : false,// 不显示边框
 		pagination : false, // 是否显示分页栏
 		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
@@ -175,7 +151,7 @@ esd.common.datagridEx = function(grid, url, toolbar, columns) {
 		rownumbers : true,// 显示行号
 		striped : true,// 奇偶行使用不同背景色
 		checkOnSelect : false,// 单击不选择复选框
-		selectOnCheck : false,
+		selectOnCheck : true,
 		singleSelect : true,
 		columns : columns,
 		toolbar : toolbar
@@ -184,7 +160,7 @@ esd.common.datagridEx = function(grid, url, toolbar, columns) {
 /**
  * 通用弹出框
  */
-esd.common.window = function(id, title, width, height, url,onCloseFun){
+esd.common.window = function(id, title, width, height, url, onCloseFun) {
 	$(id).window({
 		width : width,
 		height : height,
@@ -196,7 +172,7 @@ esd.common.window = function(id, title, width, height, url,onCloseFun){
 		maximizable : false,
 		modal : true,
 		onClose : function() {
-			if(onCloseFun!=null){
+			if (onCloseFun != null) {
 				onCloseFun();
 			}
 			$(id).window("destroy");
@@ -209,14 +185,14 @@ esd.common.window = function(id, title, width, height, url,onCloseFun){
  */
 esd.common.openWindow = function(id, title, width, height, url) {
 	$("#main").append('<div id="' + id.substring(1) + '"></div>');
-	esd.common.window(id, title, width, height, url,null);
+	esd.common.window(id, title, width, height, url, null);
 };
 /**
  * 自定义ID的通用的编辑弹出框 EX
  */
-esd.common.openWindowEx = function(id, title, width, height, url,closeFun) {
- 	$("#main").append('<div id="' + id.substring(1) + '"></div>');
- 	esd.common.window(id, title, width, height, url,closeFun);
+esd.common.openWindowEx = function(id, title, width, height, url, closeFun) {
+	$("#main").append('<div id="' + id.substring(1) + '"></div>');
+	esd.common.window(id, title, width, height, url, closeFun);
 };
 
 /**
@@ -224,7 +200,7 @@ esd.common.openWindowEx = function(id, title, width, height, url,closeFun) {
  */
 esd.common.defaultOpenWindowEx = function(title, width, height, url) {
 	$("#main").append('<div id="defaultWindow"></div>');
-	esd.common.window('#defaultWindow', title, width, height, url,null);
+	esd.common.window('#defaultWindow', title, width, height, url, null);
 };
 /**
  * 使用默认ID 和宽高的弹出框
@@ -293,7 +269,7 @@ $.extend($.fn.combobox.methods, {
  * 文本框验证
  */
 esd.common.validatebox = function(id) {
-	var Controls = $(id+" .easyui-validatebox");
+	var Controls = $(id + " .easyui-validatebox");
 	var b = true;
 	Controls.each(function(i, n) {
 		if ($(n).validatebox('isValid') == false) {
@@ -304,33 +280,29 @@ esd.common.validatebox = function(id) {
 	return b;
 };
 
-
-
 /**
- * 打印
- * <!--startprint-->  开始部分
- * <!--endprint-->   结束部分
+ * 打印 <!--startprint--> 开始部分 <!--endprint--> 结束部分
  */
-esd.common.printWindow=function(){
-	
-		bdhtml=window.document.body.innerHTML; 
-		sprnstr="<!--startprint-->"; 
-		eprnstr="<!--endprint-->"; 
-		prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); 
-		prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); 
-		var newWindow=window.open();
-		newWindow.window.document.body.innerHTML=prnhtml; 
-		newWindow.window.document.head.innerHTML=window.document.head.innerHTML;
-		newWindow.window.print(); 
-		
-//		window.document.body.innerHTML=prnhtml; 
-//		window.print(); 
-	
+esd.common.printWindow = function() {
+
+	bdhtml = window.document.body.innerHTML;
+	sprnstr = "<!--startprint-->";
+	eprnstr = "<!--endprint-->";
+	prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
+	prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+	var newWindow = window.open();
+	newWindow.window.document.body.innerHTML = prnhtml;
+	newWindow.window.document.head.innerHTML = window.document.head.innerHTML;
+	newWindow.window.print();
+
+	// window.document.body.innerHTML=prnhtml;
+	// window.print();
+
 };
 /**
  * 查看企业
  */
-esd.common.viewCompany=function(id){
+esd.common.viewCompany = function(id) {
 
-esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+	esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
 };

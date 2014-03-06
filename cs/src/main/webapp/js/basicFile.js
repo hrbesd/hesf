@@ -22,7 +22,7 @@ basicFile.getParams = function() {
 basicFile.findData = function() {
 	if (esd.common.validatebox()) {
 		// 重新根据参数加载数据
-		$('#company_grid').datagrid('load', basicFile.getParams());
+		$('#company_grid').datagrid('reload', basicFile.getParams());
 	};
 };
 
@@ -99,7 +99,7 @@ basicFile.addCompany = function() {
 		if (data == true) {
 			alert("单位信息增加成功。");
 			esd.common.defaultOpenWindowClose();
-			$('#company_grid').datagrid("load");
+			$('#company_grid').datagrid("reload");
 		} else {
 			alert("单位信息增加失败。");
 		}
@@ -132,7 +132,7 @@ basicFile.editCompany = function() {
 		if (data == true) {
 			alert("单位信息编辑成功。");
 			esd.common.defaultOpenWindowClose();
-			$('#company_grid').datagrid("load");
+			$('#company_grid').datagrid("reload");
 		} else {
 			alert("单位信息编辑失败。");
 		}

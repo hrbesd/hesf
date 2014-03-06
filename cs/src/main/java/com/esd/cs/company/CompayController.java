@@ -240,6 +240,7 @@ public class CompayController {
 			map = new HashMap<String, String>();
 			list = new ArrayList<Map<String, String>>();
 			map.put("companyName", c.getCompanyName());// 企业名称
+			map.put("companyId", String.valueOf(c.getId()));// 档案编码
 			map.put("companyCode", c.getCompanyCode());// 档案编码
 			map.put("companyTaxCode", c.getCompanyTaxCode());// 税务编码
 			map.put("companyEconomyType", c.getCompanyEconomyType().getCompanyEconomyType());// 经济类型

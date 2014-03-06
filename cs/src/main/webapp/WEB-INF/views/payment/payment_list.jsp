@@ -16,6 +16,12 @@
 		return params;
 	};
 	/**
+	 * 查看企业信息框
+	 */
+	payment.openViewCompany = function(id) {
+		esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+	};
+	/**
 	加载初审列表数据
 	 */
 	payment.loadData = function() {
@@ -29,11 +35,14 @@
 			title : '税务编码',
 			width : 150
 		}, {
+			field : 'companyId',
+			hidden : true
+		}, {
 			field : 'companyName',
 			title : '企业名称',
 			width : 900,
 			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="payment.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
+				var c = '<a href="javascript:void(0);" onclick="payment.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;
 			}
 		}, {
@@ -70,28 +79,35 @@
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
 			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}"
-				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" /></td>
+				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />
+			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
+			</td>
 			<td width="80" style="text-align: right;">实缴金额:</td>
-			<td width="150"><input type="text" id="money" /></td>
-			<td width="100%" ></td>
+			<td width="150"><input type="text" id="money" />
+			</td>
+			<td width="100%"></td>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码 :</td>
-			<td><input type="text" style="width: 100%" id="companyCode" /></td>
+			<td><input type="text" style="width: 100%" id="companyCode" />
+			</td>
 			<td style="text-align: right;">税务编码:</td>
-			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
-			<td  style="text-align: right;">企业名称 :</td>
-			<td colspan="3"><input type="text" style="width: 100%" id="companyName" /></td>
-			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="payment.loadData()">查找</a></td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" />
+			</td>
+			<td style="text-align: right;">企业名称 :</td>
+			<td colspan="3"><input type="text" style="width: 100%" id="companyName" />
+			</td>
+			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="payment.loadData()">查找</a>
+			</td>
 		</tr>
 	</table>
 </div>
 <!-- 数据表格 -->
 <table id="paymentList_datagrid"></table>
 <script type="text/javascript">
-	$.parser.onComplete = function(){
+	$.parser.onComplete = function() {
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',

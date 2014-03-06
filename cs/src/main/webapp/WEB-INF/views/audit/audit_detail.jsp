@@ -16,7 +16,7 @@
 			</c:if>
 		</div>
 
-		<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
+		<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}'"></div>
 		<div title="年审参数" ><jsp:include page="audit_params.jsp" /></div>
 	</div>
 </div>

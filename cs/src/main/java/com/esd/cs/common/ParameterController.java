@@ -287,7 +287,7 @@ public class ParameterController {
 	/**
 	 * 返回 地区
 	 */
-	@RequestMapping(value = "/getArea", method = RequestMethod.POST)
+	@RequestMapping(value = "/getArea", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Area> areaService(HttpServletRequest request) {
 		List<Area> list = null;

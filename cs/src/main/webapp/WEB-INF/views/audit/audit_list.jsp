@@ -36,7 +36,7 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="#" onclick="initAuditList.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
+				var c = '<a href="javascript:void(0);" onclick="initAuditList.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;
 			}
 		}, {
@@ -86,12 +86,8 @@
 	 * 查询数据 并校验所有输入框
 	 */
 	initAuditList.findData = function() {
-		if (esd.common.validatebox()) {
-			// 重新根据参数加载数据
-			var params = initAuditList.getParams();
-			$('#initAuditList_datagrid').datagrid('load', params);
-		}
-		;
+		var params = initAuditList.getParams();
+		$('#initAuditList_datagrid').datagrid('load', params);
 	};
 </script>
 <!-- 自定义菜单 -->
@@ -100,25 +96,31 @@
 	<table border="0" width="100%">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
-			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
+			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
+			</td>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码:</td>
-			<td><input type="text" style="width: 100%" id="companyCode" /></td>
+			<td><input type="text" style="width: 100%" id="companyCode" />
+			</td>
 			<td style="text-align: right;">税务编码:</td>
-			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" />
+			</td>
 			<td width="80" style="text-align: right;">企业名称:</td>
-			<td><input type="text" style="width: 100%" id="companyName" /></td>
-			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a></td>
+			<td><input type="text" style="width: 100%" id="companyName" />
+			</td>
+			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a>
+			</td>
 		</tr>
 	</table>
 </div>
 <!-- 数据表格 -->
 <table id="initAuditList_datagrid"></table>
 <script type="text/javascript">
-	$.parser.onComplete = function() {
+	$.parser.onComplete = function(v) {
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',

@@ -14,7 +14,7 @@
 				</tr>
 				<tr>
 					<td>所属地区:</td>
-					<td><input name="area.code" class="easyui-combobox" data-options="value:${params.area.code},height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
+					<td><input value="${areaName}" />
 					</td>
 					<td>滞纳金开始日期:</td>
 					<td>

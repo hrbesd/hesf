@@ -508,6 +508,8 @@ public class AuditsController {
 		}
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
+		String areaName = auditParameter.getArea().getName();
+		request.setAttribute("areaName", areaName);
 		request.setAttribute("params", auditParameter);
 		if (companyPropertys == null) {
 			companyPropertys = companyPropertyService.getAll();
