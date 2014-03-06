@@ -199,7 +199,7 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker', function() {
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
@@ -221,7 +221,8 @@
 			var selection = $("#workerList_dataGrid").datagrid('getSelections');
 			// 判断选择数目是否大于0
 			if (selection.length == 0) {
-				alert("未选择任何数据。");
+				
+				$.messager.alert('消息', '未选择任何数据。', 'info');
 				return;
 			} else {
 				// 组装参数
@@ -247,13 +248,16 @@
 							// 刷新数据列表
 							$('#workerList_dataGrid').datagrid('reload');
 							$("#workerList_dataGrid").datagrid('clearSelections');
-							alert("删除成功。");
+						
+							$.messager.alert('消息', '删除成功。', 'ok');
 						} else {
-							alert("残疾职工删除失败。");
+							$.messager.alert('消息', '残疾职工删除失败。', 'error');
+							
 						}
 					},
 					error : function() {
-						alert("删除残疾职工信息时发生错误。");
+				
+							$.messager.alert('消息', '删除残疾职工信息时发生错误。', 'error');
 					}
 				});
 			}
@@ -279,12 +283,14 @@
 					$("#company_Area").html(data[0].companyArea);// 地区
 
 				} else {
-					alert("未获得到企业信息数据。");
+			
+					$.messager.alert('消息', '未获得到企业信息数据。', 'error');
 				}
 
 			},
 			error : function() {
-				alert("残疾职工列表，获取企业信息错误。");
+			$.messager.alert('消息', '残疾职工列表，获取企业信息错误。', 'error');
+			
 			}
 		});
 
@@ -312,7 +318,7 @@
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
-			<td id="company_name"></td>
+			<td id="company_name" style="width: 330px"></td>
 			<td class="tipTextEx">档案编码:</td>
 			<td id="company_Code"></td>
 
@@ -326,7 +332,7 @@
 			<td id="worker_HandicapTotal"></td>
 
 			<td class="tipTextEx">地区:</td>
-			<td id="company_Area"></td>
+			<td id="company_Area" style="width:135px"></td>
 
 		</tr>
 	</table>

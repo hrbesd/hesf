@@ -114,9 +114,11 @@
 		
 		// 获取所有选中列
 	var selection = $("#queryCompanyGrid").datagrid('getSelections');
+
 	// 判断选择数目是否大于0
 	if (selection.length == 0) {
-		alert("未选择任何数据。");
+		$.messager.alert('消息', '未选择任何数据。', 'error');
+		
 	} else {
 		// 显示确认删除对话框
 		$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
@@ -139,11 +141,12 @@
 			
 						window.location.href=data;
 					}else{
-					
-						alert("单位信息导出错误");
+							$.messager.alert('消息', '单位信息导出错误。', 'error');
+						
 					}
 					},error:function(){
-						alert("exportCompanyErrror");
+					$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+					
 					}
 				});
 			}
@@ -152,12 +155,12 @@
 	};
 	//组件解析完成
 	$.parser.onComplete=function(){
-		//加载单位档案数据
-		queryCompany.loadData(queryCompany.getParams());
 	};
 	
 	$(function() {
 		queryCompany.init();
+		//加载单位档案数据
+		queryCompany.loadData(queryCompany.getParams());
 		
 
 	});

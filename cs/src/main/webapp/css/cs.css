@@ -142,7 +142,7 @@ textarea {
 .workerListTip{
 	background-color: #E0ECFF;
 	margin-left: 10px;
-	width: 863px;
+	width: 100%;
 	margin: 0 auto;
 }
 .reportTitle{
@@ -179,6 +179,6 @@ text-align: right;
 	height:30px;
 	font-size:12px;
 	 border: 1px solid #95B8E7;
-	  padding-left: 2px;
+
 }
     

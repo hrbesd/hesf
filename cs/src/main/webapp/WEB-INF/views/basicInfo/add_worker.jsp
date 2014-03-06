@@ -97,11 +97,12 @@
 		//数据验证可以通过
 		esd.common.syncPostSubmit("#addWorkerForm", function(data) {
 			if (data == true) {
-				alert("残疾职工信息增加成功。");
+		
+				$.messager.alert('消息', '残疾职工信息增加成功', 'ok');
 				addWorker.close();
 				$('#workerList_dataGrid').datagrid("load");
 			} else {
-				alert("残疾职工信息增加失败。");
+				$.messager.alert('消息', '残疾职工信息增加失败。', 'error');
 			}
 		});
 	};
@@ -110,14 +111,16 @@
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
 		if (workerType == 0 || workerType>7) {
-			alert("残疾证号内残疾类型错误。");
+		
+			$.messager.alert('消息', '残疾证号内残疾类型错误。', 'error');
 			return false;
 		}
 		//获取残疾等级
 		var workerLeven = workerHandicapCode.substring(19, 20);
 		$("#workerHandicapLevel").combobox("setValue", workerLeven);
 		if (workerLeven == 0 || workerLeven>4 ) {
-			alert("残疾证号内残疾等级错误。");
+			
+			$.messager.alert('消息', '残疾证号内残疾等级错误。', 'error');
 			return false;
 		}
 		//根据残疾证号获取出生日期
@@ -131,21 +134,24 @@
 
 		//判断年龄
 		if(age<16){
-				alert("职工年龄过小，不能录入。");
+		$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
+			
 				return false;
 		}
 		if (sex % 2 === 0) {
 			//偶数 女性职工
 			$("#workerGender").combobox("setValue", "0");
 			if(age > $("#retireAgeFemale").val()){
-				alert("职工年龄："+age+"岁，性别：女性。已超过退休年龄");
+				$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。已超过退休年龄', 'error');
+	
 				return false;
 			}
 		} else {
 			//基数 男性
 			$("#workerGender").combobox("setValue", "1");
 				if(age > $("#retireAgeMale").val()){
-				alert("职工年龄："+age+"岁，性别：男性。已超过退休年龄");
+					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。已超过退休年龄', 'error');
+				
 				return false;
 			}
 		}
@@ -206,12 +212,14 @@
 					return;
 					//第二种情况，员工存在，不再任何公司
 				} else {
-					alert("验证通过，可以注册");
+					
+					$.messager.alert('消息', '验证通过，可以注册', 'ok');
 					return;
 				}
 			},
 			error : function() {
-				alet("增加残疾职工校验时发生错误。");
+				$.messager.alert('消息', '增加残疾职工校验时发生错误。', 'error');
+			
 			}
 		});
 	};
