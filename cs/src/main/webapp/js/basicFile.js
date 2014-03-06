@@ -168,7 +168,7 @@ basicFile.openDeleteCompany = function(id) {
  */
 basicFile.openBatchDeleteCompany = function() {
 	// 获取所有选中列
-	var selection = $("#company_grid").datagrid('getSelections');
+	var selection = $("#company_grid").datagrid('getChecked');
 	// 判断选择数目是否大于0
 	if (selection.length == 0) {
 		

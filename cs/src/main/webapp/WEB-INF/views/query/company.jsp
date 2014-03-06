@@ -113,7 +113,7 @@
 	queryCompany.openExportCompany = function() {
 		
 		// 获取所有选中列
-	var selection = $("#queryCompanyGrid").datagrid('getSelections');
+	var selection = $("#queryCompanyGrid").datagrid('getChecked');
 
 	// 判断选择数目是否大于0
 	if (selection.length == 0) {
