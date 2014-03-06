@@ -93,7 +93,8 @@
 	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from audit_process_status
+		from audit_process_status 
+		order by priority 
 		limit #{start},#{size}
 	</select>
 	
