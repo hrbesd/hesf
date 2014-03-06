@@ -137,8 +137,19 @@ public class AuditsController {
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		getAudit.setVerifyAuditUser(user);// 添加复审ID
+
+		getAudit.setAmountPayable(audit.getAmountPayable());// 应缴金额
+		getAudit.setReductionAmount(audit.getReductionAmount());// 减缴金额
+		getAudit.setActualAmount(audit.getActualAmount());// 实际应缴金额
+		getAudit.setPayAmount(audit.getPayAmount());// 实际应缴金额
+		getAudit.setRemainAmount(audit.getRemainAmount());// 上年度未缴金额
+		getAudit.setComplementAmount(audit.getComplementAmount());// 补缴金额
+		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
+		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
+		getAudit.setIsExempt(audit.getIsExempt());// 是否免
+
 		AuditProcessStatus auditProcessStatus = null;
-		if (getAudit.getActualAmount().signum() == 0) {
+		if (getAudit.getPayAmount().signum() == 0) {
 			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
 		} else {
 			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
@@ -557,6 +568,8 @@ public class AuditsController {
 		Audit audit = auditService.getByPrimaryKey(id);
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
+		String areaName = auditParameter.getArea().getName();
+		request.setAttribute("areaName", areaName);
 		request.setAttribute("params", auditParameter);
 		if (companyPropertys == null) {
 			companyPropertys = companyPropertyService.getAll();
@@ -580,7 +593,7 @@ public class AuditsController {
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
 
-		return new ModelAndView("audit/audit_view", "entity", audit);
+		return new ModelAndView("audit/audit_view_detail", "entity", audit);
 	}
 
 }
