@@ -171,7 +171,7 @@ public class WorkerServiceImpl implements WorkerService {
 		map.put("size", pageSize);
 		List<Worker> list = cwvDao.retrieveWorkerByCompany(map);
 		// 数据条数
-		int count = cwvDao.retrieveCount(map);
+		int count = cwvDao.retrieveWorkerByCompanyCount(map);
 		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
 		PaginationRecordsAndNumber<Worker, Number> prn = new PaginationRecordsAndNumber<Worker, Number>();
 		prn.setNumber(count);

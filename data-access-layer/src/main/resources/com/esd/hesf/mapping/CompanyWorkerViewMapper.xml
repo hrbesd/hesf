@@ -141,7 +141,7 @@
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="companyId != null and companyId > 0">
-				c_id = #{companyId} 
+				c_id = #{companyId,jdbcType=INTEGER} 
 			</if>
 			<if test="year != null and year != ''">
 				and cyw_year = #{year,jdbcType=CHAR}
@@ -179,7 +179,7 @@
 		limit #{start},#{size}
 	</select>
 	
-	<select id="retrieveCount" parameterType="map" resultType="int">
+	<select id="retrieveWorkerByCompanyCount" parameterType="map" resultType="int">
 		select count(*) 
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
@@ -308,13 +308,13 @@
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="year != null and year != ''">
-				cyw_year = #{year}
+				cyw_year = #{year,jdbcType=CHAR}
 			</if>
 			<if test="workerHandicapCode != null and workerHandicapCode != ''">
-				and w_worker_handicap_code = #{workerHandicapCode} 
+				and w_worker_handicap_code = #{workerHandicapCode,jdbcType=VARCHAR} 
 			</if>
 			<if test="workerIdCard != null and workerIdCard != ''">
-				and w_worker_id_card = #{workerIdCard} 
+				and w_worker_id_card = #{workerIdCard,jdbcType=VARCHAR} 
 			</if>
 		</trim>
 	</select>

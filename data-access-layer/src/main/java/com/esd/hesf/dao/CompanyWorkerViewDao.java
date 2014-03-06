@@ -25,12 +25,12 @@ public interface CompanyWorkerViewDao {
 	List<Worker> retrieveWorkerByCompany(Map<String, Object> map);
 
 	/**
-	 * 根据其他查询方法一样的条件查询数据总条数
+	 * 根据公司查询 他所拥有的员工 人数
 	 * 
 	 * @param map
 	 * @return
 	 */
-	int retrieveCount(Map<String, Object> map);
+	int retrieveWorkerByCompanyCount(Map<String, Object> map);
 
 	/**
 	 * 根据员工相关信息查询带公所属公司信息的员工信息列表
