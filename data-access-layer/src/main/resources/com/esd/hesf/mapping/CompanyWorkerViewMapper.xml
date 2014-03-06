@@ -334,7 +334,6 @@
 		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
 	</select>
 	
-	
 	<!-- create view sql -->
 	<select id="ooxx">
 		create view company_worker_view
