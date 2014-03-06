@@ -102,7 +102,7 @@
 		#{workerHandicapType.id,jdbcType=INTEGER},
 		#{workerHandicapLevel,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}
 		#{remark,jdbcType=VARCHAR},
-		now(),now(), #{userId,jdbcType=INTEGER}, default,default
+		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Worker">

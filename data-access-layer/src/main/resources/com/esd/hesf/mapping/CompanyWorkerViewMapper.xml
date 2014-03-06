@@ -6,15 +6,16 @@
 	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
 		<id column="c_id" jdbcType="INTEGER" property="id" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
+		<result column="c_company_management" jdbcType="VARCHAR" property="companyManagement" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
-		<result column="c_company_organization_code" jdbcType="VARCHAR"
-			property="companyOrganizationCode" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR" property="companyOrganizationCode" />
 		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
 		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
 		<result column="c_company_phone" jdbcType="VARCHAR" property="companyPhone" />
+		<result column="c_company_fax" jdbcType="CHAR" property="companyFax" />
 		<result column="c_company_mobile" jdbcType="VARCHAR" property="companyMobile" />
 		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
 		<result column="c_company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
@@ -32,12 +33,14 @@
 		<result column="w_worker_name" jdbcType="VARCHAR" property="workerName" />
 		<result column="w_worker_gender" jdbcType="VARCHAR" property="workerGender" />
 		<result column="w_worker_birth" jdbcType="VARCHAR" property="workerBirth" />
+		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
 		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
 		<result column="w_career_card" jdbcType="VARCHAR" property="careerCard" />
 		<result column="w_phone" jdbcType="VARCHAR" property="phone" />
 		<result column="w_current_job" jdbcType="VARCHAR" property="currentJob" />
 		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
+		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -61,12 +64,14 @@
 		<result column="w_worker_name" jdbcType="VARCHAR" property="workerName" />
 		<result column="w_worker_gender" jdbcType="VARCHAR" property="workerGender" />
 		<result column="w_worker_birth" jdbcType="VARCHAR" property="workerBirth" />
+		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
 		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
 		<result column="w_career_card" jdbcType="VARCHAR" property="careerCard" />
 		<result column="w_phone" jdbcType="VARCHAR" property="phone" />
 		<result column="w_current_job" jdbcType="VARCHAR" property="currentJob" />
 		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
+		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -83,8 +88,9 @@
 		<result column="a_code" property="area.code" jdbcType="CHAR" />
 		<result column="a_name" property="area.name" jdbcType="VARCHAR" />
 		<!-- company -->
-		<result column="c_id" jdbcType="VARCHAR" property="company.id" />
+		<result column="c_id" jdbcType="INTEGER" property="company.id" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
+		<result column="c_company_management" jdbcType="VARCHAR" property="company.companyManagement" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="company.companyName" />
 		<result column="c_company_legal" jdbcType="VARCHAR" property="company.companyLegal" />
 		<result column="c_company_contact_person" jdbcType="VARCHAR" property="company.companyContactPerson" />
@@ -94,23 +100,31 @@
 		<result column="c_company_address" jdbcType="VARCHAR" property="company.companyAddress" />
 		<result column="c_company_zip_code" jdbcType="CHAR" property="company.companyZipCode" />
 		<result column="c_company_phone" jdbcType="VARCHAR" property="company.companyPhone" />
+		<result column="c_company_fax" jdbcType="VARCHAR" property="company.companyFax" />
 		<result column="c_company_mobile" jdbcType="VARCHAR" property="company.companyMobile" />
+		<result column="c_company_bank" jdbcType="VARCHAR" property="company.companyBank" />
+		<result column="c_company_bank_account" jdbcType="VARCHAR" property="company.companyBankAccount" />
+		<result column="c_company_remark" jdbcType="VARCHAR" property="company.companyRemark" />
+		<result column="c_create_time" jdbcType="TIMESTAMP" property="company.createTime" />
+		<result column="c_update_time" jdbcType="TIMESTAMP" property="company.updateTime" />
+		<result column="c_user_id" jdbcType="INTEGER" property="company.userId" />
+		<result column="c_is_active" jdbcType="BIT" property="company.isActive" />
+		<result column="c_version" jdbcType="INTEGER" property="company.version" />
 	</resultMap>
 
 	<!-- company -->
 	<sql id="Column_List_company">
-		c_id, c_company_code, c_company_name, c_company_legal, c_company_organization_code,
-		c_company_contact_person,
-		c_company_tax_code, c_company_address, c_company_zip_code, c_company_phone, c_company_mobile,
-		c_company_bank, c_company_bank_account, c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active,
-		c_version
+		c_id, c_company_code, c_company_management,c_company_name, c_company_legal, c_company_contact_person, 
+		c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
+		c_company_phone, c_company_fax, c_company_mobile, c_company_bank, c_company_bank_account,
+		c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active, c_version
 	</sql>
 
 	<!-- worker -->
 	<sql id="Column_List_worker">
-		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_id_card, 
+		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_birth_year, w_worker_id_card, 
 		w_career_card, w_phone, w_current_job, w_worker_address,
-		w_worker_handicap_code, w_remark, w_create_time, w_update_time,
+		w_worker_handicap_code, w_is_college, w_remark, w_create_time, w_update_time,
 		w_user_id, w_is_active, w_version
 		<!-- handicap type -->
 		t_id, t_handicap_type,
@@ -325,14 +339,16 @@
 	<select id="ooxx">
 		create view company_worker_view
 		as
-		(select c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
-				c.company_contact_person as c_company_contact_person,
+		(select c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
+				c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
 				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
 				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_fax as c_company_fax, 
 				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
 				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
 				c.company_remark as c_company_remark, c.create_time as c_create_time, 
-				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
+				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
 		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_id as cyw_company_id,
 				cyw.current_job as cyw_current_job, cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
 				cyw.is_active as cyw_is_active, cyw.user_id as cyw_user_id,
@@ -340,7 +356,7 @@
 				w_worker_gender, w.worker_birth as w_worker_birth, w.worker_birth_year as w_worker_birth_year, w.worker_id_card as
 				w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 				w.current_job as w_current_job, w.worker_address as w_worker_address,
-				w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
+				w.worker_handicap_code as w_worker_handicap_code, w.is_college as w_is_college, w.remark as w_remark,
 				w.create_time as w_create_time, w.update_time as w_update_time,
 				w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		t.id as t_id, t.handicap_type as t_handicap_type,

@@ -14,8 +14,8 @@ public class Worker extends PrimaryKey_Int {
 	private String workerBirthYear;// 出生年份--供后台查询使用
 	private String workerIdCard;// 身份证号
 	private String careerCard;// 职业证号
-	private String phone="";// 电话
-	private String currentJob="";// 当前职位
+	private String phone;// 电话
+	private String currentJob;// 当前职位
 	private String workerAddress;// 工作地点
 	private Area area;// 所属地区
 	private String workerHandicapCode;// 残疾证号
