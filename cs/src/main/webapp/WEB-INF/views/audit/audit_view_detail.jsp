@@ -8,19 +8,9 @@
 
 	<div class="easyui-tabs" data-options="fit:true">
 		<div id="startaudit_tabs" title="年审信息">
-			<c:if test="${process==1}">
-				<jsp:include page="audit_init.jsp" />
-			</c:if>
-			<c:if test="${process==2}">
-				<jsp:include page="audit_verify.jsp" />
-			</c:if>
+			<jsp:include page="audit_view.jsp" />
 		</div>
-			<c:if test="${process==1}">
-				<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}'"></div>
-			</c:if>
-			<c:if test="${process==2}">
-				<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}'"></div>
-			</c:if>
+		<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}'"></div>
 		<div title="年审参数" ><jsp:include page="audit_params.jsp" /></div>
 	</div>
 </div>

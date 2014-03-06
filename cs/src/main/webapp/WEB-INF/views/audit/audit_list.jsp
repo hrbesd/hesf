@@ -87,7 +87,7 @@
 	 */
 	initAuditList.findData = function() {
 		var params = initAuditList.getParams();
-		$('#initAuditList_datagrid').datagrid('load', params);
+		$('#initAuditList_datagrid').datagrid('reload', params);
 	};
 </script>
 <!-- 自定义菜单 -->
