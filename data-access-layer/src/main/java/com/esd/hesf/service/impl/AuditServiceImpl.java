@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditCompanyViewDao;
 import com.esd.hesf.dao.AuditDao;
-import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.dao.UserDao;
 import com.esd.hesf.model.Audit;
@@ -32,10 +31,6 @@ public class AuditServiceImpl implements AuditService {
 
 	@Autowired
 	private AuditDao dao;
-
-	// 公司dao接口
-	@Autowired
-	private CompanyDao cDao;
 
 	// 审核表视图 dao接口
 	@Autowired

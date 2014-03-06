@@ -37,6 +37,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public boolean save(AuditParameter t) {
+		log.debug("t: "+t);
 		if (t.getYear() == null) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return false;
