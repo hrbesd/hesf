@@ -239,7 +239,7 @@
 	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
 	<input type="hidden" value="${nowYear}" id="nowYear"/>
 	
-<form id="addWorkerForm" action="security/worker/add" method="post">
+<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
 	<input type="hidden" value="${companyId}" name="companyId"  />
 	
 	<!-- 数据表格 -->
