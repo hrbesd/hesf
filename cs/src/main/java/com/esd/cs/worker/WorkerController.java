@@ -7,14 +7,10 @@ package com.esd.cs.worker;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +20,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.util.StringUtil;
-import org.aspectj.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,22 +30,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
-import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.common.CommonUtil;
 import com.esd.cs.common.PoiCreateExcel;
-import com.esd.hesf.model.Area;
-import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
-import com.esd.hesf.model.WorkerHandicapLevel;
-import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AuditParameterService;
-import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 
@@ -72,9 +59,6 @@ public class WorkerController {
 	
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
-	
-	
-
 
 	@Value("${LoadUpFileMaxSize}")
 	String LoadUpFileMaxSize;
@@ -123,7 +107,29 @@ public class WorkerController {
 		}
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("basicInfo/worker_list");
-
+	}
+	
+	/**
+	 * 转向残疾职工列表  没有功能按钮
+	 * @param companyId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/view/{companyId}")
+	public ModelAndView view(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
+		request.setAttribute("companyId", companyId);
+		// 获取年审参数
+		AuditParameter param = auditParameterService.getByYear(CalendarUtil.getLastYear());
+		if (param != null) {
+			// 男职工退休年龄
+			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
+			// 女职工退休年龄
+			request.setAttribute("femaleRetirementAge", param.getRetireAgeFemale());
+		} else {
+			logger.error("getAuditParameterError");
+		}
+		logger.debug("goToPage:{}", "转到残疾职工列表页面Ex");
+		return new ModelAndView("basicInfo/worker_simplelist");
 	}
 
 
