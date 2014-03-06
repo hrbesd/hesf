@@ -100,7 +100,7 @@
 			title : '企业名称',
 			width : 800,
 			formatter : function(value, row, index) {
-				var c = '<a href="javascript:void(0);" onclick="initAuditList.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
+				var c = '<a href="javascript:void(0);" onclick="queryAudit.openViewCompany(' + row.companyId + ')">' + value + '</a>';
 				return c;
 			}
 		}, {
@@ -163,8 +163,8 @@
 	查看企业信息框
 	 **/
 	queryAudit.openViewCompany = function(id) {
-		esd.common.defaultOpenWindowEx("查看年审信息", 920, 600, "${contextPath}/security/audits/view/" + id);
 
+	esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
 	};
 
 	//组件解析完成

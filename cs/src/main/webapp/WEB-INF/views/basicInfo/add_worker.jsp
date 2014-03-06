@@ -35,6 +35,8 @@
 		校验信息  并  保存残疾职工信息
 	 **/
 	addWorker.validate = function() {
+	
+		
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		//根据残疾证号初始化其他组件
@@ -106,7 +108,13 @@
 			}
 		});
 	};
+	
 	addWorker.initElement=function(workerHandicapCode){
+
+		//校验表单
+		if (esd.common.validatebox("#addWorkerForm") == false) {
+			return false;
+		}
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
@@ -231,7 +239,7 @@
 	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
 	<input type="hidden" value="${nowYear}" id="nowYear"/>
 	
-<form id="addWorkerForm" action="security/worker/add" method="post">
+<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
 	<input type="hidden" value="${companyId}" name="companyId"  />
 	
 	<!-- 数据表格 -->

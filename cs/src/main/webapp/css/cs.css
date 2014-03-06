@@ -181,4 +181,13 @@ text-align: right;
 	 border: 1px solid #95B8E7;
 
 }
+/*增加残疾职工*/
+.addWorkerForm{
+	margin-top: 55px;
+	
+}
+.addWorkerForm td{
+	 height: 35px;
+	
+}
     

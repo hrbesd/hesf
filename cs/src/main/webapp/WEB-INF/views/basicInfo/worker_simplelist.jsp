@@ -13,7 +13,7 @@
 			url : 'parameter/workerHandicapTypeService',
 			valueField : 'id',
 			textField : 'handicapType',
-			editable:false
+			editable : false
 		});
 
 		//残疾等级
@@ -21,7 +21,7 @@
 			url : 'parameter/workerHandicapLevelService',
 			valueField : 'id',
 			textField : 'handicapLevel',
-			editable:false
+			editable : false
 		});
 		//性别
 		$('#workerFind_workerGender').combobox({
@@ -37,10 +37,10 @@
 			} ],
 			valueField : 'label',
 			textField : 'value',
-			editable:false,
-			height:30,
+			editable : false,
+			height : 30,
 			width : 76,
-			panelHeight:80
+			panelHeight : 80
 		});
 
 	};
@@ -186,7 +186,7 @@
 	 **/
 	workerList.openAddWorker = function() {
 
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/'+$("#companyId").val());
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
 	};
 
 	/**
@@ -199,7 +199,7 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker', function() {
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
@@ -221,7 +221,8 @@
 			var selection = $("#workerList_dataGrid").datagrid('getSelections');
 			// 判断选择数目是否大于0
 			if (selection.length == 0) {
-				alert("未选择任何数据。");
+				
+				$.messager.alert('消息', '未选择任何数据。', 'info');
 				return;
 			} else {
 				// 组装参数
@@ -247,13 +248,16 @@
 							// 刷新数据列表
 							$('#workerList_dataGrid').datagrid('reload');
 							$("#workerList_dataGrid").datagrid('clearSelections');
-							alert("删除成功。");
+						
+							$.messager.alert('消息', '删除成功。', 'ok');
 						} else {
-							alert("残疾职工删除失败。");
+							$.messager.alert('消息', '残疾职工删除失败。', 'error');
+							
 						}
 					},
 					error : function() {
-						alert("删除残疾职工信息时发生错误。");
+				
+							$.messager.alert('消息', '删除残疾职工信息时发生错误。', 'error');
 					}
 				});
 			}
@@ -266,7 +270,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'company/getinformation/' + $("#companyId").val() ,
+			url : 'company/getinformation/' + $("#companyId").val(),
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -279,33 +283,29 @@
 					$("#company_Area").html(data[0].companyArea);// 地区
 
 				} else {
-					alert("未获得到企业信息数据。");
+			
+					$.messager.alert('消息', '未获得到企业信息数据。', 'error');
 				}
 
 			},
 			error : function() {
-				alert("残疾职工列表，获取企业信息错误。");
+			$.messager.alert('消息', '残疾职工列表，获取企业信息错误。', 'error');
+			
 			}
 		});
 
 	};
-	
-		//组件解析完成
-	$.parser.onComplete=function(){
-		//加载数据
+
+	//组件解析完成
+	$.parser.onComplete = function() {
+		workerList.init();
 		workerList.loadData(workerList.getParams());
+		workerList.getCompany();
 	};
-	//获取企业信息
-		$('#workerList_dataGrid').datagrid({
-			onLoadSuccess: function(){
-				workerList.getCompany();
-		}
-		});
+
 	$(function() {
 		//初始化组件
-		workerList.init();
 
-		
 	});
 </script>
 <!-- 数据表格 -->
@@ -314,11 +314,11 @@
 <input type="hidden" id="companyId" value="${companyId}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
-	
+
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
-			<td id="company_name"></td>
+			<td id="company_name" style="width: 330px"></td>
 			<td class="tipTextEx">档案编码:</td>
 			<td id="company_Code"></td>
 
@@ -331,8 +331,8 @@
 			<td class="tipTextEx">残疾职工总数:</td>
 			<td id="worker_HandicapTotal"></td>
 
-			<td class="tipTextEx">地区:<br /></td>
-			<td id="company_Area"></td>
+			<td class="tipTextEx">地区:</td>
+			<td id="company_Area" style="width:135px"></td>
 
 		</tr>
 	</table>
@@ -340,24 +340,31 @@
 	<table>
 		<tr>
 			<td>
-				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" /></td>
+				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />
+			</td>
 			<td>
-				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 183px" /></td>
+				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 183px" />
+			</td>
 			<td>
-				<!-- 性别 --> <input id="workerFind_workerGender" type="text" /></td>
+				<!-- 性别 --> <input id="workerFind_workerGender" type="text" />
+			</td>
 			<td>
 				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
-				style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" /></td>
+				style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />
+			</td>
 			<td>
-				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" /></td>
+				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" />
+			</td>
 			<td>
-				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" /></td>
+				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" />
+			</td>
 			<td>
 				<!-- 残疾等级 --> <input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" /> <a
-				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a></td>
+				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a>
+			</td>
 		</tr>
 	</table>
-	
+
 </div>
 
 
