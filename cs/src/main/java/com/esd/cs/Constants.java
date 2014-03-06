@@ -21,11 +21,12 @@ public class Constants {
 	public static final BigDecimal ZERO = new BigDecimal("0.00");
 
 	public static final Integer PROCESS_STATIC_WCS = 1;// 未初审
-	public static final Integer PROCESS_STATIC_WFS = 2;// 未复审
-	public static final Integer PROCESS_STATIC_WJK = 3;// 未缴款
+	public static final Integer PROCESS_STATIC_WFS = 2;// 已初审  未复审
+	public static final Integer PROCESS_STATIC_WJK = 3;// 已复审  未缴款
 	public static final Integer PROCESS_STATIC_BFJK = 4;// 已缴款
 	public static final Integer PROCESS_STATIC_YJK = 5;// 部分缴款
 	public static final Integer PROCESS_STATIC_OK = 6;// 达标
+	public static final Integer PROCESS_STATIC_WTG = 7;// 已复审 未通过
 	
 	public static final Integer PAYMENT_EXCEPTIONAL_NORMAL = 1;
 	

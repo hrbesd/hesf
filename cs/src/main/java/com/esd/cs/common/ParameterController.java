@@ -287,14 +287,14 @@ public class ParameterController {
 	/**
 	 * 返回 地区
 	 */
-	@RequestMapping(value = "/getArea", method = RequestMethod.GET)
+	@RequestMapping(value = "/getArea", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Area> areaService(HttpServletRequest request) {
+		logger.debug("getArea:{}","getArea");
 		List<Area> list = null;
 		try {
 			list = areaService.getHeiLongjiangCities();
 			if (list != null) {
-				logger.debug(list.toString());
 				return list;
 			}
 		} catch (Exception e) {

@@ -16,7 +16,6 @@
 </style>
 <script type="text/javascript">
 	$(function() {
-		$("#currentCompanyId").val($("#companyId").val());
 	});
 	var importWorkerFile = {};
 	importWorkerFile.submit = function() {
@@ -31,10 +30,12 @@
 			
 		}
 		if($("#uploadWorkerFile").val()==''){
-		alert("请选择文件。");
+		
+		$.messager.alert('消息', '请选择文件。', 'info');
 		return false;
 		}
-		alert("文件格式不支持");
+		$.messager.alert('消息', '文件格式不支持。', 'info');
+	
 		return false;
 	};
 	
@@ -46,7 +47,7 @@
 <form id="importWorkerForm" class="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
 	<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px"  accept="application/vnd.ms-excel"/>
 	 
-	<input type="hidden" name="companyId" id="currentCompanyId"  />
+	<input type="hidden" name="companyId" id="currentCompanyId"  value="${companyId}" />
 	 <input type="submit" value="上传" />
 	 <div>
 	 	<p><span  class="red_notice">*</span>文件大小不能超过2MB。</p>

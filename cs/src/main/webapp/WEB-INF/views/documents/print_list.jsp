@@ -246,9 +246,9 @@
 			</tr>
 			<tr>
 				<td class="tipsText">企业名称:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyName" /></td>
+				<td colspan="3"><input class="longtext inputElement" id="companyName" /></td>
 				<td class="tipsText">企业地址:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyAddress" type="text" />
+				<td colspan="3"><input class="longtext inputElement" id="companyAddress" type="text" />
 				</td>
 
 			</tr>
@@ -276,7 +276,6 @@
 			</tr>
 		</table>
 		<div class="findBut">
-			  <a	href="" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
 			 <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
 			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 		</div>

@@ -91,17 +91,20 @@ basicFile.openAddCompany = function() {
 basicFile.addCompany = function() {
 	// 校验
 	if (parseInt($("#companyEmpTotal").val()) < parseInt($("#companyHandicapTotal").val())) {
-		alert("残疾职工人数不能大于员工总人数。");
+		
+		$.messager.alert('消息', '残疾职工人数不能大于员工总人数', 'error');
 		return;
 	}
 
 	esd.common.syncPostSubmit("#addComapnyForm", function(data) {
 		if (data == true) {
-			alert("单位信息增加成功。");
+			
+			$.messager.alert('消息', '单位信息增加成功。', 'info');
 			esd.common.defaultOpenWindowClose();
 			$('#company_grid').datagrid("reload");
 		} else {
-			alert("单位信息增加失败。");
+		
+			$.messager.alert('消息', '单位信息增加失败。', 'error');
 		}
 	});
 };
@@ -123,18 +126,16 @@ basicFile.openEditCompany = function(id) {
  * 编辑企业信息
  */
 basicFile.editCompany = function() {
-	// 校验
-	if (parseInt($("#editComapnyForm #companyEmpTotal").val()) < parseInt($("#editComapnyForm #companyHandicapTotal").val())) {
-		alert("残疾职工人数不能大于员工总人数。");
-		return;
-	}
+
 	esd.common.syncPostSubmit("#editComapnyForm", function(data) {
 		if (data == true) {
-			alert("单位信息编辑成功。");
+			
+			$.messager.alert('消息', '单位信息编辑成功。', 'info');
 			esd.common.defaultOpenWindowClose();
 			$('#company_grid').datagrid("reload");
 		} else {
-			alert("单位信息编辑失败。");
+			$.messager.alert('消息', '单位信息编辑失败。', 'error');
+		
 		}
 	});
 };
@@ -170,7 +171,8 @@ basicFile.openBatchDeleteCompany = function() {
 	var selection = $("#company_grid").datagrid('getSelections');
 	// 判断选择数目是否大于0
 	if (selection.length == 0) {
-		alert("未选择任何数据。");
+		
+		$.messager.alert('消息', '未选择任何数据。', 'error');
 	} else {
 		// 显示确认删除对话框
 		$.messager.confirm('确认', '您确认想要删除' + selection.length + '记录吗？', function(r) {
@@ -202,13 +204,16 @@ basicFile.deleteCompany = function(params, type) {
 				// 刷新数据列表
 				$('#company_grid').datagrid('reload');
 				$("#company_grid").datagrid('clearSelections');
-				alert("删除成功。");
+			
+				$.messager.alert('消息', '删除成功。', 'ok');
 			} else {
-				alert("企业信息删除失败。");
+				$.messager.alert('消息', '企业信息删除失败。', 'error');
+				
 			}
 		},
 		error : function() {
-			alert("删除企业信息时发生错误。");
+			$.messager.alert('消息', '删除企业信息时发生错误。', 'error');
+			
 		}
 	});
 };

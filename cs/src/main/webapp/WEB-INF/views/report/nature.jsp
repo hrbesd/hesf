@@ -27,7 +27,8 @@
 				}
 			},
 			error : function() {
-				alert("获取单位性质报表数据时错误。");
+			$.messager.alert('消息', '获取单位性质报表数据时错误。', 'error');
+				
 			}
 		});
 	};
@@ -43,11 +44,12 @@
 				if(data!="null"){
 					window.location.href=data;
 				}else{
-					alert("导出报表时错误。");
+		
+					$.messager.alert('消息', '导出报表时错误。', 'error');
 				}
 			},
 			error : function() {
-				alert("导出报表时错误。");
+				$.messager.alert('消息', '导出报表时错误。', 'error');
 			}
 		});
 	};

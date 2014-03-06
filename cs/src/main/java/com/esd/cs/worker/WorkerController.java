@@ -209,9 +209,11 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/importworker", method = RequestMethod.GET)
-	public ModelAndView importworker() {
-		logger.debug("goToWorker_import");
+	@RequestMapping(value = "/importworker/{companyId}", method = RequestMethod.GET)
+	public ModelAndView importworker(@PathVariable(value = "companyId") Integer companyId,HttpServletRequest request ) {
+		
+		request.setAttribute("companyId", companyId);
+		logger.debug("goToWorker_import,param:{}",companyId);
 		return new ModelAndView("basicInfo/worker_import");
 	}
 
@@ -295,15 +297,20 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "year") String year,
+	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, 
 
 	HttpServletRequest request) {
 
-		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, year, companyId);
+		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, companyId);
 		try {
 			for (int i = 0; i < params.length; i++) {
-				boolean b = companyService.deleteWorkerFromCompany(year, companyId, params[i]);
+				boolean b = companyService.deleteWorkerFromCompany(CalendarUtil.getLastYear(), companyId, params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
+				if(b=false){
+					
+					logger.error("deleteWorkerError:{},result:{}", params[i],"error");
+					return false;
+				}
 			}
 		} catch (Exception e) {
 			logger.error("delete_worker{}", e.getMessage());
@@ -405,6 +412,7 @@ public class WorkerController {
 		
 		// 上传文件返回的参数信息
 		String filePath = paramMap.get("filePath");// 文件路径
+		logger.error("-------:{}",paramMap.get("companyId"));
 		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// 文件路径
 		String fileError = paramMap.get("fileError");// 错误信息
 		// 错误信息列表

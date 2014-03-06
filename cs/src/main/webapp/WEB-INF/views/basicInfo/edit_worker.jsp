@@ -13,12 +13,14 @@
 	workerList.edit = function() {
 		esd.common.syncPostSubmit("#editWorkerForm", function(data) {
 			if (data == true) {
-				alert("残疾职工信息编辑成功。");
+			
+				$.messager.alert('消息', '残疾职工信息编辑成功。', 'ok');
 				workerList.close();
 				$('#workerList_dataGrid').datagrid("load");
 
 			} else {
-				alert("残疾职工信息编辑失败。");
+				$.messager.alert('消息', '残疾职工信息编辑失败。', 'error');
+				
 			}
 		});
 	};

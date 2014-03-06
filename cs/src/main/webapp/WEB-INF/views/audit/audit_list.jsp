@@ -99,7 +99,7 @@
 			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
 			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false" />
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
 		</tr>
 		<tr>
