@@ -17,4 +17,18 @@ public interface AuditParameterDao extends BaseDao<AuditParameter> {
 	 * @return
 	 */
 	AuditParameter retrieveByYear(String year);
+	
+	/**
+	 * 得到最近一个审核参数的年份
+	 * 
+	 * @return
+	 */
+	public String retrieveLastestYear();
+	
+	/**
+	 * 得到所有审核参数年份列表
+	 * 
+	 * @return
+	 */
+	String[] retrieveYears();
 }

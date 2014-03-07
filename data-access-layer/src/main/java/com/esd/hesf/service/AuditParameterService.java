@@ -44,4 +44,22 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 	 * @return
 	 */
 	int getSpecialCount(Integer companyId, String year, int workerHandicapType, int workerHandicapLevel);
+
+	
+	/**
+	 * 得到最近一个审核参数的年份
+	 * 
+	 * @return
+	 */
+	public String getLastestYear();
+	
+	/**
+	 * 
+	 * 得到所有审核年度列表
+	 * 
+	 * @return
+	 */
+	public String[] getYears();
+	
+	
 }

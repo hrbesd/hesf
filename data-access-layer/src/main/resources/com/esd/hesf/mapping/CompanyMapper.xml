@@ -513,11 +513,6 @@
 		</trim>
 	</select>
 
-	<!-- get last year -->
-<!-- 	<select id="retrieveLastYear" resultType="java.lang.String" parameterType="java.lang.String">
-		select year from company where year &lt; #{year,jdbcType=CHAR} group by year order by year desc limit 0,1
-	</select>	 -->
-
 	<!-- get company by organizationCode -->
 	<select id="retrieveByOrganizationCode" parameterType="java.lang.String" resultMap="ResultCompany">
 		select

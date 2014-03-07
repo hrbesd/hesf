@@ -185,16 +185,6 @@ public class AuditServiceImpl implements AuditService {
 		return prn;
 	}
 
-	// 得到所有审核年度
-	@Override
-	public String[] getYears() {
-		String[] arr = dao.retrieveYears();
-		if (arr == null) {
-			return null;
-		}
-		return arr;
-	}
-
 	@Override
 	public List<Audit> getAll() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -222,7 +212,7 @@ public class AuditServiceImpl implements AuditService {
 		Integer currentYear = Integer.parseInt(year);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("currentYear", currentYear);
-		map.put("lastYear", (currentYear-1));
+		map.put("lastYear", (currentYear - 1));
 		// 向公司-员工关系表中插入数据
 		int l = cywDao.insertLastYearData(map);
 		if (l <= 0) {

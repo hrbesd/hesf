@@ -22,13 +22,6 @@ public interface AuditDao extends BaseDao<Audit> {
 	int insertLastYearData(String year);
 
 	/**
-	 * 得到已有的年度列表
-	 * 
-	 * @return
-	 */
-	public String[] retrieveYears();
-
-	/**
 	 * 根据公司id, 得到历年的审核信息列表
 	 * 
 	 * @param map

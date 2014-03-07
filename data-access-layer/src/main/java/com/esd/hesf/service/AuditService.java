@@ -21,12 +21,6 @@ public interface AuditService extends BaseService<Audit> {
 	 */
 	public List<Audit> getAll();
 
-	/**
-	 * 得到所有审核年度列表
-	 * 
-	 * @return
-	 */
-	public String[] getYears();
 	
 	/**
 	 * 根据年份year, 公司id companyId获得一条审核数据

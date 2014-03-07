@@ -28,13 +28,6 @@ public interface CompanyDao extends BaseDao<Company> {
 	public String getLatestDocumentCode();
 
 	/**
-	 * 得到有公司数据的上一年份xxx
-	 * 
-	 * @return
-	 */
-//	public String retrieveLastYear(String thisYear);
-
-	/**
 	 * 根据组织机构代码查询公司对象是否存在
 	 * 
 	 * @param companyOrganizationCode

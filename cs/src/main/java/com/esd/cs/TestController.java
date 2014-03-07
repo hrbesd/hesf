@@ -138,8 +138,10 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test4() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = auditService.getYears();
+		String[] entity = apService.getYears();
+		String year = apService.getLastestYear();
 		map.put("entity", entity);
+		map.put("year", year);
 		return map;
 	}
 

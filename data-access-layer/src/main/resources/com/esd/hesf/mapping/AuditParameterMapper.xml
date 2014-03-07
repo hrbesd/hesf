@@ -667,4 +667,13 @@
 		where ap.year = #{year,jdbcType=VARCHAR} and ap.area_code = a.code
 	</select>
 
+	<!-- get lastest year -->
+ 	<select id="retrieveLastestYear" resultType="java.lang.String" parameterType="java.lang.String">
+		select year from audit_parameter group by year order by year desc limit 0,1
+	</select>
+	
+	<select id="retrieveYears" resultType="java.lang.String">
+		select year from audit group by year order by year desc
+	</select>
+	
 </mapper>

@@ -37,7 +37,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public boolean save(AuditParameter t) {
-		log.debug("t: "+t);
+		log.debug("t: " + t);
 		if (t.getYear() == null) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return false;
@@ -122,7 +122,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Override
 	public int getSpecialCount(Integer companyId, String year, int workerHandicapType, int workerHandicapLevel) {
-		if (companyId == null || companyId<=0) {
+		if (companyId == null || companyId <= 0) {
 			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return -1;
 		}
@@ -144,6 +144,21 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 		map.put("workerHandicapType", workerHandicapType);
 		map.put("workerHandicapLevel", workerHandicapLevel);
 		return wcDao.retrieveSpecialCount(map);
+	}
+
+	@Override
+	public String getLastestYear() {
+		return dao.retrieveLastestYear();
+	}
+
+	// 得到所有审核年度
+	@Override
+	public String[] getYears() {
+		String[] arr = dao.retrieveYears();
+		if (arr == null) {
+			return null;
+		}
+		return arr;
 	}
 
 }
