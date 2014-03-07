@@ -50,8 +50,8 @@
 			<td class="">性别:</td>
 			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
 
-					<option value="0" <c:if test="${worker.workerGender eq '0'}">selected="selected"</c:if>>男</option>
-					<option value="1" <c:if test="${worker.workerGender eq '1'}">selected="selected"</c:if>>女</option>
+					<option value="1" <c:if test="${worker.workerGender eq '1'}">selected="selected"</c:if>>男</option>
+					<option value="0" <c:if test="${worker.workerGender eq '0'}">selected="selected"</c:if>>女</option>
 			</select>
 			</td>
 			<td class="">出生日期:</td>
