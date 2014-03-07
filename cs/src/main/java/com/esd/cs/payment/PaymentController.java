@@ -158,6 +158,18 @@ public class PaymentController {
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_YJK);
 			audit.setAuditProcessStatus(auditProcessStatus);
 			auditService.update(audit);
+			//更新补缴年度
+			Integer companyId = audit.getCompany().getId();
+			String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
+			if (unAudits != null) {
+				for (String year : unAudits) {
+					Audit a = auditService.getByPrimaryKey(year, companyId);
+					a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+					a.setAuditProcessStatus(auditProcessStatus);// 设置为达标
+					a.setSupplementYear(audit.getYear());// 设置补缴年度
+					auditService.update(a);
+				}
+			}
 		} else {
 			if (payments.signum() > 0) {
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
