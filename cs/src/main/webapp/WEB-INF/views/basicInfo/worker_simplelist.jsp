@@ -218,7 +218,7 @@
 		//删除多条
 		if (type == 1) {
 			// 获取所有选中列
-			var selection = $("#workerList_dataGrid").datagrid('getSelections');
+			var selection = $("#workerList_dataGrid").datagrid('getChecked');
 			// 判断选择数目是否大于0
 			if (selection.length == 0) {
 				

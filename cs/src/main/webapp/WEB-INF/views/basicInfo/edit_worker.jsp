@@ -24,6 +24,10 @@
 			}
 		});
 	};
+	//组件解析完成
+	$.parser.onComplete = function() {
+	
+	};
 </script>
 
 <form id="editWorkerForm" action="${contextPath}/security/worker/edit" method="post">

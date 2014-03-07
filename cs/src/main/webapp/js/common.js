@@ -109,6 +109,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns) {
  * 创建通用的列表控件
  */
 esd.common.datagrid = function(grid, url, toolbar, columns, params) {
+	
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,

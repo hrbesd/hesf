@@ -194,7 +194,7 @@
 				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td class="tipsText">税务号码:</td>
 				<td class="tipsText"><input id="companyTaxCode" type="text" class="inputElement" /></td>
-				<td class="tipsText">组织机构代码证:</td>
+				<td class="tipsText">组织机构代码:</td>
 				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
 				</td>
 
@@ -212,9 +212,9 @@
 			</tr>
 			<tr>
 				<td class="tipsText">企业名称:</td>
-				<td colspan="3"><input class="longInputBox inputElement" id="companyName" /></td>
+				<td colspan="3"><input class="longtext inputElement" id="companyName" /></td>
 				<td class="tipsText">企业地址:</td>
-				<td colspan="3"><input id="companyAddress" class="longInputBox inputElement" type="text" />
+				<td colspan="3"><input id="companyAddress" class="longtext inputElement" type="text" />
 				</td>
 
 			</tr>
