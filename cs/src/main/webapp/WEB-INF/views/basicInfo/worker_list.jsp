@@ -321,21 +321,21 @@
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td class="tipTextEx">企业名称:</td>
-			<td id="company_name" style="width: 330px"></td>
+			<td id="company_name" style="width: 330px" class="readonly"></td>
 			<td class="tipTextEx">档案编码:</td>
-			<td id="company_Code"></td>
+			<td id="company_Code" class="readonly"></td>
 
 			<td class="tipTextEx">税务编码:</td>
-			<td id="company_TaxCode"></td>
+			<td id="company_TaxCode" class="readonly"></td>
 		</tr>
 		<tr>
 			<td class="tipTextEx">企业总人数:</td>
-			<td id="company_EmpTotal"></td>
+			<td id="company_EmpTotal" class="readonly"></td>
 			<td class="tipTextEx">残疾职工总数:</td>
-			<td id="worker_HandicapTotal"></td>
+			<td id="worker_HandicapTotal" class="readonly"></td>
 
 			<td class="tipTextEx">地区:</td>
-			<td id="company_Area" style="width:135px"></td>
+			<td id="company_Area" style="width:135px" class="readonly"></td>
 
 		</tr>
 	</table>
