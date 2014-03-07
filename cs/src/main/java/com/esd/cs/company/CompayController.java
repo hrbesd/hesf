@@ -149,11 +149,11 @@ public class CompayController {
 		logger.debug("addCompany{}", company);
 		try {
 			if (company == null) {
-				logger.error("addCompany{}", "paramserror");
+				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			boolean b = companyService.save(company);
-			logger.debug("addCompany{}", b);
+			boolean b = companyService.save(company,CalendarUtil.getLastYear());
+			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
 			e.printStackTrace();
