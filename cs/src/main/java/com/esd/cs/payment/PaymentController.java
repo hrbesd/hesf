@@ -88,12 +88,13 @@ public class PaymentController {
 		entity.put("companyId", String.valueOf(audit.getCompany().getId()));
 		entity.put("companyCode", audit.getCompany().getCompanyCode());
 		entity.put("companyTaxCode", audit.getCompany().getCompanyTaxCode());
-		entity.put("companyName", audit.getCompany().getCompanyTaxCode());
+		entity.put("companyName", audit.getCompany().getCompanyName());
 		entity.put("year", audit.getYear());
 		entity.put("amountPayable", df.format(audit.getAmountPayable()));
 		entity.put("remainAmount", df.format(audit.getRemainAmount()));
 		entity.put("reductionAmount", df.format(audit.getReductionAmount()));
 		entity.put("actualAmount", df.format(audit.getActualAmount()));
+		entity.put("payAmount", df.format(audit.getPayAmount()));
 		entity.put("delayPayAmount", df.format(audit.getDelayPayAmount()));
 		entity.put("remark", audit.getRemark());
 		entity.put("companyEmpTotal", String.valueOf(audit.getCompanyEmpTotal()));

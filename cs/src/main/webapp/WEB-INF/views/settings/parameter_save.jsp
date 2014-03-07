@@ -35,7 +35,7 @@
 					<td><input name="area.code" class="easyui-combobox" value="10230000" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" /></td>
 					<td>滞纳金开始日期:</td>
 					<td>
-					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-12-01" style="width:150px" />
+					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-9-01" style="width:150px" />
 					</td>
 				</tr>
 				<tr>

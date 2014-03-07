@@ -210,8 +210,8 @@
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100">档案号码:</td>
-				<td width="300" colspan="2"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId"
-					name="company.id" value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
+				<td width="300" colspan="2"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
+					value="${entity.company.id}" /> <input type="hidden" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
 				</td>
 				<td>年审年度:</td>
 				<td><input name="year" class="readonly" type="text" value="${entity.year}" />
@@ -229,7 +229,7 @@
 				<td width="180"><input name="company.companyTaxCode" type="text" value="${entity.company.companyTaxCode}" />
 				</td>
 				<td width="100">年龄超标</td>
-				<td><input type="text" readonly="readonly" value="${ageEx }" <c:if test="${ageEx>0}">class="error"</c:if> <c:if test="${ageEx==0}">class="readonly"</c:if> />
+				<td><input type="text" readonly="readonly" value="${ageEx}" <c:if test="${ageEx>0}">class="error"</c:if> <c:if test="${ageEx==0}">class="readonly"</c:if> />
 				</td>
 			</tr>
 
@@ -241,11 +241,7 @@
 				<td><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" />
 				</td>
 				<td>企业性质:</td>
-				<td>
-					<!--
-			<input value="${entity.company.companyProperty.id}" method="GET" id="companyProperty" name="company.companyProperty.id" class="easyui-combobox"
-				data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/property'" />
-				--> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
+				<td><select style="font-size: 12px;" class="easyui-combobox" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
 						<c:forEach items="${companyPropertys}" var="item">
 							<option value="${item.id}" <c:if test="${entity.company.companyProperty.id eq item.id}">selected="selected"</c:if>>${item.companyProperty }</option>
 						</c:forEach>
@@ -261,11 +257,7 @@
 				<td><input name="company.companyPhone" class="bj_belu3" type="text" value="${entity.company.companyPhone}" />
 				</td>
 				<td>经济类型:</td>
-				<td>
-					<!-- 
-			<input value="${entity.company.companyEconomyType.id}" method="GET" id="companyEconomyType" name="company.companyEconomyType.id" class="easyui-combobox" 
-			data-options="height:30,editable:false,valueField:'id',textField:'companyEconomyType',url:'parameter/economytype'" />
-			 --> <select style="font-size: 12px;" class="easyui-combobox" name="company.companyEconomyType.id" data-options="width:106,height:30,editable:false">
+				<td><select style="font-size: 12px;" class="easyui-combobox" name="company.companyEconomyType.id" data-options="width:106,height:30,editable:false">
 						<c:forEach items="${companyEconomyTypes}" var="item">
 							<option value="${item.id}" <c:if test="${entity.company.companyEconomyType.id eq item.id}">selected="selected"</c:if>>${item.companyEconomyType }</option>
 						</c:forEach>
@@ -278,19 +270,19 @@
 				<td><input name="company.companyMobile" class="bj_belu3" value="${entity.company.companyMobile}" />
 				</td>
 				<td>企业地址:</td>
-				<td colspan="6"><input name="company.companyAddress" value=${entity.company.companyAddress } />
+				<td colspan="6"><input name="company.companyAddress" value="${entity.company.companyAddress }" />
 				</td>
 
 			</tr>
 			<tr>
 				<td>开户银行:</td>
-				<td><input name="company.companyBank" class="bj_belu3" value=${entity.company.companyBank } />
+				<td><input name="company.companyBank" class="bj_belu3" value="${entity.company.companyBank}" />
 				</td>
 				<td>银行账号:</td>
-				<td><input name="company.companyBankAccount" class="bj_belu3" value=${entity.company.companyBankAccount } />
+				<td><input name="company.companyBankAccount" class="bj_belu3" value="${entity.company.companyBankAccount}" />
 				</td>
 				<td>邮政编码:</td>
-				<td><input name="company.companyZipCode" value=${entity.company.companyZipCode } />
+				<td><input name="company.companyZipCode" value="${entity.company.companyZipCode}" />
 				</td>
 
 			</tr>
@@ -308,8 +300,8 @@
 				<td>补审年度:</td>
 			</tr>
 			<tr>
-				<td rowspan="3" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.companyEmpTotal }"
-					class="warn" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" />
+				<td rowspan="3" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.companyEmpTotal }" class="warn"
+					style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" />
 				</td>
 				<td width="97">应按排数:</td>
 				<td width="100">已安排数:</td>
@@ -411,6 +403,12 @@
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
 		<c:if test="${entity.auditProcessStatus.id==1}">
+			<input name="id" type="hidden" value="${entity.id}" />
+			<input name="version" type="hidden" value="${entity.version}" />
+			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">保存</a>
+			<a href="javascript:initAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a>
+		</c:if>
+		<c:if test="${entity.auditProcessStatus.id==7}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">保存</a>

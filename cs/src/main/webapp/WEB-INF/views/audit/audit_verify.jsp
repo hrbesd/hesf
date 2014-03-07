@@ -283,19 +283,19 @@
 				<td><input name="company.companyMobile" class="bj_belu3" value="${entity.company.companyMobile}" />
 				</td>
 				<td>企业地址:</td>
-				<td colspan="6"><input name="company.companyAddress" value=${entity.company.companyAddress } />
+				<td colspan="6"><input name="company.companyAddress" value="${entity.company.companyAddress }" />
 				</td>
 
 			</tr>
 			<tr>
 				<td>开户银行:</td>
-				<td><input name="company.companyBank" class="bj_belu3" value=${entity.company.companyBank } />
+				<td><input name="company.companyBank" class="bj_belu3" value="${entity.company.companyBank}" />
 				</td>
 				<td>银行账号:</td>
-				<td><input name="company.companyBankAccount" class="bj_belu3" value=${entity.company.companyBankAccount } />
+				<td><input name="company.companyBankAccount" class="bj_belu3" value="${entity.company.companyBankAccount}" />
 				</td>
 				<td>邮政编码:</td>
-				<td><input name="company.companyZipCode" value=${entity.company.companyZipCode } />
+				<td><input name="company.companyZipCode" value="${entity.company.companyZipCode}" />
 				</td>
 
 			</tr>

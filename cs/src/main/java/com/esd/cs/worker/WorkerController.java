@@ -437,16 +437,19 @@ public class WorkerController {
 					// 返回成功页面
 					return new ModelAndView("basicInfo/worker_importInfo");
 				}
+				Worker w=null;
 				for (int i = 0; i < list.size(); i++) {
+					try {
+					
 					Worker worker = list.get(i);
 					// 校验部分
 					String workerHandicapCode = worker.getWorkerHandicapCode();
 					// 员工姓名
 					String workerName = worker.getWorkerName().replace(" ", "");// 去除所有空格
-					Worker w = new Worker();
+					 w = new Worker();
 					w.setWorkerName(worker.getWorkerName());
 					w.setWorkerHandicapCode(workerHandicapCode);
-
+						
 					// 1.校验姓名
 					if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null")) {
 						// 存储错误信息
@@ -480,24 +483,40 @@ public class WorkerController {
 							logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 							continue;
 						}
+						//.校验20之前是否有其他字符
+						String handicapStr=workerHandicapCode.substring(0, 19);
+						if( !handicapStr.matches("\\d+")){
+								w.setRemark("残疾证号前20位有非法字符");
+								workerErrorList.add(w);
+								logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
+								continue;
+						}
 					}
-
-					// 5.校验残疾类型
-					int handicapType = Integer.valueOf(workerHandicapCode.substring(18, 19));
-					if (handicapType > 7 || handicapType == 0) {
-						w.setRemark(TYPEERROR);
-						workerErrorList.add(w);
-						logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
-						continue;
+					
+					//5.校验残疾类型
+					String handicapTypeStr=workerHandicapCode.substring(18, 19);
+					boolean ishandicapType = handicapTypeStr.matches("\\d+");//返回true为纯数字,否则就不是纯数字
+					// 校验是否数数字
+					if(ishandicapType){
+						int handicapType = Integer.valueOf(handicapTypeStr);
+						if (handicapType > 7 || handicapType == 0) {
+							w.setRemark(TYPEERROR);
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
+							continue;
+						}
 					}
-
 					// 6.校验残疾证号等级
-					int handicapLevel = Integer.valueOf(workerHandicapCode.substring(19, 20));
-					if (handicapLevel > 4 || handicapLevel == 0) {
-						w.setRemark(LEVELERROR);
-						workerErrorList.add(w);
-						logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
-						continue;
+					String handicapLevelStr=workerHandicapCode.substring(19, 20);
+					boolean ishandicapLevel = handicapLevelStr.matches("\\d+");//返回true为纯数字,否则就不是纯数字
+					if(ishandicapLevel){
+						int handicapLevel = Integer.valueOf(handicapLevelStr);
+						if (handicapLevel > 4 || handicapLevel == 0) {
+							w.setRemark(LEVELERROR);
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
+							continue;
+						}
 					}
 					// 7.校验职工年龄
 					List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(CalendarUtil.getLastYear()));
@@ -552,8 +571,16 @@ public class WorkerController {
 						workerErrorList.add(w);
 						logger.error("impoerWorkerSaveError:{}", "false");
 					}
+					} catch (Exception e) {
+						w.setRemark("未知错误");
+						workerErrorList.add(w);
+						logger.error("impoerWorkerUpError:{}", "false");
+					}
 				}
-				// 检测是否有未导入数据
+				//循环结束
+				
+				
+				// 检测是否有错误数据
 				if (workerErrorList.size() != 0) {
 					String errorFilePath = upLoadPath + companyId + ".xls";
 					// 错误列表是否创建成功
@@ -569,44 +596,46 @@ public class WorkerController {
 				}
 				// 删除上传文件
 				f.delete();
+				
+				int totalLength = 0;
+				int errorLength = 0;
+				int succesLength = 0;
+				// 检测是否有导入失败数据
+				if (workerErrorList != null) {
+					errorLength = workerErrorList.size();
+				}
+				//检测成功数据量
+				if (list != null) {
+					totalLength = list.size();
+					succesLength = totalLength - errorLength;
+				}
+				request.setAttribute("totalLength", totalLength);// 总条数
+				request.setAttribute("errorLength", errorLength);// 失败条数
+				request.setAttribute("succesLength", succesLength);// 成功条数
+				request.setAttribute("errorInfo", "null");// 没有错误信息
+				
+				logger.error("totalLength:{}", totalLength);// 总条数
+				logger.error("errorLength:{}", errorLength);// 失败条数
+				logger.error("succesLength:{}", succesLength);// 成功条数
+				
+				// 清理部分
+				list.clear();
+				list = null;
+				workerErrorList.clear();// 清除错误列表数据
+				workerErrorList = null;
+
+				
 			} catch (IllegalStateException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
 			} catch (IOException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
 			}
-			int totalLength = 0;
-			int errorLength = 0;
-			int succesLength = 0;
-			// 检测是否有导入失败数据
-			if (workerErrorList != null) {
-				errorLength = workerErrorList.size();
-			}
-			if (list != null) {
-				totalLength = list.size();
-				succesLength = totalLength - errorLength;
-			}
-			request.setAttribute("totalLength", totalLength);// 总条数
-			request.setAttribute("errorLength", errorLength);// 失败条数
-			request.setAttribute("succesLength", succesLength);// 成功条数
-			request.setAttribute("errorInfo", "null");// 没有错误信息
-
-			logger.error("totalLength:{}", totalLength);// 总条数
-			logger.error("errorLength:{}", errorLength);// 失败条数
-			logger.error("succesLength:{}", succesLength);// 成功条数
-
-			// 清理部分
-			list.clear();
-			list = null;
-			workerErrorList.clear();// 清楚错误列表数据
-			workerErrorList = null;
-			// 返回成功页面
-			return new ModelAndView("basicInfo/worker_importInfo");
 		} else {
 			request.setAttribute("errorInfo", fileError);
-			// 返回失败页面
 			logger.error("importUpLoadError");
-			return new ModelAndView("basicInfo/worker_importInfo");
 		}
+		// 返回成功页面
+		return new ModelAndView("basicInfo/worker_importInfo");
 	}
 
 	/**
@@ -645,7 +674,7 @@ public class WorkerController {
 			companyMap.put("companyTaxCode", company.getCompanyTaxCode());
 			list.add(paramsMap);
 			list.add(companyMap);
-			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "trpe:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
+			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "type:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
 			return list;
 		} else {
 
@@ -653,13 +682,13 @@ public class WorkerController {
 			logger.error("workerIdCard:{},obg:{}" + workerIdCard, w);
 			// 第二种情况：存在，并且不再任何公司。
 			if (w != null) {
-				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
+				logger.debug("validateWorkerHandicapCodeResult:{}", "type:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
 				paramsMap.put("type", "2");
 				list.add(paramsMap);
 				return list;
 				// 第三种情况，不存在.
 			} else {
-				logger.debug("validate_workerHandicapCodeResult:{}", "trpe:3。职工不存在数据库中");
+				logger.debug("validateWorkerHandicapCodeResult:{}", "type:3。职工不存在数据库中");
 				paramsMap.put("type", "3");
 				list.add(paramsMap);
 				return list;

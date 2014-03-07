@@ -78,7 +78,7 @@
 
 	};
 	queryAudit.openAudit = function(index) {
-		esd.common.defaultOpenWindowEx("年审查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
+		esd.common.defaultOpenWindowEx("年审查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/2");
 	};
 	/*
 	 * 获取企业基本档案函数

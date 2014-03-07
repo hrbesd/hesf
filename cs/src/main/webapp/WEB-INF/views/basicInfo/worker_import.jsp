@@ -55,8 +55,18 @@
 	<div class="importWorkerTitle">导入残疾职工</div>
 	
 	<form class="importWorkerForm" id="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
-		<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px" accept="application/vnd.ms-excel" /> <input type="hidden" name="companyId" id="currentCompanyId"
-			value="${companyId}" /> <input type="submit" value="上传" />
+		<table>
+			<tr>
+				<td>
+						<input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px" accept="application/vnd.ms-excel" /> 
+				</td>
+				<td>
+					<input type="submit" value="上传" />
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" name="companyId" id="currentCompanyId" value="${companyId}" />
+			
 		<div>
 			<p>
 				<span class="red_notice">*</span>文件大小不能超过2MB。
