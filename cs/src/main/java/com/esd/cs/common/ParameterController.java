@@ -113,9 +113,7 @@ public class ParameterController {
 	@RequestMapping(value = "/property")
 	@ResponseBody
 	public List<CompanyProperty> companyPropertyService(HttpServletRequest request) {
-		if (companyPropertys != null) {
-			return companyPropertys;
-		}
+	
 		companyPropertys = companyPropertyService.getAll();
 		if (companyPropertys == null) {
 			companyPropertys = new ArrayList<CompanyProperty>();
@@ -124,7 +122,7 @@ public class ParameterController {
 		c.setId(Constants.DEFAULT_TVALUE);
 		c.setCompanyProperty(Constants.PLEASE_SELECT);
 		companyPropertys.add(0, c);
-		logger.debug("property{}", companyPropertys.toString());
+		logger.debug("getProperty{}", companyPropertys.toString());
 		return companyPropertys;
 	}
 
@@ -134,9 +132,7 @@ public class ParameterController {
 	@RequestMapping(value = "/propertyEx")
 	@ResponseBody
 	public List<CompanyProperty> companyPropertyServiceEx(HttpServletRequest request) {
-		if (companyPropertys != null) {
-			return companyPropertys;
-		}
+
 		companyPropertys = companyPropertyService.getAll();
 		if (companyPropertys == null) {
 			companyPropertys = new ArrayList<CompanyProperty>();
@@ -155,9 +151,7 @@ public class ParameterController {
 	@RequestMapping(value = "/economytypeEx")
 	@ResponseBody
 	public List<CompanyEconomyType> economytypeEx(HttpServletRequest request) {
-		if (companyEconomyType != null) {
-			return companyEconomyType;
-		}
+	
 		companyEconomyType = companyEconomyTypeService.getAll();
 		if (companyEconomyType == null) {
 			companyEconomyType = new ArrayList<CompanyEconomyType>();
@@ -176,9 +170,7 @@ public class ParameterController {
 	@RequestMapping(value = "/economytype")
 	@ResponseBody
 	public List<CompanyEconomyType> companyEconomyTypeService(HttpServletRequest request) {
-		if (companyEconomyType != null) {
-			return companyEconomyType;
-		}
+
 		companyEconomyType = companyEconomyTypeService.getAll();
 		if (companyEconomyType == null) {
 			companyEconomyType = new ArrayList<CompanyEconomyType>();
@@ -197,9 +189,7 @@ public class ParameterController {
 	@RequestMapping(value = "/companytype", method = RequestMethod.POST)
 	@ResponseBody
 	public List<CompanyType> companyTypeService(HttpServletRequest request) {
-		if (companyTypes != null) {
-			return companyTypes;
-		}
+
 		companyTypes = companyTypeService.getAll();
 		if (companyTypes == null) {
 			companyTypes = new ArrayList<CompanyType>();
@@ -218,9 +208,6 @@ public class ParameterController {
 	@RequestMapping(value = "/companytypeEx", method = RequestMethod.POST)
 	@ResponseBody
 	public List<CompanyType> companyTypeServiceEx(HttpServletRequest request) {
-		if (companyTypes != null) {
-			return companyTypes;
-		}
 		companyTypes = companyTypeService.getAll();
 		if (companyTypes == null) {
 			companyTypes = new ArrayList<CompanyType>();
