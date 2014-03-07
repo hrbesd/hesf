@@ -366,7 +366,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test25() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = auditService.initAuditData("2012", "2013");
+		boolean entity = auditService.initAuditData("2013");
 		map.put("entity", entity);
 		return map;
 	}

@@ -38,15 +38,12 @@ public interface AuditService extends BaseService<Audit> {
 	Audit getByPrimaryKey(String year, Integer companyId);
 
 	/**
-	 * 初始化审计参数--包括复制上年度公司信息和想审计表中插入要审计的公司数据
+	 * 初始化审计参数--包括创建 年度审核信息
 	 * 
-	 * @param currentYear
-	 *            本年度
-	 * @param lastYear
-	 *            上年度
+	 * @param year 年度
 	 * @return
 	 */
-	public boolean initAuditData(String currentYear, String lastYear);
+	public boolean initAuditData(String year);
 
 	/**
 	 * 多条件查询 公司审核数据 数据

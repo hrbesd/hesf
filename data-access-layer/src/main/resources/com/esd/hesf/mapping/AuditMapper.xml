@@ -478,17 +478,14 @@
 	</insert>
 
 	<!-- copy last year data : to be continued -->
-	<insert id="insertLastYearData" parameterType="map">
+	<insert id="insertLastYearData" parameterType="java.lang.String">
 		insert into audit
 		(
-		year,
-		company_id
+			year,
+			company_id
 		)
-		select #{currentYear},
-		company_id
-		from
-		hesf.audit
-		where audit.year = #{lastYear};
+		select #{year,jdbcType=CHAR},id 
+		from company
 	</insert>
 
 	<!-- delete -->

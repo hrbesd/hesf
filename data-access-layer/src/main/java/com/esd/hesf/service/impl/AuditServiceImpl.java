@@ -208,15 +208,21 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public boolean initAuditData(String currentYear, String lastYear) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("currentYear", currentYear);
-		map.put("lastYear", lastYear);
+	public boolean initAuditData(String year) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return false;
+		}
 		// 向审核表里插入数据
-		int k = dao.insertLastYearData(map);
+		int k = dao.insertLastYearData(year);
 		if (k <= 0) {
 			new HesfException("向审核表里插入数据		失败").printStackTrace();
+			return false;
 		}
+		Integer currentYear = Integer.parseInt(year);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("currentYear", currentYear);
+		map.put("lastYear", (currentYear-1));
 		// 向公司-员工关系表中插入数据
 		int l = cywDao.insertLastYearData(map);
 		if (l <= 0) {

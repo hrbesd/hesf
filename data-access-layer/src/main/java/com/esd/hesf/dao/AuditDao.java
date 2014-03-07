@@ -14,13 +14,12 @@ import com.esd.hesf.model.Audit;
 public interface AuditDao extends BaseDao<Audit> {
 
 	/**
-	 * 复制去年的审核数据 map中放入下面2个参数
+	 * 根据年份穿件审核数据
 	 * 
-	 * @param currentYear
-	 * @param lastYear
+	 * @param year
 	 * @return
 	 */
-	int insertLastYearData(Map<String, Object> map);
+	int insertLastYearData(String year);
 
 	/**
 	 * 得到已有的年度列表

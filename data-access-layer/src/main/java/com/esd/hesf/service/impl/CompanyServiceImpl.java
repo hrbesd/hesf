@@ -137,8 +137,10 @@ public class CompanyServiceImpl implements CompanyService {
 		return true;
 	}
 
+	//本来应该执行逻辑删除掉滴 *_*
 	@Override
 	public boolean delete(Integer id) {
+		
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -195,11 +197,11 @@ public class CompanyServiceImpl implements CompanyService {
 		return prn;
 	}
 
-	// 得到有数据的上一年份
-	@Override
-	public String getLastYear(String thisYear) {
-		return dao.retrieveLastYear(thisYear);
-	}
+//	// 得到有数据的上一年份
+//	@Override
+//	public String getLastYear(String thisYear) {
+//		return dao.retrieveLastYear(thisYear);
+//	}
 
 	// 测试用
 	@Override

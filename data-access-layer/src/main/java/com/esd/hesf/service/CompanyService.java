@@ -40,11 +40,11 @@ public interface CompanyService extends BaseService<Company> {
 	Company getByCompanyCode(String companyCode);
 
 	/**
-	 * 得到有公司数据的最近一个年份
+	 * 得到有公司数据的最近一个年份xxx
 	 * 
 	 * @return
 	 */
-	public String getLastYear(String thisYear);
+//	public String getLastYear(String thisYear);
 
 	/**
 	 * 修改测试数据用--暂时勿删

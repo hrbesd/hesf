@@ -152,10 +152,9 @@ public class YearAuditParameterController {
 	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request) {
 		logger.debug("auditParameter:{}", auditParameter);
 		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
-		String lastYear = companyService.getLastYear(currentYear);// 获取上一次有效的年;
 		try {
-			if (lastYear != null) {
-				auditService.initAuditData(currentYear, lastYear);
+			if (currentYear != null) {
+				auditService.initAuditData(currentYear);
 			}
 		} catch (Exception e) {
 			logger.error("initAuditData", e);
