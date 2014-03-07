@@ -103,23 +103,30 @@
 	<table border="0" width="100%">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
-			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
+			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" /></td>
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
+			</td>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码:</td>
-			<td><input type="text" style="width: 100%" id="companyCode" /></td>
+			<td><input type="text" style="width: 100%" id="companyCode" />
+			</td>
 			<td style="text-align: right;">税务编码:</td>
-			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" />
+			</td>
 			<td width="80" style="text-align: right;">企业名称:</td>
-			<td><input type="text" style="width: 100%" id="companyName" /></td>
-			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a></td>
+			<td><input type="text" style="width: 100%" id="companyName" />
+			</td>
+			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a>
+			</td>
 		</tr>
 	</table>
 </div>
 <!-- 数据表格 -->
 <table id="initAuditList_datagrid"></table>
+<div id="account" />
 <script type="text/javascript">
 	$.parser.onComplete = function(v) {
 		$('#year').combobox({
