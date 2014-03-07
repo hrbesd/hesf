@@ -235,16 +235,16 @@
 			width : 30,
 			align : 'center',
 			formatter : function(value, row, index) {
-				if(row.billReturn==true){
+				if (row.billReturn == true) {
 					var v = '<a href="#" style="font-size: 12px;" onclick="payment.view(' + row.id + ')">查看</a>';
-				}else{
+				} else {
 					var v = '<a href="#" style="font-size: 12px;" onclick="payment.confirm(' + row.id + ')">确认</a>';
 				}
 				return v;
 			}
 		} ] ]);
 	};
-	$.parser.onComplete = function(){
+	$.parser.onComplete = function() {
 		payment.getBalance();
 		payment.loadPaymentData();
 	};
@@ -273,8 +273,9 @@
 				<td class="bj_belu2 readonly">${entity.remainAmount }</td>
 				<td class="td_short">减缴金额:</td>
 				<td class="bj_belu2 readonly">${entity.reductionAmount }</td>
-				<td class="td_short">实缴金额:</td>
-				<td class="bj_belu2 readonly">${entity.actualAmount }</td>
+				<td class="td_short">滞纳金:</td>
+				<td class="bj_belu readonly">${entity.delayPayAmount}</td>
+
 
 			</tr>
 			<tr>
@@ -284,18 +285,17 @@
 				<td class="bj_belu2 readonly" id="payments"></td>
 				<td class="td_short">余缴金额:</td>
 				<td class="bj_belu2 readonly" id="balance"></td>
-				<td class="td_short">滞纳金:</td>
-				<td class="bj_belu readonly">${entity.delayPayAmount}
-				</td>
+				<td class="td_short">实缴总金额:</td>
+				<td class="bj_belu2 readonly">${entity.payAmount }</td>
+
 			</tr>
 			<tr>
 				<td class="td_short" rowspan="3">备注:</td>
-				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>
-				</td>
-				<td class="td_short" >职工总人数:</td>
+				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea></td>
+				<td class="td_short">职工总人数:</td>
 				<td class="td_short readonly">${entity.companyEmpTotal }</td>
-				<td class="td_short" >年人均工资:</td>
-				<td class="td_short readonly">${entity.companyEmpTotal }</td>
+				<td class="td_short">年人均工资:</td>
+				<td class="td_short readonly">${entity.averageSalary }</td>
 			</tr>
 			<tr>
 				<td class="td_short">应按排数:</td>
