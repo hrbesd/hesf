@@ -416,11 +416,15 @@ public class WorkerController {
 		// 上传文件
 		Map<String, String> paramMap = importfile(upLoadPath, request, response);
 		
+		String fileError = paramMap.get("fileError");// 错误信息
+		if(fileError!=null){
+			request.setAttribute("errorInfo", fileError);
+			// 返回成功页面
+			return new ModelAndView("basicInfo/worker_importInfo");
+		}
 		// 上传文件返回的参数信息
 		String filePath = paramMap.get("filePath");// 文件路径
-		logger.error("-------:{}",paramMap.get("companyId"));
 		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// 文件路径
-		String fileError = paramMap.get("fileError");// 错误信息
 		// 错误信息列表
 		List<Worker> workerErrorList = new ArrayList<Worker>();
 		List<Worker> list = null;
