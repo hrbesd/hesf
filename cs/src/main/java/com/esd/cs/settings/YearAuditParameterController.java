@@ -22,11 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditService;
-import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.UserGroupService;
 
 /**
@@ -44,8 +44,6 @@ public class YearAuditParameterController {
 	private AuditParameterService auditParameterService;
 	@Autowired
 	private AuditService auditService;
-	@Autowired
-	private CompanyService companyService;
 
 	/**
 	 * 转到年审参数
@@ -120,7 +118,7 @@ public class YearAuditParameterController {
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	@ResponseBody
 	public Boolean checkYear() {
-		String year = CalendarUtil.getLastYear();
+		String year = ParameterController.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 		if (auditParameter != null) {
 			return true;
@@ -136,7 +134,7 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addGet(HttpServletRequest request) {
-		String year = CalendarUtil.getLastYear();
+		String year = ParameterController.getYear();
 		request.setAttribute("year", year);
 		return new ModelAndView("settings/parameter_save");
 	}
@@ -161,6 +159,7 @@ public class YearAuditParameterController {
 			return false;
 		}
 		auditParameterService.save(auditParameter);
+		ParameterController.setYear(auditParameterService.getLastestYear());
 		return true;
 	}
 

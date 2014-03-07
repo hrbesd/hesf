@@ -1,7 +1,5 @@
 package com.esd.cs.payment;
 
-import java.util.Date;
-
 import org.springframework.format.annotation.NumberFormat;
 
 public class Payments {

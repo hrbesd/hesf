@@ -1,9 +1,7 @@
 package com.esd.cs.statistics;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.cs.Constants;
 import com.esd.cs.common.CommonUtil;
+import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.cs.worker.WorkerController;
-import com.esd.hesf.model.Audit;
-import com.esd.hesf.model.Company;
-import com.esd.hesf.model.User;
 import com.esd.hesf.service.ReportViewService;
 import com.esd.hesf.viewmodels.ReportViewModel;
 
@@ -72,7 +67,7 @@ public class ReportController {
 	@RequestMapping(value = "/nature", method = RequestMethod.GET)
 	public ModelAndView nature(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Nature");
-		request.setAttribute("year", CalendarUtil.getLastYear());
+		request.setAttribute("year", ParameterController.getYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
@@ -106,7 +101,7 @@ public class ReportController {
 	@RequestMapping(value = "/area", method = RequestMethod.GET)
 	public ModelAndView area(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Area");
-		request.setAttribute("year", CalendarUtil.getLastYear());
+		request.setAttribute("year", ParameterController.getYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
 		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
@@ -139,7 +134,7 @@ public class ReportController {
 	@RequestMapping(value = "/economytype", method = RequestMethod.GET)
 	public ModelAndView economytype(HttpServletRequest request, HttpSession session) {
 		logger.info("goToPage:{}", "Report_Economytype");
-		request.setAttribute("year", CalendarUtil.getLastYear());
+		request.setAttribute("year", ParameterController.getYear());
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
 		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人

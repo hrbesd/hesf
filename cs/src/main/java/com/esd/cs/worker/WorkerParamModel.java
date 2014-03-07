@@ -1,10 +1,6 @@
 package com.esd.cs.worker;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.esd.hesf.model.PrimaryKey_Int;
-import com.esd.hesf.model.WorkerHandicapLevel;
-import com.esd.hesf.model.WorkerHandicapType;
 
 /**
  * 残疾工人参数类

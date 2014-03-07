@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
+import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
@@ -72,7 +73,7 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request) {
-		String nowYear = CalendarUtil.getLastYear();
+		String nowYear = ParameterController.getYear();
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("payment/payment_list");

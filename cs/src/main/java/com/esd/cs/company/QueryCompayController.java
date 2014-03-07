@@ -20,27 +20,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.PoiCreateExcel;
-import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.CompanyService;
-import com.esd.hesf.service.WorkerService;
 
 @Controller
 @RequestMapping(value = "/security/query/company")
 public class QueryCompayController {
 	private static final Logger logger = LoggerFactory.getLogger(QueryCompayController.class);
 	@Autowired
-	private WorkerService workerService;// 工作者
-	@Autowired
 	private CompanyService companyService;// 企业
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView company_list(HttpServletRequest request) {
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getLastYear());
+		request.setAttribute("nowYear", ParameterController.getYear());
 		logger.debug("goToPage:{}", "queryCompany");
 		return new ModelAndView("query/company");
 

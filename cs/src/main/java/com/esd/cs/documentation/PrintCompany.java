@@ -5,7 +5,6 @@
  */
 package com.esd.cs.documentation;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
+import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AuditService;
@@ -48,7 +47,7 @@ public class PrintCompany {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView addCompany(HttpServletRequest request) {
 		// 获取当前年份
-		request.setAttribute("nowYear", CalendarUtil.getLastYear());
+		request.setAttribute("nowYear", ParameterController.getYear());
 		logger.debug("gotoPrintList:{}", "queryAudit");
 		return new ModelAndView("documents/print_list");
 	}
@@ -84,7 +83,7 @@ public class PrintCompany {
 		result.put("companyOrganizationCode", company.getCompanyOrganizationCode());// 组织机关代码证
 		result.put("companyPhone", company.getCompanyPhone());// 电话
 		
-		Audit audit= auditService.getByPrimaryKey(CalendarUtil.getLastYear(), companyId);
+		Audit audit= auditService.getByPrimaryKey(ParameterController.getYear(), companyId);
 		if(audit==null){
 			logger.error("get_comapnmy_information:{}","null");
 			return null;
@@ -181,7 +180,7 @@ public class PrintCompany {
 			// 企业基本信息
 			result.put("companyName", company.getCompanyName());// 企业名称
 			
-			Audit audit= auditService.getByPrimaryKey(CalendarUtil.getLastYear(), companyId);
+			Audit audit= auditService.getByPrimaryKey(ParameterController.getYear(), companyId);
 			if(audit==null){
 				logger.error("get_comapnmy_information:{}","null");
 				return null;

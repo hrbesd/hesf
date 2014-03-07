@@ -4,38 +4,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.cs.common.HExcelSheetParser;
+import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.XExcelSheetParser;
-import com.esd.hesf.model.Area;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
-import com.esd.hesf.service.AuditParameterService;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class WorkerUtil {
-	@Autowired
-	private AuditParameterService auditParameterService;// 年审参数
 	public static Integer DnISABILITYCARDLENGTH = 20;// 身份证位数
 	private static final Logger logger = LoggerFactory.getLogger(WorkerUtil.class);
 
@@ -46,7 +31,7 @@ public class WorkerUtil {
 					// 初审日期
 					Integer age = Integer.valueOf(param.substring(6, 10));
 					// 当前年份
-					Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
+					Integer nowYear = Integer.valueOf(ParameterController.getYear());
 					return (nowYear - age) + 1;
 				} catch (Exception e) {
 					logger.error("conversionAge:{}", e.getMessage());

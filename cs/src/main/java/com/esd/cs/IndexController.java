@@ -20,9 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.esd.common.captcha.CaptchaService;
 import com.esd.common.util.UsernameAndPasswordMd5;
+import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserGroup;
+import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.MenuService;
 import com.esd.hesf.service.UserGroupService;
 import com.esd.hesf.service.UserService;
@@ -46,6 +48,9 @@ public class IndexController {
 
 	@Autowired
 	private UserGroupService groupService;
+
+	@Autowired
+	private AuditParameterService auditParameterService; // 年审参数
 
 	/**
 	 * 登录页面
@@ -93,6 +98,9 @@ public class IndexController {
 				session.setAttribute(Constants.USER_ID, user.getId());
 				session.setAttribute(Constants.USER_NAME, user.getUserName());
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
+				
+				// 登录成功获得年度
+				ParameterController.setYear(auditParameterService.getLastestYear());
 				return new ModelAndView("redirect:/security/index");
 			} else {
 				redirectAttributes.addFlashAttribute("username", userName);
@@ -114,6 +122,7 @@ public class IndexController {
 			redirectAttributes.addFlashAttribute("message", "验证码错误");
 			return new ModelAndView("redirect:/login");
 		}
+
 
 		return new ModelAndView("redirect:/login");
 	}

@@ -2,7 +2,6 @@ package com.esd.cs.common;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.UUID;
 
 public class CommonUtil {
 	public static String formatData() {

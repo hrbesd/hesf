@@ -12,19 +12,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.AuditParameter;
-import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.AuditParameterService;
-import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.WorkerService;
 import com.esd.hesf.viewmodels.WorkerViewModel;
 
@@ -34,8 +31,6 @@ public class QueryWorkerController {
 	private static final Logger logger = LoggerFactory.getLogger(QueryWorkerController.class);
 	@Autowired
 	private WorkerService workerService;// 工作者
-	@Autowired
-	private CompanyService companyService;// 企业
 	@Autowired
 	private AuditParameterService auditParameterService;// 年审参数
 
@@ -54,7 +49,7 @@ public class QueryWorkerController {
 		Integer total = 0;
 		try {
 			// 获取年审参数
-			AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getLastYear());
+			AuditParameter auditParam = auditParameterService.getByYear(ParameterController.getYear());
 
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
@@ -123,7 +118,7 @@ public class QueryWorkerController {
 		Integer total = 0;
 		List<Map<String, Object>> list = null;
 		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(CalendarUtil.getLastYear());
+		AuditParameter auditParam = auditParameterService.getByYear(ParameterController.getYear());
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id

@@ -27,11 +27,11 @@ import com.esd.hesf.model.User;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AreaService;
+import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
-import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentTypeService;
@@ -64,6 +64,8 @@ public class ParameterController {
 	@Autowired
 	private AuditService auditService; // 审核
 	@Autowired
+	private AuditParameterService auditParameterService; // 年审参数
+	@Autowired
 	private AreaService areaService;// 地区
 	@Autowired
 	private AuditProcessStatusService auditProcessStatusService;// 审核流程状态
@@ -78,6 +80,22 @@ public class ParameterController {
 	private static List<CompanyEconomyType> companyEconomyType;
 	private static List<CompanyType> companyTypes;
 
+	private static String nowYear = null;
+
+	/**
+	 * 返回最新年份
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getYear() {
+		return nowYear;
+	}
+
+	public static void setYear(String year) {
+		nowYear = year;
+	}
+
 	/**
 	 * 返回年份
 	 * 
@@ -90,7 +108,7 @@ public class ParameterController {
 		logger.debug("getYears");
 		List<Map<String, String>> list = new ArrayList<>();
 		try {
-			String[] arr = auditService.getYears();
+			String[] arr = auditParameterService.getYears();
 			for (String str : arr) {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("text", str);
@@ -113,7 +131,7 @@ public class ParameterController {
 	@RequestMapping(value = "/property")
 	@ResponseBody
 	public List<CompanyProperty> companyPropertyService(HttpServletRequest request) {
-	
+
 		companyPropertys = companyPropertyService.getAll();
 		if (companyPropertys == null) {
 			companyPropertys = new ArrayList<CompanyProperty>();
@@ -151,7 +169,7 @@ public class ParameterController {
 	@RequestMapping(value = "/economytypeEx")
 	@ResponseBody
 	public List<CompanyEconomyType> economytypeEx(HttpServletRequest request) {
-	
+
 		companyEconomyType = companyEconomyTypeService.getAll();
 		if (companyEconomyType == null) {
 			companyEconomyType = new ArrayList<CompanyEconomyType>();
@@ -277,7 +295,7 @@ public class ParameterController {
 	@RequestMapping(value = "/getArea", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Area> areaService(HttpServletRequest request) {
-		logger.debug("getArea:{}","getArea");
+		logger.debug("getArea:{}", "getArea");
 		List<Area> list = null;
 		try {
 			list = areaService.getHeiLongjiangCities();
