@@ -29,7 +29,7 @@ import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
-import com.esd.hesf.service.AuditService;
+
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyTypeService;
@@ -61,8 +61,7 @@ public class ParameterController {
 	private WorkerHandicapTypeService workerHandicapTypeService;// 残疾类型
 	@Autowired
 	private WorkerHandicapLevelService workerHandicapLevelService;// 残疾等级
-	@Autowired
-	private AuditService auditService; // 审核
+
 	@Autowired
 	private AuditParameterService auditParameterService; // 年审参数
 	@Autowired

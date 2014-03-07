@@ -83,7 +83,7 @@ public class WorkerController {
 	// 提示文本
 	static String AGEERROR = "年龄超标";
 	static String NAMENULL = "姓名为空";
-	static String WORDERROR = "excel文件内部内容格式错误!";
+	static String WORDERROR = "excel文件内容格式错误!";
 	static String CREATEERRORFILE = "创建错误信息列表文件错误";
 
 	/**
@@ -333,7 +333,7 @@ public class WorkerController {
 	 */
 	public Map<String, String> importfile(String upLoadPath, HttpServletRequest request, HttpServletResponse response) {
 		// 获取并解析文件类型和支持最大值
-		String fileType = "xls";
+		//String fileType = "xls";
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
 		factory.setSizeThreshold(5 * 1024);
@@ -356,9 +356,9 @@ public class WorkerController {
 					String fileName = item.getName();
 					// 检查文件后缀格式
 					String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-					if (fileType == null && "".equals(fileType)) {
-						result.put("fileError", "文件后缀名错误！");
-					}
+//					if (fileType == null && "".equals(fileType)) {
+//						result.put("fileError", "文件后缀名错误！");
+//					}
 					// 创建文件唯一名称
 					String uuid = UUID.randomUUID().toString();
 					// 真实上传路径
@@ -455,11 +455,19 @@ public class WorkerController {
 						w.setWorkerHandicapCode(workerHandicapCode);
 
 						// 1.校验姓名
-						if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null")) {
+						if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null") ) {
 							// 存储错误信息
 							w.setRemark(NAMENULL);
 							workerErrorList.add(w);
 							logger.error("impoerWorkerError:{},info:{}", w, NAMENULL);
+							continue;
+						}
+						// 校验姓名长度
+						if (workerName.length()>20) {
+							// 存储错误信息
+							w.setRemark("姓名长度不符");
+							workerErrorList.add(w);
+							logger.error("impoerWorkerError:{},info:{}", w, "姓名长度不符");
 							continue;
 						}
 						// 2.校验残疾证号是否为空
@@ -633,10 +641,7 @@ public class WorkerController {
 				logger.error("importWorkerError:{}", e.getMessage());
 			}
 		}
-		// else {
-		// request.setAttribute("errorInfo", fileError);
-		// logger.error("importUpLoadError");
-		// }
+
 		// 返回成功页面
 		return new ModelAndView("basicInfo/worker_importInfo");
 	}
