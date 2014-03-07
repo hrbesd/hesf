@@ -113,7 +113,7 @@ public class AuditsController {
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		getAudit.setVerifyAuditUser(user);// 添加复审ID
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
+		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WTG);
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);

@@ -231,6 +231,10 @@
 			}
 		});
 	};
+	//组件解析完成
+	$.parser.onComplete = function() {
+	
+	};
 </script>
 
 	<!--  女退休年龄 -->

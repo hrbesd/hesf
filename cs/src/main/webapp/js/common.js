@@ -109,6 +109,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns) {
  * 创建通用的列表控件
  */
 esd.common.datagrid = function(grid, url, toolbar, columns, params) {
+	
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
@@ -132,6 +133,38 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 		}, ] ],
 		columns : columns,
 		toolbar : toolbar
+	});
+};
+
+/**
+ * 创建通用的列表控件
+ */
+esd.common.datagrid = function(grid, url, toolbar, columns, params,onLoadSuccess) {
+	
+	$(grid).datagrid({
+		url : url,
+		pageSize : 20,
+		pageList : [ 20, 40, 60, 80 ],
+		border : false,// 不显示边框
+		pagination : true, // 是否显示分页栏
+		doSize : true,// 在面板被创建的时候将重置大小和重新布局。
+		fit : true, // 面板大小将自适应父容器
+		fitColumns : true,// 是否显示横向滚动条，未生效
+		nowrap : true,// 如果为true，则在同一行中 。设置为true可以提高加载性能
+		idField : 'id',// 指明哪一个字段是标识字段。
+		rownumbers : true,// 显示行号
+		striped : true,// 奇偶行使用不同背景色
+		checkOnSelect : false,// 单击不选择复选框
+		selectOnCheck : false,
+		singleSelect : true,
+		queryParams : params,
+		frozenColumns : [ [ {// 复选框
+			field : 'id',
+			checkbox : true
+		}, ] ],
+		columns : columns,
+		toolbar : toolbar,
+		onLoadSuccess:onLoadSuccess
 	});
 };
 /**
@@ -243,28 +276,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 	},
 
 });
-/**
- * 重写下拉框函数 增加默认选择第一行功能
- */
-$.extend($.fn.combobox.methods, {
-	selectedIndex : function(jq, index) {
-		if (!index) {
-			index = 0;
-		}
-		$(jq).combobox({
-			onLoadSuccess : function() {
-				var opt = $(jq).combobox('options');
-				var data = $(jq).combobox('getData');
-				for ( var i = 0; i < data.length; i++) {
-					if (i == index) {
-						$(jq).combobox('setValue', eval('data[index].' + opt.valueField));
-						break;
-					}
-				}
-			}
-		});
-	}
-});
+
 /**
  * 文本框验证
  */

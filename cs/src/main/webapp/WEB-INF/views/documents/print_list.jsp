@@ -228,7 +228,7 @@
 				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td class="tipsText">税务号码:</td>
 				<td><input id="companyTaxCode" type="text" class="inputElement" /></td>
-				<td class="tipsText">组织机构代码证:</td>
+				<td class="tipsText">组织机构代码:</td>
 				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
 				</td>
 

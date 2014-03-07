@@ -98,3 +98,10 @@
 		</tr>
 	</table>
 </form>
+
+<script type="text/javascript">
+	//组件解析完成
+	$.parser.onComplete = function() {
+	
+	};
+</script>

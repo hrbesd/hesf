@@ -131,7 +131,10 @@
 				//年龄检测
 				return workerList.ageDetection(value, row, index);
 			}
-		} ] ], params);
+		} ] ], params,function(){
+		//从新获企业信息
+		workerList.getCompany();
+		});
 	};
 
 	/**
@@ -300,7 +303,7 @@
 	$.parser.onComplete = function() {
 		workerList.init();
 		workerList.loadData(workerList.getParams());
-		workerList.getCompany();
+		
 	};
 
 	$(function() {
