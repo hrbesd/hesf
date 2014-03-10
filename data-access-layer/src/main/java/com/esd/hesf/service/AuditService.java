@@ -21,6 +21,13 @@ public interface AuditService extends BaseService<Audit> {
 	 */
 	public List<Audit> getAll();
 
+	/**
+	 * 根据 年份year, 公司档案号companyCode 插入一条年审记录
+	 * @param year
+	 * @param companyCode
+	 * @return
+	 */
+	boolean save(String year,String companyCode);
 	
 	/**
 	 * 根据年份year, 公司id companyId获得一条审核数据

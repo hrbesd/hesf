@@ -700,4 +700,15 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	// 审核表  根据传入的年份和公司code 穿件一条审核记录
+		@RequestMapping("/56")
+		@ResponseBody
+		public Map<String, Object> test56() {
+			Map<String, Object> map = new HashMap<String, Object>();
+			boolean entity = auditService.save("2000", "101001");
+			map.put("entity", entity);
+			return map;
+		}
+	
 }

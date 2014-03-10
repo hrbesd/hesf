@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditCompanyViewDao;
 import com.esd.hesf.dao.AuditDao;
+import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.dao.UserDao;
 import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.AuditProcessStatus;
+import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.Constants;
@@ -43,10 +46,13 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private UserDao uDao;
 
+	@Autowired
+	private CompanyDao cDao;
+	
 	@Override
 	public boolean save(Audit t) {
 		if (t.getYear() == null || "".equals(t.getYear())) {
-			new HesfException("audit.company", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		if (t.getCompany() == null) {
@@ -72,6 +78,45 @@ public class AuditServiceImpl implements AuditService {
 		}
 		return true;
 	}
+
+	
+	@Override
+	public boolean save(String year, String companyCode) {
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		//先得到公司
+		Company company = cDao.retrieveByCompanyCode(companyCode);
+		if (company == null) {
+			new HesfException("公司不存在!").printStackTrace();
+			return false;
+		}
+		//验证那一年的审核数据是否已经存在
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("year", year);
+		map.put("companyId", company.getId());
+		Audit t = dao.retrieveByYearAndCompanyId(map);
+		if(t!=null){
+			new HesfException("该公司 "+year+" 年的审核数据已经存在!").printStackTrace();
+			return false;
+		}
+		t = new Audit();
+		t.setYear(year);
+		t.setCompany(company);
+		t.setAuditProcessStatus(new AuditProcessStatus(1));
+		int k = dao.insertSelective(t);
+		if (k != 1) {
+			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 
 	@Override
 	public boolean delete(Integer id) {
