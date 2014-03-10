@@ -56,7 +56,7 @@ import com.esd.hesf.viewmodels.WorkerViewModel;
 @Controller
 @RequestMapping("/test")
 public class TestController {
-	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
 	@Autowired
 	private MenuService menuService;

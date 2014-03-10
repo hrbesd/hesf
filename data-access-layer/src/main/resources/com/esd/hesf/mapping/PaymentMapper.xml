@@ -15,7 +15,7 @@
 		<result column="pay_bill_exchange_date" property="billExchangeDate" jdbcType="TIMESTAMP" />
 		<result column="pay_bill_return" jdbcType="BIT" property="billReturn" />
 		<result column="pay_bill_finance" jdbcType="BIT" property="billFinance" />
-		<result column="pay_bill_obsolete" property="billObsolete" jdbcType="VARCHAR" />
+		<result column="pay_bill_obsolete" property="billObsolete" jdbcType="BIT" />
 		<result column="pay_remark" property="remark" jdbcType="VARCHAR" />
 		<result column="pay_version" property="version" jdbcType="INTEGER" />
 		<association property="paymentPerson" javaType="com.esd.hesf.model.User" resultMap="ResultUser" />
@@ -125,7 +125,7 @@
 		#{paymentBill,jdbcType=VARCHAR}, #{paymentType.id,jdbcType=INTEGER},
 		#{paymentExceptional,jdbcType=INTEGER},
 		#{billPrintDate,jdbcType=TIMESTAMP},#{billExchangeDate,jdbcType=TIMESTAMP},#{billReturn,jdbcType=BIT},
-		#{billFinance,jdbcType=BIT},#{billObsolete,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{billFinance,jdbcType=BIT},#{billObsolete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR},
 		#{audit.id,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
 	</insert>
 
@@ -243,7 +243,7 @@
 				#{billFinance,jdbcType=BIT},
 			</if>
 			<if test="billObsolete != null">
-				#{billObsolete,jdbcType=VARCHAR},
+				#{billObsolete,jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -317,7 +317,7 @@
 				bill_finance = #{billFinance,jdbcType=BIT},
 			</if>
 			<if test="billObsolete != null">
-				bill_obsolete = #{billObsolete,jdbcType=VARCHAR},
+				bill_obsolete = #{billObsolete,jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
@@ -391,6 +391,9 @@
 					<if test="payment.audit.id != null and payment.audit.id > 0">
 						and pay.audit_id = #{payment.audit.id,jdbcType=INTEGER}
 					</if>
+				</if>
+				<if test="payment.billObsolete != null">
+					and pay.bill_obsolete = #{payment.billObsolete,jdbcType=BIT}
 				</if>
 				<if test="payment.isActive != null">
 					and pay.is_active = #{payment.isActive,jdbcType=BIT}

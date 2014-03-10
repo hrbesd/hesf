@@ -26,7 +26,7 @@ public class Payment extends PrimaryKey_Int {
 	private Date billExchangeDate; // 换票日期
 	private Boolean billReturn; // 返票
 	private Boolean billFinance; // 财政
-	private String billObsolete; // 作废票据
+	private Boolean billObsolete; // 是否 作废票据 默认为否
 	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
 	private String remark; // 备注
 	private Audit audit; // 缴款所属于的审核对象
@@ -125,11 +125,11 @@ public class Payment extends PrimaryKey_Int {
 		this.billFinance = billFinance;
 	}
 
-	public String getBillObsolete() {
+	public Boolean getBillObsolete() {
 		return billObsolete;
 	}
 
-	public void setBillObsolete(String billObsolete) {
+	public void setBillObsolete(Boolean billObsolete) {
 		this.billObsolete = billObsolete;
 	}
 
