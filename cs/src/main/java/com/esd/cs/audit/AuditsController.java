@@ -7,6 +7,7 @@ package com.esd.cs.audit;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -357,6 +358,8 @@ public class AuditsController {
 		// 计算滞纳金============================================================================================
 		// 获得支付截至日期
 		Date date = auditParameter.getAuditDelayDate();
+		SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyy-MM-dd");
+		String a1 = dateformat1.format(date);
 		// 获得滞纳金比例
 		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
 		// 计算滞纳金天数
@@ -564,8 +567,7 @@ public class AuditsController {
 	 * 转到年审单位初审页面
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request,
-			HttpSession session) {
+	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request, HttpSession session) {
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
 		if (audit.getInitAuditUser() == null) {

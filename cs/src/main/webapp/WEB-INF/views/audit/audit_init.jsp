@@ -114,7 +114,7 @@
 		param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
 		param.mianJiao = $('#mianJiao').combobox('getValue');
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-		param.year = $('#year').val();
+		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
 		$.ajax({
 			url : 'audits/calculate',
@@ -211,7 +211,7 @@
 			<tr>
 				<td width="100">档案号码:</td>
 				<td width="300" colspan="2"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
-					value="${entity.company.id}" /> <input type="hidden" name="year" id="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
+					value="${entity.company.id}" /> <input type="hidden" name="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
 				</td>
 				<td>年审年度:</td>
 				<td><input name="year" class="readonly" type="text" value="${entity.year}" />

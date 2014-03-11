@@ -112,7 +112,7 @@
 		param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
 		param.mianJiao = $('#mianJiao').combobox('getValue');
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-		param.year = $('#year').val();
+		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
 		//校验
 		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
@@ -129,18 +129,8 @@
 				$('#yiAnPaiCanJiRen').val(data.s_yiAnPaiCanJiRen);
 				$('#yiLuRuCanJiRen').val(data.s_yiLuRuCanJiRen);
 				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
-
 				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				var wl = data.weiShenMingXi.length;
-				var ql = data.qianJiaoMingXi.length;
-				if (wl != 0 || ql != 0) {
-					$('#message').css("display", "block");
-					$('#message').bind("click", function() {
-						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
-					});
-				}
 				$('#isDelayPay').val(data.isDelayPay);
-
 				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
 				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
 				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
