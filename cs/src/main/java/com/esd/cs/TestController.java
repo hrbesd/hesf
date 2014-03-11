@@ -346,8 +346,7 @@ public class TestController {
 	public Map<String, Object> test23() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> map1 = new HashMap<String, Object>();
-		map1.put("year", "2013");
-		map1.put("paymentPerson", 1);
+		map1.put("year", "2012");
 		PaginationRecordsAndNumber<Audit, Number> entity = auditService.getByMultiCondition(map1);
 		map.put("entity", entity);
 		return map;

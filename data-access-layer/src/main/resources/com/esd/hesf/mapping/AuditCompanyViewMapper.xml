@@ -46,8 +46,7 @@
 		<result column="au_is_active" jdbcType="BIT" property="isActive" />
 		<result column="au_version" jdbcType="INTEGER" property="version" />
 		<!-- auditProcessStatus -->
-		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
-		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
+		<result column="au_audit_process_status" jdbcType="INTEGER" property="auditProcessStatus.id" />
 		<!-- company -->
 		<result column="c_id" jdbcType="INTEGER" property="company.id" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
@@ -72,17 +71,13 @@
 		<result column="c_is_active" jdbcType="BIT" property="company.isActive" />
 		<result column="c_version" jdbcType="INTEGER" property="company.version" />
 		<!-- companyType -->
-		<result column="t_id" jdbcType="INTEGER" property="company.companyType.id" />
-		<result column="t_company_type" jdbcType="VARCHAR" property="company.companyType.companyType" />
+		<result column="c_company_type" jdbcType="INTEGER" property="company.companyType.id" />
 		<!-- companyEconomyType -->
-		<result column="et_id" jdbcType="INTEGER" property="company.companyEconomyType.id" />
-		<result column="et_company_economy_type" jdbcType="VARCHAR" property="company.companyEconomyType.companyEconomyType" />
+		<result column="c_company_economy_type" jdbcType="INTEGER" property="company.companyEconomyType.id" />
 		<!-- companyProperty -->
-		<result column="p_id" jdbcType="INTEGER" property="company.companyProperty.id" />
-		<result column="p_company_property" jdbcType="VARCHAR" property="company.companyProperty.companyProperty" />
+		<result column="c_company_property" jdbcType="INTEGER" property="company.companyProperty.id" />
 		<!-- area -->
-		<result column="a_code" jdbcType="CHAR" property="company.area.code" />
-		<result column="a_name" jdbcType="VARCHAR" property="company.area.name" />
+		<result column="c_area_code" jdbcType="CHAR" property="company.area.code" />
 	</resultMap>
 	
 	<resultMap id="ReportViewModel" type="com.esd.hesf.viewmodels.ReportViewModel">
@@ -112,173 +107,175 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		c_id, c_company_code, c_company_management,c_company_name, c_company_legal, c_company_contact_person, 
-			c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
-			c_company_phone, c_company_fax, c_company_mobile, c_company_bank, c_company_bank_account,
-			c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active, c_version,
-		t_id, t_company_type, 
-		et_id, et_company_economy_type,
-		p_id, p_company_property,
-		a_code, a_name,
-		au_id, au_year, au_company_emp_total, au_company_handicap_total, 
-			au_company_predict_total, au_company_should_total,
-			au_company_already_total,
-			au_amount_payable, au_reduction_amount, au_actual_amount,
-			au_pay_amount, au_remain_amount, au_complement_amount, au_delay_pay_amount,
-			au_is_delay_pay, au_init_audit_user_id, au_init_audit_date, au_init_audit_comment,
-			au_verify_audit_user_id, au_verify_audit_date, au_verify_audit_comment, au_remark, au_is_exempt, 
-			au_reduction_type, au_reducion_apply_user, au_reduction_date, au_reduction_reason,
-			au_reduction_answer_user, au_reduction_answer_date, 
-			au_reduction_answer_option, au_reduction_remark, au_unaudit_years, au_supplement_year,
-			au_delay_days, au_refuse_times, 
-			au_create_time,au_update_time, au_user_id, 
-			au_is_active, au_version,
-		aup_id, aup_audit_process_status
-	</sql>
-
-	<sql id="From_condition_list">
-		company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
-	</sql>
-	
-	<sql id="Where_condition_list">
-		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id   
+		c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
+				c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_fax as c_company_fax, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, c.create_time as c_create_time, 
+				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
+				c.company_type as c_company_type, 
+				c.company_economy_type as c_company_economy_type,
+				c.company_property as c_company_property,
+				c.area_code as c_area_code,
+		au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+				au.company_handicap_total as au_company_handicap_total, au.company_predict_total as au_company_predict_total,
+				au.company_should_total as au_company_should_total, au.company_already_total as au_company_already_total, 
+				au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
+				au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
+				au.is_delay_pay as au_is_delay_pay, 
+				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
+				au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
+				au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+				au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year, 
+				au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			au.audit_process_status as au_audit_process_status
 	</sql>
 
 	<select id="retrieveByCompany" parameterType="map" resultMap="AuditCompanyViewModel">
 		select
 		<include refid="Base_Column_List" />
-		from audit_company_view 
+		from audit as au, company as c
 		<trim prefix="where" prefixOverrides="and|or">
+			au.company_id = c.id 
 			<if test="year != null and year != ''">
-				au_year = #{year,jdbcType=CHAR} 
+				and au.year = #{year,jdbcType=CHAR} 
 			</if>
 			<if test="companyCode != null and companyCode != ''">
-				and c_company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
+				and c.company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyTaxCode != null and companyTaxCode != ''">
-				and c_company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
+				and c.company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyOrganizationCode != null and companyOrganizationCode != ''">
-				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
+				and c.company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyProperty != null and companyProperty > 0">
-				and p_id = #{companyProperty,jdbcType=INTEGER} 
+				and c.company_property = #{companyProperty,jdbcType=INTEGER} 
 			</if>
 			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
+				and c.company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
 			</if>
 			<if test="companyType != null and companyType > 0">
-				and t_id = #{companyType,jdbcType=INTEGER} 
+				and c.company_type = #{companyType,jdbcType=INTEGER} 
 			</if>
 			<if test="areaCode != null and areaCode != ''">
-				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
+				and c.area_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
-				and au_company_emp_total &gt;= #{minTotal} 
+				and au.company_emp_total &gt;= #{minTotal} 
 			</if>
 			<if test="maxTotal != null and maxTotal > 0">
-				and au_company_emp_total &lt;=  #{maxTotal} 
+				and au.company_emp_total &lt;=  #{maxTotal} 
 			</if>
 			<if test="minHandicapTotal != null and minHandicapTotal > 0">
-				and au_company_handicap_total &gt;= #{minHandicapTotal} 
+				and au.company_handicap_total &gt;= #{minHandicapTotal} 
 			</if>
 			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
-				and au_company_handicap_total &lt;=  #{maxHandicapTotal} 
+				and au.company_handicap_total &lt;=  #{maxHandicapTotal} 
 			</if>
 			<if test="companyName != null and companyName != ''">
-				and c_company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
+				and c.company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyAddress != null and companyAddress != ''">
-				and c_company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
+				and c.company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
 			</if>				
 			<if test="companyLegal != null and companyLegal != ''">
-				and c_company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
+				and c.company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="auditProcessStatus != null and auditProcessStatus > 0">
-				and aup_id = #{auditProcessStatus,jdbcType=INTEGER} 
-			</if>
-			<if test="paymentPerson != null and paymentPerson > 0">
-				and pay_payment_person = #{paymentPerson,jdbcType=INTEGER}
+				and au.audit_process_status = #{auditProcessStatus,jdbcType=INTEGER} 
 			</if>
 			<if test="overYear != null and overYear != ''">
-				and au_year &lt;= #{overYear}
+				and au.year &lt;= #{overYear}
 			</if>
 			<if test="isExempt != null">
-				and au_is_exempt = #{isExempt,jdbcType=BIT} 
+				and au.is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
 			<if test="actualAmount != null">
-				and au_actual_amount = #{actualAmount,jdbcType=DECIMAL}
+				and au.actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
 		</trim>
-		order by c_company_code
+		order by c.company_code
 		limit #{start},#{size}
 	</select>
 	
 	<select id="retrieveCount" parameterType="map" resultType="java.lang.Integer">
 		select count(*) 
-		from audit_company_view
+		from audit as au, company as c
 		<trim prefix="where" prefixOverrides="and|or">
+			au.company_id = c.id 
 			<if test="year != null and year != ''">
-				au_year = #{year,jdbcType=CHAR} 
+				and au.year = #{year,jdbcType=CHAR} 
 			</if>
 			<if test="companyCode != null and companyCode != ''">
-				and c_company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
+				and c.company_code like concat('%', #{companyCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyTaxCode != null and companyTaxCode != ''">
-				and c_company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
+				and c.company_tax_code like concat('%',#{companyTaxCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyOrganizationCode != null and companyOrganizationCode != ''">
-				and c_company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
+				and c.company_organization_code like concat('%',#{companyOrganizationCode,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyProperty != null and companyProperty > 0">
-				and p_id = #{companyProperty,jdbcType=INTEGER} 
+				and c.company_property = #{companyProperty,jdbcType=INTEGER} 
 			</if>
 			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
+				and c.company_economy_type = #{companyEconomyType,jdbcType=INTEGER} 
 			</if>
 			<if test="companyType != null and companyType > 0">
-				and t_id = #{companyType,jdbcType=INTEGER} 
+				and c.company_type = #{companyType,jdbcType=INTEGER} 
 			</if>
 			<if test="areaCode != null and areaCode != ''">
-				and a_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
+				and c.area_code like concat ('%', #{areaCode,jdbcType=VARCHAR},'%')  
 			</if>
 			<!-- emp total -->
 			<if test="minTotal != null and minTotal > 0">
-				and au_company_emp_total &gt;= #{minTotal} 
+				and au.company_emp_total &gt;= #{minTotal} 
 			</if>
 			<if test="maxTotal != null and maxTotal > 0">
-				and au_company_emp_total &lt;=  #{maxTotal} 
+				and au.company_emp_total &lt;=  #{maxTotal} 
 			</if>
 			<if test="minHandicapTotal != null and minHandicapTotal > 0">
-				and au_company_handicap_total &gt;= #{minHandicapTotal} 
+				and au.company_handicap_total &gt;= #{minHandicapTotal} 
 			</if>
 			<if test="maxHandicapTotal != null and maxHandicapTotal > 0">
-				and au_company_handicap_total &lt;=  #{maxHandicapTotal} 
+				and au.company_handicap_total &lt;=  #{maxHandicapTotal} 
 			</if>
 			<if test="companyName != null and companyName != ''">
-				and c_company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
+				and c.company_name like concat('%',#{companyName,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="companyAddress != null and companyAddress != ''">
-				and c_company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
+				and c.company_address like concat('%',#{companyAddress,jdbcType=VARCHAR},'%')
 			</if>				
 			<if test="companyLegal != null and companyLegal != ''">
-				and c_company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
+				and c.company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="auditProcessStatus != null and auditProcessStatus > 0">
-				and aup_id = #{auditProcessStatus,jdbcType=INTEGER} 
-			</if>
-			<if test="paymentPerson != null and paymentPerson > 0">
-				and pay_payment_person = #{paymentPerson,jdbcType=INTEGER}
+				and au.audit_process_status = #{auditProcessStatus,jdbcType=INTEGER} 
 			</if>
 			<if test="overYear != null and overYear != ''">
-				and au_year &lt;= #{overYear}
+				and au.year &lt;= #{overYear}
 			</if>
 			<if test="isExempt != null">
-				and au_is_exempt = #{isExempt,jdbcType=BIT} 
+				and au.is_exempt = #{isExempt,jdbcType=BIT} 
 			</if>
 			<if test="actualAmount != null">
-				and au_actual_amount = #{actualAmount,jdbcType=DECIMAL}
+				and au.actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
 		</trim>
 	</select>
@@ -504,4 +501,41 @@
 		u_id, u_user_name, u_user_real_name, u_user_password, u_user_email,
 			u_user_mobile, u_user_phone, u_user_status
 	</insert>
+	
+	<!-- out of date -->
+	<sql id="xxx Base_Column_List">
+		c_id, c_company_code, c_company_management,c_company_name, c_company_legal, c_company_contact_person, 
+			c_company_organization_code, c_company_tax_code, c_company_address, c_company_zip_code, 
+			c_company_phone, c_company_fax, c_company_mobile, c_company_bank, c_company_bank_account,
+			c_company_remark, c_create_time, c_update_time, c_user_id, c_is_active, c_version,
+		t_id, t_company_type, 
+		et_id, et_company_economy_type,
+		p_id, p_company_property,
+		a_code, a_name,
+		au_id, au_year, au_company_emp_total, au_company_handicap_total, 
+			au_company_predict_total, au_company_should_total,
+			au_company_already_total,
+			au_amount_payable, au_reduction_amount, au_actual_amount,
+			au_pay_amount, au_remain_amount, au_complement_amount, au_delay_pay_amount,
+			au_is_delay_pay, au_init_audit_user_id, au_init_audit_date, au_init_audit_comment,
+			au_verify_audit_user_id, au_verify_audit_date, au_verify_audit_comment, au_remark, au_is_exempt, 
+			au_reduction_type, au_reducion_apply_user, au_reduction_date, au_reduction_reason,
+			au_reduction_answer_user, au_reduction_answer_date, 
+			au_reduction_answer_option, au_reduction_remark, au_unaudit_years, au_supplement_year,
+			au_delay_days, au_refuse_times, 
+			au_create_time,au_update_time, au_user_id, 
+			au_is_active, au_version,
+		aup_id, aup_audit_process_status
+	</sql>
+	
+	<!-- out of date -->
+	<sql id="xxx From_condition_list">
+		company as c, company_type as t, company_economy_type as et, company_property as p, area as a, audit as au, audit_process_status as aup 
+	</sql>
+	
+	<!-- out of date -->
+	<sql id="xxx Where_condition_list">
+		c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and c.area_code = a.code and c.company_code = au.company_code and c.year = au.year and au.audit_process_status = aup.id   
+	</sql>
+	
 </mapper>

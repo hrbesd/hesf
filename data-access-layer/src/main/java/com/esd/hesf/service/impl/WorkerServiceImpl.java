@@ -181,6 +181,7 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public PaginationRecordsAndNumber<WorkerViewModel, Number> getByMultiCondition(Map<String, Object> map) {
+		Long t1 = System.currentTimeMillis();
 		if (map == null) {
 			map = new HashMap<String, Object>();
 		}
@@ -218,6 +219,7 @@ public class WorkerServiceImpl implements WorkerService {
 		PaginationRecordsAndNumber<WorkerViewModel, Number> prn = new PaginationRecordsAndNumber<WorkerViewModel, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
+		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return prn;
 	}
 
