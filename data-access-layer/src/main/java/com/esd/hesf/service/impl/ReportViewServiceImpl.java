@@ -42,6 +42,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 
 	@Override
 	public List<ReportViewModel> getByCompanyType(String year) {
+		Long t1 = System.currentTimeMillis();
 		// 1-先查询所有公司性质列表
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 起始索引值
@@ -88,11 +89,13 @@ public class ReportViewServiceImpl implements ReportViewService {
 			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
 			rvm.setAlreadyAmount(alreadyAmount);
 		}
+		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
 
 	@Override
 	public List<ReportViewModel> getByArea(String year) {
+		Long t1 = System.currentTimeMillis();
 		System.out.println("year : " + year);
 		// 1-先查询所有黑龙江地区列表
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -136,11 +139,13 @@ public class ReportViewServiceImpl implements ReportViewService {
 			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
 			rvm.setAlreadyAmount(alreadyAmount);
 		}
+		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
 
 	@Override
 	public List<ReportViewModel> getByCompanyEconomyType(String year) {
+		Long t1 = System.currentTimeMillis();
 		System.out.println("year : " + year);
 		// 1-先查询所有公司经济类型列表
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -188,6 +193,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
 			rvm.setAlreadyAmount(alreadyAmount);
 		}
+		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
 
