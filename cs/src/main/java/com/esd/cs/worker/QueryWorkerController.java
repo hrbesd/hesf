@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.AuditParameter;
@@ -114,11 +115,12 @@ public class QueryWorkerController {
 	@ResponseBody
 	public Map<String, Object> companyHireList(WorkerParamModel params, HttpServletRequest request) {
 		logger.debug("queryCompanyWorkerParams{}", params);
+		
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		List<Map<String, Object>> list = null;
 		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(ParameterController.getYear());
+		AuditParameter auditParam = auditParameterService.getByYear(params.getYear());
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id

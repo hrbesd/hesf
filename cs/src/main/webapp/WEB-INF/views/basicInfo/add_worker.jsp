@@ -52,7 +52,8 @@
 			url : 'worker/validate_workerHandicapCode',
 			type : 'post',
 			data : {
-				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18)
+				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18),
+				'year':$("#year").val()
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
@@ -138,11 +139,12 @@
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
 		//职工当前年龄
-		var age=$("#nowYear").val()-year+1;
+		var age=$("#year").val()-year+1;
 
 		//判断年龄
 		if(age<16){
-		$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
+		alert(age);
+				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
 			
 				return false;
 		}
@@ -199,7 +201,8 @@
 			url : 'worker/validate_workerHandicapCode',
 			type : 'post',
 			data : {
-				'workerIdCard' : workerIdCard
+				'workerIdCard' : workerIdCard,
+					'year':$("#year").val()
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
@@ -245,6 +248,7 @@
 	
 <form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
 	<input type="hidden" value="${companyId}" name="companyId"  />
+	<input type="hidden" value="${year}" name="year"  />
 	
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">

@@ -92,7 +92,7 @@
 			<td class="reportTitle">地区</td>
 			<td>单位总数</td>
 			<td>单位总人数</td>
-			<td>待初单位数</td>
+			<td>待初审单位数</td>
 			<td>待复审单位数</td>
 			<td>已复核达标单位数</td>
 			<td>已复核未达标单位数</td>

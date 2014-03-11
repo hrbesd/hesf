@@ -54,7 +54,10 @@ public class CompayController {
 		// 续传用户类型
 		request.setAttribute("companyProperty", property);
 		// 获取当前年份
-		request.setAttribute("nowYear", ParameterController.getYear());
+		request.setAttribute("year", ParameterController.getYear());
+		
+		logger.debug("JumpCompany:{},year:{}", property,ParameterController.getYear());
+		
 		return new ModelAndView("basicInfo/company_list");
 	}
 
@@ -95,12 +98,7 @@ public class CompayController {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
 		logger.debug("editCompany{}", company);
-		
-		Audit audit= auditService.getByPrimaryKey(ParameterController.getYear(), id);
-		if(audit==null){
-			logger.error("get_comapnmy_information:{}","null");
-			return null;
-		}
+
 		return new ModelAndView("basicInfo/edit_company", "company", company);
 	}
 
@@ -145,7 +143,7 @@ public class CompayController {
 				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			boolean b = companyService.save(company,ParameterController.getYear());
+			boolean b = companyService.save(company);
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
@@ -221,9 +219,11 @@ public class CompayController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/getinformation/{companyId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getinformation/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId,HttpServletRequest request) {
+	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
 
 		logger.debug("getComapnmyInformation:{}", companyId);
 		List<Map<String, String>> list = null;
@@ -238,16 +238,15 @@ public class CompayController {
 			map.put("companyTaxCode", c.getCompanyTaxCode());// 税务编码
 			map.put("companyEconomyType", c.getCompanyEconomyType().getCompanyEconomyType());// 经济类型
 			map.put("companyArea", c.getArea().getName());// 地区
-			Audit audit= auditService.getByPrimaryKey(ParameterController.getYear(), companyId);
+			Audit audit= auditService.getByPrimaryKey(year, companyId);
 			if(audit==null){
 				logger.error("get_comapnmy_information:{}","null");
 				return null;
 			}
 			map.put("companyEmpTotal",audit.getCompanyEmpTotal() + "");// 员工总人数
-
-			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId, ParameterController.getYear())+ "");// 残疾职工总人数
+			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId,year)+ "");// 残疾职工总人数
 			list.add(map);
-			logger.debug("getComapnmyInformation:{}", list);
+			logger.debug("getComapnmyInformationResult:{}", list);
 			return list;
 		}
 

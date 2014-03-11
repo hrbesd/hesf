@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.cs.common.CommonUtil;
 import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.PoiCreateExcel;
@@ -92,11 +93,14 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/list/{companyId}")
-	public ModelAndView worker_list(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
+	@RequestMapping(value = "/list/{companyId}/{year}")
+	public ModelAndView worker_list(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+		logger.debug("goToWorkerList year:{},companyId:{}", year, companyId);
+
+		request.setAttribute("year", year);
 		request.setAttribute("companyId", companyId);
 		// 获取年审参数
-		AuditParameter param = auditParameterService.getByYear(ParameterController.getYear());
+		AuditParameter param = auditParameterService.getByYear(year);
 		if (param != null) {
 			// 男职工退休年龄
 			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
@@ -116,11 +120,12 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/view/{companyId}")
-	public ModelAndView view(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
+	@RequestMapping(value = "/view/{companyId}/{year}")
+	public ModelAndView view(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
 		// 获取年审参数
-		AuditParameter param = auditParameterService.getByYear(ParameterController.getYear());
+		AuditParameter param = auditParameterService.getByYear(year);
 		if (param != null) {
 			// 男职工退休年龄
 			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
@@ -136,16 +141,16 @@ public class WorkerController {
 	/**
 	 * 转到增加残疾职工页面
 	 */
-	@RequestMapping(value = "/add/{companyId}", method = RequestMethod.GET)
-	public ModelAndView add_worker(@PathVariable(value = "companyId") String companyId, HttpServletRequest request) {
+	@RequestMapping(value = "/add/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView add_worker(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 		// 续传企业id
 		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
 		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(ParameterController.getYear());
+		AuditParameter auditParam = auditParameterService.getByYear(year);
 		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
 		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
-		// 获取当前年份
-		request.setAttribute("nowYear", ParameterController.getYear());
+
 		logger.info("goToPage:{}", "添加残疾职工页面");
 		return new ModelAndView("basicInfo/add_worker");
 	}
@@ -161,11 +166,11 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
 		try {
-			logger.debug("add:{}", worker);
 			Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-			Company c = companyService.getByPrimaryKey(companyId);
+			String year = request.getParameter("year");
+			logger.debug("addWorker--:{},year:{},companyID:{}", worker, year, companyId);
 
-			boolean b = workerService.save(worker, c.getId(), ParameterController.getYear());
+			boolean b = workerService.save(worker, companyId, year);
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
 		} catch (Exception e) {
@@ -175,17 +180,12 @@ public class WorkerController {
 		}
 	}
 
-	private boolean addWorker(Worker worker, Integer companyId) {
-		logger.debug("addWorkerParams:{},companyId:{}", worker, companyId);
-
-		Company c = companyService.getByPrimaryKey(companyId);
-		if (c == null) {
-			logger.error("addWorker_getCompanyError:{}", "null");
-			return false;
-		}
+	private boolean addWorker(Worker worker, Integer companyId, String year) {
+		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker, companyId,year);
+	
 		// 设置年份
-		worker.setWorkerBirthYear(ParameterController.getYear());
-		boolean b = workerService.save(worker, c.getId(), ParameterController.getYear());
+		worker.setWorkerBirthYear(year);
+		boolean b = workerService.save(worker, companyId, year);
 		logger.debug("addWorkerResult:{}", b);
 		return b;
 	}
@@ -214,10 +214,11 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/importworker/{companyId}", method = RequestMethod.GET)
-	public ModelAndView importworker(@PathVariable(value = "companyId") Integer companyId, HttpServletRequest request) {
+	@RequestMapping(value = "/importworker/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView importworker(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 
 		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
 		logger.debug("goToWorker_import,param:{}", companyId);
 		return new ModelAndView("basicInfo/worker_import");
 	}
@@ -251,10 +252,18 @@ public class WorkerController {
 		logger.debug("editUpdata:{}", worker);
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 
-		return editWorkerUp(worker, companyId);
+		return editWorkerUp(worker, companyId, worker.getWorkerBirthYear());
 	}
 
-	private boolean editWorkerUp(Worker worker, Integer companyId) {
+	/**
+	 * 更新残疾职工信息和职工与企业之前关联
+	 * 
+	 * @param worker
+	 * @param companyId
+	 * @param year
+	 * @return
+	 */
+	private boolean editWorkerUp(Worker worker, Integer companyId, String year) {
 		boolean workerUpDataStatus = false, companyUpdataStatus = false;
 		logger.debug("upWorker:{},companyId:{}", worker, companyId);
 		try {
@@ -275,9 +284,8 @@ public class WorkerController {
 				// 员工信息更新成功，进行员工和录用企业之间关联更新
 				Company c = companyService.getByPrimaryKey(companyId);
 				if (c != null) {
-					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), ParameterController.getYear(),
-							worker.getCurrentJob());
-					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getId(), ParameterController.getYear(), worker.getCurrentJob());
+					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), ParameterController.getYear(), worker.getCurrentJob());
+					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getId(), year, worker.getCurrentJob());
 					if (companyUpdataStatus) {
 						logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
 					} else {
@@ -303,14 +311,12 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId,
+	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "year") String year, HttpServletRequest request) {
 
-	HttpServletRequest request) {
-
-		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, companyId);
+		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, year, companyId);
 		try {
 			for (int i = 0; i < params.length; i++) {
-				boolean b = companyService.deleteWorkerFromCompany(ParameterController.getYear(), companyId, params[i]);
+				boolean b = companyService.deleteWorkerFromCompany(year, companyId, params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
 				if (b = false) {
 
@@ -333,7 +339,7 @@ public class WorkerController {
 	 */
 	public Map<String, String> importfile(String upLoadPath, HttpServletRequest request, HttpServletResponse response) {
 		// 获取并解析文件类型和支持最大值
-		//String fileType = "xls";
+		// String fileType = "xls";
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		// 最大缓存
 		factory.setSizeThreshold(5 * 1024);
@@ -356,9 +362,6 @@ public class WorkerController {
 					String fileName = item.getName();
 					// 检查文件后缀格式
 					String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-//					if (fileType == null && "".equals(fileType)) {
-//						result.put("fileError", "文件后缀名错误！");
-//					}
 					// 创建文件唯一名称
 					String uuid = UUID.randomUUID().toString();
 					// 真实上传路径
@@ -374,7 +377,7 @@ public class WorkerController {
 					// form中参数信息
 				} else {
 					// item.getFieldName():获取参数key。item.getString()：获取参数value
-					result.put("companyId", item.getString());
+					result.put(item.getFieldName(), item.getString());
 				}
 			}
 		} catch (Exception e) {
@@ -394,11 +397,9 @@ public class WorkerController {
 	public ModelAndView importworker(HttpServletRequest request, HttpServletResponse response) {
 
 		logger.debug("importWorker:{}");
-
 		// 初始化上传文件目录
 		String upload = "upload";
 		String workerFolder = "worker";
-
 		String url = request.getServletContext().getRealPath("/");
 		String upLoadPath = url + upload + File.separator + workerFolder + File.separator;
 		File uploadPath = new File(url + "upload");
@@ -415,18 +416,21 @@ public class WorkerController {
 
 		// 上传文件
 		Map<String, String> paramMap = importfile(upLoadPath, request, response);
-
 		String fileError = paramMap.get("fileError");// 错误信息
 		if (fileError != null) {
+			// 上传失败，返回错误信息
 			request.setAttribute("errorInfo", fileError);
-			// 返回成功页面
 			return new ModelAndView("basicInfo/worker_importInfo");
 		}
 		// 上传文件返回的参数信息
 		String filePath = paramMap.get("filePath");// 文件路径
-		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// 文件路径
-		// 错误信息列表
-		List<Worker> workerErrorList = new ArrayList<Worker>();
+		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// companyID
+		String year = paramMap.get("year");// 年份
+
+		// 文件上传成功，进入解析阶段
+
+		List<Worker> workerErrorList = new ArrayList<Worker>();// 错误信息列表
+		List<Worker> workerCorrectList = new ArrayList<Worker>();// 正常信息列表
 		List<Worker> list = null;
 
 		if (fileError == null) {
@@ -454,23 +458,23 @@ public class WorkerController {
 						w.setWorkerName(worker.getWorkerName());
 						w.setWorkerHandicapCode(workerHandicapCode);
 
-						// 1.校验姓名
-						if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null") ) {
+						// 1.校验姓名是否为空
+						if (StringUtils.isEmpty(workerName) || StringUtils.equals(workerName, "null")) {
 							// 存储错误信息
 							w.setRemark(NAMENULL);
 							workerErrorList.add(w);
 							logger.error("impoerWorkerError:{},info:{}", w, NAMENULL);
 							continue;
 						}
-						// 校验姓名长度
-						if (workerName.length()>20) {
+						// 2.校验姓名长度
+						if (workerName.length() > 20) {
 							// 存储错误信息
 							w.setRemark("姓名长度不符");
 							workerErrorList.add(w);
 							logger.error("impoerWorkerError:{},info:{}", w, "姓名长度不符");
 							continue;
 						}
-						// 2.校验残疾证号是否为空
+						// 3.校验残疾证号是否为空
 						if (StringUtils.isBlank(workerHandicapCode) || StringUtils.equals(workerHandicapCode, "null")) {
 							// 存储错误信息
 							w.setRemark(LENGTHERROR);
@@ -479,7 +483,7 @@ public class WorkerController {
 							continue;
 						} else {
 							workerHandicapCode.replace(" ", "");// 去掉所有空格
-							// 3.校验残疾证号长度
+							// 4.校验残疾证号长度
 							if (workerHandicapCode.length() < MIN_HANDICAPCODE || workerHandicapCode.length() > MAX_HANDICAPCODE) {
 								// 存储错误信息
 								w.setRemark(LENGTHERROR);
@@ -487,7 +491,7 @@ public class WorkerController {
 								logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 								continue;
 							}
-							// 4.校验残疾证号是否含有中文
+							// 5.校验残疾证号是否含有中文
 							if (CommonUtil.chineseValid(workerHandicapCode)) {
 								// 存储错误信息
 								w.setRemark(ILLEGALSTR);
@@ -495,7 +499,7 @@ public class WorkerController {
 								logger.error("impoerWorkerError:{},info:{}", w, LENGTHERROR);
 								continue;
 							}
-							// .校验20之前是否有其他字符
+							// 6.校验20之前是否有其他字符
 							String handicapStr = workerHandicapCode.substring(0, 19);
 							if (!handicapStr.matches("\\d+")) {
 								w.setRemark("残疾证号前20位有非法字符");
@@ -503,47 +507,49 @@ public class WorkerController {
 								logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
 								continue;
 							}
+							// 7.校验残疾类型
+							String handicapTypeStr = workerHandicapCode.substring(18, 19);
+							boolean ishandicapType = handicapTypeStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
+							// 8.校验是否数数字
+							if (ishandicapType) {
+								int handicapType = Integer.valueOf(handicapTypeStr);
+								if (handicapType > 7 || handicapType == 0) {
+									w.setRemark(TYPEERROR);
+									workerErrorList.add(w);
+									logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
+									continue;
+								}
+							}
+
+							// 9.校验残疾证号等级
+							String handicapLevelStr = workerHandicapCode.substring(19, 20);
+							boolean ishandicapLevel = handicapLevelStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
+							if (ishandicapLevel) {
+								int handicapLevel = Integer.valueOf(handicapLevelStr);
+								if (handicapLevel > 4 || handicapLevel == 0) {
+									w.setRemark(LEVELERROR);
+									workerErrorList.add(w);
+									logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
+									continue;
+								}
+							}
+
+							// 10.校验职工年龄
+							List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(year));
+							if (ageResult != null) {
+								String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。" + ageResult.get(2).toString();
+								w.setRemark(ageErrorInfo);
+								workerErrorList.add(w);
+								logger.error("impoerWorkerError:{},info:{}", w, ageErrorInfo);
+								continue;
+							}
 						}
 
-						// 5.校验残疾类型
-						String handicapTypeStr = workerHandicapCode.substring(18, 19);
-						boolean ishandicapType = handicapTypeStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
-						// 校验是否数数字
-						if (ishandicapType) {
-							int handicapType = Integer.valueOf(handicapTypeStr);
-							if (handicapType > 7 || handicapType == 0) {
-								w.setRemark(TYPEERROR);
-								workerErrorList.add(w);
-								logger.error("impoerWorkerError:{},info:{}", w, TYPEERROR);
-								continue;
-							}
-						}
-						// 6.校验残疾证号等级
-						String handicapLevelStr = workerHandicapCode.substring(19, 20);
-						boolean ishandicapLevel = handicapLevelStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
-						if (ishandicapLevel) {
-							int handicapLevel = Integer.valueOf(handicapLevelStr);
-							if (handicapLevel > 4 || handicapLevel == 0) {
-								w.setRemark(LEVELERROR);
-								workerErrorList.add(w);
-								logger.error("impoerWorkerError:{},info:{}", w, LEVELERROR);
-								continue;
-							}
-						}
-						// 7.校验职工年龄
-						List<String> ageResult = new WorkerUtil().ageVerifi(workerHandicapCode, auditParameterService.getByYear(ParameterController.getYear()));
-						if (ageResult != null) {
-							String ageErrorInfo = "该员工性别为：" + ageResult.get(0).toString() + ",年龄为：" + ageResult.get(1).toString() + "。" + ageResult.get(2).toString();
-							w.setRemark(ageErrorInfo);
-							workerErrorList.add(w);
-							logger.error("impoerWorkerError:{},info:{}", w, ageErrorInfo);
-							continue;
-						}
-						// 8.校验身份证号，重复性检测
-						List<Map<String, String>> validateList = validateOrganizationCode(workerHandicapCode.substring(0, 18));
+						// 11.校验身份证号重复性
+						List<Map<String, String>> validateList = validateOrganizationCode(workerHandicapCode.substring(0, 18), year);
 						Map<String, String> validateResult = validateList.get(0);
 						logger.debug("LineNumber:{},validataType:{}", i, validateResult.get("type"));
-						// 9.第一种情况 存在，并且在其他公司内。
+						// 12.第一种情况 存在，并且在其他公司内。
 						if (StringUtils.equals(validateResult.get("type"), "1")) {
 							// 存储错误信息
 							String errinfo = "职工已被：" + validateList.get(1).get("companyName") + " 单位录用，单位档案编码为：" + validateList.get(1).get("companyCode");
@@ -552,36 +558,16 @@ public class WorkerController {
 							logger.error("impoerWorkerError:{},info:{}", w, errinfo);
 							continue;
 						}
-						// 10.第二种情况：存在，并且不再任何公司。
-						if (StringUtils.equals(validateResult.get("type"), "2")) {
+						// 正常存储：.第二种情况：存在，并且不再任何公司。 第三种情况： 不存在数据库中，进行存储
+						if (StringUtils.equals(validateResult.get("type"), "2") || StringUtils.equals(validateResult.get("type"), "3")) {
 							Worker workerUp = new Worker();
 							workerUp.setWorkerName(worker.getWorkerName());
 							workerUp.setWorkerHandicapCode(workerHandicapCode);
-							logger.debug("impoerWorkerUp:{},companyId:{}", workerUp, companyId);
-							if (editWorkerUp(WorkerUtil.assembly(workerUp), companyId)) {
-								logger.debug("impoerWorkerUp:{}", "success");
-							} else {
-								w.setRemark("员工存在数据库内，更新时未成功");
-								workerErrorList.add(w);
-								logger.error("impoerWorkerUpError:{}", "false");
 
-							}
+							Worker workerCorrect = WorkerUtil.assembly(workerUp);
+							workerCorrectList.add(workerCorrect);
+
 							continue;
-						}
-						// 正常存储
-						// 第三种情况： 不存在数据库中，进行存储
-						logger.error("员工信息正常，可以进行存储：" + worker.getWorkerName());
-						Worker workerUp = new Worker();
-						workerUp.setWorkerName(w.getWorkerName());
-						workerUp.setWorkerHandicapCode(workerHandicapCode);
-						// 组装职工对象 并增加
-						if (addWorker(WorkerUtil.assembly(workerUp), companyId)) {
-							logger.debug("importWorkerAddResult:{}", "success");
-						} else {
-							// 增加失败
-							w.setRemark("员工存储时未成功");
-							workerErrorList.add(w);
-							logger.error("impoerWorkerSaveError:{}", "false");
 						}
 					} catch (Exception e) {
 						w.setRemark("未知错误");
@@ -615,7 +601,7 @@ public class WorkerController {
 				if (workerErrorList != null) {
 					errorLength = workerErrorList.size();
 				}
-				// 检测成功数据量
+				// 检测正确数据总量
 				if (list != null) {
 					totalLength = list.size();
 					succesLength = totalLength - errorLength;
@@ -623,11 +609,14 @@ public class WorkerController {
 				request.setAttribute("totalLength", totalLength);// 总条数
 				request.setAttribute("errorLength", errorLength);// 失败条数
 				request.setAttribute("succesLength", succesLength);// 成功条数
-				request.setAttribute("errorInfo", "null");// 没有错误信息
+				request.setAttribute("workerCorrectList", workerCorrectList); // 返回成功数据
+				request.setAttribute("errorInfo", "null");// 没有发出错误信息
+				request.setAttribute("companyId", companyId);// 续传单位iD
+				request.setAttribute("year", year);// 续传年份
 
-				logger.error("totalLength:{}", totalLength);// 总条数
-				logger.error("errorLength:{}", errorLength);// 失败条数
-				logger.error("succesLength:{}", succesLength);// 成功条数
+				logger.debug("totalLength:{}", totalLength);// 总条数
+				logger.debug("errorLength:{}", errorLength);// 失败条数
+				logger.debug("succesLength:{}", succesLength);// 成功条数
 
 				// 清理部分
 				list.clear();
@@ -655,11 +644,13 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/validate_workerHandicapCode")
 	@ResponseBody
-	public List<Map<String, String>> validate_companyOrganizationCode(@RequestParam(value = "workerIdCard") String workerIdCard, HttpServletRequest request) {
+	public List<Map<String, String>> validate_companyOrganizationCode(@RequestParam(value = "workerIdCard") String workerIdCard, @RequestParam(value = "year") String year, HttpServletRequest request) {
+
+		logger.debug("validate_workerHandicapCodeworkerIdCard:{},year:{}", workerIdCard, year);
 		// 参数 年份 残疾证号
 		// 1.存在，并且在其他公司内 返回公司对象，前台提示在哪个公司内 2.存在，不在其他公司内。 返回公司id，前台调用更新方法 3.不存在
 		logger.debug("validate_workerIdCardParams:{}", workerIdCard);
-		return validateOrganizationCode(workerIdCard);
+		return validateOrganizationCode(workerIdCard, year);
 	}
 
 	/**
@@ -668,40 +659,113 @@ public class WorkerController {
 	 * @param workerIdCard
 	 * @return
 	 */
-	private List<Map<String, String>> validateOrganizationCode(String workerIdCard) {
+	private List<Map<String, String>> validateOrganizationCode(String workerIdCard, String year) {
 		logger.debug("validateOrganizationCode:{}", workerIdCard);
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		Map<String, String> paramsMap = new HashMap<String, String>();
-		Company company = workerService.retrieveCompanyByWorker(ParameterController.getYear(), workerIdCard);
-		// 第一种情况 存在，并且在其他公司内。
-		if (company != null) {
-			paramsMap.put("type", "1");
-			Map<String, String> companyMap = new HashMap<String, String>();
-			companyMap.put("companyName", company.getCompanyName());
-			companyMap.put("companyCode", company.getCompanyCode());
-			companyMap.put("companyTaxCode", company.getCompanyTaxCode());
-			list.add(paramsMap);
-			list.add(companyMap);
-			logger.debug("validate_workerHandicapCodeResult:{},company:{}", "type:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
-			return list;
-		} else {
-
-			Worker w = workerService.getByWorkerIdCard(workerIdCard);
-			logger.error("workerIdCard:{},obg:{}" + workerIdCard, w);
-			// 第二种情况：存在，并且不再任何公司。
-			if (w != null) {
-				logger.debug("validateWorkerHandicapCodeResult:{}", "type:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
-				paramsMap.put("type", "2");
+		try {
+			List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+			Map<String, String> paramsMap = new HashMap<String, String>();
+			Company company = workerService.retrieveCompanyByWorker(year, workerIdCard);
+			// 第一种情况 存在，并且在其他公司内。
+			if (company != null) {
+				paramsMap.put("type", "1");
+				Map<String, String> companyMap = new HashMap<String, String>();
+				companyMap.put("companyName", company.getCompanyName());
+				companyMap.put("companyCode", company.getCompanyCode());
+				companyMap.put("companyTaxCode", company.getCompanyTaxCode());
 				list.add(paramsMap);
+				list.add(companyMap);
+				logger.debug("validate_workerHandicapCodeResult:{},company:{}", "type:1。职工存在，并且在其他公司内", company.getCompanyName() + "  " + company.getCompanyCode());
 				return list;
-				// 第三种情况，不存在.
 			} else {
-				logger.debug("validateWorkerHandicapCodeResult:{}", "type:3。职工不存在数据库中");
-				paramsMap.put("type", "3");
-				list.add(paramsMap);
-				return list;
+
+				Worker w = workerService.getByWorkerIdCard(workerIdCard);
+				logger.error("workerIdCard:{},obg:{}" + workerIdCard, w);
+				// 第二种情况：存在，并且不再任何公司。
+				if (w != null) {
+					logger.debug("validateWorkerHandicapCodeResult:{}", "type:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
+					paramsMap.put("type", "2");
+					list.add(paramsMap);
+					return list;
+					// 第三种情况，不存在.
+				} else {
+					logger.debug("validateWorkerHandicapCodeResult:{}", "type:3。职工不存在数据库中");
+					paramsMap.put("type", "3");
+					list.add(paramsMap);
+					return list;
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("校验错误：{}", e.getMessage());
+
+			return null;
 		}
+
+	}
+
+	@RequestMapping(value = "/determineimport", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean importworker1(@RequestParam(value = "companyId") Integer companyId, 
+			@RequestParam(value = "paramsCode[]") String paramsCode[], 
+			@RequestParam(value = "paramsName[]") String paramsName[], 
+			@RequestParam(value = "year") String year, 
+			
+			
+			HttpServletRequest request) {
+		boolean b = true;
+		logger.debug("importWorkerparamsCode:{},companyId:{},year", paramsCode, companyId,year);
+		try {
+			for (int i = 0; i < paramsCode.length; i++) {
+				// 残疾证号
+				String workerHandicapCode = paramsCode[i].toString();
+				// 名字
+				String workerHandicapName = paramsName[i].toString();
+
+				// 身份证号，重复性检测
+				List<Map<String, String>> validateList = validateOrganizationCode(workerHandicapCode.substring(0, 18), year);
+				Map<String, String> validateResult = validateList.get(0);
+
+				// 第一种情况 存在，并且在其他公司内。
+				if (StringUtils.equals(validateResult.get("type"), "1")) {
+					logger.error("importWorkerError:{}", "存在其他公司");
+					b = false;
+					break;
+				}
+				// 第二种情况：存在，并且不再任何公司。
+				if (StringUtils.equals(validateResult.get("type"), "2")) {
+					Worker workerUp = new Worker();
+					workerUp.setWorkerName(workerHandicapName);
+					workerUp.setWorkerHandicapCode(workerHandicapCode);
+					// 更新职工信息
+					if (editWorkerUp(WorkerUtil.assembly(workerUp), companyId, year)) {
+						logger.debug("impoerWorkerUp:{}", "success");
+					} else {
+						logger.error("importWorkerError:{}", "upData失败");
+						b = false;
+						break;
+					}
+					continue;
+				}
+				// 第三种情况： 不存在数据库中，进行存储
+				if (StringUtils.equals(validateResult.get("type"), "3")) {
+					Worker workerUp = new Worker();
+					workerUp.setWorkerName(workerHandicapName);
+					workerUp.setWorkerHandicapCode(workerHandicapCode);
+					// 组装职工对象 并增加
+					if (addWorker(WorkerUtil.assembly(workerUp), companyId, year)) {
+						logger.debug("importWorkerAddResult:{}", "success");
+					} else {
+						logger.error("importWorkerError:{}", "save失败");
+						b = false;
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("delete_worker{}", e.getMessage());
+		}
+		return b;
 	}
 
 }

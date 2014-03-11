@@ -161,6 +161,7 @@
 	workerList.getParams = function() {
 
 		params = {};
+		params.year = $("#currentYear").val();//年份
 		params.companyId = $("#companyId").val();//单位id
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
@@ -188,8 +189,8 @@
 	打开增加残疾职工页面
 	 **/
 	workerList.openAddWorker = function() {
-
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
+	
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
 	};
 
 	/**
@@ -202,7 +203,9 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val(), function() {
+	
+
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
@@ -243,7 +246,7 @@
 					data : {
 						"params" : params,
 						"companyId" : $("#companyId").val(),
-						"year" : $("#year").val()
+						"year" : $("#currentYear").val()//年份
 					},
 					type : 'post',
 					success : function(data) {
@@ -273,7 +276,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'company/getinformation/' + $("#companyId").val(),
+			url : 'company/getinformation/' + $("#companyId").val()+'/'+$("#currentYear").val(),
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -306,14 +309,12 @@
 		
 	};
 
-	$(function() {
-		//初始化组件
 
-	});
 </script>
 <!-- 数据表格 -->
 <table id="workerList_dataGrid"></table>
 
+<input type="hidden" id="currentYear" value="${year}" />
 <input type="hidden" id="companyId" value="${companyId}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
@@ -339,6 +340,9 @@
 
 		</tr>
 	</table>
+
+	
+	
 	<div style="text-align: right; margin: 7px;">
 
 		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a href="javascript:workerList.deleteWorker('',1);"

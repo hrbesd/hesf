@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.cs.common.HExcelSheetParser;
 import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.XExcelSheetParser;
@@ -31,7 +32,7 @@ public class WorkerUtil {
 					// 初审日期
 					Integer age = Integer.valueOf(param.substring(6, 10));
 					// 当前年份
-					Integer nowYear = Integer.valueOf(ParameterController.getYear());
+					Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
 					return (nowYear - age) + 1;
 				} catch (Exception e) {
 					logger.error("conversionAge:{}", e.getMessage());
@@ -136,42 +137,51 @@ public class WorkerUtil {
 	 * 根据残疾证号 组装职工对象
 	 */
 	public static Worker assembly(Worker w) {
-
+		Worker worker=new Worker();
 		// 残疾证号
 		String handicapCode = w.getWorkerHandicapCode();
+		worker.setWorkerName(w.getWorkerName());
+		worker.setWorkerHandicapCode(handicapCode);
 		// 身份证号
-		w.setWorkerIdCard(handicapCode.substring(0, 18));
+		worker.setWorkerIdCard(handicapCode.substring(0, 18));
+		
 		int age = Integer.valueOf(handicapCode.substring(16, 17));
 		// 性别
 		if (age % 2 == 0) {
 			// 女性
-			w.setWorkerGender(0 + "");
+			worker.setWorkerGender(0 + "");
 		} else {
 			// 男性
-			w.setWorkerGender(1 + "");
+			worker.setWorkerGender(1 + "");
 		}
 		// 残疾类别
 		int handicapType = Integer.valueOf(handicapCode.substring(18, 19));
-		w.setWorkerHandicapType(new WorkerHandicapType(handicapType));
+		worker.setWorkerHandicapType(new WorkerHandicapType(handicapType));
 
 		// 残疾等级
 		int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
-		w.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
+		worker.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
 	
 		//出生日期
 		String year = handicapCode.substring(6, 10);//年份
 		String month = handicapCode.substring(10, 12);//月
 		String day = handicapCode.substring(12, 14);//日
 		
-		w.setWorkerBirth(year+"-"+month+"-"+day);
+		worker.setWorkerBirth(year+"-"+month+"-"+day);
 		// 出生年份--供后台查询使用
-		w.setWorkerBirthYear(year);
-		
-		logger.debug("assemblyWorker:{}", w);
-		return w;
+		worker.setWorkerBirthYear(year);
+		logger.debug("assemblyWorker:{}", worker);
+	
+		return worker;
 
 	}
 
+	/**
+	 * 年龄检测
+	 * @param workerHandicapCode
+	 * @param param
+	 * @return
+	 */
 	public List<String> ageVerifi(String workerHandicapCode, AuditParameter param) {
 		int sex = Integer.valueOf(workerHandicapCode.substring(16, 17));
 		List<String> result = new ArrayList<String>();

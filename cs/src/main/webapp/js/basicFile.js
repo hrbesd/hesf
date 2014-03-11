@@ -143,9 +143,8 @@ basicFile.editCompany = function() {
  * 显示企业残疾人职工页面
  */
 basicFile.openCompanyStaff = function(id) {
-	// 获取年份
-
-	esd.common.defaultOpenWindow("企业残疾职工列表", 'worker/list/' + id);
+	var year=$("#year").combobox("getValue");//
+	esd.common.defaultOpenWindow("企业残疾职工列表", 'worker/list/' + id+'/'+year);
 };
 /**
  * 单条删除企业数据
