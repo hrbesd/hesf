@@ -19,9 +19,9 @@
 	$.extend($.fn.validatebox.defaults.rules, {
 		equals : {
 			validator : function(value, param) {
-				return value == $(param[0]).val();
+				return value == $('input[name=userPassword]').val();
 			},
-			message : 'Field do not match.'
+			message : '两次输入的密码不一致'
 		}
 	});
 
@@ -36,43 +36,44 @@
 				<tr>
 					<td style="width: 100px;">用户名:</td>
 					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> <input class="easyui-validatebox" name="version"
-						type="hidden" value="1" /></td>
-					<td><span id="username_message"></span></td>
+						type="hidden" value="1" />
+					</td>
+					<td><span id="username_message"></span>
+					</td>
 				</tr>
 
 				<tr>
 					<td>登陆密码:</td>
-					<td><input class="easyui-validatebox" name="userPassword" type="password" />
-					</td>
-					<td><span id="password_message"></span></td>
+					<td><input class="easyui-validatebox" name="userPassword" type="password" /></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>确认登陆密码:</td>
-					<td><input name="confirm" type="password" required="true" validType="equals['#userPassword']" />
-					</td>
-					<td><span id="confirm_message"></span></td>
+					<td><input name="confirm" class="easyui-validatebox" type="password" required="true" validType="equals['#userPassword']" /></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td>真实姓名:</td>
-					<td><input name="userRealName" type="text" value="${entity.userRealName}" />
+					<td><input name="userRealName" type="text" value="${entity.userRealName}" /></td>
+					<td><span id="realname_message"></span>
 					</td>
-					<td><span id="realname_message"></span></td>
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" />
+					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" /></td>
+					<td><span id="mobile_message"></span>
 					</td>
-					<td><span id="mobile_message"></span></td>
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>状态:</td>
 					<td><select class="easyui-combobox" name="userStatus" data-options="panelHeight:70,height:30,editable:false">
 							<option value="true" <c:if test="${entity.userStatus eq 'true'}">selected="selected"</c:if>>正常</option>
 							<option value="false" <c:if test="${entity.userStatus eq 'false'}">selected="selected"</c:if>>停用</option>
-					</select></td>
+					</select>
+					</td>
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>用户组:</td>
@@ -80,20 +81,21 @@
 							<c:forEach items="${group}" var="item">
 								<option value="${item.id}" <c:if test="${item.id==1}">selected="selected"</c:if>>${item.userGroupName}</option>
 							</c:forEach>
-					</select></td>
+					</select>
+					</td>
 				</tr>
 				<tr>
 					<td>备注</td>
-					<td colspan="3"><textarea name="userRemark" rows="5" cols="70">${entity.userRemark}</textarea>
-					</td>
+					<td colspan="3"><textarea name="userRemark" rows="5" cols="70">${entity.userRemark}</textarea></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td></td>
-					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-					<a href="javascript:user_detail.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a></td>
+					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:user_detail.back();" class="easyui-linkbutton"
+						iconCls="icon-back">返回</a>
+					</td>
 				</tr>
 			</table>
 		</form>

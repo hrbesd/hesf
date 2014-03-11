@@ -336,19 +336,23 @@ public class AuditsController {
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
 		Boolean mian = calculateModel.getMianZhiNaJin();
-		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
-		BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);// 获得欠缴
-		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
-		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
-		BigDecimal weiShen = getUnAudits(mian, year, companyId, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
-		calculateModel.setWeiShenMingXi(weiShenMingXi);
-		logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
+		// List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
+		// BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);//
+		// 获得欠缴
+		// calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
+		// List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
+		// BigDecimal weiShen = getUnAudits(mian, year, companyId, new
+		// BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
+		// calculateModel.setWeiShenMingXi(weiShenMingXi);
+		// logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
 		// 未缴金额 =欠缴+未审
-		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen);
-		calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen);
+		// calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
 
 		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal real_yingJiaoJinE =
+		// shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
 		// 计算滞纳金============================================================================================
 		// 获得支付截至日期
@@ -560,7 +564,8 @@ public class AuditsController {
 	 * 转到年审单位初审页面
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request, HttpSession session) {
+	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
 		if (audit.getInitAuditUser() == null) {

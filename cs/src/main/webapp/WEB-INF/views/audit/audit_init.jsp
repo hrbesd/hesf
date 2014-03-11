@@ -128,14 +128,14 @@
 				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
 
 				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
-				var wl = data.weiShenMingXi.length;
-				var ql = data.qianJiaoMingXi.length;
-				if (wl != 0 || ql != 0) {
-					$('#message').css("display", "block");
-					$('#message').bind("click", function() {
-						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
-					});
-				}
+				//var wl = data.weiShenMingXi.length;
+				//var ql = data.qianJiaoMingXi.length;
+				//if (wl != 0 || ql != 0) {
+					//$('#message').css("display", "block");
+					//$('#message').bind("click", function() {
+						//initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi);
+					//});
+				//}
 				$('#isDelayPay').val(data.isDelayPay);
 
 				$('#yingJiaoJinE').val(data.s_yingJiaoJinE);
