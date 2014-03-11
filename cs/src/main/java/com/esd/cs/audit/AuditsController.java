@@ -208,6 +208,52 @@ public class AuditsController {
 	}
 
 	/**
+	 * 转到创建页面
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView createAudit() {
+		return new ModelAndView("audit/audit_create");
+	}
+
+	/**
+	 * 新添加审计记录
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean createAudit(HttpServletRequest request) {
+		String year = (String) request.getParameter("year");
+		String companyCode = (String) request.getParameter("companyCode");
+		Boolean b = auditService.save(year, companyCode);
+		return b;
+	}
+
+	/**
+	 * 模糊查找公司档案号
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/create/{companyCode}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String, String>> findCompanyCode(@PathVariable(value = "companyCode") String companyCode) {
+		List<Map<String, String>> list = new ArrayList<>();
+
+		Company company = new Company();
+		company.setCompanyCode(companyCode);
+		PaginationRecordsAndNumber<Company, Number> query = companyService.getPaginationRecords(company, 1, 20);
+
+		for (Company c : query.getRecords()) {
+			Map<String, String> entity = new HashMap<>();
+			entity.put("id", c.getCompanyCode());
+			entity.put("text", c.getCompanyCode() + ":" + c.getCompanyName());
+			list.add(entity);
+		}
+
+		return list;
+	}
+
+	/**
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -448,6 +494,7 @@ public class AuditsController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> provincePost(HttpServletRequest request) {
+
 		String year = request.getParameter("year");
 		Integer page = Integer.valueOf(request.getParameter("page"));
 		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
@@ -476,8 +523,9 @@ public class AuditsController {
 			audit.setYear(year);
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(process);
 			audit.setAuditProcessStatus(auditProcessStatus);
-
+			long l = System.currentTimeMillis();
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
+			System.out.println(System.currentTimeMillis() - l);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
@@ -504,6 +552,7 @@ public class AuditsController {
 		} catch (Exception e) {
 			logger.error("error{}", e);
 		}
+		// System.out.println(System.currentTimeMillis()-l);
 		return entity;
 	}
 

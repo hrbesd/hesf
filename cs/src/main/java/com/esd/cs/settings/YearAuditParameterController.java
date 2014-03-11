@@ -149,17 +149,25 @@ public class YearAuditParameterController {
 	@ResponseBody
 	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request) {
 		logger.debug("auditParameter:{}", auditParameter);
-		String currentYear = auditParameter.getYear(); // 获取指定要审核的年
-		try {
-			if (currentYear != null) {
-				auditService.initAuditData(currentYear);
+		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
+		if (copy) {
+			try {
+				String currentYear = auditParameter.getYear(); // 获取指定要审核的年
+				if (currentYear != null) {
+					auditService.initAuditData(currentYear);
+				}
+			} catch (Exception e) {
+				logger.error("copy audit date error", e);
+				return false;
 			}
+		}
+		try {
+			auditParameterService.save(auditParameter);
+			ParameterController.setYear(auditParameterService.getLastestYear());
 		} catch (Exception e) {
-			logger.error("initAuditData", e);
+			logger.error("add audit year parms error", e);
 			return false;
 		}
-		auditParameterService.save(auditParameter);
-		ParameterController.setYear(auditParameterService.getLastestYear());
 		return true;
 	}
 

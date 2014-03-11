@@ -90,6 +90,13 @@
 		</c:if>
 	};
 	/**
+	 * 新建审计记录
+	**/
+	initAuditList.createAudit = function(){
+		esd.common.defaultOpenWindowEx("新建审计记录", 600, 200, "${contextPath}/security/audits/create");
+	};
+	
+	/**
 	 * 查询数据 并校验所有输入框
 	 */
 	initAuditList.findData = function() {
@@ -105,9 +112,12 @@
 			<td width="80" style="text-align: right;">年审时间:</td>
 			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
 			</td>
-			<td width="80" style="text-align: right;">流程状态:</td>
+			<td width="80" style="text-align: right;" >流程状态:</td>
 			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
+			<c:if test="${process==1}">
+			<td colspan="3" style="text-align: right;" ><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a></td>
+			</c:if>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码:</td>

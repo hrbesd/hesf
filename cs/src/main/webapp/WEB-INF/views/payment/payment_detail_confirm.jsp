@@ -28,7 +28,7 @@
 	payment.add.back = function() {
 		$('#add').window("close");
 	};
-	$.parser.onComplete = function(){
+	$.parser.onComplete = function() {
 
 	};
 </script>
@@ -40,20 +40,23 @@
 			<tbody>
 				<tr>
 					<td>收款人:</td>
-					<td><input type="text" disabled="disabled" class="readonly" readonly="readonly" value="${entity.paymentPerson.userRealName}" /></td>
+					<td><input type="text" disabled="disabled" class="readonly" readonly="readonly" value="${entity.paymentPerson.userRealName}" />
+					</td>
 					<td>缴款方式:</td>
 					<td><input disabled="disabled" readonly="readonly" class="easyui-combobox readonly"
-						data-options="value:1,height:30,editable:false,valueField:'id',textField:'text',url:'parameter/getPaymentType'" />
-					</td>
+						data-options="value:1,height:30,editable:false,valueField:'id',textField:'text',url:'parameter/getPaymentType'" /></td>
 				</tr>
 				<tr>
 					<td>出票时间:</td>
 					<td><fmt:formatDate value="${entity.billPrintDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="billPrintDate" /> <input disabled="disabled" readonly="readonly"
-						class="easyui-datebox readonly" name="billPrintDate" data-options="height:30,showSeconds:false" value="${billPrintDate}" style="width:150px" /></td>
+						class="easyui-datebox readonly" name="billPrintDate" data-options="height:30,showSeconds:false" value="${billPrintDate}" style="width:150px" />
+					</td>
 					<td>票据号:</td>
-					<td><input disabled="disabled" class="readonly" readonly="readonly" type="text" value="${entity.paymentBill }" /></td>
+					<td><input disabled="disabled" class="readonly" readonly="readonly" type="text" value="${entity.paymentBill }" />
+					</td>
 					<td>缴费金额:</td>
-					<td><input disabled="disabled" class="readonly" readonly="readonly" type="text" value="${entity.paymentMoney }" /></td>
+					<td><input disabled="disabled" class="readonly" readonly="readonly" type="text" value="${entity.paymentMoney }" />
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -61,34 +64,29 @@
 		<table border="0">
 			<tbody>
 				<tr>
-					<td>换票时间:</td>
+					<td>返票时间:</td>
 					<td><c:if test="${entity.billExchangeDate==null}">
 							<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="billExchangeDate" />
 						</c:if> <c:if test="${entity.billExchangeDate!=null}">
 							<fmt:formatDate value="${entity.billExchangeDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="billExchangeDate" />
-						</c:if> <input class="easyui-datebox easyui-validatebox" name="billExchangeDate" data-options="height:30,showSeconds:false" value="${billExchangeDate}" style="width:150px" /></td>
+						</c:if> <input class="easyui-datebox easyui-validatebox" name="billExchangeDate" data-options="height:30,showSeconds:false" value="${billExchangeDate}" style="width:150px" />
+					</td>
 					<td>是否返票:</td>
 					<td><select style="font-size: 12px;" class="easyui-combobox" name="billReturn" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
 							<option value="true" <c:if test="${entity.billReturn eq 'true'}">selected="selected"</c:if>>是</option>
 							<option value="false" <c:if test="${entity.billReturn eq 'false'}">selected="selected"</c:if>>否</option>
-					</select></td>
-					<td>财政已到:</td>
-					<td><select style="font-size: 12px;" class="easyui-combobox" name="billFinance" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
-							<option value="true" <c:if test="${entity.billFinance eq 'true'}">selected="selected"</c:if>>是</option>
-							<option value="false" <c:if test="${entity.billFinance eq 'false'}">selected="selected"</c:if>>否</option>
-					</select></td>
-				</tr>
-				<tr>
-					<td>状态:</td>
-					<td><input name="paymentExceptional.id" class="easyui-combobox" data-options="value:1,height:30,editable:false,valueField:'id',textField:'paymentExceptional',url:'parameter/getExStatic'" />
+					</select>
 					</td>
 					<td>作废票据号:</td>
-					<td><input type="text" name="billObsolete" value="${entity.billObsolete }" /></td>
-
+					<td><select style="font-size: 12px;" class="easyui-combobox" name="billObsolete" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
+							<option value="true" <c:if test="${entity.billObsolete eq 'true'}">selected="selected"</c:if>>是</option>
+							<option value="false" <c:if test="${entity.billObsolete eq 'false'}">selected="selected"</c:if>>否</option>
+					</select></td>
 				</tr>
 				<tr>
 					<td>备注:</td>
-					<td colspan="5"><textarea name="remark" rows="2" cols="20" style="width: 100%">${entity.remark}</textarea></td>
+					<td colspan="5"><textarea name="remark" rows="2" cols="20" style="width: 100%">${entity.remark}</textarea>
+					</td>
 				</tr>
 			</tbody>
 		</table>

@@ -38,6 +38,8 @@
 					<td>缴款方式:</td>
 					<td><input name="paymentType.id" class="easyui-combobox" data-options="value:1,height:30,editable:false,valueField:'id',textField:'text',url:'parameter/getPaymentType'" />
 					</td>
+					<td>状态:</td>
+					<td><input name="paymentExceptional.id" class="easyui-combobox" data-options="value:1,height:30,editable:false,valueField:'id',textField:'paymentExceptional',url:'parameter/getExStatic'" /></td>
 				</tr>
 				<tr>
 					<td>出票时间:</td>

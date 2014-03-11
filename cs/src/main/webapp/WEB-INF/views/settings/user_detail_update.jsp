@@ -70,11 +70,11 @@
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>用户组:</td>
-					<td><input name="userGroup.id" class="easyui-combobox"
-						data-options="panelHeight:120,height:30,
-						<c:if test="${entity.userGroup.id!=null}">value:${entity.userGroup.id},</c:if>
-						<c:if test="${entity.userGroup.id==null}">value:1,</c:if>
-						editable:false,valueField:'id',textField:'userGroupName',url:'${contextPath }/security/settings/user/group'" />
+					<td><select style="font-size: 12px;" class="easyui-combobox" name="userGroup.id" data-options="width:120,panelHeight:120,height:30,editable:false">
+							<c:forEach items="${group}" var="item">
+								<option value="${item.id}" <c:if test="${item.id==entity.userGroup.id}">selected="selected"</c:if>>${item.userGroupName}</option>
+							</c:forEach>
+					</select>
 					</td>
 				</tr>
 				<tr>
