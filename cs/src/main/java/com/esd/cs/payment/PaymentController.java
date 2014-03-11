@@ -238,7 +238,7 @@ public class PaymentController {
 		payment.setUserId(userId);
 		payment.setPaymentPerson(user);
 		payment.setPaymentCompany(audit.getCompany());
-		PaymentExceptional paymentExceptional = paymentExceptionalService.getByPrimaryKey(Constants.PAYMENT_EXCEPTIONAL_NORMAL);
+		PaymentExceptional paymentExceptional = paymentExceptionalService.getByPrimaryKey(payment.getPaymentExceptional().getId());
 		payment.setPaymentExceptional(paymentExceptional);
 		Boolean b = paymentService.save(payment);
 		return b;

@@ -21,7 +21,7 @@
 			validator : function(value, param) {
 				return value == $('input[name=userPassword]').val();
 			},
-			message : 'Field do not match.'
+			message : '两次输入的密码不一致'
 		}
 	});
 </script>
@@ -37,11 +37,11 @@
 
 				<tr>
 					<td>登陆密码:</td>
-					<td><input class="easyui-validatebox" required="true" name="userPassword" type="text" /></td>
+					<td><input class="easyui-validatebox" required="true" name="userPassword" type="password" /></td>
 				</tr>
 				<tr>
 					<td>确认登陆密码:</td>
-					<td><input class="easyui-validatebox" name="confirm" type="text" required="true" validType="equals['#userPassword']" /></td>
+					<td><input class="easyui-validatebox" name="confirm" type="password" required="true" validType="equals['#userPassword']" /></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>

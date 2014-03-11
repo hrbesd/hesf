@@ -108,7 +108,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addGet() {
-		return new ModelAndView("settings/user_detail_save");
+		List<UserGroup> list = userGroupService.getAll();
+		logger.debug("UserGroups:{}", list);
+		return new ModelAndView("settings/user_detail_save","group",list);
 	}
 
 	@RequestMapping(value = "/checkName", method = RequestMethod.POST)
@@ -227,9 +229,12 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable("id") int id) {
+	public ModelAndView editGet(@PathVariable("id") int id,HttpServletRequest request) {
 		logger.debug("id:{}", id);
 		User user = userService.getByPrimaryKey(id);
+		List<UserGroup> list = userGroupService.getAll();
+		logger.debug("UserGroups:{}", list);
+		request.setAttribute("group", list);
 		return new ModelAndView("settings/user_detail_update", "entity", user);
 	}
 }

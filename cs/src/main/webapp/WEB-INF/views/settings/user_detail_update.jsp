@@ -16,6 +16,10 @@
 			}
 		});
 	};
+
+	user_detail.back = function() {
+		esd.common.defaultOpenWindowClose();
+	};
 </script>
 <div>
 	<div style="padding:15px 15px 15px 15px;">
@@ -23,15 +27,11 @@
 			<table class="parameter_tab">
 				<tr>
 					<td style="width: 100px;">用户名:</td>
-					<td style="width: 200px;">
-					<input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> 
-					<input name="id" type="hidden" value="${entity.id}" />
-					<input name="version" type="hidden" value="${entity.version}" />
-					</td>
-					<td><span id="username_message"></span>
-					</td>
+					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> <input name="id" type="hidden" value="${entity.id}" />
+						<input name="version" type="hidden" value="${entity.version}" /></td>
+					<td><span id="username_message"></span></td>
 				</tr>
-<!--  
+				<!--  
 				<tr>
 					<td>登陆密码:</td>
 					<td><input class="easyui-validatebox" name="userPassword" type="text" value=""/></td>
@@ -50,44 +50,42 @@
 				</tr>
 				<tr>
 					<td>真实姓名:</td>
-					<td><input name="userRealName" type="text" value="${entity.userRealName}" /></td>
-					<td><span id="realname_message"></span>
+					<td><input name="userRealName" type="text" value="${entity.userRealName}" />
 					</td>
+					<td><span id="realname_message"></span></td>
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" /></td>
-					<td><span id="mobile_message"></span>
+					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" />
 					</td>
+					<td><span id="mobile_message"></span></td>
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>状态:</td>
 					<td><select class="easyui-combobox" name="userStatus" data-options="panelHeight:70,height:30,editable:false">
 							<option value="true" <c:if test="${entity.userStatus eq 'true'}">selected="selected"</c:if>>正常</option>
 							<option value="false" <c:if test="${entity.userStatus eq 'false'}">selected="selected"</c:if>>停用</option>
-					</select>
-					</td>
+					</select></td>
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>用户组:</td>
-					<td><input name="userGroup.id" class="easyui-combobox"
-						data-options="panelHeight:120,height:30,
-						<c:if test="${entity.userGroup.id!=null}">value:${entity.userGroup.id},</c:if>
-						<c:if test="${entity.userGroup.id==null}">value:1,</c:if>
-						editable:false,valueField:'id',textField:'userGroupName',url:'${contextPath }/security/settings/user/group'" />
-					</td>
+					<td><select style="font-size: 12px;" class="easyui-combobox" name="userGroup.id" data-options="width:120,panelHeight:120,height:30,editable:false">
+							<c:forEach items="${group}" var="item">
+								<option value="${item.id}" <c:if test="${item.id==entity.userGroup.id}">selected="selected"</c:if>>${item.userGroupName}</option>
+							</c:forEach>
+					</select></td>
 				</tr>
 				<tr>
 					<td>备注</td>
-					<td colspan="3"><textarea name="userRemark" rows="5" cols="70">${entity.userRemark}</textarea></td>
+					<td colspan="3"><textarea name="userRemark" rows="5" cols="70">${entity.userRemark}</textarea>
+					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td></td>
-					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-					</td>
+					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>  <a href="javascript:user_detail.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a></td>
 				</tr>
 			</table>
 		</form>

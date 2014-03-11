@@ -36,7 +36,7 @@
 			formatter : function(value, row, index) {
 				var e = '<a href="#" onclick="parameter_list.updateParameter(' + row.id + ')">编辑</a> ';
 				var d = '<a href="#" onclick="parameter_list.deleteParameter(' + row.id + ')">删除</a>';
-				return e+d;
+				return e + d;
 			}
 		} ] ], params);
 
@@ -51,9 +51,9 @@
 			type : 'GET',
 			success : function(data) {
 				//if (data == true) {
-					//$.messager.alert('消息', '今年的年审参数已存在!', 'info');
+				//$.messager.alert('消息', '今年的年审参数已存在!', 'info');
 				//} else {
-					esd.common.defaultOpenWindow("添加年审参数", "${contextPath}/security/settings/yearAuditParameter/add");
+				esd.common.defaultOpenWindow("添加年审参数", "${contextPath}/security/settings/yearAuditParameter/add");
 				//}
 			},
 			dataType : "json",
@@ -109,13 +109,15 @@
 <!-- 自定义菜单 -->
 <div id="parameter_list_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;margin-top: 5px">
 	<div>
-		<table border="0">
+		<table border="0" width="100%">
 			<tr>
-				<td><a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加</a>
-				</td>
+
 				<td width="80" style="text-align: right;">年审时间:</td>
-				<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
-				<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="parameter_list.list()">查找</a></td>
+				<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
+				</td>
+				<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="parameter_list.list()">查找</a>
+				</td>
+				<td style="text-align: right" ><a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加</a></td>
 			</tr>
 		</table>
 	</div>

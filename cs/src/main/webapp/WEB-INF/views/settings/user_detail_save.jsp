@@ -19,11 +19,15 @@
 	$.extend($.fn.validatebox.defaults.rules, {
 		equals : {
 			validator : function(value, param) {
-				return value == $(param[0]).val();
+				return value == $('input[name=userPassword]').val();
 			},
-			message : 'Field do not match.'
+			message : '两次输入的密码不一致'
 		}
 	});
+
+	user_detail.back = function() {
+		esd.common.defaultOpenWindowClose();
+	};
 </script>
 <div>
 	<div style="padding:15px 15px 15px 15px;">
@@ -40,15 +44,13 @@
 
 				<tr>
 					<td>登陆密码:</td>
-					<td><input class="easyui-validatebox" name="userPassword" type="text" /></td>
-					<td><span id="password_message"></span>
-					</td>
+					<td><input class="easyui-validatebox" name="userPassword" type="password" /></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>确认登陆密码:</td>
-					<td><input name="confirm" type="text" required="true" validType="equals['#userPassword']" /></td>
-					<td><span id="confirm_message"></span>
-					</td>
+					<td><input name="confirm" class="easyui-validatebox" type="password" required="true" validType="equals['#userPassword']" /></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -74,15 +76,12 @@
 					</td>
 				</tr>
 				<tr style="line-height: 20px;">
-					<td>状态:</td>
-					<c:if test="${entity.userGroup.id!=null}">
-						value:${entity.userGroup.id}
-					</c:if>
-					<td><input name="userGroup.id" class="easyui-combobox"
-						data-options="panelHeight:120,height:30,
-						<c:if test="${entity.userGroup.id!=null}">value:${entity.userGroup.id},</c:if>
-						<c:if test="${entity.userGroup.id==null}">value:1,</c:if>
-						editable:false,valueField:'id',textField:'userGroupName',url:'${contextPath }/security/settings/user/group'" />
+					<td>用户组:</td>
+					<td><select style="font-size: 12px;" class="easyui-combobox" name="userGroup.id" data-options="width:120,panelHeight:120,height:30,editable:false">
+							<c:forEach items="${group}" var="item">
+								<option value="${item.id}" <c:if test="${item.id==1}">selected="selected"</c:if>>${item.userGroupName}</option>
+							</c:forEach>
+					</select>
 					</td>
 				</tr>
 				<tr>
@@ -94,7 +93,8 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+					<td colspan="3"><a href="javascript:user_detail.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:user_detail.back();" class="easyui-linkbutton"
+						iconCls="icon-back">返回</a>
 					</td>
 				</tr>
 			</table>

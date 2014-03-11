@@ -201,21 +201,6 @@
 					var val = '<strong>B</strong>';
 				}
 				return val;
-			},
-			style : function(value, row, index) {
-
-			}
-		}, {
-			field : 'billFinance',
-			title : '财',
-			align : 'center',
-			width : 20,
-			formatter : function(value, row, index) {
-				val = '<strong style="color: orange;" >F</strong>';
-				if (value == true) {
-					var val = '<strong>A</strong>';
-				}
-				return val;
 			}
 		}, {
 			field : 'billObsolete',
@@ -293,9 +278,9 @@
 				<td class="td_short" rowspan="3">备注:</td>
 				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea></td>
 				<td class="td_short">职工总人数:</td>
-				<td class="td_short readonly">${entity.companyEmpTotal }</td>
+				<td class="td_short readonly" style="text-align: left;" >${entity.companyEmpTotal }</td>
 				<td class="td_short">年人均工资:</td>
-				<td class="td_short readonly">${entity.averageSalary }</td>
+				<td class="td_short readonly" style="text-align: left;" >${entity.averageSalary }</td>
 			</tr>
 			<tr>
 				<td class="td_short">应按排数:</td>

@@ -208,6 +208,52 @@ public class AuditsController {
 	}
 
 	/**
+	 * 转到创建页面
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView createAudit() {
+		return new ModelAndView("audit/audit_create");
+	}
+
+	/**
+	 * 新添加审计记录
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean createAudit(HttpServletRequest request) {
+		String year = (String) request.getParameter("year");
+		String companyCode = (String) request.getParameter("companyCode");
+		Boolean b = auditService.save(year, companyCode);
+		return b;
+	}
+
+	/**
+	 * 模糊查找公司档案号
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/create/{companyCode}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String, String>> findCompanyCode(@PathVariable(value = "companyCode") String companyCode) {
+		List<Map<String, String>> list = new ArrayList<>();
+
+		Company company = new Company();
+		company.setCompanyCode(companyCode);
+		PaginationRecordsAndNumber<Company, Number> query = companyService.getPaginationRecords(company, 1, 20);
+
+		for (Company c : query.getRecords()) {
+			Map<String, String> entity = new HashMap<>();
+			entity.put("id", c.getCompanyCode());
+			entity.put("text", c.getCompanyCode() + ":" + c.getCompanyName());
+			list.add(entity);
+		}
+
+		return list;
+	}
+
+	/**
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -290,19 +336,23 @@ public class AuditsController {
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
 		Boolean mian = calculateModel.getMianZhiNaJin();
-		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
-		BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);// 获得欠缴
-		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
-		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
-		BigDecimal weiShen = getUnAudits(mian, year, companyId, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
-		calculateModel.setWeiShenMingXi(weiShenMingXi);
-		logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
+		// List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
+		// BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);//
+		// 获得欠缴
+		// calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
+		// List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
+		// BigDecimal weiShen = getUnAudits(mian, year, companyId, new
+		// BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
+		// calculateModel.setWeiShenMingXi(weiShenMingXi);
+		// logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
 		// 未缴金额 =欠缴+未审
-		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen);
-		calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen);
+		// calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
 
 		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal real_yingJiaoJinE =
+		// shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
 		// 计算滞纳金============================================================================================
 		// 获得支付截至日期
@@ -448,6 +498,7 @@ public class AuditsController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> provincePost(HttpServletRequest request) {
+
 		String year = request.getParameter("year");
 		Integer page = Integer.valueOf(request.getParameter("page"));
 		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
@@ -476,8 +527,9 @@ public class AuditsController {
 			audit.setYear(year);
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(process);
 			audit.setAuditProcessStatus(auditProcessStatus);
-
+			long l = System.currentTimeMillis();
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
+			System.out.println(System.currentTimeMillis() - l);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
@@ -504,6 +556,7 @@ public class AuditsController {
 		} catch (Exception e) {
 			logger.error("error{}", e);
 		}
+		// System.out.println(System.currentTimeMillis()-l);
 		return entity;
 	}
 
@@ -511,7 +564,8 @@ public class AuditsController {
 	 * 转到年审单位初审页面
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request, HttpSession session) {
+	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("id:{}", id);
 		Audit audit = auditService.getByPrimaryKey(id);
 		if (audit.getInitAuditUser() == null) {
