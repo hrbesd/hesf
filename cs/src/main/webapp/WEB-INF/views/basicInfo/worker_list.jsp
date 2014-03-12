@@ -171,7 +171,17 @@
 		params.phone = $("#workerFind_phone").val();// 电话号
 		params.workerHandicapType = $("#workerFind_workerHandicapType").combobox("getValue");//残疾类型 
 		params.workerHandicapLevel = $("#workerFind_workerHandicapLevel").combobox("getValue");// 残疾等级
+		//是否显示年龄超标职工
+	 	var isExceed=$("input[name='isExceed']:checked").val();
+	  	if(isExceed=='on'){
+	  		params.isExceed=true;
+	  	}else{
+	  		params.isExceed=false;
+	  		
+	  	}
 
+	  	
+	  	
 		return params;
 	};
 
@@ -341,7 +351,19 @@
 		</tr>
 	</table>
 
-	
+		<div style="text-align: right; margin: 7px 7px 7px 48px;float: left;">
+		<table>
+			<tr>
+				<td>
+				<input type="checkbox" name="isExceed"  />
+				</td>
+				<td>
+				职工年龄超标
+				</td>
+			</tr>
+		</table>
+			
+		</div>
 	
 	<div style="text-align: right; margin: 7px;">
 
@@ -349,7 +371,7 @@
 			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> <a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton"
 			data-options="iconCls:'icon-ok',plain:true">导入文件</a>
 	</div>
-	<table>
+	<table style="clear: both;">
 		<tr>
 			<td>
 				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />

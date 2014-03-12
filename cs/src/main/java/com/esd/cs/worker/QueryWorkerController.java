@@ -49,10 +49,10 @@ public class QueryWorkerController {
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		try {
-			// 获取年审参数
-			AuditParameter auditParam = auditParameterService.getByYear(ParameterController.getYear());
-
+		
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			
+		
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
 			paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名
@@ -77,16 +77,15 @@ public class QueryWorkerController {
 				map.put("id", it.getId());// id
 				map.put("workerName", it.getWorkerName());// 姓名
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
-
-				if (it.getWorkerGender().equals("0")) {
-					map.put("workerGender", "女");// 性别
-					map.put("femaleRetirementAge", auditParam.getRetireAgeFemale());// 女退休年龄
+				if (it.getWorkerGender() == null) {
+					map.put("workerGender", "未知");// 性别
 				} else {
-					map.put("workerGender", "男");// 性别
-					map.put("femaleRetirementAge", auditParam.getRetireAgeMale());// 男退休年龄
+					if (it.getWorkerGender().equals("0")) {
+						map.put("workerGender", "女");// 性别
+					} else {
+						map.put("workerGender", "男");// 性别
+					}
 				}
-				map.put("vestingCompanyName", it.getCompany().getCompanyName());// 所在公司
-				map.put("vestingCompanyId", it.getCompany().getId());// 所在公司id
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
 				map.put("phone", it.getPhone());// phone
@@ -116,6 +115,7 @@ public class QueryWorkerController {
 	public Map<String, Object> companyHireList(WorkerParamModel params, HttpServletRequest request) {
 		logger.debug("queryCompanyWorkerParams{}", params);
 		
+		logger.error("------------------:{}",params.getIsExceed());
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		List<Map<String, Object>> list = null;
@@ -123,6 +123,8 @@ public class QueryWorkerController {
 		AuditParameter auditParam = auditParameterService.getByYear(params.getYear());
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("getOverproof", params.getIsExceed()); // 是否获取超过退休年龄
+			paramsMap.put("year", params.getYear()); // 公司id
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号

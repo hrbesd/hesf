@@ -95,9 +95,12 @@
 			<input type="hidden" value="${year}"     id="currentYear"/>
 			<div class="importTitle">
 				已下职工信息正确，可以导入到数据库中。
-			</div>
+			</div>	
 		
-			<table id="confirmTab" class="easyui-datagrid" data-options="fitColumns : true,frozenColumns : [ [ {field : '01',checkbox : true}, ] ],striped : true,rownumbers : true">
+
+		
+		
+			<table id="confirmTab" class="easyui-datagrid" data-options="checkOnSelect : false,selectOnCheck : false,singleSelect : true,fitColumns : true,frozenColumns : [ [ {field : '01',checkbox : true}, ] ],striped : true,rownumbers : true">
 				<thead>
 					<tr>
 						<th  data-options="field:'name',width:100">姓名</th>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.cs.common.ParameterController;
+import com.esd.cs.payment.Payments;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AuditService;
@@ -139,7 +140,7 @@ public class CompayController {
 				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			boolean b = companyService.save(company);
+			boolean b = companyService.save(company,ParameterController.getYear());
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
