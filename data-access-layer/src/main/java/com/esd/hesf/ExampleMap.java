@@ -10,12 +10,12 @@ public class ExampleMap {
 	 */
 	public void example_company() {
 		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("year", "2001"); // 年度										已被删除
+		// map.put("year", "2001"); // 年度 已被删除
 		map.put("companyCode", "601001"); // 公司档案号
 		map.put("companyName", "广寒攻丝"); // 公司名称
 		map.put("companyProperty", 1); // 公司性质 对应的id
 		map.put("companyEconomyType", 1); // 公司经济类型 对应的id
-		map.put("companyType", 1);	//公司类型								新添加参数
+		map.put("companyType", 1); // 公司类型 新添加参数
 		map.put("areaCode", "20230000"); // 地区 对应地区 code
 		map.put("companyTaxCode", "878923749238293874"); // 公司税务编码
 		map.put("companyLegal", "法人1号"); // 公司法人代表
@@ -23,13 +23,13 @@ public class ExampleMap {
 		map.put("companyAddress", "宏碁大姐1008号"); // 公司地址
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
-		
-		
-		//以下4个字段已被挪到审核查询参数中
-//		map.put("minTotal", 5); // 查询范围中 公司最少人数					已被删除
-//		map.put("maxTotal", 250); // 查询范围中 公司最多人数					已被删除
-//		map.put("minHandicapTotal", 5); // 查询范围中 残疾职工最少人数			已被删除
-//		map.put("maxHandicapTotal", 250); // 查询范围中 残疾职工最多人数		已被删除
+		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的
+
+		// 以下4个字段已被挪到审核查询参数中
+		// map.put("minTotal", 5); // 查询范围中 公司最少人数 已被删除
+		// map.put("maxTotal", 250); // 查询范围中 公司最多人数 已被删除
+		// map.put("minHandicapTotal", 5); // 查询范围中 残疾职工最少人数 已被删除
+		// map.put("maxHandicapTotal", 250); // 查询范围中 残疾职工最多人数 已被删除
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class ExampleMap {
 		// 如果查询一个公司里的残疾员工的话, 要么填下面两个属性, 要么填公司id companyId!
 		map.put("year", "2001"); // 年度
 		map.put("companyId", 1366);
-//		map.put("companyCode", "1390293306601");// 公司id					//已被删除
+		// map.put("companyCode", "1390293306601");// 公司id //已被删除
 
 		/**********************************************************/
 		/************ 以上字段为查询公司里的残疾人用 ******************/
@@ -58,6 +58,7 @@ public class ExampleMap {
 		map.put("workerHandicapLevel", "34asasd123"); // 残疾等级 对应的id
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
+		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的
 	}
 
 	/**
@@ -71,14 +72,14 @@ public class ExampleMap {
 		map.put("companyOrganizationCode", "878923749238293874"); // 组织机构代码证
 		map.put("companyProperty", 1); // 公司性质 对应的id
 		map.put("companyEconomyType", 1); // 公司经济类型 对应的id
-		map.put("companyType", 1); // 公司类型 对应的id								新添加
+		map.put("companyType", 1); // 公司类型 对应的id 新添加
 		map.put("areaCode", "20230000"); // 地区 对应地区 code
 		map.put("minTotal", 5); // 查询范围中 公司最少人数
 		map.put("maxTotal", 250); // 查询范围中 公司最多人数
-		//从公司参数中挪来的2个参数
-		map.put("minHandicapTotal", 5); // 查询范围中 残疾职工最少人数					新添加
-		map.put("maxHandicapTotal", 250); // 查询范围中 残疾职工最多人数				新添加
-		
+		// 从公司参数中挪来的2个参数
+		map.put("minHandicapTotal", 5); // 查询范围中 残疾职工最少人数 新添加
+		map.put("maxHandicapTotal", 250); // 查询范围中 残疾职工最多人数 新添加
+
 		map.put("companyName", "广寒攻丝"); // 公司名称
 		map.put("companyAddress", "宏碁大姐1008号"); // 公司地址
 		map.put("companyLegal", "法人1号"); // 公司法人代表
@@ -86,8 +87,9 @@ public class ExampleMap {
 		map.put("paymentPerson", 3); // 缴款人 id
 		map.put("overYear", 3); // 超过几年未初审的公司
 		map.put("isExempt", false); // 是否免缴 true免缴, false不免缴
-		map.put("actualAmount", 20000.0);	//实缴金额
+		map.put("actualAmount", 20000.0); // 实缴金额
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
+		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的
 	}
 }

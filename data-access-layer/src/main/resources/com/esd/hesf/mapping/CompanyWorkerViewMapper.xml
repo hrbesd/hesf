@@ -85,8 +85,8 @@
 		<result column="l_id" property="workerHandicapLevel.id" jdbcType="INTEGER" />
 		<result column="l_handicap_level" property="workerHandicapLevel.handicapLevel" jdbcType="VARCHAR" />
 		<!-- area -->
-		<result column="a_code" property="area.code" jdbcType="CHAR" />
-		<result column="a_name" property="area.name" jdbcType="VARCHAR" />
+	<!-- 	<result column="a_code" property="area.code" jdbcType="CHAR" />
+		<result column="a_name" property="area.name" jdbcType="VARCHAR" />	 -->
 		<!-- company -->
 		<result column="c_id" jdbcType="INTEGER" property="company.id" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
@@ -220,44 +220,84 @@
 		</trim>
 	</select>
 	
+	<!-- result column for worker research -->
+	<sql id="Column_For_Worker">
+		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
+		w_worker_gender, w.worker_birth as w_worker_birth, 
+		w.worker_birth_year as w_worker_birth_year, 
+		w.worker_id_card as
+		w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
+		w.current_job as w_current_job, w.worker_address as w_worker_address,
+		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
+		w.is_college as w_is_college, 
+		w.create_time as w_create_time, w.update_time as w_update_time,
+		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
+		<!-- handicap type -->
+		t.id as t_id, t.handicap_type as t_handicap_type,
+		<!-- handicap level -->
+		l.id as l_id, l.handicap_level as l_handicap_level,
+		<!-- company -->
+		c.id as c_id, c.company_code as c_company_code,
+		c.company_management as c_company_management,
+		c.company_name as c_company_name, c.company_legal as c_company_legal,
+		c.company_contact_person as c_company_contact_person,
+		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+		c.company_address as c_company_address, c.company_zip_code as c_company_zip_code,
+		c.company_fax as c_company_fax,
+		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile,
+		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+		c.company_remark as c_company_remark, c.create_time as c_create_time,
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version
+	</sql>
+	
 	<!-- retrieve for worker view model -->
 	<select id="retrieveWorkerByWorker" parameterType="map" resultMap="ResultWorkerViewModel">
 		select 
-		<include refid="Column_List_worker"/>,
-		<include refid="Column_List_company" />
-		from company_worker_view 
+		<include refid="Column_For_Worker"/>
+		from worker as w left join worker_handicap_level as l on(w.worker_handicap_level=l.id)
+			left join worker_handicap_type as t on(w.worker_handicap_type=t.id)
+			left join company_year_worker as cyw on(w.id=cyw.worker_id)
+			left join company as c on(cyw.company_id=c.id)
 		<trim prefix="where" prefixOverrides="and|or">
-			<if test="year != null and year != ''">
-				cyw_year = #{year}
-			</if>
+		<!-- 	<if test="year != null and year != ''">
+				cyw_year = #{year,jdbcType=CHAR}
+			</if>	 -->
 			<if test="workerHandicapCode != null and workerHandicapCode != ''">
-				and w_worker_handicap_code like concat('%', #{workerHandicapCode},'%')
+				and w.worker_handicap_code like concat('%', #{workerHandicapCode},'%')
 			</if>
 			<if test="careerCard != null and careerCard != ''">
-				and w_career_card like concat('%', #{careerCard},'%')
+				and w.career_card like concat('%', #{careerCard},'%')
 			</if>
 			<if test="workerName != null and workerName != ''">
-				and w_worker_name like concat('%', #{workerName},'%')
+				and w.worker_name like concat('%', #{workerName},'%')
 			</if>
 			<if test="workerGender != null and workerGender != ''">
-				and w_worker_gender = #{workerGender}
+				and w.worker_gender = #{workerGender}
 			</if>
 			<if test="currentJob != null and currentJob != ''">
-				and w_current_job like concat('%', #{currentJob},'%')
+				and w.current_job like concat('%', #{currentJob},'%')
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt;= #{minBirth} 
+				and w.worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt;= #{maxBirth} 
+				and w.worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
-				and t_id = #{workerHandicapType}
+				and t.id = #{workerHandicapType}
 			</if>
 			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
-				and l_id = #{workerHandicapLevel}
+				and l.id = #{workerHandicapLevel}
 			</if>
+			<choose>
+				<when test="isActive != null">
+					and w.is_active = #{isActive,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and w.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by w_id 
 		limit #{start},#{size}
@@ -265,39 +305,50 @@
 	
 	<select id="retrieveWorkerByWorkerCount" parameterType="map" resultType="int">
 		select count(*)
-		from company_worker_view 
+		from worker as w left join worker_handicap_level as l on(w.worker_handicap_level=l.id)
+			left join worker_handicap_type as t on(w.worker_handicap_type=t.id)
+			left join company_year_worker as cyw on(w.id=cyw.worker_id)
+			left join company as c on(cyw.company_id=c.id)
 		<trim prefix="where" prefixOverrides="and|or">
-			<if test="year != null and year != ''">
-				cyw_year = #{year}
-			</if>
+		<!-- 	<if test="year != null and year != ''">
+				cyw_year = #{year,jdbcType=CHAR}
+			</if>	 -->
 			<if test="workerHandicapCode != null and workerHandicapCode != ''">
-				and w_worker_handicap_code like concat('%', #{workerHandicapCode},'%')
+				and w.worker_handicap_code like concat('%', #{workerHandicapCode},'%')
 			</if>
 			<if test="careerCard != null and careerCard != ''">
-				and w_career_card like concat('%', #{careerCard},'%')
+				and w.career_card like concat('%', #{careerCard},'%')
 			</if>
 			<if test="workerName != null and workerName != ''">
-				and w_worker_name like concat('%', #{workerName},'%')
+				and w.worker_name like concat('%', #{workerName},'%')
 			</if>
 			<if test="workerGender != null and workerGender != ''">
-				and w_worker_gender = #{workerGender}
+				and w.worker_gender = #{workerGender}
 			</if>
 			<if test="currentJob != null and currentJob != ''">
-				and w_current_job like concat('%', #{currentJob},'%')
+				and w.current_job like concat('%', #{currentJob},'%')
 			</if>
 			<!-- age scope -->
 			<if test="minBirth != null">
-				and w_worker_birth_year &lt;= #{minBirth} 
+				and w.worker_birth_year &lt;= #{minBirth} 
 			</if>
 			<if test="maxBirth != null">
-				and w_worker_birth_year &gt;= #{maxBirth} 
+				and w.worker_birth_year &gt;= #{maxBirth} 
 			</if>
 			<if test="workerHandicapType != null and workerHandicapType > 0">
-				and t_id = #{workerHandicapType}
+				and t.id = #{workerHandicapType}
 			</if>
 			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
-				and l_id = #{workerHandicapLevel}
+				and l.id = #{workerHandicapLevel}
 			</if>
+			<choose>
+				<when test="isActive != null">
+					and w.is_active = #{isActive,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and w.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 
