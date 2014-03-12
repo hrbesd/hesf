@@ -9,18 +9,10 @@
 <input type="hidden" id="companyProperty" value="${companyProperty}" />
 <!-- 自定义菜单 -->
 <div id="company_boolbar">
-
-	<div style="text-align: left; margin: 7px; float: left;">
-		<!-- 年份 -->
-		<input id="year" class="easyui-combobox" value="${year}" data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />年
-	</div>
-	
 	<div style="text-align: right;">
 		<a onclick="basicFile.openAddCompany()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a onclick="basicFile.openBatchDeleteCompany()" href="#"
 			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
-
 	</div>
-
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
 		<input id="companyCode" type="text" style="width: 14%;margin-left: 50px" />
@@ -30,19 +22,11 @@
 		<input id="companyName" type="text" style="width: 48%" /> <a href="#" onclick="basicFile.findData()" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
 	</div>
 </div>
-
 <!-- 数据表格 -->
 <table id="company_grid"></table>
 
 <script type="text/javascript">
 
-	$(function() {
-	
-		//初始化组件
-	
-	});
-
-	//组件解析完成
 	$.parser.onComplete = function() {
 		basicFile.loadData(basicFile.getParams());
 	};

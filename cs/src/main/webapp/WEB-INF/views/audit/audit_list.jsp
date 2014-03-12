@@ -65,6 +65,8 @@
 					v = v + '<c:if test="${process==1}">查看</c:if><c:if test="${process==2}">复审</c:if></a> ';
 					return v;
 				}
+				
+				
 				return v + '查看</a> ';
 			}
 		} ] ], params);

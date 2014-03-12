@@ -703,6 +703,15 @@ public class WorkerController {
 
 	}
 
+	/**
+	 * 确定导入企业信息
+	 * @param companyId
+	 * @param paramsCode
+	 * @param paramsName
+	 * @param year
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/determineimport", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean importworker1(@RequestParam(value = "companyId") Integer companyId, 

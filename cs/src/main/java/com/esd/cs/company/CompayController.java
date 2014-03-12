@@ -53,11 +53,7 @@ public class CompayController {
 		logger.debug("companyProperty{}", property);
 		// 续传用户类型
 		request.setAttribute("companyProperty", property);
-		// 获取当前年份
-		request.setAttribute("year", ParameterController.getYear());
-		
 		logger.debug("JumpCompany:{},year:{}", property,ParameterController.getYear());
-		
 		return new ModelAndView("basicInfo/company_list");
 	}
 
@@ -114,7 +110,7 @@ public class CompayController {
 	public Object get_company(@RequestParam(value = "id") Integer id, HttpServletRequest request) {
 
 		try {
-			logger.debug("getByIdCompany");
+			logger.debug("getByIdCompanyId:{}",id);
 			Company company = companyService.getByPrimaryKey(id);
 			logger.debug(" getcompany{}", company);
 			request.setAttribute("company", company);
@@ -137,7 +133,7 @@ public class CompayController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean add_company(Company company, HttpServletRequest request, HttpSession session) {
-		logger.debug("addCompany{}", company);
+		logger.debug("addCompany:{}", company);
 		try {
 			if (company == null) {
 				logger.error("addCompany:{}", "paramserror");
@@ -148,7 +144,7 @@ public class CompayController {
 			return b;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("addCompany{}", "adderror");
+			logger.error("addCompany:{}", "adderror");
 		}
 		return false;
 	}
