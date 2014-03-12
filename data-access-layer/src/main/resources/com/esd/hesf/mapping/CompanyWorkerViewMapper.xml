@@ -138,6 +138,53 @@
 	<select id="retrieveWorkerByCompany" parameterType="map" resultMap="ResultWorker">
 		select 
 		<include refid="Column_List_worker"/> 
+		from company_worker_view
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="companyId != null and companyId > 0">
+				c_id = #{companyId,jdbcType=INTEGER} 
+			</if>
+			<if test="year != null and year != ''">
+				and cyw_year = #{year,jdbcType=CHAR}
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				and c_company_code = #{companyCode,jdbcType=VARCHAR}
+			</if>
+			<if test="workerName != null and workerName != ''">
+				and w_worker_name like concat('%', #{workerName},'%')
+			</if>
+			<if test="workerHandicapCode != null and workerHandicapCode != ''">
+				and w_worker_handicap_code like concat('%', #{workerHandicapCode},'%')
+			</if>
+			<if test="workerGender != null and workerGender != ''">
+				and w_worker_gender = #{workerGender}
+			</if>
+			<!-- age scope -->
+			<if test="minBirth != null">
+				and w_worker_birth_year &lt;= #{minBirth} 
+			</if>
+			<if test="maxBirth != null">
+				and w_worker_birth_year &gt;= #{maxBirth} 
+			</if>
+			<if test="phone != null and phone != ''">
+				and w_phone like concat('%', #{phone},'%')
+			</if>
+			<if test="workerHandicapType != null and workerHandicapType > 0">
+				and t_id = #{workerHandicapType}
+			</if>
+			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
+				and l_id = #{workerHandicapLevel}
+			</if>
+			<!-- retired age judge -->
+			<if test="maxMaleBirth != null and maxFemaleBirth != null">
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1) or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
+			</if>
+		</trim>
+		order by w_id  
+		limit #{start},#{size}
+	</select>
+	
+	<select id="retrieveWorkerByCompanyCount" parameterType="map" resultType="int">
+		select count(*) 
 		from company_worker_view 
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="companyId != null and companyId > 0">
@@ -174,48 +221,9 @@
 			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
 				and l_id = #{workerHandicapLevel}
 			</if>
-		</trim>
-		order by w_id  
-		limit #{start},#{size}
-	</select>
-	
-	<select id="retrieveWorkerByCompanyCount" parameterType="map" resultType="int">
-		select count(*) 
-		from company_worker_view 
-		<trim prefix="where" prefixOverrides="and|or">
-			<if test="companyId != null and companyId > 0 ">
-				c_id = #{companyId} 
-			</if>
-			<if test="year != null and year != ''">
-				and cyw_year = #{year,jdbcType=VARCHAR}
-			</if>
-			<if test="companyCode != null and companyCode != ''">
-				and c_company_code = #{companyCode,jdbcType=VARCHAR}
-			</if>
-			<if test="workerName != null and workerName != ''">
-				and w_worker_name like concat('%', #{workerName},'%')
-			</if>
-			<if test="workerHandicapCode != null and workerHandicapCode != ''">
-				and w_worker_handicap_code like concat('%', #{workerHandicapCode},'%')
-			</if>
-			<if test="workerGender != null and workerGender != ''">
-				and w_worker_gender = #{workerGender}
-			</if>
-			<!-- age scope -->
-			<if test="minBirth != null">
-				and w_worker_birth_year &lt;= #{minBirth} 
-			</if>
-			<if test="maxBirth != null">
-				and w_worker_birth_year &gt;= #{maxBirth} 
-			</if>
-			<if test="phone != null and phone != ''">
-				and w_phone like concat('%', #{phone},'%')
-			</if>
-			<if test="workerHandicapType != null and workerHandicapType > 0">
-				and t_id = #{workerHandicapType}
-			</if>
-			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
-				and l_id = #{workerHandicapLevel}
+			<!-- retired age judge -->
+			<if test="maxMaleBirth != null and maxFemaleBirth != null">
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1) or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
 			</if>
 		</trim>
 	</select>

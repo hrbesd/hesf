@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.dao.AuditParameterDao;
 import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.dao.WorkerDao;
 import com.esd.hesf.model.Area;
+import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.model.Worker;
@@ -39,6 +41,9 @@ public class WorkerServiceImpl implements WorkerService {
 	@Autowired
 	private CompanyWorkerViewDao cwvDao;
 
+	@Autowired
+	private AuditParameterDao apDao;
+	
 	@Override
 	public boolean save(Worker t) {
 		if (t.getArea() == null) {
@@ -144,7 +149,12 @@ public class WorkerServiceImpl implements WorkerService {
 	@Override
 	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(Map<String, Object> map) {
 		if (map == null) {
-			map = new HashMap<String, Object>();
+			new HesfException("map参数", HesfException.type_null).printStackTrace();
+			return null;
+		}
+		if(map.get("year")==null){
+			new HesfException("map--year", HesfException.type_null).printStackTrace();
+			return null;
 		}
 		int page = 1;
 		int pageSize = Constants.SIZE;
@@ -164,6 +174,21 @@ public class WorkerServiceImpl implements WorkerService {
 		if (map.get("maxAge") != null) {
 			map.put("maxBirth", KitService.getBirthFromAge(map.get("maxAge").toString()));
 		}
+		//是否获得全部达到退休年龄人员
+		if(map.get("getOverproof")!=null){
+			Boolean bl = Boolean.parseBoolean(map.get("getOverproof").toString());
+			if(bl){
+				String year = map.get("year").toString();
+				// 得到对应年份的参数
+				AuditParameter ap = apDao.retrieveByYear(year);
+				// 计算男女各自的最大出生日期
+				String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale() + "");
+				String maxFemaleBirth = KitService.getBirthFromAge(ap.getRetireAgeFemale() + "");
+				map.put("maxMaleBirth", maxMaleBirth);
+				map.put("maxFemaleBirth", maxFemaleBirth);
+			}
+		}
+		
 		// 将参数放入到map中
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
@@ -179,6 +204,12 @@ public class WorkerServiceImpl implements WorkerService {
 		return prn;
 	}
 
+//	public static void main(String[] args) {
+//		Map<String,Object>  map = new HashMap<String,Object>();
+//		map.put("bl", true);
+//		System.out.println(Boolean.parseBoolean(map.get("bl").toString()));
+//	}
+	
 	@Override
 	public PaginationRecordsAndNumber<WorkerViewModel, Number> getByMultiCondition(Map<String, Object> map) {
 		Long t1 = System.currentTimeMillis();

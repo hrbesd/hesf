@@ -107,7 +107,7 @@ public class ReportViewModel {
 		if (this.auditOk == null) {
 			this.auditOk = 0;
 		}
-		this.auditOk = auditOk;
+		this.auditOk += auditOk;
 	}
 
 	public Integer getUnauditOk() {

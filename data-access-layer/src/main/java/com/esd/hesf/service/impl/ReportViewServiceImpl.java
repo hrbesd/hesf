@@ -82,7 +82,7 @@ public class ReportViewServiceImpl implements ReportViewService {
 					rvm.setAuditOk(atm.getNum());
 					break;
 				case 7:
-					rvm.setUnReAudit(atm.getNum());
+					rvm.setUnauditOk(atm.getNum());
 					break;
 				}
 			}

@@ -2,8 +2,10 @@ package com.esd.hesf.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 
 /**
@@ -56,5 +58,15 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @return
 	 */
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByCompany(Integer companyId, Integer page, Integer pageSize);
+	
+	/**
+	 * 多条件查询  缴款数据
+	 * 
+	 * @param map
+	 *            --map对象 参照 com.esd.hesf.ExampleMap 中的example_payment()样例 
+	 *            测试样例见 com.esd.cs.TestController 的测试方法 26
+	 * @return
+	 */
+	PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(Map<String, Object> map);
 	
 }

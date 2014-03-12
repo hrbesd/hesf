@@ -228,8 +228,9 @@ public class TestController {
 	public Map<String, Object> test13() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		 paramMap.put("year", "2013");
-		 paramMap.put("companyId", 1490);
+		 paramMap.put("year", "2011");
+		 paramMap.put("companyId", 1);
+		 paramMap.put("getOverproof", true);
 		// paramMap.put("workerHandicapCode", "66"); // 残疾证号
 		// paramMap.put("careerCard", "67"); // 就业证号
 		// paramMap.put("workerName", "67"); // 姓名
