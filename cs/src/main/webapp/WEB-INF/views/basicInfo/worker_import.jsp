@@ -4,7 +4,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <style>
 .importWorker {
-	margin: 15px auto auto;
+	margin: 0px auto;
 }
 
 /*导入残疾职工*/
@@ -65,9 +65,9 @@
 </script>
 
 <div class="importWorker">
-	<div class="importWorkerTitle"  id="importWorkerTitle"  >导入残疾职工</div>
 
 	<form class="importWorkerForm" id="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
+	<div class="importWorkerTitle"  id="importWorkerTitle"  >导入残疾职工</div>
 		<table>
 			<tr>
 				<td><input type="file" id="uploadWorkerFile" value="选择文件" name="file" style="width: 400px" accept="application/vnd.ms-excel" />

@@ -143,6 +143,8 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/add/{companyId}/{year}", method = RequestMethod.GET)
 	public ModelAndView add_worker(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	logger.debug("gotoAddWorker,companyId:{},year:{}",companyId,year);
+		
 		// 续传企业id
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
@@ -660,7 +662,7 @@ public class WorkerController {
 	 * @return
 	 */
 	private List<Map<String, String>> validateOrganizationCode(String workerIdCard, String year) {
-		logger.debug("validateOrganizationCode:{}", workerIdCard);
+		logger.debug("validateOrganizationCode:{},year:{}", workerIdCard,year);
 		try {
 			List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 			Map<String, String> paramsMap = new HashMap<String, String>();

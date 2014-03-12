@@ -53,7 +53,7 @@
 			type : 'post',
 			data : {
 				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18),
-				'year':$("#year").val()
+				'year':$("#nowYear").val()
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
@@ -139,7 +139,7 @@
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
 		//职工当前年龄
-		var age=$("#year").val()-year+1;
+		var age=$("#nowYear").val()-year+1;
 
 		//判断年龄
 		if(age<16){
@@ -171,7 +171,7 @@
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		$("#workerIdCard").val(workerIdCard);
 		// 出生年份--供后台查询使用
-		$("#workerBirthYear").val(year);
+		$("#workerBirthYear").val($("#nowYear").val());
 		
 	
 		return true;
@@ -202,7 +202,7 @@
 			type : 'post',
 			data : {
 				'workerIdCard' : workerIdCard,
-					'year':$("#year").val()
+					'year':$("#nowYear").val()
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
@@ -240,24 +240,23 @@
 	};
 </script>
 
+	
+<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
 	<!--  女退休年龄 -->
 	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 	<!--  男退休年龄 -->
 	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
-	<input type="hidden" value="${nowYear}" id="nowYear"/>
-	
-<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
+	<input type="hidden" value="${year}" id="nowYear"/>
 	<input type="hidden" value="${companyId}" name="companyId"  />
-	<input type="hidden" value="${year}" name="year"  />
 	
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
-			<td align="center"><span style="font-size: 18px;font-weight: bold;">新增残疾人</span>
+			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
 			</td>
 		</tr>
 		<tr>
-			<td>残疾证号:</td>
+			<td>残疾证号(<label class="red_notice"> *</label>):</td>
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
@@ -267,7 +266,7 @@
 				</div></td>
 		</tr>
 		<tr>
-			<td class="">姓名:</td>
+			<td class="">姓名(<label class="red_notice"> *</label>):</td>
 			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
 			</td>
 			<td class="">性别:</td>
@@ -316,7 +315,7 @@
 		</tr>
 	 -->
 		<tr>
-			<td colspan="6"><a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:addWorker.close();" class="easyui-linkbutton"
+			<td colspan="6" style="text-align: center;"><a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:addWorker.close();" class="easyui-linkbutton"
 				iconCls="icon-undo">取消</a>
 			</td>
 		</tr>

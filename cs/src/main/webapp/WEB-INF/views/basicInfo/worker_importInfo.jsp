@@ -10,11 +10,14 @@
 <script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
-
-	 $(function(){
+//组件解析完成
+	$.parser.onComplete = function() {
 	 	$('#importWorkerForm', window.parent.document).hide(0,function(){
-	 		$('#importWorkerIframe', window.parent.document).height(440);
+	 		$('#importWorkerIframe', window.parent.document).height(500);
 	 	});
+	
+	};
+	 $(function(){
 	 });
 	
 	var importWorkerManager={};
@@ -76,28 +79,29 @@
 	</c:if>
 
 	<c:if test="${errorInfo=='null'}">
-		<div style="margin-bottom: 10px;">
-			文件数据总量为：${totalLength}条，数据格式错误：${errorLength}条，数据格式正确${succesLength}条。
+		
+		<div class="importWorkerTitle">导入残疾职工确认页面</div>
+		
+		<div  class="importTip">
+			职工信息数据总量为：${totalLength}条，<label class="red_notice">职工信息错误：${errorLength}条</label>，职工信息正确${succesLength}条。
 			<div>
 				<c:if test="${errorLength!=0}">
 					<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
 				</c:if>
 			</div>
-
 		</div>
-
 		<c:if test="${succesLength!=0}">
 			<input type="hidden" value="${companyId}"     id="companyId"/>
 			<input type="hidden" value="${year}"     id="currentYear"/>
+			<div class="importTitle">
+				已下职工信息正确，可以导入到数据库中。
+			</div>
 		
 			<table id="confirmTab" class="easyui-datagrid" data-options="fitColumns : true,frozenColumns : [ [ {field : '01',checkbox : true}, ] ],striped : true,rownumbers : true">
 				<thead>
-				
 					<tr>
-		
 						<th  data-options="field:'name',width:100">姓名</th>
 						<th  data-options="field:'code',width:415">残疾证号</th>
-
 					</tr>
 				</thead>
 				<tbody>

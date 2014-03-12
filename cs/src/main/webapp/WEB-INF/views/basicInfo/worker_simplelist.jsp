@@ -161,6 +161,7 @@
 	workerList.getParams = function() {
 
 		params = {};
+		params.year = $("#currentYear").val();//年份
 		params.companyId = $("#companyId").val();//单位id
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
@@ -188,8 +189,8 @@
 	打开增加残疾职工页面
 	 **/
 	workerList.openAddWorker = function() {
-
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val());
+	
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
 	};
 
 	/**
@@ -202,7 +203,9 @@
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val(), function() {
+	
+
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
@@ -243,7 +246,7 @@
 					data : {
 						"params" : params,
 						"companyId" : $("#companyId").val(),
-						"year" : $("#year").val()
+						"year" : $("#currentYear").val()//年份
 					},
 					type : 'post',
 					success : function(data) {
@@ -273,7 +276,7 @@
 	workerList.getCompany = function() {
 
 		$.ajax({
-			url : 'company/getinformation/' + $("#companyId").val(),
+			url : 'company/getinformation/' + $("#companyId").val()+'/'+$("#currentYear").val(),
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
@@ -306,14 +309,12 @@
 		
 	};
 
-	$(function() {
-		//初始化组件
 
-	});
 </script>
 <!-- 数据表格 -->
 <table id="workerList_dataGrid"></table>
 
+<input type="hidden" id="currentYear" value="${year}" />
 <input type="hidden" id="companyId" value="${companyId}" />
 <!-- 自定义菜单 -->
 <div id="workerListBoolbar">
@@ -339,24 +340,24 @@
 
 		</tr>
 	</table>
-	
+
 	<table>
 		<tr>
 			<td>
 				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />
 			</td>
 			<td>
-				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 183px" />
+				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 193px" />
 			</td>
 			<td>
 				<!-- 性别 --> <input id="workerFind_workerGender" type="text" />
 			</td>
 			<td>
-				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
-				style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />
+				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 34px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
+				style="width: 34px" data-options="validType:['_number']" class="easyui-validatebox" />
 			</td>
 			<td>
-				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" />
+				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:109px" data-options="validType:['_number']" class="easyui-validatebox" />
 			</td>
 			<td>
 				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" />

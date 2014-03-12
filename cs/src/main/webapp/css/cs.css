@@ -187,7 +187,22 @@ text-align: right;
 	
 }
 .addWorkerForm td{
-	 height: 35px;
+	 height: 15px;
 	
+}
+/*引入页面*/
+
+.importTitle{
+	text-align: left;    font-size: 18px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+.importTip{
+ border: 1px solid #95B8E7;
+    margin-bottom: 10px;
+    padding: 6px;
+}
+.red_notice {
+    color: #FF0000;
 }
     

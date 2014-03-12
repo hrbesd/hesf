@@ -190,7 +190,7 @@
 	 **/
 	workerList.openAddWorker = function() {
 	
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 860, 450, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
 	};
 
 	/**
@@ -355,17 +355,17 @@
 				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />
 			</td>
 			<td>
-				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 183px" />
+				<!-- 残疾证号 --> <input id="workerFind_workerHandicapCode" type="text" style="width: 193px" />
 			</td>
 			<td>
 				<!-- 性别 --> <input id="workerFind_workerGender" type="text" />
 			</td>
 			<td>
-				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
-				style="width: 32px" data-options="validType:['_number']" class="easyui-validatebox" />
+				<!-- 年龄 --> <input id="workerFind_workerAge1" type="text" style="width: 34px" data-options="validType:['_number']" class="easyui-validatebox" />- <input id="workerFind_workerAge2" type="text"
+				style="width: 34px" data-options="validType:['_number']" class="easyui-validatebox" />
 			</td>
 			<td>
-				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:105px" data-options="validType:['_number']" class="easyui-validatebox" />
+				<!-- 电话 --> <input id="workerFind_phone" type="text" style="width:109px" data-options="validType:['_number']" class="easyui-validatebox" />
 			</td>
 			<td>
 				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" />
