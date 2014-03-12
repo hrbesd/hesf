@@ -1,6 +1,5 @@
 package com.esd.hesf.service.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +17,7 @@ import com.esd.hesf.model.Area;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.service.Constants;
+import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.ReportViewService;
 import com.esd.hesf.viewmodels.AuditTempModel;
 import com.esd.hesf.viewmodels.ReportViewModel;
@@ -43,31 +43,23 @@ public class ReportViewServiceImpl implements ReportViewService {
 	@Override
 	public List<ReportViewModel> getByCompanyType(String year) {
 		Long t1 = System.currentTimeMillis();
-		// 1-先查询所有公司性质列表
-		Map<String, Object> map = new HashMap<String, Object>();
-		// 起始索引值
-		map.put("start", Constants.START);
-		// 返回量
-		map.put("size", Constants.SIZE);
-		List<CompanyType> tempList = ctDao.retrieveByPage(map);
-		// 2-从审核-公司 是视图表中查出对应公司性质的  人数和金钱方面的数据列表
-		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
-		map.put("year", year);
-		for (CompanyType t : tempList) {
-			map.put("companyType", t.getId());
-			ReportViewModel rvm = acvDao.retrieveReport(map);
-			rvm.setReportName(t.getCompanyType());
-			rvm.setCompanyType(t.getId());
-			list.add(rvm);
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
 		}
-		// 3-根据 公司性质列表, 得到对应种类的不同审核阶段的数据
+		// 1-先查出几个类别下能查出的基本数据
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(SEARCH_KEY_YEAR, year);
+		map.put(SEARCH_KEY, SEARCH_KEY_COMPANY_TYPE);
+		List<ReportViewModel> list = acvDao.retrieveReport(map);
+//		 2-循环已经查出的数据 , 补全不同审核阶段的公司数量   根据 公司性质列表, 得到对应种类的不同审核阶段的数据
 		for (ReportViewModel rvm : list) {
 			// 循环公司性质的公司, 分别给其中的不同审核阶段的公司复制
-			map.put("companyType", rvm.getCompanyType());
+			map.put(SEARCH_KEY_COMPANY_TYPE, rvm.getCompanyType());
 			List<AuditTempModel> atmList = acvDao.retrieveAupCount(map);
 			for (AuditTempModel atm : atmList) {
 				switch (atm.getAupId()) {
-				// 未初审
+				// 未/待初审
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
@@ -79,16 +71,48 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 3:
 					rvm.setUnauditOk(atm.getNum());
 					break;
+				case 4:
+					rvm.setUnauditOk(atm.getNum());
+					break;
+				case 5:
+					rvm.setUnauditOk(atm.getNum());
+					break;
 				// 已复核, 达标单位数
 				case 6:
 					rvm.setAuditOk(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnReAudit(atm.getNum());
+					break;
 				}
 			}
-			// 查询对应的已经缴款总额
-			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
-			rvm.setAlreadyAmount(alreadyAmount);
+//			// 查询对应的已经缴款总额
+//			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
+//			rvm.setAlreadyAmount(alreadyAmount);
 		}
+		//3-使用最笨的方法, 将其余没有数据的公司类型补全
+		//清空该字段 值
+		map.put(SEARCH_KEY_COMPANY_TYPE, null);
+		map.put("start", Constants.START);
+		map.put("size", Constants.SIZE);
+		List<CompanyType> tList = ctDao.retrieveByPage(map);
+		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//		System.out.println("tempList(): "+tList.size());
+		for(CompanyType t:tList){
+			ReportViewModel r = new ReportViewModel();
+			r.setCompanyType(t.getId());
+			r.setReportName(t.getCompanyType());
+			tempList.add(r);
+		}
+		//补全其余没有数据的类别
+		for(ReportViewModel t:tempList){
+//			System.out.println(list.contains(t));
+			if(!list.contains(t)){
+//				System.out.println("添加-----");
+				list.add(t);
+			}
+		}
+//		System.out.println("list.size(): "+list.size());
 		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
@@ -96,28 +120,23 @@ public class ReportViewServiceImpl implements ReportViewService {
 	@Override
 	public List<ReportViewModel> getByArea(String year) {
 		Long t1 = System.currentTimeMillis();
-		System.out.println("year : " + year);
-		// 1-先查询所有黑龙江地区列表
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Area> tempList = aDao.retrieveHLJ();
-		// 2-从审核-公司 是视图表中查出对应黑龙江地区的 人数和金钱方面的数据列表
-		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
-		map.put("year", year);
-		for (Area t : tempList) {
-			map.put("areaCode", t.getCode());
-			ReportViewModel rvm = acvDao.retrieveReport(map);
-			rvm.setReportName(t.getName());
-			rvm.setAreaCode(t.getCode());
-			list.add(rvm);
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
 		}
-		// 3-根据 黑龙江地区列表, 得到对应种类的不同审核阶段的数据
+		// 1-先查出几个类别下能查出的基本数据
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(SEARCH_KEY_YEAR, year);
+		map.put(SEARCH_KEY, SEARCH_KEY_AREA);
+		List<ReportViewModel> list = acvDao.retrieveReport(map);
+//		 2-循环已经查出的数据 , 补全不同审核阶段的公司数量   根据 公司性质列表, 得到对应种类的不同审核阶段的数据
 		for (ReportViewModel rvm : list) {
 			// 循环公司性质的公司, 分别给其中的不同审核阶段的公司复制
-			map.put("areaCode", rvm.getAreaCode());
+			map.put(SEARCH_KEY_AREA, rvm.getAreaCode());
 			List<AuditTempModel> atmList = acvDao.retrieveAupCount(map);
 			for (AuditTempModel atm : atmList) {
 				switch (atm.getAupId()) {
-				// 未初审
+				// 未/待初审
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
@@ -129,16 +148,48 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 3:
 					rvm.setUnauditOk(atm.getNum());
 					break;
+				case 4:
+					rvm.setUnauditOk(atm.getNum());
+					break;
+				case 5:
+					rvm.setUnauditOk(atm.getNum());
+					break;
 				// 已复核, 达标单位数
 				case 6:
 					rvm.setAuditOk(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnReAudit(atm.getNum());
+					break;
 				}
 			}
-			// 查询对应的已经缴款总额
-			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
-			rvm.setAlreadyAmount(alreadyAmount);
+//			// 查询对应的已经缴款总额
+//			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
+//			rvm.setAlreadyAmount(alreadyAmount);
 		}
+		//3-使用最笨的方法, 将其余没有数据的公司类型补全
+		//清空该字段 值
+		map.put(SEARCH_KEY_AREA, null);
+		map.put("start", Constants.START);
+		map.put("size", Constants.SIZE);
+		List<Area> tList = aDao.retrieveHLJ();
+		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//		System.out.println("tempList(): "+tList.size());
+		for(Area t:tList){
+			ReportViewModel r = new ReportViewModel();
+			r.setAreaCode(t.getCode());
+			r.setReportName(t.getName());
+			tempList.add(r);
+		}
+		//补全其余没有数据的类别
+		for(ReportViewModel t:tempList){
+//			System.out.println(list.contains(t));
+			if(!list.contains(t)){
+//				System.out.println("添加-----");
+				list.add(t);
+			}
+		}
+//		System.out.println("list.size(): "+list.size());
 		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
@@ -146,32 +197,23 @@ public class ReportViewServiceImpl implements ReportViewService {
 	@Override
 	public List<ReportViewModel> getByCompanyEconomyType(String year) {
 		Long t1 = System.currentTimeMillis();
-		System.out.println("year : " + year);
-		// 1-先查询所有公司经济类型列表
-		Map<String, Object> map = new HashMap<String, Object>();
-		// 起始索引值
-		map.put("start", Constants.START);
-		// 返回量
-		map.put("size", Constants.SIZE);
-		List<CompanyEconomyType> tempList = cetDao.retrieveByPage(map);
-		// 2-从审核-公司 是视图表中查出对应公司经济类型的 人数和金钱方面的数据列表
-		List<ReportViewModel> list = new ArrayList<ReportViewModel>();
-		map.put("year", year);
-		for (CompanyEconomyType t : tempList) {
-			map.put("companyEconomyType", t.getId());
-			ReportViewModel rvm = acvDao.retrieveReport(map);
-			rvm.setReportName(t.getCompanyEconomyType());
-			rvm.setCompanyEconomyType(t.getId());
-			list.add(rvm);
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null).printStackTrace();
+			return null;
 		}
-		// 3-根据 公司经济类型列表, 得到对应种类的不同审核阶段的数据
+		// 1-先查出几个类别下能查出的基本数据
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(SEARCH_KEY_YEAR, year);
+		map.put(SEARCH_KEY, SEARCH_KEY_COMPANY_ECONOMY_TYPE);
+		List<ReportViewModel> list = acvDao.retrieveReport(map);
+//		 2-循环已经查出的数据 , 补全不同审核阶段的公司数量   根据 公司性质列表, 得到对应种类的不同审核阶段的数据
 		for (ReportViewModel rvm : list) {
-			// 循环公司经济类型的公司, 分别给其中的不同审核阶段的公司复制
-			map.put("companyEconomyType", rvm.getCompanyEconomyType());
+			// 循环公司性质的公司, 分别给其中的不同审核阶段的公司复制
+			map.put(SEARCH_KEY_COMPANY_ECONOMY_TYPE, rvm.getCompanyEconomyType());
 			List<AuditTempModel> atmList = acvDao.retrieveAupCount(map);
 			for (AuditTempModel atm : atmList) {
 				switch (atm.getAupId()) {
-				// 未初审
+				// 未/待初审
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
@@ -183,18 +225,50 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 3:
 					rvm.setUnauditOk(atm.getNum());
 					break;
+				case 4:
+					rvm.setUnauditOk(atm.getNum());
+					break;
+				case 5:
+					rvm.setUnauditOk(atm.getNum());
+					break;
 				// 已复核, 达标单位数
 				case 6:
 					rvm.setAuditOk(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnReAudit(atm.getNum());
+					break;
 				}
 			}
-			// 查询对应的已经缴款总额
-			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
-			rvm.setAlreadyAmount(alreadyAmount);
+//			// 查询对应的已经缴款总额
+//			BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
+//			rvm.setAlreadyAmount(alreadyAmount);
 		}
-		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
-		return list;
+		//3-使用最笨的方法, 将其余没有数据的公司类型补全
+				//清空该字段 值
+				map.put(SEARCH_KEY_COMPANY_ECONOMY_TYPE, null);
+				map.put("start", Constants.START);
+				map.put("size", Constants.SIZE);
+				List<CompanyEconomyType> tList = cetDao.retrieveByPage(map);
+				List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//				System.out.println("tempList(): "+tList.size());
+				for(CompanyEconomyType t:tList){
+					ReportViewModel r = new ReportViewModel();
+					r.setCompanyEconomyType(t.getId());
+					r.setReportName(t.getCompanyEconomyType());
+					tempList.add(r);
+				}
+				//补全其余没有数据的类别
+				for(ReportViewModel t:tempList){
+//					System.out.println(list.contains(t));
+					if(!list.contains(t)){
+//						System.out.println("添加-----");
+						list.add(t);
+					}
+				}
+//				System.out.println("list.size(): "+list.size());
+				System.out.println("cost time: "+(System.currentTimeMillis()-t1));
+				return list;
 	}
 
 }

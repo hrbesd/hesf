@@ -60,7 +60,7 @@ public interface AuditCompanyViewDao {
 	 *            areaCode-String
 	 * @return
 	 */
-	ReportViewModel retrieveReport(Map<String, Object> map);
+	List<ReportViewModel> retrieveReport(Map<String, Object> map);
 
 	/**
 	 * 根据年份, (公司性质id, 地区code, 公司经济类型id)三选一得到对应不同审核状态的公司数量

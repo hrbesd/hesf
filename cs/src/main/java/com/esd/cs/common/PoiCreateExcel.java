@@ -319,7 +319,7 @@ public class PoiCreateExcel {
 
 			// 应安排总人数
 			cell = row.createCell(7);
-			cell.setCellValue(company.getPredictTotal());
+			cell.setCellValue(company.getShouldTotal().toString());
 
 			// 已经安排人数
 			cell = row.createCell(8);

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +17,7 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.PaymentExceptional;
@@ -33,6 +32,7 @@ import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.MenuService;
 import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentService;
@@ -103,6 +103,8 @@ public class TestController {
 	@Autowired
 	private PaymentExceptionalService peService;
 
+	@Autowired
+	private CompanyTypeService ctService;
 	// 菜单
 	@RequestMapping("/1")
 	@ResponseBody
@@ -592,7 +594,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test45() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByCompanyType("2013");
+		List<ReportViewModel> entity = rvmService.getByCompanyType("2011");
 		map.put("entity", entity);
 		return map;
 	}
@@ -602,7 +604,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test46() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2013");
+		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2011");
 		map.put("entity", entity);
 		return map;
 	}
@@ -612,7 +614,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test47() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByArea("10230000");
+		List<ReportViewModel> entity = rvmService.getByArea("2011");
 		map.put("entity", entity);
 		return map;
 	}
@@ -709,5 +711,15 @@ public class TestController {
 			map.put("entity", entity);
 			return map;
 		}
+
+		// 公司类型
+			@RequestMapping("/57")
+			@ResponseBody
+			public Map<String, Object> test57() {
+				Map<String, Object> map = new HashMap<String, Object>();
+				List<CompanyType> entity = ctService.getAll();
+				map.put("entity", entity);
+				return map;
+			}
 	
 }
