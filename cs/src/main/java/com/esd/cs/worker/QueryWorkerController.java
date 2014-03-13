@@ -114,8 +114,7 @@ public class QueryWorkerController {
 	@ResponseBody
 	public Map<String, Object> companyHireList(WorkerParamModel params, HttpServletRequest request) {
 		logger.debug("queryCompanyWorkerParams{}", params);
-		
-		logger.error("------------------:{}",params.getIsExceed());
+	
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		List<Map<String, Object>> list = null;

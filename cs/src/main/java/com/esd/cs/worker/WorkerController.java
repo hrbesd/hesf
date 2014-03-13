@@ -184,9 +184,6 @@ public class WorkerController {
 
 	private boolean addWorker(Worker worker, Integer companyId, String year) {
 		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker, companyId,year);
-	
-		// 设置年份
-		worker.setWorkerBirthYear(year);
 		boolean b = workerService.save(worker, companyId, year);
 		logger.debug("addWorkerResult:{}", b);
 		return b;

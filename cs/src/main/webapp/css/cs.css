@@ -199,10 +199,33 @@ text-align: right;
 }
 .importTip{
  border: 1px solid #95B8E7;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding: 6px;
 }
 .red_notice {
     color: #FF0000;
+}
+
+.importWorker {
+	margin: 0px auto;
+}
+
+/*导入残疾职工*/
+.importWorkerForm {
+	border: 1px solid #95B8E7;
+	margin: 50px auto auto;
+	padding: 15px;
+	width: 450px;
+}
+
+.importWorkerIframe {
+	width: 100%;
+	margin-top: 0px;
+}
+
+.importWorkerTitle {
+	text-align: center;
+	font-size: 25px;
+    margin-bottom: 10px;
 }
     

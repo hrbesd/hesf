@@ -3,34 +3,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <style>
-.importWorker {
-	margin: 0px auto;
-}
 
-/*导入残疾职工*/
-.importWorkerForm {
-	border: 1px solid #95B8E7;
-	margin: 50px auto auto;
-	padding: 15px;
-	width: 450px;
-}
-
-.importWorkerIframe {
-	width: 100%;
-
-	margin-top: 0px;
-}
-
-.importWorkerTitle {
-	text-align: center;
-	font-size: 25px;
-
-}
 </style>
 <script type="text/javascript">
 	$(function() {
 	});
 	var importWorkerFile = {};
+	
+	/**关闭
+	**/
+	importWorkerFile.close = function() {
+	
+	$('#importWorkerWindow').window("close");
+	};
 	importWorkerFile.submit = function() {
 
 		var str = $("#uploadWorkerFile").val();
@@ -64,7 +49,7 @@
 	});
 </script>
 
-<div class="importWorker">
+<div class="importWorker" id="importWorkerPan">
 
 	<form class="importWorkerForm" id="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
 	<div class="importWorkerTitle"  id="importWorkerTitle"  >导入残疾职工</div>
@@ -88,6 +73,9 @@
 
 		</div>
 	</form>
+		<div style="margin: 65px auto 20px;text-align: center;">
+			 <a href="javascript:importWorkerFile.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
+		</div>
 </div>
 <iframe name="importWorkerIframe" id="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>
 

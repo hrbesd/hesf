@@ -12,7 +12,7 @@
 <script type="text/javascript">
 //组件解析完成
 	$.parser.onComplete = function() {
-	 	$('#importWorkerForm', window.parent.document).hide(0,function(){
+	 	$('#importWorkerPan', window.parent.document).hide(0,function(){
 	 		$('#importWorkerIframe', window.parent.document).height(500);
 	 	});
 	
@@ -22,8 +22,8 @@
 	
 	var importWorkerManager={};
 	importWorkerManager.close=function(){
-	$('#importWorkerForm', window.parent.document).fadeIn("slow"); 
-	 		$('#importWorkerIframe', window.parent.document).height(200);
+	$('#importWorkerPan', window.parent.document).fadeIn("slow"); 
+	 		$('#importWorkerIframe', window.parent.document).height(150);
 			$("#importInfoPan").empty();
 	};
 	importWorkerManager.import=function(){
@@ -72,10 +72,17 @@
 	
 </script>
 
-<div id="importInfoPan" style="width: 500px;margin: auto;font-size: 18;font-weight: bold;text-align: center;">
+<div id="importInfoPan" style="width: 500px;  margin: 50px auto auto;font-size: 18;font-weight: bold;text-align: center;">
 	<!-- 错误提示信息 -->
 	<c:if test="${errorInfo!='null'}">
-		<span style="font-size: 19px;" class="red_notice">${errorInfo}</span>
+		<div style="  margin: 154px auto auto;">
+			<span style="font-size: 19px;" class="red_notice">${errorInfo}</span>
+			<div>
+			
+			 <a style="margin-top: 20px;" href="javascript:importWorkerManager.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
+		</div>
+		</div>
+	
 	</c:if>
 
 	<c:if test="${errorInfo=='null'}">
@@ -83,7 +90,7 @@
 		<div class="importWorkerTitle">导入残疾职工确认页面</div>
 		
 		<div  class="importTip">
-			职工信息数据总量为：${totalLength}条，<label class="red_notice">职工信息错误：${errorLength}条</label>，职工信息正确${succesLength}条。
+			职工信息数据总量为：${totalLength}条，<label class="red_notice">职工信息错误有：${errorLength}条</label>，职工信息正确有:${succesLength}条。
 			<div>
 				<c:if test="${errorLength!=0}">
 					<a href="${errorFilePath}">点击此处，下载错误信息列表</a>
@@ -122,8 +129,12 @@
 							 <a href="javascript:importWorkerManager.close()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 					</div>
 		</c:if>
+		
+		
+		<c:if test="${succesLength<=0}">
+							 <a style="margin-top: 20px;" href="javascript:importWorkerManager.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
+			</c:if>
 	</c:if>
-
 </div>
 
 

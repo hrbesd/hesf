@@ -246,7 +246,7 @@
 	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 	<!--  男退休年龄 -->
 	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
-	<input type="hidden" value="${year}" id="nowYear"/>
+	<input type="hidden" value="${year}" id="nowYear" name="year"/>
 	<input type="hidden" value="${companyId}" name="companyId"  />
 	
 	<!-- 数据表格 -->
