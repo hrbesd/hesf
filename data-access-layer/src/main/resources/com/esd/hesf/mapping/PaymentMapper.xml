@@ -352,51 +352,105 @@
 				<if test="payment.userId != null and payment.userId > 0">
 					pay.user_id = #{payment.userId,jdbcType=INTEGER}
 				</if>
-				<if test="payment.isActive != null">
-					and pay.is_active = #{payment.isActive}
-				</if>
+				<choose>
+					<when test="payment.isActive != null">
+						and pay.is_active = #{payment.isActive}
+					</when>
+					<otherwise>
+						and pay.is_active = 0 
+					</otherwise>
+				</choose>
 				<if test="payment.paymentDate != null">
 					and pay.payment_date = #{payment.paymentDate,jdbcType=TIMESTAMP}
 				</if>
 				<if test="payment.paymentMoney != null and payment.paymentMoney >= 0">
 					and pay.payment_money = #{payment.paymentMoney,jdbcType=DECIMAL}
 				</if>
+				<!-- paymentPerson -->
 				<if test="payment.paymentPerson != null">
 					<if test="payment.paymentPerson.id != null and payment.paymentPerson.id > 0">
-						and pay.payment_person = #{payment.paymentPerson,jdbcType=INITEGER}
+						and pay.payment_person = #{payment.paymentPerson.id,jdbcType=INTEGER}
 					</if>
 				</if>
+				<!-- paymentCompany -->
 				<if test="payment.paymentCompany != null">
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=INTEGER}
 					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
-						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
+						and c.company_code like concat('%',#{payment.paymentCompany.companyCode, jdbcType=VARCHAR},'%')
+					</if>
+					<if test="payment.paymentCompany.companyName != null and payment.paymentCompany.companyName != ''">
+						and c.company_name like concat('%',#{payment.paymentCompany.companyName, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyOrganizationCode != null and payment.paymentCompany.companyOrganizationCode != ''">
+						and c.company_organization_code like concat('%',#{payment.paymentCompany.companyOrganizationCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="payment.paymentCompany.companyTaxCode != null and payment.paymentCompany.companyTaxCode != ''">
+						and c.company_tax_code like concat('%',#{payment.paymentCompany.companyTaxCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyZipCode != null and payment.paymentCompany.companyZipCode != ''">
+						and c.company_zip_code like concat('%',#{payment.paymentCompany.companyZipCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="payment.paymentCompany.companyType != null">
+						<if test="payment.paymentCompany.companyType.id != null and payment.paymentCompany.companyType.id > 0">
+							and c.company_type = #{payment.paymentCompany.companyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.companyEconomyType != null">
+						<if test="payment.paymentCompany.companyEconomyType.id != null and payment.paymentCompany.companyEconomyType.id > 0">
+							and c.company_economy_type = #{payment.paymentCompany.companyEconomyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.companyProperty != null">
+						<if test="payment.paymentCompany.companyProperty.id != null and payment.paymentCompany.companyProperty.id > 0">
+							and c.company_property = #{payment.paymentCompany.companyProperty.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.area != null">
+						<if test="payment.paymentCompany.area.code != null and payment.paymentCompany.area.code != '' ">
+							and c.area_code = #{payment.paymentCompany.area.code, jdbcType=CHAR} 
+						</if>
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
 					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')
 				</if>
+				<!-- paymentType -->
 				<if test="payment.paymentType != null">
 					<if test="payment.paymentType.id != null and payment.paymentType.id > 0">
-						and pay.payment_type = #{payment.paymentType,jdbcType=INTEGER} 
+						and pay.payment_type = #{payment.paymentType.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<if test="payment.billPrintDate != null">
+					and pay.bill_print_date = #{payment.billPrintDate,jdbcType=TIMESTAMP}
+				</if>
+				<if test="payment.billExchangeDate != null">
+					and pay.bill_exchange_date = #{payment.billExchangeDate,jdbcType=TIMESTAMP}
+				</if>
+				<if test="payment.billReturn != null">
+					and pay.bill_return = #{payment.billReturn, jdbcType=BIT} 
+				</if>
+				<if test="payment.billFinance != null">
+					and pay.bill_finance = #{payment.billFinance,jdbcType=BIT} 
+				</if>
+				<if test="payment.billObsolete != null">
+					and pay.bill_obsolete = #{payment.billObsolete,jdbcType=BIT} 
+				</if>
+				<!-- paymentExceptional -->
 				<if test="payment.paymentExceptional != null">
 					<if test="payment.paymentExceptional.id != null and payment.paymentExceptional.id > 0">
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<!-- audit -->
 				<if test="payment.audit != null">
 					<if test="payment.audit.id != null and payment.audit.id > 0">
 						and pay.audit_id = #{payment.audit.id,jdbcType=INTEGER}
 					</if>
-				</if>
-				<if test="payment.billObsolete != null">
-					and pay.bill_obsolete = #{payment.billObsolete,jdbcType=BIT}
-				</if>
-				<if test="payment.isActive != null">
-					and pay.is_active = #{payment.isActive,jdbcType=BIT}
+					<if test="payment.audit.year != null and payment.audit.year != ''">
+						and au.year = #{payment.audit.year,jdbcType=CHAR} 
+					</if>
 				</if>
 			</if>
 		</trim>
@@ -413,48 +467,105 @@
 				<if test="payment.userId != null and payment.userId > 0">
 					pay.user_id = #{payment.userId,jdbcType=INTEGER}
 				</if>
-				<if test="payment.isActive != null">
-					and pay.is_active = #{payment.isActive}
-				</if>
+				<choose>
+					<when test="payment.isActive != null">
+						and pay.is_active = #{payment.isActive}
+					</when>
+					<otherwise>
+						and pay.is_active = 0 
+					</otherwise>
+				</choose>
 				<if test="payment.paymentDate != null">
 					and pay.payment_date = #{payment.paymentDate,jdbcType=TIMESTAMP}
 				</if>
 				<if test="payment.paymentMoney != null and payment.paymentMoney >= 0">
 					and pay.payment_money = #{payment.paymentMoney,jdbcType=DECIMAL}
 				</if>
+				<!-- paymentPerson -->
 				<if test="payment.paymentPerson != null">
 					<if test="payment.paymentPerson.id != null and payment.paymentPerson.id > 0">
-						and pay.payment_person = #{payment.paymentPerson,jdbcType=INITEGER}
+						and pay.payment_person = #{payment.paymentPerson.id,jdbcType=INTEGER}
 					</if>
 				</if>
+				<!-- paymentCompany -->
 				<if test="payment.paymentCompany != null">
 					<if test="payment.paymentCompany.id != null and payment.paymentCompany.id != ''">
-						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=VARCHAR}
+						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=INTEGER}
 					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
-						and c.company_code = #{payment.paymentCompany.companyCode, jdbcType=VARCHAR}
+						and c.company_code like concat('%',#{payment.paymentCompany.companyCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyName != null and payment.paymentCompany.companyName != ''">
+						and c.company_name like concat('%',#{payment.paymentCompany.companyName, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyOrganizationCode != null and payment.paymentCompany.companyOrganizationCode != ''">
+						and c.company_organization_code like concat('%',#{payment.paymentCompany.companyOrganizationCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyTaxCode != null and payment.paymentCompany.companyTaxCode != ''">
+						and c.company_tax_code like concat('%',#{payment.paymentCompany.companyTaxCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="payment.paymentCompany.companyZipCode != null and payment.paymentCompany.companyZipCode != ''">
+						and c.company_zip_code like concat('%',#{payment.paymentCompany.companyZipCode, jdbcType=VARCHAR},'%')
+					</if>
+					<if test="payment.paymentCompany.companyType != null">
+						<if test="payment.paymentCompany.companyType.id != null and payment.paymentCompany.companyType.id > 0">
+							and c.company_type = #{payment.paymentCompany.companyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.companyEconomyType != null">
+						<if test="payment.paymentCompany.companyEconomyType.id != null and payment.paymentCompany.companyEconomyType.id > 0">
+							and c.company_economy_type = #{payment.paymentCompany.companyEconomyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.companyProperty != null">
+						<if test="payment.paymentCompany.companyProperty.id != null and payment.paymentCompany.companyProperty.id > 0">
+							and c.company_property = #{payment.paymentCompany.companyProperty.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="payment.paymentCompany.area != null">
+						<if test="payment.paymentCompany.area.code != null and payment.paymentCompany.area.code != '' ">
+							and c.area_code = #{payment.paymentCompany.area.code, jdbcType=CHAR} 
+						</if>
 					</if>
 				</if>
 				<if test="payment.paymentBill != null and payment.paymentBill != ''">
 					and pay.payment_bill like concat('%',#{payment.paymentBill,jdbcType=VARCHAR},'%')
 				</if>
+				<!-- paymentType -->
 				<if test="payment.paymentType != null">
 					<if test="payment.paymentType.id != null and payment.paymentType.id > 0">
-						and pay.payment_type = #{payment.paymentType,jdbcType=INTEGER} 
+						and pay.payment_type = #{payment.paymentType.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<if test="payment.billPrintDate != null">
+					and pay.bill_print_date = #{payment.billPrintDate,jdbcType=TIMESTAMP}
+				</if>
+				<if test="payment.billExchangeDate != null">
+					and pay.bill_exchange_date = #{payment.billExchangeDate,jdbcType=TIMESTAMP}
+				</if>
+				<if test="payment.billReturn != null">
+					and pay.bill_return = #{payment.billReturn, jdbcType=BIT} 
+				</if>
+				<if test="payment.billFinance != null">
+					and pay.bill_finance = #{payment.billFinance,jdbcType=BIT} 
+				</if>
+				<if test="payment.billObsolete != null">
+					and pay.bill_obsolete = #{payment.billObsolete,jdbcType=BIT} 
+				</if>
+				<!-- paymentExceptional -->
 				<if test="payment.paymentExceptional != null">
 					<if test="payment.paymentExceptional.id != null and payment.paymentExceptional.id > 0">
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<!-- audit -->
 				<if test="payment.audit != null">
 					<if test="payment.audit.id != null and payment.audit.id > 0">
 						and pay.audit_id = #{payment.audit.id,jdbcType=INTEGER}
 					</if>
-				</if>
-				<if test="payment.isActive != null">
-					and pay.is_active = #{payment.isActive,jdbcType=BIT}
+					<if test="payment.audit.year != null and payment.audit.year != ''">
+						and au.year = #{payment.audit.year,jdbcType=CHAR} 
+					</if>
 				</if>
 			</if>
 		</trim>
