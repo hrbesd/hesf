@@ -31,17 +31,25 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public boolean save(Payment t) {
 		if (t == null) {
+			new HesfException("payment对象", HesfException.type_null).printStackTrace();
 			return false;
 		}
 		// 验证缴款人
 		if (t.getPaymentPerson() == null) {
+			new HesfException("t.paymentPerson", HesfException.type_null).printStackTrace();
+			return false;
+		}
+		if (t.getPaymentPerson().getId() == null || t.getPaymentPerson().getId()<=0) {
+			new HesfException("t.paymentPerson.id", HesfException.type_number_negative).printStackTrace();
 			return false;
 		}
 		// 验证缴款公司
 		if (t.getPaymentCompany() == null) {
+			new HesfException("t.paymentCompany", HesfException.type_null).printStackTrace();
 			return false;
 		}
-		if (t.getPaymentCompany().getId() == null) {
+		if (t.getPaymentCompany().getId() == null ||t.getPaymentCompany().getId()<=0) {
+			new HesfException("t.paymentCompany.id", HesfException.type_number_negative).printStackTrace();
 			return false;
 		}
 		// 验证缴款金额

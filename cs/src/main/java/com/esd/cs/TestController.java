@@ -17,6 +17,8 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyEconomyType;
+import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
@@ -338,7 +340,36 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test22() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		Payment p = new Payment();
+//		Audit audit = new Audit();
+//		audit.setId(109066);
+//		audit.setYear("2005");
+//		p.setAudit(audit);
+//		User user = new User();
+//		user.setId(1);
+//		p.setPaymentPerson(user);
+		Company company = new Company();
+//		company.setId(10);
+//		company.setCompanyCode("10");
+//		company.setCompanyName("杂志");
+//		company.setCompanyOrganizationCode("1");
+//		company.setCompanyZipCode("150001");
+//		company.setCompanyType(new CompanyType(1));
+//		company.setCompanyEconomyType(new CompanyEconomyType(1));
+//		company.setCompanyProperty(new CompanyProperty(3));
+//		company.setArea(new Area("10230090"));
+		p.setPaymentCompany(company);
+//		p.setPaymentBill("u");
+//		PaymentType pt = new PaymentType();
+//		pt.setId(2);
+//		p.setPaymentType(pt);
+//		p.setBillReturn(null);
+//		p.setBillFinance(false);
+//		p.setBillObsolete(false);
+		PaymentExceptional pe = new PaymentExceptional();
+		pe.setId(2);
+		p.setPaymentExceptional(pe);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(p, 1, 4);
 		map.put("entity", entity);
 		return map;
 	}
