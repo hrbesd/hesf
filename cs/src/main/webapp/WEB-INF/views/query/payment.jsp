@@ -121,14 +121,10 @@
 		var billReturn = $('#billReturn').attr('checked');
 		if(billReturn == 'checked'){
 			params.billReturn = true;
-		}else{
-			params.billReturn = false;
 		}
 		var billObsolete = $('#billObsolete').attr('checked');
 		if(billObsolete == 'checked'){
 			params.billObsolete = true;
-		}else{
-			params.billObsolete = false;
 		}
 		return params;
 	};
