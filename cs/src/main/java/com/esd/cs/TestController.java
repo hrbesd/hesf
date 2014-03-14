@@ -367,7 +367,7 @@ public class TestController {
 //		p.setBillFinance(false);
 //		p.setBillObsolete(false);
 		PaymentExceptional pe = new PaymentExceptional();
-		pe.setId(2);
+		pe.setId(1);
 		p.setPaymentExceptional(pe);
 		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(p, 1, 4);
 		map.put("entity", entity);
