@@ -43,25 +43,6 @@
 			valueField : 'id',
 			textField : 'userName'
 		});
-		//是否免交
-		$('#isExempt').combobox({
-			data : [ {
-				label : '',
-				value : '请选择'
-			}, {
-				label : 'true',
-				value : '是'
-			}, {
-				label : 'false',
-				value : '否'
-			} ],
-			valueField : 'label',
-			textField : 'value',
-			editable : false,
-			height : 30,
-			width : 140,
-			panelHeight : 80
-		});
 		//初始化输入元素默认值
 		var element = $(".inputElement");
 		for ( var i = 0; i < element.length; i++) {
@@ -79,19 +60,27 @@
 		esd.common.datagrid("#queryPaymentGrid", "query/payment/list", "#queryPaymentBoolbar", [ [ {
 			field : 'paymentDate',
 			title : '缴款时间',
-			width : 150
+			width : 120
 		}, {
+			field : 'companyCode',
+			title : '公司档案号',
+			width : 120
+		},{
 			field : 'companyName',
 			title : '缴款公司',
-			width : 400
+			width : 300
 		}, {
+			field : 'paymentBill',
+			title : '缴款票号',
+			width : 180
+		},{
 			field : 'paymentMoney',
 			title : '缴款金额',
-			width : 150
+			width : 110
 		}, {
 			field : 'paymentPerson',
 			title : '缴款操作人',
-			width : 150
+			width : 120
 		}, {
 			field : 'paymentType',
 			title : '缴款方式',
@@ -100,7 +89,8 @@
 			field : 'paymentExceptional',
 			title : '缴款方式',
 			width : 100
-		},{
+		}
+	/*	{
 			field : 'action',
 			title : '操作',
 			width : 100,
@@ -109,7 +99,8 @@
 				var v = '<a href="#" onclick="queryPayment.openPayment(' + row.id + ')">查看</a>';
 				return v;
 			}
-		} ] ], params);
+		}	*/
+	] ], params);
 
 	};
 
@@ -120,21 +111,25 @@
 		var params = {};
 		params.year = $("#year").combobox("getValue"); // 年度
 		params.companyCode = $("#companyCode").val(); // 档案号码
-		params.companyTaxCode = $("#companyTaxCode").val();// 税务编码
-		params.companyOrganizationCode = $("#companyOrganizationCode").val();// 组织机构代码证号
+		params.companyName = $("#companyName").val(); // 企业名称
 		params.companyProperty = $("#companyProperty").combobox("getValue");// 公司性质 _
 		params.companyEconomyType = $("#companyEconomyType").combobox("getValue");// 企业经济类型
 		params.area = $("#area").combobox("getValue");// 公司所属地区
-		params.companyEmpTotal_1 = $("#companyEmpTotal_1").val();// 员工总数
-		params.companyEmpTotal_2 = $("#companyEmpTotal_2").val();
-		params.companyName = $("#companyName").val(); // 企业名称
-		params.companyAddress = $("#companyAddress").val();// 企业地址
-		params.companyLegal = $("#companyLegal").val();//	企业法人
-
 		params.paymentPerson = $("#paymentPerson").combobox("getValue");// 缴款人
-
-		params.overYear = $("#overYear").val(); // 超过指定年度未初审的企业
-		params.isExempt = $("#isExempt").combobox("getValue");// 是否免交
+		params.startDate = $('#startDate').combobox("getValue");	//缴款起始时间
+		params.endDate = $('#endDate').combobox("getValue");	//缴款结束时间
+		var billReturn = $('#billReturn').attr('checked');
+		if(billReturn == 'checked'){
+			params.billReturn = true;
+		}else{
+			params.billReturn = false;
+		}
+		var billObsolete = $('#billObsolete').attr('checked');
+		if(billObsolete == 'checked'){
+			params.billObsolete = true;
+		}else{
+			params.billObsolete = false;
+		}
 		return params;
 	};
 
@@ -177,8 +172,8 @@
 	<div class="paramsTab">
 		<table id="queryPaymentParams">
 			<tr>
-				<td class="tipsText">年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+				<td class="tipsText">审核年度:</td>
+				<td><input id="year" class="easyui-combobox" value="" data-options="height:30,editable:false" /></td>
 				<td class="tipsText">档案号码:</td>
 				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td class="tipsText">企业名称:</td>
@@ -198,13 +193,13 @@
 			</tr>
 			<tr>
 				<td class="tipsText">缴款时间:</td>
-				<td colspan="3"><input class="easyui-datebox" name="startDate" id="startDate" value="" data-options="height:30,showSeconds:false" style="width:150px" />至
-				<input class="easyui-datebox" name="endDate" id="endDate" value="" data-options="height:30,showSeconds:false" style="width:150px" />
+				<td colspan="3"><input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:150px" />至
+				<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:150px" />
 				</td>
-
-				<td class="tipsText" colspan="4" >返票:<input type="checkbox" /></td>
-		<!-- 		<td><input type="text" id="isExempt" />
-				</td>	 -->
+				<td class="tipsText" colspan="4" style="text-align:left;padding-left:20px;font-size:13px;">
+				已返票 : <input id="billReturn" type="checkbox" style="height:auto;margin-right:20px;"/>
+				作废票据号 : <input id="billObsolete" type="checkbox" style="height:auto" />
+				</td>
 			</tr>
 		</table>
 		<div class="findBut">

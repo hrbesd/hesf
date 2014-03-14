@@ -1,0 +1,135 @@
+package com.esd.cs.payment;
+
+/**
+ * 
+ * @author Administrator
+ * 
+ */
+public class PaymentParamModel {
+
+	private String year; // 审核年度
+	private String companyCode; // 公司code
+	private String companyName; // 公司名称
+	private Integer companyProperty; // 公司性质 id
+	private Integer companyEconomyType; // 企业经济类型id
+	private String area; // 企业所在地区code
+	private Integer paymentPerson; // 缴款人id
+	private String startDate; // 缴款开始时间
+	private String endDate; // 缴款结束时间
+	private Boolean billReturn; // 返票?
+	private Boolean billObsolete; // 作废票号?
+	private Integer page;
+	private Integer rows;
+
+	@Override
+	public String toString() {
+		return "PaymentParamModel [year=" + year + ", companyCode=" + companyCode + ", companyName=" + companyName + ", companyProperty=" + companyProperty + ", companyEconomyType="
+				+ companyEconomyType + ", area=" + area + ", paymentPerson=" + paymentPerson + ", startDate=" + startDate + ", endDate=" + endDate + ", billReturn=" + billReturn + ", billObsolete="
+				+ billObsolete + "]";
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getCompanyCode() {
+		return companyCode;
+	}
+
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public Integer getCompanyProperty() {
+		return companyProperty;
+	}
+
+	public void setCompanyProperty(Integer companyProperty) {
+		this.companyProperty = companyProperty;
+	}
+
+	public Integer getCompanyEconomyType() {
+		return companyEconomyType;
+	}
+
+	public void setCompanyEconomyType(Integer companyEconomyType) {
+		this.companyEconomyType = companyEconomyType;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public Integer getPaymentPerson() {
+		return paymentPerson;
+	}
+
+	public void setPaymentPerson(Integer paymentPerson) {
+		this.paymentPerson = paymentPerson;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public Boolean getBillReturn() {
+		return billReturn;
+	}
+
+	public void setBillReturn(Boolean billReturn) {
+		this.billReturn = billReturn;
+	}
+
+	public Boolean getBillObsolete() {
+		return billObsolete;
+	}
+
+	public void setBillObsolete(Boolean billObsolete) {
+		this.billObsolete = billObsolete;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
+
+}

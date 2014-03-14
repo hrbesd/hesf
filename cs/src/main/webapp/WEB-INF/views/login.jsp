@@ -49,10 +49,10 @@ img {
 				<div style="text-align: left;">
 					<div style="color: red;">${message}</div>
 					<p>
-						用户名: <input name="username" type="text" style="width: 160px;" value="admin"/>
+						用户名: <input name="username" type="text" style="width: 160px;" value="${username }"/>
 					</p>
 					<p>
-						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="123123" />
+						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="${password }" />
 					</p>
 					<div>
 						<div style="height: 30px; width: 230px;">

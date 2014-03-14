@@ -20,7 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Area;
+import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyEconomyType;
+import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.Payment;
+import com.esd.hesf.model.User;
 import com.esd.hesf.service.PaymentService;
 
 /**
@@ -57,22 +63,65 @@ public class QueryPaymentController {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> listPost(HttpServletRequest req) {
+	public Map<String, Object> listPost(PaymentParamModel model) {
+		System.out.println("--------------" + model.toString());
+		// payment中的 审核对象
+		Audit audit = new Audit();
+		audit.setYear(model.getYear());
+		// payment中的 公司对象
+		Company company = new Company();
+		company.setCompanyCode(model.getCompanyCode());
+		company.setCompanyName(model.getCompanyName());
+		if (model.getCompanyProperty() != null) {
+			company.setCompanyProperty(new CompanyProperty(model.getCompanyProperty()));
+		}
+		if (model.getCompanyEconomyType() != null) {
+			company.setCompanyEconomyType(new CompanyEconomyType(model.getCompanyEconomyType()));
+		}
+		if (model.getArea() != null) {
+			company.setArea(new Area(model.getArea()));
+		}
+		//Payment对象
+		Payment payment = new Payment();
+		// 付款人对象放入其中
+		if (model.getPaymentPerson() != null) {
+			payment.setPaymentPerson(new User(model.getPaymentPerson()));
+		}
+		//审核对象放入其中
+		if(model.getYear()!=null){
+			payment.setAudit(audit);
+		}
+		//公司对象放入其中
+		payment.setPaymentCompany(company);
+		//返票?
+		payment.setBillReturn(model.getBillReturn());
+		//作废票号?
+		payment.setBillObsolete(model.getBillObsolete());
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("payment", payment);
+		paramsMap.put("startDate", model.getStartDate());
+		paramsMap.put("endDate", model.getEndDate());
+		paramsMap.put("page", model.getPage()); // 分页--起始页
+		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		Map<String, Object> entity = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> pgs = pService.getPaginationRecords(null, 1, 50);
+		//查询结果
+		PaginationRecordsAndNumber<Payment, Number> pgs = pService.getByMultiCondition(paramsMap);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		//提取返回到前台显示的字段
 		for (Iterator<Payment> iterator = pgs.getRecords().iterator(); iterator.hasNext();) {
 			Payment p = iterator.next();
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("paymentDate", getStringDate(p.getPaymentDate()));//缴款日期
-			map.put("companyName",p.getPaymentCompany().getCompanyName());//缴款公司
-			map.put("paymentMoney", p.getPaymentMoney());	//缴款金额
-			map.put("paymentType",p.getPaymentType().getText()); //缴款类型
-			map.put("paymentPerson",p.getPaymentPerson().getUserName());	//缴款操作人
-			map.put("paymentExceptional", p.getPaymentExceptional().getPaymentExceptional());	//缴款方式
-			map.put("billReturn", p.getBillReturn());	//是否返票了
-			map.put("billFinance", p.getBillFinance());	//是否财政
-			map.put("billObsolet", p.getBillObsolete());	//是否作废票据
+			map.put("paymentDate", getStringDate(p.getPaymentDate()));// 缴款日期
+			map.put("companyCode", p.getPaymentCompany().getCompanyCode());
+			map.put("companyName", p.getPaymentCompany().getCompanyName());// 缴款公司
+			map.put("paymentBill", p.getPaymentBill());	//缴款票号
+			map.put("paymentMoney", p.getPaymentMoney()); // 缴款金额
+			map.put("paymentType", p.getPaymentType().getText()); // 缴款类型
+			map.put("paymentPerson", p.getPaymentPerson().getUserName()); // 缴款操作人
+			map.put("paymentExceptional", p.getPaymentExceptional().getPaymentExceptional()); // 缴款方式
+			map.put("billReturn", p.getBillReturn()); // 是否返票了
+			map.put("billFinance", p.getBillFinance()); // 是否财政
+			map.put("billObsolet", p.getBillObsolete()); // 是否作废票据
 			list.add(map);
 		}
 		Integer total = pgs.getNumber().intValue();
@@ -81,8 +130,8 @@ public class QueryPaymentController {
 		return entity;
 	}
 
-	private String getStringDate(Date date){
-		SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
+	private String getStringDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
 }

@@ -38,9 +38,10 @@ public class Payment extends PrimaryKey_Int {
 		super.setId(id);
 	}
 
+
 	@Override
 	public String toString() {
-		return "Payment [paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson + ", paymentCompany=" + paymentCompany + ", paymentBill=" + paymentBill
+		return "Payment [paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson+ ", paymentCompany=" + paymentCompany + ", paymentBill=" + paymentBill
 				+ ", paymentType=" + paymentType + ", billPrintDate=" + billPrintDate + ", billExchangeDate=" + billExchangeDate + ", billReturn=" + billReturn + ", billFinance=" + billFinance
 				+ ", billObsolete=" + billObsolete + ", paymentExceptional=" + paymentExceptional + ", remark=" + remark + ", audit=" + audit + "]";
 	}

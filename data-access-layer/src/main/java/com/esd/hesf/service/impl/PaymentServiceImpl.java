@@ -203,8 +203,36 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		Long t1 = System.currentTimeMillis();
+		if(map==null){
+			map = new HashMap<String,Object>();
+		}
+		//初始为0
+		int size = 0;
+		// 返回量
+		if(map.get("pageSize")==null){
+			map.put("size", Constants.SIZE);
+		}else{
+			size = Integer.parseInt(map.get("pageSize").toString());
+			map.put("size",size);
+		}
+		// 起始索引值
+		if(map.get("page")==null){
+			map.put("start", Constants.START);
+		}else{
+			int page = Integer.parseInt(map.get("page").toString());
+			map.put("start", page <= 1 ? Constants.START : (page - 1) * size);
+		}
+		// 返回的数据
+		List<Payment> list = dao.retrieveByPage(map);
+		// 数据条数
+		int count = dao.retrieveCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		System.out.println("cost time: " + (System.currentTimeMillis() - t1));
+		return prn;
 	}
 
 }
