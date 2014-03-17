@@ -6,6 +6,15 @@
 
 <script type="text/javascript">
 	var queryPayment = {};
+	// 档案号缓存数据
+	var tempCompanyCode;
+	// 公司名称缓存数据
+	var tempCompanyName;
+	// 开始时间缓存数据
+	var tempStartDate;
+	// 结束时间缓存数据
+	var tempEndDate;
+	
 	/**
 		初始化数据
 	 **/
@@ -14,7 +23,10 @@
 		$('#companyProperty').combobox({
 			url : 'parameter/property',
 			valueField : 'id',
-			textField : 'companyProperty'
+			textField : 'companyProperty',
+			onSelect:function(){
+				queryPayment.findData();
+			}
 		});
 
 		//经济类型
@@ -22,33 +34,116 @@
 			url : 'parameter/economytype',
 			valueField : 'id',
 			textField : 'companyEconomyType',
+			onSelect:function(){
+				queryPayment.findData();
+			}
 		});
 		//地区
 		$('#area').combobox({
 			url : 'parameter/getArea',
 			valueField : 'code',
 			textField : 'name',
+			onSelect:function(){
+				queryPayment.findData();
+			}
 		});
 
 		//年份
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',
-			textField : 'text'
+			textField : 'text',
+			onSelect:function(){
+				queryPayment.findData();
+			}
 		});
 
 		//缴款人
 		$('#paymentPerson').combobox({
 			url : 'parameter/getPayer',
 			valueField : 'id',
-			textField : 'userName'
+			textField : 'userName',
+			onSelect:function(){
+				queryPayment.findData();
+			}
 		});
+		
 		//初始化输入元素默认值
 		var element = $(".inputElement");
 		for ( var i = 0; i < element.length; i++) {
 			$(element[i]).val("");
 		}
-
+		
+		//已返票 和 是否作废票据  添加选中事件
+		$('#billReturn').click(function(){
+			queryPayment.findData();
+		});
+		$('#billObsolete').click(function(){
+			queryPayment.findData();
+		});
+		
+		//档案编码, 企业名称焦点离开事件
+		$('#companyCode').blur(function(){
+			//如果为空, 不触发查询事件
+			var companyCode = $('#companyCode').val();
+			if(companyCode == tempCompanyCode){
+				return;
+			}
+			tempCompanyCode = companyCode;
+			queryPayment.findData();
+		});
+		$('#companyName').blur(function(){
+			//如果为空, 不触发查询事件
+			var companyName = $('#companyName').val();
+			if(companyName == tempCompanyName){
+				return;
+			}
+			tempCompanyName = companyName;
+			queryPayment.findData();
+		});
+		
+		//档案编码, 企业名称回车事件
+		$('#companyCode').keydown(function(event){
+			if(event.keyCode == 13){
+				//如果为空, 不触发查询事件
+				var companyCode = $('#companyCode').val();
+				if(companyCode == tempCompanyCode){
+					return;
+				}
+				tempCompanyCode = companyCode;
+				queryPayment.findData();
+			}
+		});
+		$('#companyName').keydown(function(event){
+			if(event.keyCode == 13){
+				//如果为空, 不触发查询事件
+				var companyName = $('#companyName').val();
+				if(companyName == tempCompanyName){
+					return;
+				}
+				tempCompanyName = companyName;
+				queryPayment.findData();
+			}
+		});
+		
+		//时间选择框 选择后事件
+		$('#startDate').datebox({
+			onSelect:function(date){
+			//	alert(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+				queryPayment.findData();
+			}
+		});
+		$('#endDate').datebox({
+			onSelect:function(date){
+			//	alert(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
+				queryPayment.findData();
+			}
+		});
+		$('#startDate').blur(function(){
+			//如果为空, 不触发查询事件
+			alert(1);
+		});
+		
 	};
 	queryPayment.openPayment = function(index) {
 		esd.common.defaultOpenWindowEx("查看缴款信息", 920, 600, "${contextPath}/security/audits/edit/" + index + "/2");
