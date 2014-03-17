@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.esd.hesf.dao.AuditProcessStatusDao">
-	<resultMap id="BaseResultMap" type="com.esd.hesf.model.AuditProcessStatus">
+<mapper namespace="com.esd.hesf.dao.ReplyDao">
+	<resultMap id="BaseResultMap" type="com.esd.hesf.model.Reply">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="audit_process_status" property="auditProcessStatus"
-			jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -13,23 +13,27 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, audit_process_status, create_time, update_time, user_id, is_active, version
+		id, title, content, create_time, update_time, user_id, is_active, version
 	</sql>
 
 	<!-- insert -->
-	<insert id="insert" parameterType="com.esd.hesf.model.AuditProcessStatus">
-		insert into audit_process_status (audit_process_status, create_time,
+	<insert id="insert" parameterType="com.esd.hesf.model.Reply">
+		insert into reply (title, content, create_time,
 		update_time, user_id, is_active,
 		version)
-		values (#{auditProcessStatus,jdbcType=VARCHAR},
-		now(),now(), #{userId,jdbcType=INTEGER},default, default)
+		values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+		now(),now(),
+		#{userId,jdbcType=INTEGER},default, default)
 	</insert>
-	
-	<insert id="insertSelective" parameterType="com.esd.hesf.model.AuditProcessStatus">
-		insert into audit_process_status
+
+	<insert id="insertSelective" parameterType="com.esd.hesf.model.Reply">
+		insert into reply
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="auditProcessStatus != null">
-				audit_process_status,
+			<if test="title != null">
+				title,
+			</if>
+			<if test="content != null">
+				content,
 			</if>
 			create_time, update_time,
 			<if test="userId != null">
@@ -49,24 +53,27 @@
 				#{userId,jdbcType=INTEGER},
 			</if>
 			<if test="isActive != null">
-				#{isActive,jdbcType=BIT}, 
+				#{isActive,jdbcType=BIT},
 			</if>
 			default
 		</trim>
 	</insert>
-	
+
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from audit_process_status
+		delete from reply
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	
+
 	<!-- update -->
-	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.AuditProcessStatus">
-		update audit_process_status
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Reply">
+		update reply
 		<set>
-			<if test="auditProcessStatus != null">
-				audit_process_status = #{auditProcessStatus,jdbcType=VARCHAR},
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
 			</if>
 			update_time = now(),
 			<if test="userId != null">
@@ -81,21 +88,40 @@
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<!-- select -->
 	<select id="retrieveByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from audit_process_status
+		from reply
 		where id = #{id,jdbcType=INTEGER}
 	</select>
-	
+
 	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from audit_process_status 
-		order by priority 
+		from reply
+		<where>
+			<if test="reply != null">
+				<if test="reply.title != null and reply.title != ''">
+					title like concat('%',#{reply.title,jdbcType=VARCHAR},'%')
+				</if>
+			</if>
+		</where>
+		order by id
 		limit #{start},#{size}
 	</select>
 	
+	<select id="retrieveCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) 
+		from reply
+		<where>
+			<if test="reply != null">
+				<if test="reply.title != null and reply.title != ''">
+					title like concat('%',#{reply.title,jdbcType=VARCHAR},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+
 </mapper>

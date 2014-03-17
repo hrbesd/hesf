@@ -17,13 +17,12 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
-import com.esd.hesf.model.CompanyEconomyType;
-import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.PaymentType;
+import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
@@ -39,6 +38,7 @@ import com.esd.hesf.service.MenuService;
 import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentService;
 import com.esd.hesf.service.PaymentTypeService;
+import com.esd.hesf.service.ReplyService;
 import com.esd.hesf.service.ReportViewService;
 import com.esd.hesf.service.UserGroupService;
 import com.esd.hesf.service.UserService;
@@ -58,7 +58,8 @@ import com.esd.hesf.viewmodels.WorkerViewModel;
 @Controller
 @RequestMapping("/test")
 public class TestController {
-//	private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(TestController.class);
 
 	@Autowired
 	private MenuService menuService;
@@ -106,7 +107,11 @@ public class TestController {
 	private PaymentExceptionalService peService;
 
 	@Autowired
+	private ReplyService rService;
+
+	@Autowired
 	private CompanyTypeService ctService;
+
 	// 菜单
 	@RequestMapping("/1")
 	@ResponseBody
@@ -230,15 +235,15 @@ public class TestController {
 	public Map<String, Object> test13() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		 paramMap.put("year", "2011");
-		 paramMap.put("companyId", 1);
-		 paramMap.put("getOverproof", true);
+		paramMap.put("year", "2011");
+		paramMap.put("companyId", 1);
+		paramMap.put("getOverproof", true);
 		// paramMap.put("workerHandicapCode", "66"); // 残疾证号
 		// paramMap.put("careerCard", "67"); // 就业证号
 		// paramMap.put("workerName", "67"); // 姓名
 		// paramMap.put("workerGender", "1"); // 性别
-//		paramMap.put("minAge", 26); // 最小年龄
-//		paramMap.put("maxAge", 30); // 最大年龄
+		// paramMap.put("minAge", 26); // 最小年龄
+		// paramMap.put("maxAge", 30); // 最大年龄
 		// paramMap.put("workerHandicapType", 1); // 残疾类别 对应的id
 		// paramMap.put("workerHandicapLevel", 1); // 残疾等级 对应的id
 		// paramMap.put("page", 1); // 分页--起始页 ******************************
@@ -341,31 +346,31 @@ public class TestController {
 	public Map<String, Object> test22() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Payment p = new Payment();
-//		Audit audit = new Audit();
-//		audit.setId(109066);
-//		audit.setYear("2005");
-//		p.setAudit(audit);
-//		User user = new User();
-//		user.setId(1);
-//		p.setPaymentPerson(user);
+		// Audit audit = new Audit();
+		// audit.setId(109066);
+		// audit.setYear("2005");
+		// p.setAudit(audit);
+		// User user = new User();
+		// user.setId(1);
+		// p.setPaymentPerson(user);
 		Company company = new Company();
-//		company.setId(10);
-//		company.setCompanyCode("10");
-//		company.setCompanyName("杂志");
-//		company.setCompanyOrganizationCode("1");
-//		company.setCompanyZipCode("150001");
-//		company.setCompanyType(new CompanyType(1));
-//		company.setCompanyEconomyType(new CompanyEconomyType(1));
-//		company.setCompanyProperty(new CompanyProperty(3));
-//		company.setArea(new Area("10230090"));
+		// company.setId(10);
+		// company.setCompanyCode("10");
+		// company.setCompanyName("杂志");
+		// company.setCompanyOrganizationCode("1");
+		// company.setCompanyZipCode("150001");
+		// company.setCompanyType(new CompanyType(1));
+		// company.setCompanyEconomyType(new CompanyEconomyType(1));
+		// company.setCompanyProperty(new CompanyProperty(3));
+		// company.setArea(new Area("10230090"));
 		p.setPaymentCompany(company);
-//		p.setPaymentBill("u");
-//		PaymentType pt = new PaymentType();
-//		pt.setId(2);
-//		p.setPaymentType(pt);
-//		p.setBillReturn(null);
-//		p.setBillFinance(false);
-//		p.setBillObsolete(false);
+		// p.setPaymentBill("u");
+		// PaymentType pt = new PaymentType();
+		// pt.setId(2);
+		// p.setPaymentType(pt);
+		// p.setBillReturn(null);
+		// p.setBillFinance(false);
+		// p.setBillObsolete(false);
 		PaymentExceptional pe = new PaymentExceptional();
 		pe.setId(1);
 		p.setPaymentExceptional(pe);
@@ -733,25 +738,34 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
-	// 审核表  根据传入的年份和公司code 穿件一条审核记录
-		@RequestMapping("/56")
-		@ResponseBody
-		public Map<String, Object> test56() {
-			Map<String, Object> map = new HashMap<String, Object>();
-			boolean entity = auditService.save("2000", "101001");
-			map.put("entity", entity);
-			return map;
-		}
 
-		// 公司类型
-			@RequestMapping("/57")
-			@ResponseBody
-			public Map<String, Object> test57() {
-				Map<String, Object> map = new HashMap<String, Object>();
-				List<CompanyType> entity = ctService.getAll();
-				map.put("entity", entity);
-				return map;
-			}
-	
+	// 审核表 根据传入的年份和公司code 穿件一条审核记录
+	@RequestMapping("/56")
+	@ResponseBody
+	public Map<String, Object> test56() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean entity = auditService.save("2000", "101001");
+		map.put("entity", entity);
+		return map;
+	}
+
+	// 公司类型
+	@RequestMapping("/57")
+	@ResponseBody
+	public Map<String, Object> test57() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CompanyType> entity = ctService.getAll();
+		map.put("entity", entity);
+		return map;
+	}
+
+	@RequestMapping("/58")
+	@ResponseBody
+	public Map<String, Object> test58() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Reply> entity = rService.getAll();
+		map.put("entity", entity);
+		return map;
+	}
+
 }
