@@ -318,6 +318,19 @@
 		workerList.loadData(workerList.getParams());
 		
 	};
+	$(function(){
+	
+	    //年龄超标单选框
+		$("#isExceed").bind("click",function(){
+			
+			//清楚列表复选框
+			$("#workerList_dataGrid").datagrid("clearChecked");
+			workerList.loadData(workerList.getParams());
+		});
+
+		
+			
+	});
 
 
 </script>
@@ -355,10 +368,10 @@
 		<table>
 			<tr>
 				<td>
-				<input type="checkbox" name="isExceed"  />
+				<input type="checkbox" name="isExceed"  id="isExceed" />
 				</td>
-				<td>
-				职工年龄超标
+				<td id="isExceedText">
+							职工年龄超标
 				</td>
 			</tr>
 		</table>

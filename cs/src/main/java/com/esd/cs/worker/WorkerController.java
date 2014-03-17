@@ -624,6 +624,7 @@ public class WorkerController {
 				workerErrorList = null;
 
 			} catch (IllegalStateException e) {
+				e.printStackTrace();
 				logger.error("importWorkerError:{}", e.getMessage());
 			} catch (IOException e) {
 				logger.error("importWorkerError:{}", e.getMessage());
@@ -721,7 +722,7 @@ public class WorkerController {
 			
 			HttpServletRequest request) {
 		boolean b = true;
-		logger.debug("importWorkerparamsCode:{},companyId:{},year", paramsCode, companyId,year);
+		logger.debug("importWorkerparamsCode:{},companyId:{},year:{}", paramsCode, companyId,year);
 		try {
 			for (int i = 0; i < paramsCode.length; i++) {
 				// 残疾证号

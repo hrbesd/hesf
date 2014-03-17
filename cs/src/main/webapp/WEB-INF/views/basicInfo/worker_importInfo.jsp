@@ -10,7 +10,6 @@
 <script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
-//组件解析完成
 	$.parser.onComplete = function() {
 	 	$('#importWorkerPan', window.parent.document).hide(0,function(){
 	 		$('#importWorkerIframe', window.parent.document).height(500);
@@ -33,6 +32,11 @@
 					$.messager.alert('消息', '未选择任何数据。', 'error');
 					return ;
 			}
+			
+			if($("#currentYear").val()==undefined){
+				alert("年份获取失败！");
+			}
+			
 			var paramsName = new Array();
 			var paramsCode = new Array();
 			// 组装参数
@@ -58,7 +62,9 @@
 							
 						
 						} else {
-							$.messager.alert('消息', '导入残疾职工失败。', 'error');
+							$.messager.alert('消息', '导入残疾职工失败。', 'error',function(){
+									importWorkerManager.close();
+							});
 						}
 					},
 					error : function() {

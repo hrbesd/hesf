@@ -116,6 +116,15 @@
 		if (esd.common.validatebox("#addWorkerForm") == false) {
 			return false;
 		}
+		//非法字符判断
+		var workerVal = workerHandicapCode.substring(0, 20);
+		if(isNaN(workerVal)){
+		   alert("残疾证号前20未有非法字符。");
+		   return false;
+		}
+
+		
+		
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
@@ -143,9 +152,7 @@
 
 		//判断年龄
 		if(age<16){
-		alert(age);
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
-			
 				return false;
 		}
 		if (sex % 2 === 0) {
