@@ -23,18 +23,19 @@ import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.PaymentExceptional;
 import com.esd.hesf.model.PaymentType;
+import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
-
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentTypeService;
+import com.esd.hesf.service.ReplyService;
 import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
@@ -74,6 +75,8 @@ public class ParameterController {
 	private PaymentExceptionalService paymentExceptionalService;
 	@Autowired
 	private PaymentTypeService paymentTypeService;
+	@Autowired
+	private ReplyService replyService;
 
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyType;
@@ -388,6 +391,26 @@ public class ParameterController {
 			list = paymentTypeService.getAll();
 			if (list == null) {
 				list = new ArrayList<PaymentType>();
+			}
+			return list;
+
+		} catch (Exception e) {
+			logger.error("error:{}", e);
+		}
+		return null;
+	}
+
+	/**
+	 * 转到初审单位列表页面
+	 */
+	@RequestMapping(value = "/getReason", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Reply> getReason(HttpServletRequest request) {
+		List<Reply> list = null;
+		try {
+			list = replyService.getAll();
+			if (list == null) {
+				list = new ArrayList<Reply>();
 			}
 			return list;
 

@@ -148,12 +148,45 @@
 	payment.view = function(id) {
 		esd.common.openWindow("#add", "查看缴款", 750, 350, "${contextPath}/security/payment/view/" + id);
 	};
+	payment.backAudit = function(id) {
+		var payments = $('#payments').html();
+		if (payments == '0.00') {
+			$.ajax({
+				url : 'payment/backAudit/${entity.id}',
+				type : 'GET',
+				success : function(data) {
+					if (data == true) {
+						$.messager.alert('消息', '重审提交成功', 'info', function() {
+							$("#auditPanel").window("close");
+							$("#payment_datagrid").datagrid('reload');
+						});
+					} else {
+						$.messager.alert('消息', '重审提交失败', 'info');
+					}
+				},
+				dataType : "json",
+				async : false
+			});
+		} else {
+			$.messager.alert('消息', '只能在未缴款的状态下进行重审', 'info');
+		}
+
+	};
 
 	payment.loadPaymentData = function() {
 		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.id}", [ {
 			text : '新建缴款记录',
 			iconCls : 'icon-add',
 			handler : payment.insert
+		}, {
+			text : '重审',
+			iconCls : 'icon-reload',
+			handler : payment.backAudit
+		}, {
+			text : '返回',
+			iconCls : 'icon-back',
+			handler : payment.back
+
 		} ], [ [ {
 			field : 'id',
 			hidden : true
@@ -276,11 +309,12 @@
 			</tr>
 			<tr>
 				<td class="td_short" rowspan="3">备注:</td>
-				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea></td>
+				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>
+				</td>
 				<td class="td_short">职工总人数:</td>
-				<td class="td_short readonly" style="text-align: left;" >${entity.companyEmpTotal }</td>
+				<td class="td_short readonly" style="text-align: left;">${entity.companyEmpTotal }</td>
 				<td class="td_short">年人均工资:</td>
-				<td class="td_short readonly" style="text-align: left;" >${entity.averageSalary }</td>
+				<td class="td_short readonly" style="text-align: left;">${entity.averageSalary }</td>
 			</tr>
 			<tr>
 				<td class="td_short">应按排数:</td>
@@ -297,9 +331,7 @@
 		</tbody>
 	</table>
 </div>
-<table id="payment_datagrid" style="font-size: 12px;"></table>
-<div style="text-align: center;margin-top: 30px;">
-	<a href="javascript:payment.save();" class="easyui-linkbutton" iconCls="icon-save">缴款</a> <a href="javascript:payment.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a>
-</div>
+<table id="payment_datagrid" style="font-size: 12px; height: 100px;"></table>
+
 
 

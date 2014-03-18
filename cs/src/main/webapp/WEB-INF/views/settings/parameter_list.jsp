@@ -117,7 +117,7 @@
 				</td>
 				<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="parameter_list.list()">查找</a>
 				</td>
-				<td style="text-align: right" ><a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加</a></td>
+				<td style="text-align: right" ><a href="javascript:parameter_list.addParameter();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加年审参数</a></td>
 			</tr>
 		</table>
 	</div>

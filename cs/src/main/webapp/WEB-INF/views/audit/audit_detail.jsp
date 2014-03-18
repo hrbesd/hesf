@@ -3,10 +3,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!-- 容器面板 -->
+<script type="text/javascript">
+	$('#auditTabs').tabs({
+		onSelect : function(title,index) {
+			if(index==0){
+				if($('#worker_HandicapTotal').length>0){
+					if($('#yiLuRuCanJiRen').val($('#worker_HandicapTotal').html()));
+				};
+			};
+		}
+	});
+</script>
+
 <div class="easyui-panel" data-options="closable:true,collapsible:true,minimizable:true,
        					maximizable:true,fit:true,border:false,doSize:true">
 
-	<div class="easyui-tabs" data-options="fit:true">
+	<div id="auditTabs" class="easyui-tabs" data-options="fit:true">
+	<!--startprint-->
 		<div id="startaudit_tabs" title="年审信息">
 			<c:if test="${process==1}">
 				<jsp:include page="audit_init.jsp" />
@@ -15,13 +28,14 @@
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
 		</div>
-			<c:if test="${process==1}">
-				<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
-			</c:if>
-			<c:if test="${process==2}">
-				<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
-			</c:if>
-		<div title="年审参数" ><jsp:include page="audit_params.jsp" /></div>
+		<!--endprint-->
+		<c:if test="${process==1}">
+			<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
+		</c:if>
+		<c:if test="${process==2}">
+			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
+		</c:if>
+		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
 	</div>
 </div>
 

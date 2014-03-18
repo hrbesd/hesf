@@ -43,6 +43,7 @@ public class CalculateModel {
 	private String s_zhiNaJinTianShu;
 	private List<AccountModel> weiShenMingXi;
 	private List<AccountModel> qianJiaoMingXi;
+	private List<AccountModel> weiJiaoMingXi;
 
 	public Integer getZaiZhiYuanGongZongShu() {
 		return zaiZhiYuanGongZongShu;
@@ -324,6 +325,14 @@ public class CalculateModel {
 
 	public void setMianJiao(Boolean mianJiao) {
 		this.mianJiao = mianJiao;
+	}
+
+	public List<AccountModel> getWeiJiaoMingXi() {
+		return weiJiaoMingXi;
+	}
+
+	public void setWeiJiaoMingXi(List<AccountModel> weiJiaoMingXi) {
+		this.weiJiaoMingXi = weiJiaoMingXi;
 	}
 
 }

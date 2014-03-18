@@ -7,8 +7,8 @@ package com.esd.cs.audit;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,6 +40,7 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
 import com.esd.hesf.model.Payment;
+import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
@@ -50,6 +51,7 @@ import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyPropertyService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.PaymentService;
+import com.esd.hesf.service.ReplyService;
 import com.esd.hesf.service.UserService;
 
 /**
@@ -82,12 +84,16 @@ public class AuditsController {
 	private CompanyPropertyService companyPropertyService;
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;
+	@Autowired
+	private ReplyService replyService;
 
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyTypes;
 	private DecimalFormat df = new DecimalFormat("0.00");
 	private DecimalFormat df4 = new DecimalFormat("0.0000");
 
+
+	
 	/**
 	 * 转到初审单位列表页面
 	 */
@@ -336,30 +342,32 @@ public class AuditsController {
 		// 应缴金额=应缴金额-减缴金额
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
-		Boolean mian = calculateModel.getMianZhiNaJin();
-		// List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
-		// BigDecimal qianJiao = getUnpaid(mian, companyId, qianJiaoMingXi);//
-		// 获得欠缴
-		// calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
-		// List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
-		// BigDecimal weiShen = getUnAudits(mian, year, companyId, new
-		// BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);// 获得未审
-		// calculateModel.setWeiShenMingXi(weiShenMingXi);
-		// logger.debug("qianJiao:{} weiShen:{}", qianJiao, weiShen);
-		// 未缴金额 =欠缴+未审
-		// BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen);
-		// calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
-
+		
+		// ============================================================欠缴金额 部分缴款
+		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
+		BigDecimal qianJiao = getSectionPaid(companyId, qianJiaoMingXi);
+		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
+		// ============================================================未审年度
+		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
+		BigDecimal weiShen = getUnAudits(year, companyId, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);
+		calculateModel.setWeiShenMingXi(weiShenMingXi);
+		// =============================================================未缴款
+		List<AccountModel> weiJiaoMingXi = new ArrayList<AccountModel>();
+		BigDecimal weiJiao = getUnpaid(companyId, weiJiaoMingXi);
+		calculateModel.setWeiJiaoMingXi(weiJiaoMingXi);
+		// ==================================================================上年未缴金额
+		logger.debug("qianJiao:{} weiShen:{} weiJiao{}", qianJiao, weiShen, weiJiao);
+		// 上年未缴金额 =未缴+欠缴+未审
+		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen).add(weiJiao);
+		calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
+		// =====================================================================================================
 		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
-		// BigDecimal real_yingJiaoJinE =
-		// shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE;
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
 		// 计算滞纳金============================================================================================
-		// 获得支付截至日期
+		// 获得滞纳金开始时间
 		Date date = auditParameter.getAuditDelayDate();
-		SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyy-MM-dd");
-		String a1 = dateformat1.format(date);
 		// 获得滞纳金比例
 		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
 		// 计算滞纳金天数
@@ -371,6 +379,7 @@ public class AuditsController {
 		// 计算滞纳金
 		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi).multiply(new BigDecimal(zhiNanJinTianshu));
 		// 判断是否免除滞纳金
+		Boolean mian = calculateModel.getMianZhiNaJin();
 		if (mian) {
 			zhiNaJin = new BigDecimal(0.00);
 		}
@@ -394,7 +403,7 @@ public class AuditsController {
 	 * @param total
 	 * @return
 	 */
-	private BigDecimal getUnAudits(Boolean mian, String year, Integer companyId, BigDecimal total, List<AccountModel> sb) {
+	private BigDecimal getUnAudits(String year, Integer companyId, BigDecimal total, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
@@ -408,13 +417,13 @@ public class AuditsController {
 		if (unAudits != null) {
 			for (String unYear : unAudits) {
 				AuditParameter oldAuditParameter = auditParameterService.getByYear(unYear);
-				Date payCloseDate = oldAuditParameter.getPayCloseDate();
-				int days = CalendarUtil.getDaySub(payCloseDate, new Date());
+				Date auditDelayDate = oldAuditParameter.getAuditDelayDate();
+				int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 				// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
 				BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-				if (mian) {
-					penalty = new BigDecimal("0.00");
-				}
+//				if (mian) {
+//					penalty = new BigDecimal("0.00");
+//				}
 				BigDecimal unYearTotal = payableAmount.add(penalty);
 				logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
 				AccountModel am = new AccountModel();
@@ -442,17 +451,18 @@ public class AuditsController {
 	 * @param companyCode
 	 * @return
 	 */
-	private BigDecimal getUnpaid(Boolean mian, Integer companyId, List<AccountModel> sb) {
+	private BigDecimal getSectionPaid(Integer companyId, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
 		// 未缴金额
 		Audit param = new Audit();
 		Company company = new Company();
 		company.setId(companyId);
 		param.setCompany(company);
-		AuditProcessStatus aps = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
-		param.setAuditProcessStatus(aps);
-		PaginationRecordsAndNumber<Audit, Number> query = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
-		for (Audit a : query.getRecords()) {
+
+		AuditProcessStatus bfjk = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
+		param.setAuditProcessStatus(bfjk);
+		PaginationRecordsAndNumber<Audit, Number> query_bfjk = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
+		for (Audit a : query_bfjk.getRecords()) {
 			String year = a.getYear();
 			// 查询支付记录
 			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
@@ -464,18 +474,69 @@ public class AuditsController {
 			}
 			BigDecimal qj = a.getPayAmount().subtract(paymentTotal);
 			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
-			Date payCloseDate = auditParameter.getPayCloseDate();
-			int days = CalendarUtil.getDaySub(payCloseDate, new Date());
+			Date auditDelayDate = auditParameter.getAuditDelayDate();
+			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 			BigDecimal penalty = qj.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-			if (mian) {
-				penalty = new BigDecimal("0.00");
-			}
+//			Boolean mian = a.getIsDelayPay();
+//			if (mian) {
+//				penalty = new BigDecimal("0.00");
+//			}
 			BigDecimal total = qj.add(penalty);
 			AccountModel am = new AccountModel();
 			am.setYear(year);
 			am.setDays(String.valueOf(days));
 			am.setMoney(df.format(qj));
 			am.setPenalty(df.format(penalty));
+			am.setProp(df4.format(auditParameter.getAuditDelayRate()));
+			am.setTotal(df.format(total));
+			sb.add(am);
+			amount = amount.add(total);
+		}
+		if (amount.compareTo(new BigDecimal(0.00)) != 0) {
+			AccountModel am = new AccountModel();
+			am.setTotal(df.format(amount));
+			sb.add(am);
+		}
+		return amount;
+	}
+
+	/**
+	 * 未缴款
+	 * 
+	 * @param companyId
+	 * @param sb
+	 * @return
+	 */
+	private BigDecimal getUnpaid(Integer companyId, List<AccountModel> sb) {
+		BigDecimal amount = new BigDecimal(0.00);
+		// 未缴金额
+		Audit param = new Audit();
+		Company company = new Company();
+		company.setId(companyId);
+		param.setCompany(company);
+
+		AuditProcessStatus wjk = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+		param.setAuditProcessStatus(wjk);
+		PaginationRecordsAndNumber<Audit, Number> query_wjk = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
+
+		for (Audit a : query_wjk.getRecords()) {
+			String year = a.getYear();
+			// 查询支付记录
+			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
+			BigDecimal paymentTotal = new BigDecimal(0);
+			if (payments != null) {
+				for (Payment p : payments.getRecords()) {
+					paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
+				}
+			}
+			BigDecimal qj = a.getPayAmount().subtract(paymentTotal);
+			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
+			BigDecimal total = a.getPayAmount();
+			AccountModel am = new AccountModel();
+			am.setYear(year);
+			am.setDays(String.valueOf(a.getDelayDays()));
+			am.setMoney(df.format(qj));
+			am.setPenalty(df.format(a.getDelayPayAmount()));
 			am.setProp(df4.format(auditParameter.getAuditDelayRate()));
 			am.setTotal(df.format(total));
 			sb.add(am);
@@ -543,12 +604,14 @@ public class AuditsController {
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				String statusName = it.getAuditProcessStatus().getAuditProcessStatus();
+				Integer pId = it.getAuditProcessStatus().getId();
+				map.put("auditProcessStatusId", pId);// 流程状态
+				AuditProcessStatus processStatus = auditProcessStatusService.getByPrimaryKey(pId);
+				String statusName = processStatus.getAuditProcessStatus();
 				if (it.getRefuseTimes() > 0) {
 					statusName = statusName + "(" + it.getRefuseTimes() + ")";
 				}
 				map.put("auditProcessStatus", statusName);// 流程状态
-				map.put("auditProcessStatusId", it.getAuditProcessStatus().getId());// 流程状态
 
 				list.add(map);
 			}
@@ -607,8 +670,9 @@ public class AuditsController {
 		}
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
-		// 上年度未缴金额
-
+		// 拒绝条件选择
+		List<Reply> replys = replyService.getAll();
+		request.setAttribute("reasons", replys);
 		// 获得支付
 		// BigDecimal lastNotPayAmount = getUnPaidAmount(companyCode);
 		// audit.setRemainAmount(lastNotPayAmount);
