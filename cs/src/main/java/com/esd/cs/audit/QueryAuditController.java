@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.audit;
 
 import java.util.ArrayList;
@@ -7,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -19,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.common.ParameterController;
+import com.esd.cs.Constants;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.service.AuditService;
@@ -39,10 +45,9 @@ public class QueryAuditController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView queryAuditList(HttpServletRequest request) {
-		// 获取当前年份
-		request.setAttribute("nowYear", ParameterController.getYear());
-		logger.debug("goToPage:{}", "queryAudit");
+	public ModelAndView queryAuditList(HttpServletRequest request, HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
 		return new ModelAndView("query/audit");
 	}
 

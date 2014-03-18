@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.payment;
 
 import java.math.BigDecimal;
@@ -27,7 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
-import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
@@ -72,8 +76,8 @@ public class PaymentController {
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request) {
-		String nowYear = ParameterController.getYear();
+	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request, HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("payment/payment_list");

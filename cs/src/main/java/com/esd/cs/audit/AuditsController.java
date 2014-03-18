@@ -8,7 +8,6 @@ package com.esd.cs.audit;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
-import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
@@ -92,14 +90,12 @@ public class AuditsController {
 	private DecimalFormat df = new DecimalFormat("0.00");
 	private DecimalFormat df4 = new DecimalFormat("0.0000");
 
-
-	
 	/**
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request) {
-		String nowYear = ParameterController.getYear();
+	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpSession session, HttpServletRequest request) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("audit/audit_list");
@@ -342,7 +338,7 @@ public class AuditsController {
 		// 应缴金额=应缴金额-减缴金额
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
-		
+
 		// ============================================================欠缴金额 部分缴款
 		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
 		BigDecimal qianJiao = getSectionPaid(companyId, qianJiaoMingXi);
@@ -421,9 +417,9 @@ public class AuditsController {
 				int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 				// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
 				BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-//				if (mian) {
-//					penalty = new BigDecimal("0.00");
-//				}
+				// if (mian) {
+				// penalty = new BigDecimal("0.00");
+				// }
 				BigDecimal unYearTotal = payableAmount.add(penalty);
 				logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
 				AccountModel am = new AccountModel();
@@ -477,10 +473,10 @@ public class AuditsController {
 			Date auditDelayDate = auditParameter.getAuditDelayDate();
 			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 			BigDecimal penalty = qj.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-//			Boolean mian = a.getIsDelayPay();
-//			if (mian) {
-//				penalty = new BigDecimal("0.00");
-//			}
+			// Boolean mian = a.getIsDelayPay();
+			// if (mian) {
+			// penalty = new BigDecimal("0.00");
+			// }
 			BigDecimal total = qj.add(penalty);
 			AccountModel am = new AccountModel();
 			am.setYear(year);

@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2013 北京海达网畅信息技术开发有限公司（www.hadventure.com）. All rights reserved.
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
  * 
- * HADVENTURE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.esd.cs.common;
 

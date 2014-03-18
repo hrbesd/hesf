@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.settings;
 
 import java.util.ArrayList;
@@ -7,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -22,7 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.common.ParameterController;
+import com.esd.cs.Constants;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.AuditParameterService;
@@ -111,22 +117,6 @@ public class YearAuditParameterController {
 	}
 
 	/**
-	 * 检测添加年审时是否以经添加过
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/check", method = RequestMethod.GET)
-	@ResponseBody
-	public Boolean checkYear() {
-		String year = ParameterController.getYear();
-		AuditParameter auditParameter = auditParameterService.getByYear(year);
-		if (auditParameter != null) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * 跳转到添加年审参数
 	 * 
 	 * @param request
@@ -147,7 +137,7 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request) {
+	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request, HttpSession session) {
 		logger.debug("auditParameter:{}", auditParameter);
 		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
 		if (copy) {
@@ -163,7 +153,7 @@ public class YearAuditParameterController {
 		}
 		try {
 			auditParameterService.save(auditParameter);
-			ParameterController.setYear(auditParameterService.getLastestYear());
+			session.setAttribute(Constants.YEAR, auditParameter.getYear());
 		} catch (Exception e) {
 			logger.error("add audit year parms error", e);
 			return false;

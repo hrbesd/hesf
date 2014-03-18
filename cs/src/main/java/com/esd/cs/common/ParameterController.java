@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.common;
 
 import java.util.ArrayList;
@@ -81,22 +86,6 @@ public class ParameterController {
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyType;
 	private static List<CompanyType> companyTypes;
-
-	private static String nowYear = null;
-
-	/**
-	 * 返回最新年份
-	 * 
-	 * @param request
-	 * @return
-	 */
-	public static String getYear() {
-		return nowYear;
-	}
-
-	public static void setYear(String year) {
-		nowYear = year;
-	}
 
 	/**
 	 * 返回年份

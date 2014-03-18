@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.cs.common.ParameterController;
-import com.esd.cs.payment.Payments;
+import com.esd.cs.Constants;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AuditService;
@@ -52,9 +51,7 @@ public class CompayController {
 	@RequestMapping(value = "/list/{property}", method = RequestMethod.GET)
 	public ModelAndView companyGet(@PathVariable(value = "property") String property, HttpServletRequest request) {
 		logger.debug("companyProperty{}", property);
-		// 续传用户类型
 		request.setAttribute("companyProperty", property);
-		logger.debug("JumpCompany:{},year:{}", property,ParameterController.getYear());
 		return new ModelAndView("basicInfo/company_list");
 	}
 
@@ -140,7 +137,8 @@ public class CompayController {
 				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			boolean b = companyService.save(company,ParameterController.getYear());
+			String nowYear = (String)session.getAttribute(Constants.YEAR);
+			boolean b = companyService.save(company,nowYear);
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
