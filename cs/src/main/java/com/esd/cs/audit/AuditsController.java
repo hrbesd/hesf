@@ -589,7 +589,6 @@ public class AuditsController {
 			audit.setAuditProcessStatus(auditProcessStatus);
 			long l = System.currentTimeMillis();
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
-			System.out.println(System.currentTimeMillis() - l);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
@@ -618,7 +617,6 @@ public class AuditsController {
 		} catch (Exception e) {
 			logger.error("error{}", e);
 		}
-		// System.out.println(System.currentTimeMillis()-l);
 		return entity;
 	}
 

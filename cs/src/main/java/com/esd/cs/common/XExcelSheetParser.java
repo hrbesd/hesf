@@ -105,7 +105,6 @@ public class XExcelSheetParser {
 				result = null;
 				break;
 			default:
-				System.out.println("枚举了所有类型");
 				break;
 			}
 		}

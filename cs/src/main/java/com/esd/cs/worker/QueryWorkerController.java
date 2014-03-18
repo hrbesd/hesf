@@ -166,7 +166,6 @@ public class QueryWorkerController {
 					}
 				}
 
-				System.out.println();
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
 				map.put("phone", it.getPhone());// phone
