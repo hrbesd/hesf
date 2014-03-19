@@ -378,7 +378,7 @@
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<td width="100" rowspan="3">复审意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
-				<td colspan="3" rowspan="2"><textarea class="warn" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
+				<td colspan="3" rowspan="2"><textarea class="warn"  name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
 			</tr>
 			<tr>
 				<td><select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
