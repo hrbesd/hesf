@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.payment;
 
 import java.text.SimpleDateFormat;
@@ -64,7 +69,7 @@ public class QueryPaymentController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> listPost(PaymentParamModel model) {
-		System.out.println("--------------" + model.toString());
+		log.debug(model.toString());
 		// payment中的 审核对象
 		Audit audit = new Audit();
 		audit.setYear(model.getYear());
@@ -81,21 +86,21 @@ public class QueryPaymentController {
 		if (model.getArea() != null) {
 			company.setArea(new Area(model.getArea()));
 		}
-		//Payment对象
+		// Payment对象
 		Payment payment = new Payment();
 		// 付款人对象放入其中
 		if (model.getPaymentPerson() != null) {
 			payment.setPaymentPerson(new User(model.getPaymentPerson()));
 		}
-		//审核对象放入其中
-		if(model.getYear()!=null){
+		// 审核对象放入其中
+		if (model.getYear() != null) {
 			payment.setAudit(audit);
 		}
-		//公司对象放入其中
+		// 公司对象放入其中
 		payment.setPaymentCompany(company);
-		//返票?
+		// 返票?
 		payment.setBillReturn(model.getBillReturn());
-		//作废票号?
+		// 作废票号?
 		payment.setBillObsolete(model.getBillObsolete());
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap.put("payment", payment);
@@ -104,17 +109,17 @@ public class QueryPaymentController {
 		paramsMap.put("page", model.getPage()); // 分页--起始页
 		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		Map<String, Object> entity = new HashMap<String, Object>();
-		//查询结果
+		// 查询结果
 		PaginationRecordsAndNumber<Payment, Number> pgs = pService.getByMultiCondition(paramsMap);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		//提取返回到前台显示的字段
+		// 提取返回到前台显示的字段
 		for (Iterator<Payment> iterator = pgs.getRecords().iterator(); iterator.hasNext();) {
 			Payment p = iterator.next();
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("paymentDate", getStringDate(p.getPaymentDate()));// 缴款日期
 			map.put("companyCode", p.getPaymentCompany().getCompanyCode());
 			map.put("companyName", p.getPaymentCompany().getCompanyName());// 缴款公司
-			map.put("paymentBill", p.getPaymentBill());	//缴款票号
+			map.put("paymentBill", p.getPaymentBill()); // 缴款票号
 			map.put("paymentMoney", p.getPaymentMoney()); // 缴款金额
 			map.put("paymentType", p.getPaymentType().getText()); // 缴款类型
 			map.put("paymentPerson", p.getPaymentPerson().getUserName()); // 缴款操作人
