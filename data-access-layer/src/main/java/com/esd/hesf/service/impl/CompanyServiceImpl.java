@@ -323,7 +323,6 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public PaginationRecordsAndNumber<Company, Number> getByMultiCondition(Map<String, Object> map) {
-		Long t1 = System.currentTimeMillis();
 		if (map == null) {
 			map = new HashMap<String, Object>();
 		}
@@ -383,7 +382,6 @@ public class CompanyServiceImpl implements CompanyService {
 		PaginationRecordsAndNumber<Company, Number> prn = new PaginationRecordsAndNumber<Company, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return prn;
 	}
 

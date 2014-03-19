@@ -245,23 +245,17 @@ public class ReportViewModel {
 		}
 		final ReportViewModel rvm = (ReportViewModel) obj;
 		if (this.getCompanyType() != null) {
-//			System.out.println("this.companyType: " + this.getCompanyType() + "  obj.companyType: " + rvm.getCompanyType());
 			if (!rvm.getCompanyType().equals(this.getCompanyType())) {
-//				System.out.println("companyType:" + this.getCompanyType() + " 存在, 不可以!");
 				return false;
 			}
 		}
-		// System.out.println("this.companyEconomyType: "+this.getCompanyEconomyType()+"  obj.companyEconomyType: "+rvm.getCompanyEconomyType());
 		if (this.getCompanyEconomyType() != null) {
 			if (!rvm.getCompanyEconomyType().equals(this.getCompanyEconomyType())) {
-//				 System.out.println("companyEconomyType:"+this.getCompanyEconomyType()+" 存在, 不可以!");
 				return false;
 			}
 		}
-//		 System.out.println("this.areaCode: "+this.getAreaCode()+"  obj.areaCode: "+rvm.getAreaCode());
 		if (this.getAreaCode() != null) {
 			if (!rvm.getAreaCode().equals(this.getAreaCode())) {
-//				 System.out.println("areaCode:"+this.getAreaCode()+" 存在, 不可以!");
 				return false;
 			}
 		}

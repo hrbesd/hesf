@@ -83,8 +83,4 @@ public class KitService {
 		return birthYear;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getBirthFromAge("15"));
-	}
-	
 }

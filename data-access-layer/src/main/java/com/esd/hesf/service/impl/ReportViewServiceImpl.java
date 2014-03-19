@@ -41,7 +41,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 
 	@Override
 	public List<ReportViewModel> getByCompanyType(String year) {
-		Long t1 = System.currentTimeMillis();
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
@@ -96,7 +95,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 		map.put("size", Constants.SIZE);
 		List<CompanyType> tList = ctDao.retrieveByPage(map);
 		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-//		System.out.println("tempList(): "+tList.size());
 		for(CompanyType t:tList){
 			ReportViewModel r = new ReportViewModel();
 			r.setCompanyType(t.getId());
@@ -105,20 +103,15 @@ public class ReportViewServiceImpl implements ReportViewService {
 		}
 		//补全其余没有数据的类别
 		for(ReportViewModel t:tempList){
-//			System.out.println(list.contains(t));
 			if(!list.contains(t)){
-//				System.out.println("添加-----");
 				list.add(t);
 			}
 		}
-//		System.out.println("list.size(): "+list.size());
-		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
 
 	@Override
 	public List<ReportViewModel> getByArea(String year) {
-		Long t1 = System.currentTimeMillis();
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
@@ -173,7 +166,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 		map.put("size", Constants.SIZE);
 		List<Area> tList = aDao.retrieveHLJ();
 		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-//		System.out.println("tempList(): "+tList.size());
 		for(Area t:tList){
 			ReportViewModel r = new ReportViewModel();
 			r.setAreaCode(t.getCode());
@@ -182,20 +174,15 @@ public class ReportViewServiceImpl implements ReportViewService {
 		}
 		//补全其余没有数据的类别
 		for(ReportViewModel t:tempList){
-//			System.out.println(list.contains(t));
 			if(!list.contains(t)){
-//				System.out.println("添加-----");
 				list.add(t);
 			}
 		}
-//		System.out.println("list.size(): "+list.size());
-		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return list;
 	}
 
 	@Override
 	public List<ReportViewModel> getByCompanyEconomyType(String year) {
-		Long t1 = System.currentTimeMillis();
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null).printStackTrace();
 			return null;
@@ -250,7 +237,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 				map.put("size", Constants.SIZE);
 				List<CompanyEconomyType> tList = cetDao.retrieveByPage(map);
 				List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-//				System.out.println("tempList(): "+tList.size());
 				for(CompanyEconomyType t:tList){
 					ReportViewModel r = new ReportViewModel();
 					r.setCompanyEconomyType(t.getId());
@@ -259,14 +245,10 @@ public class ReportViewServiceImpl implements ReportViewService {
 				}
 				//补全其余没有数据的类别
 				for(ReportViewModel t:tempList){
-//					System.out.println(list.contains(t));
 					if(!list.contains(t)){
-//						System.out.println("添加-----");
 						list.add(t);
 					}
 				}
-//				System.out.println("list.size(): "+list.size());
-				System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 				return list;
 	}
 

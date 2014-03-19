@@ -99,7 +99,6 @@ public class ReplyController {
 	public Boolean addPost(Reply reply, HttpServletRequest req) {
 		logger.debug(reply.toString());
 		Boolean bl = rService.save(reply);
-		System.out.println(bl);
 		return bl;
 	}
 
@@ -145,7 +144,6 @@ public class ReplyController {
 	public Boolean updatePost(Reply reply, HttpServletRequest req) {
 		logger.debug(reply.toString());
 		Boolean bl = rService.update(reply);
-		System.out.println(bl);
 		return bl;
 	}
 	

@@ -67,7 +67,6 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	public PaginationRecordsAndNumber<Reply, Number> getPaginationRecords(Reply t, Integer page, Integer pageSize) {
-		Long t1 = System.currentTimeMillis();
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("payment", t);
@@ -83,7 +82,6 @@ public class ReplyServiceImpl implements ReplyService {
 		PaginationRecordsAndNumber<Reply, Number> prn = new PaginationRecordsAndNumber<Reply, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
 		return prn;
 	}
 

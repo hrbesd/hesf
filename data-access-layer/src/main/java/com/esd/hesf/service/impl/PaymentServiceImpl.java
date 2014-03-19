@@ -93,7 +93,6 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaginationRecords(Payment t, Integer page, Integer pageSize) {
-		Long t1 = System.currentTimeMillis();
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("payment", t);
@@ -109,7 +108,6 @@ public class PaymentServiceImpl implements PaymentService {
 		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: " + (System.currentTimeMillis() - t1));
 		return prn;
 	}
 
@@ -137,7 +135,6 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAudit(Integer auditId, Integer page, Integer pageSize) {
-		Long t1 = System.currentTimeMillis();
 		if (auditId == null || auditId <= 0) {
 			new HesfException("auditId", HesfException.type_number_negative).printStackTrace();
 			return null;
@@ -159,13 +156,11 @@ public class PaymentServiceImpl implements PaymentService {
 		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: " + (System.currentTimeMillis() - t1));
 		return prn;
 	}
 
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByCompany(Integer companyId, Integer page, Integer pageSize) {
-		Long t1 = System.currentTimeMillis();
 		if (companyId == null || companyId <= 0) {
 			new HesfException("companyId", HesfException.type_null).printStackTrace();
 			return null;
@@ -187,7 +182,6 @@ public class PaymentServiceImpl implements PaymentService {
 		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: " + (System.currentTimeMillis() - t1));
 		return prn;
 	}
 
@@ -203,7 +197,6 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(Map<String, Object> map) {
-		Long t1 = System.currentTimeMillis();
 		if(map==null){
 			map = new HashMap<String,Object>();
 		}
@@ -231,7 +224,6 @@ public class PaymentServiceImpl implements PaymentService {
 		PaginationRecordsAndNumber<Payment, Number> prn = new PaginationRecordsAndNumber<Payment, Number>();
 		prn.setNumber(count);
 		prn.setRecords(list);
-		System.out.println("cost time: " + (System.currentTimeMillis() - t1));
 		return prn;
 	}
 
