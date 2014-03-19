@@ -75,7 +75,7 @@
 <!-- 自定义菜单 -->
 <div id="reply_list_boolbar" style="white-space: nowrap;margin-top: 5px">
 	<div style="text-align: right;">
-		<a href="javascript:reply_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增缴款意见</a> 
+		<a href="javascript:reply_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">新增复审意见</a> 
 		<!-- <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel">批量删除</a>	 -->
 	</div>
 </div>
