@@ -656,32 +656,12 @@ public class TestController {
 		return map;
 	}
 
-	// 统计报表--按地区
-	@RequestMapping("/48")
-	@ResponseBody
-	public Map<String, Object> test48() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Integer entity = cService.gotCompanyCode();
-		map.put("entity", entity);
-		return map;
-	}
-
 	// 公司表--根据档案号查
 	@RequestMapping("/49")
 	@ResponseBody
 	public Map<String, Object> test49() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Company entity = cService.getByCompanyCode("101001");
-		map.put("entity", entity);
-		return map;
-	}
-
-	// 公司档案号自增表--获得新档案号
-	@RequestMapping("/50")
-	@ResponseBody
-	public Map<String, Object> test50() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Integer entity = cService.gotCompanyCode();
 		map.put("entity", entity);
 		return map;
 	}
