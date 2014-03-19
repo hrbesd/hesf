@@ -159,7 +159,7 @@
 						$("#paymentList_datagrid").datagrid('reload');
 					});
 				} else {
-					$.messager.alert('消息', '必须在没有缴款记录的情况下进行重审', 'info');
+					$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
 				}
 			},
 			dataType : "json",

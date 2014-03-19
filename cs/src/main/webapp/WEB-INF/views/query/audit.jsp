@@ -78,7 +78,7 @@
 
 	};
 	queryAudit.openAudit = function(index) {
-		esd.common.defaultOpenWindowEx("年审查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/2");
+		esd.common.defaultOpenWindowEx("年审查看", 920, 600, "${contextPath}/security/audits/view/" + index);
 	};
 	/*
 	 * 获取企业基本档案函数
@@ -164,7 +164,7 @@
 	 **/
 	queryAudit.openViewCompany = function(id) {
 
-	esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+		esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
 	};
 
 	//组件解析完成
@@ -189,52 +189,55 @@
 		<table id="queryAuditParams">
 			<tr>
 				<td class="tipsText">年度:</td>
-				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
-				<td class="tipsText">档案号码:</td>
-				<td><input type="text" id="companyCode" class="inputElement" /></td>
-				<td class="tipsText">税务号码:</td>
-				<td class="tipsText"><input id="companyTaxCode" type="text" class="inputElement" /></td>
-				<td class="tipsText">组织机构代码:</td>
-				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
+				<td><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
 				</td>
+				<td class="tipsText">档案号码:</td>
+				<td><input type="text" id="companyCode" class="inputElement" />
+				</td>
+				<td class="tipsText">税务号码:</td>
+				<td class="tipsText"><input id="companyTaxCode" type="text" class="inputElement" />
+				</td>
+				<td class="tipsText">组织机构代码:</td>
+				<td><input type="text" id="companyOrganizationCode" class="inputElement" /></td>
 
 			</tr>
 			<tr>
 				<td class="tipsText">企业性质:</td>
-				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+				<td><input id="companyProperty" class="easyui-combobox" data-options="height:30,editable:false" />
+				</td>
 				<td class="tipsText">经济类型:</td>
-				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+				<td><input id="companyEconomyType" class="easyui-combobox" data-options="height:30,editable:false" />
+				</td>
 				<td class="tipsText">地区:</td>
-				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" /></td>
+				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" />
+				</td>
 				<td class="tipsText">企业人数:</td>
 				<td><input type="text" style="width: 40px" id="companyEmpTotal_1" data-options="validType:['_number']" class="easyui-validatebox inputElement" />-<input type="text" style="width: 40px"
 					id="companyEmpTotal_2" data-options="validType:['_number']" class="easyui-validatebox inputElement" />人</td>
 			</tr>
 			<tr>
 				<td class="tipsText">企业名称:</td>
-				<td colspan="3"><input class="longtext inputElement" id="companyName" /></td>
-				<td class="tipsText">企业地址:</td>
-				<td colspan="3"><input id="companyAddress" class="longtext inputElement" type="text" />
+				<td colspan="3"><input class="longtext inputElement" id="companyName" />
 				</td>
+				<td class="tipsText">企业地址:</td>
+				<td colspan="3"><input id="companyAddress" class="longtext inputElement" type="text" /></td>
 
 			</tr>
 			<tr>
 				<td class="tipsText">法人代表:</td>
-				<td><input id="companyLegal" type="text" class=" inputElement" />
-				</td>
+				<td><input id="companyLegal" type="text" class=" inputElement" /></td>
 				<td class="tipsText">缴款人:</td>
-				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" />
-				</td>
+				<td><input type="text" id="paymentPerson" class="easyui-combobox" data-options="height:30,editable:false" /></td>
 				<td class="tipsText">超过:</td>
 				<td><input id="overYear" type="text" value="0" style="width: 60px" data-options="validType:['_number']" class="easyui-validatebox" /> 年未初审</td>
 
 				<td class="tipsText">是否免交:</td>
-				<td><input type="text" id="isExempt" />
-				</td>
+				<td><input type="text" id="isExempt" /></td>
 			</tr>
 			<tr>
 				<td class="tipsText">流程状态:</td>
-				<td><input id="auditProcessStatus" class="easyui-combobox" data-options="height:30,editable:false" /></td>
+				<td><input id="auditProcessStatus" class="easyui-combobox" data-options="height:30,editable:false" />
+				</td>
 
 			</tr>
 		</table>
