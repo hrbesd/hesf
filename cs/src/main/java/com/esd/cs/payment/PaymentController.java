@@ -333,6 +333,9 @@ public class PaymentController {
 		BigDecimal payments = new BigDecimal(0.00);
 		BigDecimal readyPayments = new BigDecimal(0.00);
 		for (Payment payment : query.getRecords()) {
+			if (payment.getBillObsolete() == Boolean.TRUE) {
+				continue;
+			}
 			if (payment.getBillReturn() == Boolean.FALSE) {
 				readyPayments = readyPayments.add(payment.getPaymentMoney());
 			} else {
@@ -358,6 +361,10 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean backAudit(@PathVariable(value = "id") Integer id, HttpSession session) {
 		Audit audit = auditService.getByPrimaryKey(id);
+		PaginationRecordsAndNumber<Payment, Number> query = paymentService.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+		if (query == null || query.getRecords().size() > 0) {
+			return false;
+		}
 		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
 		audit.setAuditProcessStatus(auditProcessStatus);
 		Boolean b = auditService.update(audit);

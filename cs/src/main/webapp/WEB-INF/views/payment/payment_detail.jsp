@@ -149,28 +149,22 @@
 		esd.common.openWindow("#add", "查看缴款", 750, 350, "${contextPath}/security/payment/view/" + id);
 	};
 	payment.backAudit = function(id) {
-		var payments = $('#payments').html();
-		if (payments == '0.00') {
-			$.ajax({
-				url : 'payment/backAudit/${entity.id}',
-				type : 'GET',
-				success : function(data) {
-					if (data == true) {
-						$.messager.alert('消息', '重审提交成功', 'info', function() {
-							$("#auditPanel").window("close");
-							$("#payment_datagrid").datagrid('reload');
-						});
-					} else {
-						$.messager.alert('消息', '重审提交失败', 'info');
-					}
-				},
-				dataType : "json",
-				async : false
-			});
-		} else {
-			$.messager.alert('消息', '只能在未缴款的状态下进行重审', 'info');
-		}
-
+		$.ajax({
+			url : 'payment/backAudit/${entity.id}',
+			type : 'GET',
+			success : function(data) {
+				if (data == true) {
+					$.messager.alert('消息', '重审提交成功', 'info', function() {
+						esd.common.defaultOpenWindowClose();
+						$("#paymentList_datagrid").datagrid('reload');
+					});
+				} else {
+					$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
+				}
+			},
+			dataType : "json",
+			async : false
+		});
 	};
 
 	payment.loadPaymentData = function() {
@@ -192,7 +186,7 @@
 			hidden : true
 		}, {
 			field : 'billPrintDate',
-			title : '打票日期',
+			title : '出票日期',
 			width : 75
 		}, {
 			field : 'paymentMoney',
@@ -217,7 +211,7 @@
 			width : 80
 		}, {
 			field : 'billExchangeDate',
-			title : '换票日期',
+			title : '返票日期',
 			width : 75
 		}, {
 			field : 'paymentExceptional',
@@ -237,8 +231,16 @@
 			}
 		}, {
 			field : 'billObsolete',
-			title : '作废票据',
-			width : 80
+			title : '废',
+			width : 20,
+			align : 'center',
+			formatter : function(value, row, index) {
+				val = '<strong style="color: orange;" >F</strong>';
+				if (value == true) {
+					var val = '<strong style="color: red;" >T</strong>';
+				}
+				return val;
+			}
 		}, {
 			field : 'remark',
 			title : '备注',
@@ -253,7 +255,7 @@
 			width : 30,
 			align : 'center',
 			formatter : function(value, row, index) {
-				if (row.billReturn == true) {
+				if (row.billReturn == true || row.billObsolete==true) {
 					var v = '<a href="#" style="font-size: 12px;" onclick="payment.view(' + row.id + ')">查看</a>';
 				} else {
 					var v = '<a href="#" style="font-size: 12px;" onclick="payment.confirm(' + row.id + ')">确认</a>';

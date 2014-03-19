@@ -587,7 +587,6 @@ public class AuditsController {
 			audit.setYear(year);
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(process);
 			audit.setAuditProcessStatus(auditProcessStatus);
-			long l = System.currentTimeMillis();
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
@@ -707,7 +706,9 @@ public class AuditsController {
 		}
 		request.setAttribute("unAudityear", sb.toString());
 		request.setAttribute("unAudityearNum", unAudits.length);
-
+		// 拒绝条件选择
+		List<Reply> replys = replyService.getAll();
+		request.setAttribute("reasons", replys);
 		return new ModelAndView("audit/audit_view_detail", "entity", audit);
 	}
 

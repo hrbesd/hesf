@@ -37,9 +37,7 @@ public class CalendarUtil {
 			beginDate = format.parse(beginDateStr);
 			endDate = format.parse(endDateStr);
 			day = (endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
-			// System.out.println("相隔的天数="+day);
 		} catch (ParseException e) {
-			// TODO 自动生成 catch 块
 			e.printStackTrace();
 		}
 		return day;
