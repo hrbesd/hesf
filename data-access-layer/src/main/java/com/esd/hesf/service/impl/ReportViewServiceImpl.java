@@ -62,9 +62,16 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnAudit(atm.getNum());
+					break;
 				// 已初审, 待复核单位数
 				case 2:
 					rvm.setUnReAudit(atm.getNum());
+					break;
+				// 已复核, 达标单位数
+				case 6:
+					rvm.setAuditOk(atm.getNum());
 					break;
 				// 已复核, 未达标单位数
 				case 3:
@@ -74,13 +81,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 					rvm.setUnauditOk(atm.getNum());
 					break;
 				case 5:
-					rvm.setUnauditOk(atm.getNum());
-					break;
-				// 已复核, 达标单位数
-				case 6:
-					rvm.setAuditOk(atm.getNum());
-					break;
-				case 7:
 					rvm.setUnauditOk(atm.getNum());
 					break;
 				}
@@ -139,9 +139,16 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnAudit(atm.getNum());
+					break;
 				// 已初审, 待复核单位数
 				case 2:
 					rvm.setUnReAudit(atm.getNum());
+					break;
+				// 已复核, 达标单位数
+				case 6:
+					rvm.setAuditOk(atm.getNum());
 					break;
 				// 已复核, 未达标单位数
 				case 3:
@@ -152,13 +159,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 					break;
 				case 5:
 					rvm.setUnauditOk(atm.getNum());
-					break;
-				// 已复核, 达标单位数
-				case 6:
-					rvm.setAuditOk(atm.getNum());
-					break;
-				case 7:
-					rvm.setUnReAudit(atm.getNum());
 					break;
 				}
 			}
@@ -216,9 +216,16 @@ public class ReportViewServiceImpl implements ReportViewService {
 				case 1:
 					rvm.setUnAudit(atm.getNum());
 					break;
+				case 7:
+					rvm.setUnAudit(atm.getNum());
+					break;
 				// 已初审, 待复核单位数
 				case 2:
 					rvm.setUnReAudit(atm.getNum());
+					break;
+				// 已复核, 达标单位数
+				case 6:
+					rvm.setAuditOk(atm.getNum());
 					break;
 				// 已复核, 未达标单位数
 				case 3:
@@ -229,13 +236,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 					break;
 				case 5:
 					rvm.setUnauditOk(atm.getNum());
-					break;
-				// 已复核, 达标单位数
-				case 6:
-					rvm.setAuditOk(atm.getNum());
-					break;
-				case 7:
-					rvm.setUnReAudit(atm.getNum());
 					break;
 				}
 			}

@@ -70,10 +70,10 @@
 		update reply
 		<set>
 			<if test="title != null">
-				#{title,jdbcType=VARCHAR},
+				title = #{title,jdbcType=VARCHAR},
 			</if>
 			<if test="content != null">
-				#{content,jdbcType=VARCHAR},
+				content = #{content,jdbcType=VARCHAR},
 			</if>
 			update_time = now(),
 			<if test="userId != null">
@@ -82,11 +82,9 @@
 			<if test="isActive != null">
 				is_active = #{isActive,jdbcType=BIT},
 			</if>
-			<if test="version != null">
-				version = #{version,jdbcType=INTEGER},
-			</if>
+			version = version + 1
 		</set>
-		where id = #{id,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
 	</update>
 
 	<!-- select -->

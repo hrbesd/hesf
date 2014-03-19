@@ -67,7 +67,22 @@ public class AuditProcessStatusServiceImpl implements AuditProcessStatusService 
 
 	@Override
 	public PaginationRecordsAndNumber<AuditProcessStatus, Number> getPaginationRecords(AuditProcessStatus t, Integer page, Integer pageSize) {
-		return null;
+		// 将参数放入到map中
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("payment", t);
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<AuditProcessStatus> list = dao.retrieveByPage(map);
+		// 数据条数
+		int count = dao.retrieveCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<AuditProcessStatus, Number> prn = new PaginationRecordsAndNumber<AuditProcessStatus, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
 	}
 
 	@Override

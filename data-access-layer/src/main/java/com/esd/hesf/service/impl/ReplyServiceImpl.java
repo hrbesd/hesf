@@ -16,15 +16,16 @@ import com.esd.hesf.service.ReplyService;
 
 /**
  * 复审意见 service实现类
+ * 
  * @author Administrator
- *
+ * 
  */
 @Service
-public class ReplyServiceImpl implements ReplyService{
+public class ReplyServiceImpl implements ReplyService {
 
 	@Autowired
 	private ReplyDao dao;
-	
+
 	@Override
 	public boolean save(Reply t) {
 		int k = dao.insert(t);
@@ -66,7 +67,24 @@ public class ReplyServiceImpl implements ReplyService{
 
 	@Override
 	public PaginationRecordsAndNumber<Reply, Number> getPaginationRecords(Reply t, Integer page, Integer pageSize) {
-		return null;
+		Long t1 = System.currentTimeMillis();
+		// 将参数放入到map中
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("payment", t);
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<Reply> list = dao.retrieveByPage(map);
+		// 数据条数
+		int count = dao.retrieveCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Reply, Number> prn = new PaginationRecordsAndNumber<Reply, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		System.out.println("cost time: "+(System.currentTimeMillis()-t1));
+		return prn;
 	}
 
 	@Override
@@ -79,6 +97,4 @@ public class ReplyServiceImpl implements ReplyService{
 		return dao.retrieveByPage(map);
 	}
 
-	
-	
 }
