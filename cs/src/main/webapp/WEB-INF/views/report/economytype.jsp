@@ -82,7 +82,7 @@
 
 	</div>
 	<!--年审单位性质汇总表 -->
-	<table id="printNatureTab" border="" cellspacing="0" cellpadding="0" style="margin-top: 30px">
+	<table id="printNatureTab" border="" cellspacing="0" cellpadding="0"  class="reportTab" >
 		<thead>
 					<tr>
 			<th colspan="14">年审经济类型汇总表</th>

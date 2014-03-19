@@ -229,3 +229,15 @@ text-align: right;
     margin-bottom: 10px;
 }
     
+ .reportTab{
+ 
+ margin-top: 30px;
+  width: 1000px;
+  font-size: 12px;
+ 
+ }
+.reportTab td {
+    font-size: 12px;
+}
+    
+    

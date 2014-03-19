@@ -51,7 +51,6 @@
 	workerList.loadData = function(params) {
 
 		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
-
 		{
 			field : 'retirementAge',
 			title : '休年龄',
