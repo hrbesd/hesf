@@ -5,6 +5,7 @@
  */
 package com.esd.cs.payment;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,7 @@ import com.esd.hesf.service.PaymentService;
 public class QueryPaymentController {
 
 	private static final Logger log = LoggerFactory.getLogger(QueryPaymentController.class);
-
+	private DecimalFormat format = new DecimalFormat("0.00");
 	@Autowired
 	private PaymentService pService;
 
@@ -120,7 +121,8 @@ public class QueryPaymentController {
 			map.put("companyCode", p.getPaymentCompany().getCompanyCode());
 			map.put("companyName", p.getPaymentCompany().getCompanyName());// 缴款公司
 			map.put("paymentBill", p.getPaymentBill()); // 缴款票号
-			map.put("paymentMoney", p.getPaymentMoney()); // 缴款金额
+			String paymentMoney = String.valueOf(format.format(p.getPaymentMoney()));
+			map.put("paymentMoney", paymentMoney); // 缴款金额
 			map.put("paymentType", p.getPaymentType().getText()); // 缴款类型
 			map.put("paymentPerson", p.getPaymentPerson().getUserName()); // 缴款操作人
 			map.put("paymentExceptional", p.getPaymentExceptional().getPaymentExceptional()); // 缴款方式
