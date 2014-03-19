@@ -32,9 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.cs.common.CommonUtil;
-import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
@@ -143,8 +141,8 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/add/{companyId}/{year}", method = RequestMethod.GET)
 	public ModelAndView add_worker(@PathVariable(value = "companyId") String companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
-	logger.debug("gotoAddWorker,companyId:{},year:{}",companyId,year);
-		
+		logger.debug("gotoAddWorker,companyId:{},year:{}", companyId, year);
+
 		// 续传企业id
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
@@ -183,7 +181,7 @@ public class WorkerController {
 	}
 
 	private boolean addWorker(Worker worker, Integer companyId, String year) {
-		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker, companyId,year);
+		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker, companyId, year);
 		boolean b = workerService.save(worker, companyId, year);
 		logger.debug("addWorkerResult:{}", b);
 		return b;
@@ -283,7 +281,6 @@ public class WorkerController {
 				// 员工信息更新成功，进行员工和录用企业之间关联更新
 				Company c = companyService.getByPrimaryKey(companyId);
 				if (c != null) {
-					logger.debug("upData_workerCompanyParamsWorkerId:{},companyCode:{},year:{},workerCurrenJob:{}", worker.getId(), c.getCompanyCode(), ParameterController.getYear(), worker.getCurrentJob());
 					companyUpdataStatus = workerService.changeCompany(worker.getId(), c.getId(), year, worker.getCurrentJob());
 					if (companyUpdataStatus) {
 						logger.debug("workerUpDataGetCompanyResult:{}", companyUpdataStatus);
@@ -310,7 +307,8 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "year") String year, HttpServletRequest request) {
+	public Boolean delete_worker(@RequestParam(value = "params[]") Integer params[], @RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "year") String year,
+			HttpServletRequest request) {
 
 		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params, year, companyId);
 		try {
@@ -660,7 +658,7 @@ public class WorkerController {
 	 * @return
 	 */
 	private List<Map<String, String>> validateOrganizationCode(String workerIdCard, String year) {
-		logger.debug("validateOrganizationCode:{},year:{}", workerIdCard,year);
+		logger.debug("validateOrganizationCode:{},year:{}", workerIdCard, year);
 		try {
 			List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 			Map<String, String> paramsMap = new HashMap<String, String>();
@@ -705,6 +703,7 @@ public class WorkerController {
 
 	/**
 	 * 确定导入企业信息
+	 * 
 	 * @param companyId
 	 * @param paramsCode
 	 * @param paramsName
@@ -714,15 +713,12 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/determineimport", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean importworker1(@RequestParam(value = "companyId") Integer companyId, 
-			@RequestParam(value = "paramsCode[]") String paramsCode[], 
-			@RequestParam(value = "paramsName[]") String paramsName[], 
-			@RequestParam(value = "year") String year, 
-			
-			
+	public Boolean importworker1(@RequestParam(value = "companyId") Integer companyId, @RequestParam(value = "paramsCode[]") String paramsCode[],
+			@RequestParam(value = "paramsName[]") String paramsName[], @RequestParam(value = "year") String year,
+
 			HttpServletRequest request) {
 		boolean b = true;
-		logger.debug("importWorkerparamsCode:{},companyId:{},year:{}", paramsCode, companyId,year);
+		logger.debug("importWorkerparamsCode:{},companyId:{},year:{}", paramsCode, companyId, year);
 		try {
 			for (int i = 0; i < paramsCode.length; i++) {
 				// 残疾证号

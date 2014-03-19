@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.statistics;
 
 import java.io.File;
@@ -21,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.cs.Constants;
 import com.esd.cs.common.CommonUtil;
-import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.cs.worker.WorkerController;
 import com.esd.hesf.service.ReportViewService;
@@ -66,10 +70,9 @@ public class ReportController {
 	 */
 	@RequestMapping(value = "/nature", method = RequestMethod.GET)
 	public ModelAndView nature(HttpServletRequest request, HttpSession session) {
-		logger.info("goToPage:{}", "Report_Nature");
-		request.setAttribute("year", ParameterController.getYear());
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("year", nowYear);
 		request.setAttribute("currentTime", CommonUtil.formatData());
-
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
 		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
 		return new ModelAndView("report/nature");
@@ -100,8 +103,8 @@ public class ReportController {
 	 */
 	@RequestMapping(value = "/area", method = RequestMethod.GET)
 	public ModelAndView area(HttpServletRequest request, HttpSession session) {
-		logger.info("goToPage:{}", "Report_Area");
-		request.setAttribute("year", ParameterController.getYear());
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("year", nowYear);
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
 		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人
@@ -133,8 +136,8 @@ public class ReportController {
 	 */
 	@RequestMapping(value = "/economytype", method = RequestMethod.GET)
 	public ModelAndView economytype(HttpServletRequest request, HttpSession session) {
-		logger.info("goToPage:{}", "Report_Economytype");
-		request.setAttribute("year", ParameterController.getYear());
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("year", nowYear);
 		request.setAttribute("currentTime", CommonUtil.formatData());
 		request.setAttribute("createTabCompany", createTabCompany);// 制表公司
 		request.setAttribute("createPeople", session.getAttribute(Constants.USER_REAL_NAME).toString());// 制表人

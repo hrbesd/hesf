@@ -65,8 +65,7 @@
 					v = v + '<c:if test="${process==1}">查看</c:if><c:if test="${process==2}">复审</c:if></a> ';
 					return v;
 				}
-				
-				
+
 				return v + '查看</a> ';
 			}
 		} ] ], params);
@@ -93,11 +92,11 @@
 	};
 	/**
 	 * 新建审计记录
-	**/
-	initAuditList.createAudit = function(){
+	 **/
+	initAuditList.createAudit = function() {
 		esd.common.defaultOpenWindowEx("新建审计记录", 600, 200, "${contextPath}/security/audits/create");
 	};
-	
+
 	/**
 	 * 查询数据 并校验所有输入框
 	 */
@@ -112,27 +111,22 @@
 	<table border="0" width="100%">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
-			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" />
-			</td>
-			<td width="80" style="text-align: right;" >流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
-			</td>
+			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}" data-options="height:30,editable:false" /></td>
+			<td width="80" style="text-align: right;">流程状态:</td>
+			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" /></td>
 			<c:if test="${process==1}">
-			<td colspan="3" style="text-align: right;" ><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a></td>
+				<td colspan="3" style="text-align: right;"><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a>
+				</td>
 			</c:if>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码:</td>
-			<td><input type="text" style="width: 100%" id="companyCode" />
-			</td>
+			<td><input type="text" style="width: 100%" id="companyCode" /></td>
 			<td style="text-align: right;">税务编码:</td>
-			<td><input type="text" style="width: 100%" id="companyTaxCode" />
-			</td>
+			<td><input type="text" style="width: 100%" id="companyTaxCode" /></td>
 			<td width="80" style="text-align: right;">企业名称:</td>
-			<td><input type="text" style="width: 100%" id="companyName" />
-			</td>
-			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a>
-			</td>
+			<td><input type="text" style="width: 100%" id="companyName" /></td>
+			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="initAuditList.findData()">查找</a></td>
 		</tr>
 	</table>
 </div>

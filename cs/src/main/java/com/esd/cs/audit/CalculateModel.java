@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.audit;
 
 import java.math.BigDecimal;
@@ -43,6 +48,7 @@ public class CalculateModel {
 	private String s_zhiNaJinTianShu;
 	private List<AccountModel> weiShenMingXi;
 	private List<AccountModel> qianJiaoMingXi;
+	private List<AccountModel> weiJiaoMingXi;
 
 	public Integer getZaiZhiYuanGongZongShu() {
 		return zaiZhiYuanGongZongShu;
@@ -324,6 +330,14 @@ public class CalculateModel {
 
 	public void setMianJiao(Boolean mianJiao) {
 		this.mianJiao = mianJiao;
+	}
+
+	public List<AccountModel> getWeiJiaoMingXi() {
+		return weiJiaoMingXi;
+	}
+
+	public void setWeiJiaoMingXi(List<AccountModel> weiJiaoMingXi) {
+		this.weiJiaoMingXi = weiJiaoMingXi;
 	}
 
 }

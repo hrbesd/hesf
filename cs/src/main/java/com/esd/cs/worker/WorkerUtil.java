@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.worker;
 
 import java.io.File;
@@ -14,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import com.esd.common.util.CalendarUtil;
 import com.esd.cs.common.HExcelSheetParser;
-import com.esd.cs.common.ParameterController;
 import com.esd.cs.common.XExcelSheetParser;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Worker;

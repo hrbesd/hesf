@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.company;
 
 import java.io.File;
@@ -9,6 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.common.ParameterController;
+import com.esd.cs.Constants;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.CompanyService;
@@ -34,9 +40,9 @@ public class QueryCompayController {
 	private CompanyService companyService;// 企业
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView company_list(HttpServletRequest request) {
-		// 获取当前年份
-		request.setAttribute("nowYear", ParameterController.getYear());
+	public ModelAndView company_list(HttpServletRequest request,HttpSession session) {
+		String nowYear = (String)session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
 		logger.debug("goToPage:{}", "queryCompany");
 		return new ModelAndView("query/company");
 

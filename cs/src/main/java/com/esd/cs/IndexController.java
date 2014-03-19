@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs;
 
 import java.util.ArrayList;
@@ -20,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.esd.common.captcha.CaptchaService;
 import com.esd.common.util.UsernameAndPasswordMd5;
-import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserGroup;
@@ -100,7 +104,8 @@ public class IndexController {
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
 				
 				// 登录成功获得年度
-				ParameterController.setYear(auditParameterService.getLastestYear());
+				String year = auditParameterService.getLastestYear();
+				session.setAttribute(Constants.YEAR, year);
 				return new ModelAndView("redirect:/security/index");
 			} else {
 				redirectAttributes.addFlashAttribute("username", userName);

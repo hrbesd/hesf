@@ -20,6 +20,19 @@
 	parameter_edit.back = function() {
 		esd.common.defaultOpenWindowClose();
 	};
+	parameter_edit.change = function(val) {
+		if (val.length == 4) {
+			var auditDelayDate = $('#auditDelayDate').datebox('getValue');
+			var md = auditDelayDate.substr(4, auditDelayDate.length);
+			var y = (parseInt(val)+1) + md;
+			$('#auditDelayDate').datebox('setValue', y);
+			
+			var payCloseDate = $('#payCloseDate').datebox('getValue');
+			var md = payCloseDate.substr(4, payCloseDate.length);
+			var y = (parseInt(val)+1) + md;
+			$('#payCloseDate').datebox('setValue', y);
+		}
+	};
 </script>
 <div>
 	<div style="margin-top: 20px; margin-left: 20px;">
@@ -27,7 +40,7 @@
 			<table class="parameterTab">
 				<tr>
 					<td>年度:</td>
-					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${entity.year}" /> <input class="easyui-validatebox" name="version" type="hidden"
+					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
 						value="${entity.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
 					</td>
 					<td colspan="2"><span style="color: red; font-size: 12px;">提示：默认设置为当前年度减一年</span></td>
@@ -39,7 +52,7 @@
 					<td>滞纳金开始日期:</td>
 					<td>
 					<fmt:formatDate value="${entity.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" />
-					<input class="easyui-datebox easyui-validatebox" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" /></td>
+					<input class="easyui-datebox easyui-validatebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" /></td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>
@@ -57,7 +70,7 @@
 					<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${entity.averageSalary}" />
 					</td>
 					<td>支付截至日期:</td>
-					<td><fmt:formatDate value="${entity.payCloseDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" /> <input class="easyui-datebox easyui-validatebox" name="payCloseDate"
+					<td><fmt:formatDate value="${entity.payCloseDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" /> <input class="easyui-datebox easyui-validatebox"  id="payCloseDate" name="payCloseDate"
 						data-options="required:false,showSeconds:false,height:30" value="${date}" style="width:150px" />
 					</td>
 					<td>职工退休年龄(女)：</td>

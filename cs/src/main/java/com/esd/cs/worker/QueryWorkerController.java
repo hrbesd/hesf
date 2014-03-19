@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.worker;
 
 import java.util.ArrayList;
@@ -17,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.AuditParameterService;
@@ -163,7 +166,6 @@ public class QueryWorkerController {
 					}
 				}
 
-				System.out.println();
 				// 计算年龄 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
 				map.put("phone", it.getPhone());// phone

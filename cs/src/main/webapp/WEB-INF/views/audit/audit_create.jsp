@@ -7,13 +7,11 @@
 <table border="0" width="100%" style="padding-top: 10px;">
 	<tr>
 		<td style="text-align: right;">年审时间:</td>
-		<td><input id="createYear" class="easyui-combobox" data-options="height:30,width:100,editable:false" />
-		</td>
+		<td><input id="createYear" class="easyui-combobox" data-options="height:30,width:100,editable:false" /></td>
 	</tr>
 	<tr>
 		<td style="text-align: right;">档案编码:</td>
-		<td><input id="findCompanyCode" class="easyui-combobox" data-options="width:400,height:30,editable:true,panelHeight:240" />
-		</td>
+		<td><input id="findCompanyCode" class="easyui-combobox" data-options="width:400,height:30,editable:true,panelHeight:240" /></td>
 
 	</tr>
 	<tr>
@@ -21,8 +19,7 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" onclick="auditCreate.add();">添加记录</a>
-		</td>
+		<td><a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" onclick="auditCreate.add();">添加记录</a></td>
 	</tr>
 
 </table>

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 哈尔滨亿时代数码科技开发有限公司（www.hrbesd.com）. All rights reserved.
+ * 
+ * HRBESD PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.esd.cs.payment;
 
 import java.math.BigDecimal;
@@ -27,7 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
-import com.esd.cs.common.ParameterController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
@@ -72,8 +76,8 @@ public class PaymentController {
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request) {
-		String nowYear = ParameterController.getYear();
+	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request, HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("payment/payment_list");
@@ -158,7 +162,7 @@ public class PaymentController {
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_YJK);
 			audit.setAuditProcessStatus(auditProcessStatus);
 			auditService.update(audit);
-			//更新补缴年度
+			// 更新补缴年度
 			Integer companyId = audit.getCompany().getId();
 			String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
 			if (unAudits != null) {
@@ -347,6 +351,16 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean delPayment(@PathVariable(value = "id") Integer id, HttpSession session) {
 		Boolean b = paymentService.delete(id);
+		return b;
+	}
+
+	@RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean backAudit(@PathVariable(value = "id") Integer id, HttpSession session) {
+		Audit audit = auditService.getByPrimaryKey(id);
+		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
+		audit.setAuditProcessStatus(auditProcessStatus);
+		Boolean b = auditService.update(audit);
 		return b;
 	}
 }
