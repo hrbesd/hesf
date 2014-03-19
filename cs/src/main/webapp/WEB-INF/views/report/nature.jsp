@@ -20,7 +20,7 @@
 	//																					单位性质，                                        单位总数，                                      单位总人数，                         待初单位数，
 					$("#printNatureTab tbody").append("<tr><td>"+data[i].reportName+"</td><td>"+data[i].unitNum+"</td><td>"+data[i].empTotal+"</td><td>"+data[i].unAudit+"</td>"
 				//								待复审单位数，								已复核达标单位数				已复核未达标单位数								应安排人数						已安排人数
-					+"<td>"+data[i].unReAudit+"</td><td>"+data[i].unReAudit+"</td><td>"+data[i].unauditOk+"</td><td>"+data[i].shouldTotal+"</td><td>"+data[i].alreadyTotal+"</td>"
+					+"<td>"+data[i].unReAudit+"</td><td>"+data[i].auditOk+"</td><td>"+data[i].unauditOk+"</td><td>"+data[i].shouldTotal+"</td><td>"+data[i].alreadyTotal+"</td>"
 					//				少安排人数								应缴金额												减免金额												实缴金额											已缴金额
 					+"<td>"+data[i].lessTotal+"</td><td>"+data[i].amountPayable+"</td><td>"+data[i].reductionAmount+"</td><td>"+data[i].actualAmount+"</td><td>"+data[i].alreadyAmount+"</td>"
 					);
