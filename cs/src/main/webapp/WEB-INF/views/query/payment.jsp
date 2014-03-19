@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
-
 <script type="text/javascript">
 	var queryPayment = {};
 	// 档案号缓存数据
@@ -171,7 +170,8 @@
 		},{
 			field : 'paymentMoney',
 			title : '缴款金额',
-			width : 110
+			width : 110,
+			align : 'right'
 		}, {
 			field : 'paymentPerson',
 			title : '缴款操作人',
