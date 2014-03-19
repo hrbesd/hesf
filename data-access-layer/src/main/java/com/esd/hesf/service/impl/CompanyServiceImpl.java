@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditDao;
 import com.esd.hesf.dao.AuditParameterDao;
-import com.esd.hesf.dao.CompanyCodeDao;
 import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
@@ -61,10 +60,6 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private AuditParameterDao apDao;
 
-	@Autowired
-	private CompanyCodeDao ccDao;
-
-	
 	@Override
 	public boolean save(Company t) {
 		return false;
@@ -454,16 +449,6 @@ public class CompanyServiceImpl implements CompanyService {
 		map.put("year", year);
 		String[] years = auDao.retireveUnauditYearByCompanycode(map);
 		return years;
-	}
-
-	@Override
-	public Integer gotCompanyCode() {
-		Integer temp = ccDao.retrieveCompanyCode();
-		int k = ccDao.update(temp);
-		if (k == 1) {
-			return temp;
-		}
-		return null;
 	}
 
 	@Override

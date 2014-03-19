@@ -122,11 +122,4 @@ public interface CompanyService extends BaseService<Company> {
 	 */
 	String[] getUnauditYearByCompany(Integer companyId, String year);
 
-	/**
-	 * 获得一个自增长的公司档案号
-	 * 
-	 * @return
-	 */
-	Integer gotCompanyCode();
-
 }
