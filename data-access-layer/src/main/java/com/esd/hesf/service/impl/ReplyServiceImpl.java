@@ -71,7 +71,8 @@ public class ReplyServiceImpl implements ReplyService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("payment", t);
 		// 起始索引值
-		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 剔除掉'无' 这个选项, 它始终是存在, 且不可编辑
+		map.put("start", page <= 1 ? (Constants.START + 1) : (page - 1) * pageSize);
 		// 返回量
 		map.put("size", pageSize);
 		// 返回的数据
