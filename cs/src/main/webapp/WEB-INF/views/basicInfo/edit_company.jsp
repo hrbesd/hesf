@@ -59,7 +59,7 @@
 			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" value="${company.companyPhone}" data-options="required:true" />
 			</td>
 			<td class="tdRight">手机号码:</td>
-			<td><input name="companyMobile" class="inNormal easyui-validatebox" type="text" value="${company.companyMobile}" data-options="required:true" />
+			<td><input name="companyMobile" class="inNormal easyui-validatebox" type="text" value="${company.companyMobile}"/>
 			</td>
 		</tr>
 		<tr>
