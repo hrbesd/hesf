@@ -74,7 +74,7 @@
 	 * 查看企业信息框
 	 */
 	initAuditList.openViewCompany = function(id) {
-		esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+		esd.common.defaultOpenWindowEx("查看企业信息",750,400,'company/view/' + id,null);
 	};
 	/*
 	打开单位初审面板

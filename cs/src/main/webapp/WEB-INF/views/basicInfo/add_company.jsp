@@ -15,7 +15,7 @@
 		<tr>
 			<td class="tdRight">档案编码(<span class="red_notice">*</span>):</td>
 			<td >
-			<input name="companyCode" class="easyui-validatebox"  data-options="required:true"  validType="remote['company/validate_companyCode','param','组织机关代码证已存在']" type="text" />
+			<input name="companyCode" id="companyCode" class="easyui-validatebox"  data-options="required:true"  validType="remote['company/validate_companyCode','param','组织机关代码证已存在']" type="text" />
 		</td>
 			</tr>
 		<tr>

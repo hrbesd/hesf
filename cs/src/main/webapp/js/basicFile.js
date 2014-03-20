@@ -91,7 +91,6 @@ basicFile.openAddCompany = function() {
 basicFile.addCompany = function() {
 	// 校验
 	if (parseInt($("#companyEmpTotal").val()) < parseInt($("#companyHandicapTotal").val())) {
-		
 		$.messager.alert('消息', '残疾职工人数不能大于员工总人数', 'error');
 		return;
 	}
@@ -112,8 +111,7 @@ basicFile.addCompany = function() {
  * 查看企业信息框
  */
 basicFile.openViewCompany = function(id) {
-
-	esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+	esd.common.defaultOpenWindowEx("查看企业信息",750,400,'company/view/' + id,null);
 };
 /**
  * 打开编辑企业信息框
