@@ -108,7 +108,7 @@
 		</where>
 		order by id
 		<!-- not include no comment -->
-		limit 1,#{size}
+		limit #{start},#{size}
 	</select>
 	
 	<select id="retrieveCount" resultType="java.lang.Integer" parameterType="map">
