@@ -22,19 +22,7 @@ public class UsernameAndPasswordMd5 {
 			throw new NullPointerException("username or password is invalid");
 		}
 		StringBuilder sb = new StringBuilder();
-		char u[], p[];
-
-		u = username.toCharArray();
-		p = password.toCharArray();
-		if (u.length < p.length) {
-			for (int i = 0; i <= u.length - 1; i++) {
-				sb.append(u[i]).append(p[i]);
-			}
-		} else {
-			for (int i = 0; i <= p.length - 1; i++) {
-				sb.append(u[i]).append(p[i]);
-			}
-		}
+		sb.append(username).append(password);
 		logger.debug(sb.toString());
 		return getMD5Str(sb.toString());
 	}

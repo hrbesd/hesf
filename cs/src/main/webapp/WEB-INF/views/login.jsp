@@ -18,14 +18,19 @@
 		$("#loginVerifyCode").attr("src", "${contextPath}/captcha/create?" + timestamp);
 	}
 	function submit() {
+		var code = $('input[name=checkCode]').val();
+		if (code == '' || code == undefined) {
+			$('#message').html("验证码不能不空");
+			return;
+		}
 		$("#loginform").submit();
 	}
-	$(function(){
+	$(function() {
 		getimgcode();
-		$("body").keypress(function(event){
-			if(event.keyCode == 13){
-                submit();
-            }
+		$("body").keypress(function(event) {
+			if (event.keyCode == 13) {
+				submit();
+			}
 		});
 	});
 </script>
@@ -40,17 +45,25 @@ img {
 	float: right;
 	cursor: pointer;
 }
+.bbc-name {
+font-size: 28px;
+font-family: 'Microsoft YaHei';
+color: #0074A7;
+text-align: center;
+padding: 40px 0 0 0;
+}
 </style>
 </head>
-<body>
+<body style="background-color: #E9E9E9;">
+	<h2 class="bbc-name bbc-shop" >残疾人就业保障金管理系统</h2>
+	<h2 style="font-family: 'Microsoft YaHei';color: #0074A7; text-align: center;" >Handicapped Employment Security Fund</h2>
 	<div id="main" style=" display: none;">
-	
 		<div id="win" class="easyui-window" title="登录" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
 			<form id="loginform" action="${contextPath}/login" method="post" style="padding-left: 80px; padding-top: 30px;">
 				<div style="text-align: left;">
-					<div style="color: red;">${message}</div>
+					<div style="color: red;" id="message">${message}</div>
 					<p>
-						用户名: <input name="username" type="text" style="width: 160px;" value="${username }"/>
+						用户名: <input name="username" type="text" style="width: 160px;" value="${username }" />
 					</p>
 					<p>
 						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="${password }" />

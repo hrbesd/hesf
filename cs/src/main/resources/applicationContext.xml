@@ -35,11 +35,27 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<aop:config>
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.AreaServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.AuditParameterServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.AuditProcessStatusServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.AuditServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.CompanyEconomyTypeServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.CompanyPropertyServiceImpl.*(..))" advice-ref="txAdvice" />
 		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.CompanyServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.CompanyTypeServiceImpl.*(..))" advice-ref="txAdvice" />
 		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.MenuServiceImpl.*(..))" advice-ref="txAdvice" />
-		<!-- <aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.ParameterServiceImpl.*(..))" advice-ref="txAdvice" /> -->
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.PaymentExceptionalServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.PaymentServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.PaymentTypeServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.PermissionTypeServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.ReplyServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.ReportViewServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.UserGroupServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.UserLogServiceImpl.*(..))" advice-ref="txAdvice" />
 		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.UserServiceImpl.*(..))" advice-ref="txAdvice" />
-		<!-- <aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.VerifyServiceImpl.*(..))" advice-ref="txAdvice" />	 -->
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.WorkerHandicapLevelServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.WorkerHandicapTypeServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.hesf.service.impl.WorkerServiceImpl.*(..))" advice-ref="txAdvice" />
 	</aop:config>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
@@ -77,7 +93,7 @@
 		<property name="basePackage" value="com.esd.hesf.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
-	
-	
-	
+
+
+
 </beans>

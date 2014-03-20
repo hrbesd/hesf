@@ -12,7 +12,7 @@
 					$("#parameter_list_grid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '添加失败', 'info');
+				$.messager.alert('消息', '添加失败,年度参数已存在。', 'info');
 			}
 		});
 
