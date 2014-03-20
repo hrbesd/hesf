@@ -40,7 +40,6 @@ import com.esd.hesf.service.PaymentService;
 import com.esd.hesf.service.PaymentTypeService;
 import com.esd.hesf.service.ReplyService;
 import com.esd.hesf.service.ReportViewService;
-import com.esd.hesf.service.UserGroupService;
 import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
@@ -67,8 +66,8 @@ public class TestController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private UserGroupService groupService;
+//	@Autowired
+//	private UserGroupService groupService;
 
 	@Autowired
 	private CompanyService cService;
