@@ -233,7 +233,7 @@ esd.common.openWindowEx = function(id, title, width, height, url, closeFun) {
  */
 esd.common.defaultOpenWindowEx = function(title, width, height, url) {
 	$("#main").append('<div id="defaultWindow"></div>');
-	esd.common.window('#defaultWindow', title, 900, 590, url, null);
+	esd.common.window('#defaultWindow', title, width, height, url, null);
 };
 /**
  * 使用默认ID 和宽高的弹出框
@@ -317,3 +317,20 @@ esd.common.printWindow = function() {
 esd.common.viewCompany = function(id) {
 	esd.common.defaultOpenWindowEx("查看企业信息",750,400, 'company/view/' + id,null);
 };
+
+/**
+ * 回车查询事件
+ */
+window.onkeydown=function(event){ 
+	 var e=event.srcElement; 
+	  if(event.keyCode==13) 
+	    { 
+		  var findBut=$(".icon-search");
+		  // 如果有搜索
+		  if(findBut.length>0){
+			  $(findBut).parent().parent().click();
+		  }
+	    return false; 
+	    } 
+};
+
