@@ -97,7 +97,9 @@
 		<a href="javascript:user_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加用户</a> <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel">批量删除</a>
 	</div>
 	<div>
-		<input type="text" style="width: 7%" /> <input type="" style="width: 6%" /> <input type="" style="width: 68%" /> <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
+		<input type="text" style="width: 7%" /> <input type=""  style="width: 6%" /> <input type="" style="width: 68%" /> 
+		<a href="#" class="easyui-linkbutton" plain="true"  iconCls="icon-search">查找</a>
+		
 	</div>
 </div>
 

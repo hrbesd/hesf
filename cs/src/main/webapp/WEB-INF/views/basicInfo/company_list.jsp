@@ -19,7 +19,7 @@
 		<!-- 基本档案 搜索框 税务编码 -->
 		<input id="companyTaxCode" type="text" style="width: 14%" />
 		<!-- 基本档案 搜索框 企业名称 -->
-		<input id="companyName" type="text" style="width: 48%" /> <a href="#" onclick="basicFile.findData()" class="easyui-linkbutton" plain="true" iconCls="icon-search">查找</a>
+		<input id="companyName" type="text" style="width: 48%" /> <a href="#" onclick="basicFile.findData()" class="easyui-linkbutton" plain="true" iconCls="icon-search">查询</a>
 	</div>
 </div>
 <!-- 数据表格 -->

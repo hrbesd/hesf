@@ -242,7 +242,8 @@
 			</tr>
 		</table>
 		<div class="findBut">
-			<a href="javascript:queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> <a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
+			<a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
 
 		</div>
 	</div>
