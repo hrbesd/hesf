@@ -32,7 +32,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">单位类别:</td>
-			<td class="bj_belu">${company.companyType.id}</td>
+			<td class="bj_belu">${company.companyType.companyType}</td>
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu">${company.companyManagement}</td>
 		</tr>
