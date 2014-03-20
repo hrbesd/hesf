@@ -153,7 +153,8 @@ public class YearAuditParameterController {
 		}
 		try {
 			auditParameterService.save(auditParameter);
-			session.setAttribute(Constants.YEAR, auditParameter.getYear());
+			String year = auditParameterService.getLastestYear();
+			session.setAttribute(Constants.YEAR, year);
 		} catch (Exception e) {
 			logger.error("add audit year parms error", e);
 			return false;

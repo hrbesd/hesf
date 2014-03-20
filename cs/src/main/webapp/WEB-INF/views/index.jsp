@@ -15,29 +15,9 @@
 <script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${contextPath}/js/common.js"></script>
 <script type="text/javascript" src="${contextPath}/js/menu.js"></script>
-<script language="javascript" type="text/javascript">
-	//获得当前时间,刻度为一千分一秒
-	var initializationTime = (new Date()).getTime();
-	function showLeftTime() {
-		var now = new Date();
-		var year = now.getYear();
-		var month = now.getMonth();
-		var day = now.getDate();
-		var hours = now.getHours();
-		var minutes = now.getMinutes();
-		var seconds = now.getSeconds();
-		//document.all.show.innerHTML=""+year+"年"+month+"月"+day+"日 "+hours+":"+minutes+":"+seconds+"";
-		$("#show").html("" + year + "年" + month + "月" + day + "日 " + hours + ":" + minutes + ":" + seconds + "");
-		//一秒刷新一次显示时间
-		var timeID = setTimeout(showLeftTime, 1000);
-	}
-</script>
 </head>
 <body class="easyui-layout">
 	<!-- 上部分 -->
-	<!--  
-	<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px"></div>
-	-->
 	<!-- 左侧菜单 -->
 	<div data-options="region:'west',split:true,title:'目录'" style="width:260px;padding:10px;">
 		<!-- 主菜单 -->
@@ -53,11 +33,9 @@
 	</div>
 
 	<div id="tab-tools" data-options="fit:true,border:true">
-		<span>登录用户&nbsp;:&nbsp;${sessionScope.userName}</span> <a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'"
-			onclick="view.tabs.removeAllTab()">退出</a>
-		<!--  
-		<label id="show"></label>
-		-->
+		<span>登录用户&nbsp;:&nbsp;${sessionScope.userName}</span>
+		 <a href="javascript:window.parent.location.href = '/cs/security/index'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-help'">帮助</a>  
+		 <a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" >退出</a>
 	</div>
 </body>
 </html>

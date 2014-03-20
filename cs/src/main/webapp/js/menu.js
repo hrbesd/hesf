@@ -45,7 +45,7 @@ view.tabs.update = function(title, url, closable) {
  */
 view.tabs.addIndexTab = function() {
 	$('#main').tabs('add', {
-		title : "首页",
+		title : "帮助",
 		href : "/cs/security/main",
 		closable : false
 	});
