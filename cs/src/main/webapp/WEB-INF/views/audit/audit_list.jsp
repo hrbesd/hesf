@@ -55,7 +55,7 @@
 				var r = '';
 				var c = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >初审</a>';
 				var v = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
-				var f = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >复审</a>';
+				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
 				if (row.auditProcessStatusId == 1) {
 					r = '<c:if test="${process==1}">' + c + '</c:if><c:if test="${process!=1}">' + v + '</c:if>';
 					return r;

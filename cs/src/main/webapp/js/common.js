@@ -10,7 +10,6 @@ esd.common.getSubmitParams = function(id) {
 	var str = "";
 	$(id + " [name]").each(function() {
 		var name = $(this).attr("name");
-
 		if (name != undefined && name != null && name != "") {
 			var val = $(this).val();
 			if (str == "") {
@@ -21,7 +20,7 @@ esd.common.getSubmitParams = function(id) {
 		}
 	});
 	var e = "var params={" + str + "}";
-	eval(e);
+	alert(eval(e));
 	return params;
 };
 /**
@@ -110,7 +109,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns) {
  * 创建通用的列表控件
  */
 esd.common.datagrid = function(grid, url, toolbar, columns, params) {
-	
+
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
@@ -140,8 +139,8 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 /**
  * 创建通用的列表控件
  */
-esd.common.datagrid = function(grid, url, toolbar, columns, params,onLoadSuccess) {
-	
+esd.common.datagrid = function(grid, url, toolbar, columns, params, onLoadSuccess) {
+
 	$(grid).datagrid({
 		url : url,
 		pageSize : 20,
@@ -165,7 +164,7 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params,onLoadSuccess
 		}, ] ],
 		columns : columns,
 		toolbar : toolbar,
-		onLoadSuccess:onLoadSuccess
+		onLoadSuccess : onLoadSuccess
 	});
 };
 /**
@@ -322,36 +321,34 @@ esd.common.viewCompany = function(id) {
 /**
  * 回车查询事件
  */
-window.onkeydown=function(event){ 
-	 var e=event.srcElement; 
-	  if(event.keyCode==13) 
-	    { 
-		  //获得当前激活面板对象
-		  var  activityWin=$("#defaultWindow");
-		  var findBut;
-		  //二级窗口
-		  if(activityWin.length>0 ){
-			  findBut=$("#defaultWindow .icon-search");
-			  // 如果二级窗口有搜索按钮，则调用搜索按钮单击事件
-			  if(findBut.length>0){
-				  $(findBut).parent().parent().click();
-				  return false;
-			  }else{
-				  //如果没有搜索按钮，事件交给系统。
-				  return true;
-			  }
-		  }
-		  //一级窗口
-		  else{
-			  findBut=$(".icon-search");
-			  if(findBut.length>0){
-				  $(findBut).parent().parent().click();
-				  return false;
-			  }else{
-				  //如果没有搜索按钮，事件交给系统。
-				  return true;
-			  }
-		  }
-	    } 
+window.onkeydown = function(event) {
+	var e = event.srcElement;
+	if (event.keyCode == 13) {
+		// 获得当前激活面板对象
+		var activityWin = $("#defaultWindow");
+		var findBut;
+		// 二级窗口
+		if (activityWin.length > 0) {
+			findBut = $("#defaultWindow .icon-search");
+			// 如果二级窗口有搜索按钮，则调用搜索按钮单击事件
+			if (findBut.length > 0) {
+				$(findBut).parent().parent().click();
+				return false;
+			} else {
+				// 如果没有搜索按钮，事件交给系统。
+				return true;
+			}
+		}
+		// 一级窗口
+		else {
+			findBut = $(".icon-search");
+			if (findBut.length > 0) {
+				$(findBut).parent().parent().click();
+				return false;
+			} else {
+				// 如果没有搜索按钮，事件交给系统。
+				return true;
+			}
+		}
+	}
 };
-
