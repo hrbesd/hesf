@@ -238,7 +238,7 @@ esd.common.openWindowEx = function(id, title, width, height, url, closeFun) {
  */
 esd.common.defaultOpenWindowEx = function(title, width, height, url) {
 	$("#main").append('<div id="defaultWindow"></div>');
-	esd.common.window('#defaultWindow', title, width, height, url, null);
+	esd.common.window('#defaultWindow', title, 900, 590, url, null);
 };
 /**
  * 使用默认ID 和宽高的弹出框
