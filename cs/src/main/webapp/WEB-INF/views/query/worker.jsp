@@ -173,7 +173,7 @@
 		</table>
 		<div class="findBut">
 			 <a href="#" onclick="queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
-			<a href="javascript:queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			<a href="#" onclick="queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 
 		</div>
 	</div>

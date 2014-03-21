@@ -405,8 +405,10 @@
 				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" />
 			</td>
 			<td>
-				<!-- 残疾等级 --> <input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" />
-				 <a href="#" onclick="workerList.findData()" class="easyui-linkbutton" iconCls="icon-search">查找</a>
+				<!-- 残疾等级 --> 
+				<input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" />
+				 <a href="#" onclick="workerList.findData()" class="easyui-linkbutton"  iconCls="icon-search">查询</a>
+			
 			</td>
 		</tr>
 	</table>
