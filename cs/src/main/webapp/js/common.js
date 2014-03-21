@@ -10,8 +10,13 @@ esd.common.getSubmitParams = function(id) {
 	var str = "";
 	$(id + " [name]").each(function() {
 		var name = $(this).attr("name");
+
 		if (name != undefined && name != null && name != "") {
 			var val = $(this).val();
+//			if(val=undefined){
+//				val = $(this).text();
+//				
+//			}
 			if (str == "") {
 				str = "'" + name + "':'" + val + "'";
 			} else {
@@ -325,12 +330,27 @@ window.onkeydown=function(event){
 	 var e=event.srcElement; 
 	  if(event.keyCode==13) 
 	    { 
-		  var findBut=$(".icon-search");
-		  // 如果有搜索
+		  
+		  //获得当前激活面板对象
+		  var  activityWin=$("#defaultWindow");
+		  var findBut;
+		  //二级窗口
+		  if(activityWin.length>0 ){
+			  findBut=$("#defaultWindow .icon-search");
+		  }
+		  //一级窗口
+		  else{
+			  findBut=$(".icon-search");
+		  }
+		  // 如果有搜索按钮，调用搜索按钮单击事件
 		  if(findBut.length>0){
 			  $(findBut).parent().parent().click();
+		  }else{
+			  //如果没有搜索按钮，事件交给系统。
+			  return true;
+			  
 		  }
-	    return false; 
+		  return false; 
 	    } 
 };
 
