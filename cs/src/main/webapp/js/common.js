@@ -12,6 +12,7 @@ esd.common.getSubmitParams = function(id) {
 		var name = $(this).attr("name");
 		if (name != undefined && name != null && name != "") {
 			var val = $(this).val();
+			val = val.replace(/[\r\n]+/g, '\\n');
 			if (str == "") {
 				str = "'" + name + "':'" + val + "'";
 			} else {
@@ -20,7 +21,8 @@ esd.common.getSubmitParams = function(id) {
 		}
 	});
 	var e = "var params={" + str + "}";
-	alert(eval(e));
+	alert(e);
+	eval(e);
 	return params;
 };
 /**
