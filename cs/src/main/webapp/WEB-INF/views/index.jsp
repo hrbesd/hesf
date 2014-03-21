@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="shortcut icon" href="${contextPath }/images/logo.jpg" />
+<link rel="shortcut icon" href="${contextPath }/images/logo.ico" />
 <title>残疾人就业保障金</title>
 <link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/icon.css" />

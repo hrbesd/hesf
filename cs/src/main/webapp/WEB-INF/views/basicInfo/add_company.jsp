@@ -87,7 +87,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">&nbsp;</td>
-			<td colspan="4">带" *"项为必填项，请认真填写。带" *"项为重复验项项，请注意</td>
+			<td colspan="4">带" <span style="color:red;">*</span> "项为必填项, 请认真填写.</td>
 		</tr>
 
 		<tr>

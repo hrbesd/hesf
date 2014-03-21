@@ -124,10 +124,8 @@ basicFile.openEditCompany = function(id) {
  * 编辑企业信息
  */
 basicFile.editCompany = function() {
-
 	esd.common.syncPostSubmit("#editComapnyForm", function(data) {
 		if (data == true) {
-			
 			$.messager.alert('消息', '单位信息编辑成功。', 'info');
 			esd.common.defaultOpenWindowClose();
 			$('#company_grid').datagrid("reload");
