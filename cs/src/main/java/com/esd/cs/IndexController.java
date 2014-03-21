@@ -93,6 +93,17 @@ public class IndexController {
 		String checkCode = request.getParameter("checkCode");
 
 		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
+		
+		CaptchaService captchaService = new CaptchaService();
+		Boolean b = captchaService.checkCode(checkCode, request);
+		logger.debug("checkcode status:{}", b);
+		if (b == false) {
+			redirectAttributes.addFlashAttribute("username", userName);
+			redirectAttributes.addFlashAttribute("password", passWord);
+			redirectAttributes.addFlashAttribute("message", "验证码错误");
+			return new ModelAndView("redirect:/login");
+		}
+
 		User user = userService.getUserByUserName(userName);
 		if (user != null && user.getUserName().equals(userName)) {
 			UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
@@ -102,7 +113,7 @@ public class IndexController {
 				session.setAttribute(Constants.USER_ID, user.getId());
 				session.setAttribute(Constants.USER_NAME, user.getUserName());
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
-				
+
 				// 登录成功获得年度
 				String year = auditParameterService.getLastestYear();
 				session.setAttribute(Constants.YEAR, year);
@@ -118,16 +129,6 @@ public class IndexController {
 			redirectAttributes.addFlashAttribute("message", "用户名密码错误");
 			return new ModelAndView("redirect:/login");
 		}
-		CaptchaService captchaService = new CaptchaService();
-		Boolean b = captchaService.checkCode(checkCode, request);
-		logger.debug("checkcode status:{}", b);
-		if (b == false) {
-			redirectAttributes.addFlashAttribute("username", userName);
-			redirectAttributes.addFlashAttribute("password", passWord);
-			redirectAttributes.addFlashAttribute("message", "验证码错误");
-			return new ModelAndView("redirect:/login");
-		}
-
 
 		return new ModelAndView("redirect:/login");
 	}
