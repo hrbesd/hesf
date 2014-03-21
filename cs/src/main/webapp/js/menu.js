@@ -15,6 +15,10 @@ view.bindMenu = function() {
 	$('#main_menu').tree({
 		// 绑定单击事件
 		onSelect : function(e, node) {
+			if(e.text=='退出'){
+				window.top.location.href="http://localhost:8080/cs/quit";
+				return;
+			}
 			if (e.attributes != undefined) {
 				// 页面单击，转到实体页面
 				var _url = e.attributes.url;

@@ -16,12 +16,6 @@
 		return params;
 	};
 	/**
-	 * 查看企业信息框
-	 */
-	payment.openViewCompany = function(id) {
-		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
-	};
-	/**
 	加载初审列表数据
 	 */
 	payment.loadData = function() {
@@ -42,7 +36,7 @@
 			title : '企业名称',
 			width : 900,
 			formatter : function(value, row, index) {
-				var c = '<a href="javascript:void(0);" onclick="payment.openViewCompany(\'' + row.companyId + '\')">' + value + '</a>';
+				var c = '<a href="javascript:void(0);" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;
 			}
 		}, {
@@ -55,16 +49,24 @@
 			width : 150,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var v = '<a href="#" onclick="payment.open(' + row.id + ')">缴款</a>';
+				var c = '<a href="javascript:void(0);" >待初审</a>';
+				var f = '<a href="javascript:void(0);" >待复审</a>';
+				var j = '<a href="javascript:payment.open(' + row.id + ');" >缴款</a>';
+				if (row.auditProcessStatusId == 1 || row.auditProcessStatusId == 7) {
+					return c;
+				}
+				if (row.auditProcessStatusId == 2) {
+					return f;
+				}
+				if (row.auditProcessStatusId == 3 || row.auditProcessStatusId == 4) {
+					return j;
+				}
+				if (row.auditProcessStatusId == 3 || row.auditProcessStatusId == 4) {
+					return j;
+				}
 				return v;
 			}
 		} ] ], params);
-	};
-	/**
-	 * 查看企业信息框
-	 */
-	payment.openViewCompany = function(id) {
-		esd.common.defaultOpenWindow("查看企业信息",'company/view/' + id);
 	};
 	/*
 	打开单位初审面板
