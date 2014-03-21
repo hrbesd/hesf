@@ -128,20 +128,18 @@
 		//时间选择框 选择后事件
 		$('#startDate').datebox({
 			onSelect:function(date){
-			//	alert(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
 				queryPayment.findData();
 			}
 		});
 		$('#endDate').datebox({
 			onSelect:function(date){
-			//	alert(date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate());
 				queryPayment.findData();
 			}
 		});
-		$('#startDate').blur(function(){
-			//如果为空, 不触发查询事件
-			alert(1);
-		});
+		
+		//时间选择框清空
+		$('#startDate').datebox('setValue','');
+		$('#endDate').datebox('setValue','');
 		
 	};
 	queryPayment.openPayment = function(index) {
