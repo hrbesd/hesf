@@ -13,10 +13,6 @@ esd.common.getSubmitParams = function(id) {
 
 		if (name != undefined && name != null && name != "") {
 			var val = $(this).val();
-			if(val=undefined){
-				val = $(this).text();
-				
-			}
 			if (str == "") {
 				str = "'" + name + "':'" + val + "'";
 			} else {
@@ -330,7 +326,6 @@ window.onkeydown=function(event){
 	 var e=event.srcElement; 
 	  if(event.keyCode==13) 
 	    { 
-		  
 		  //获得当前激活面板对象
 		  var  activityWin=$("#defaultWindow");
 		  var findBut;
@@ -356,12 +351,7 @@ window.onkeydown=function(event){
 				  //如果没有搜索按钮，事件交给系统。
 				  return true;
 			  }
-			  
-			  
 		  }
-		
-		 
-		 
 	    } 
 };
 
