@@ -5,6 +5,16 @@
 <script type="text/javascript">
 	var parameter_save = {};
 	parameter_save.submit = function() {
+		//校验年度
+		var date = new Date();
+		var year =$('#jinnian').val();
+		if(year <1970){
+			$.messager.alert('消息','输入的年份太小','info');
+			return;
+		}else if(year >=date.getFullYear()){
+			$.messager.alert('消息','输入的年份过大','info');
+			return;
+		}
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
 				$.messager.alert('消息', '添加成功', 'info', function() {
@@ -12,7 +22,7 @@
 					$("#parameter_list_grid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '添加失败,年度参数已存在。', 'info');
+				$.messager.alert('消息', '添加失败,请检查您所输入的数据是否符合规范.', 'info');
 			}
 		});
 
@@ -37,7 +47,7 @@
 			<table class="parameterTab" border="0">
 				<tr>
 					<td>年度:</td>
-					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${year}" onfocus="parameter_save.change(this.value)" onchange="parameter_save.change(this.value)" /> <input
+					<td><input class="easyui-validatebox" required="true" name="year" id="jinnian" type="text" value="" onfocus="parameter_save.change(this.value)" onchange="parameter_save.change(this.value)" /> <input
 						name="version" type="hidden" value="1" /></td>
 					<td>批量创建审计记录:</td>
 					<td colspan="3"><select class="easyui-combobox" id="copy" name="copy" data-options="editable:false,panelHeight:70,height:30" style="width:155px">
