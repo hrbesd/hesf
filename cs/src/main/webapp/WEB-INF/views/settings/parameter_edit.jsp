@@ -40,7 +40,7 @@
 			<table class="parameterTab">
 				<tr>
 					<td>年度:</td>
-					<td><input class="easyui-validatebox" required="true" name="year" type="text" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
+					<td><input class="easyui-validatebox" required="true" name="year" type="text" readonly="readonly" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
 						value="${entity.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
 					</td>
 					<td colspan="2"><span style="color: red; font-size: 12px;">提示：默认设置为当前年度减一年</span></td>
