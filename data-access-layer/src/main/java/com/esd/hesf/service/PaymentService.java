@@ -68,4 +68,11 @@ public interface PaymentService extends BaseService<Payment> {
 	 */
 	PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(Map<String, Object> map);
 	
+	/**
+	 * 导出缴款数据
+	 * @param FilePath
+	 * @param paymentList
+	 * @return
+	 */
+	public boolean createPaymentExcel(String FilePath, List<Payment> paymentList,Integer page,Integer pageSize);
 }
