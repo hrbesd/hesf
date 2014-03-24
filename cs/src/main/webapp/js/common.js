@@ -21,7 +21,6 @@ esd.common.getSubmitParams = function(id) {
 		}
 	});
 	var e = "var params={" + str + "}";
-	alert(e);
 	eval(e);
 	return params;
 };
