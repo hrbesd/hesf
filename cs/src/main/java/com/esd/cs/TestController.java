@@ -1,6 +1,7 @@
 package com.esd.cs;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -773,11 +774,13 @@ public class TestController {
 	@RequestMapping(value = "/59")
 	public String test59(HttpServletRequest request) {
 		boolean b = true;
-		Integer pageSize = 50;
+		//每次导入量
+		Integer pageSize = 99999;
 		PaginationRecordsAndNumber<Payment, Number> prn = pService
 				.getPaginationRecords(null, 1, pageSize);
-		List<Payment> plist = (List<Payment>) prn.getRecords();
+		// 总条数
 		int totalCount = (Integer) prn.getNumber();
+		// 总页数
 		int totalPages = totalCount % pageSize == 0 ? (totalCount / pageSize)
 				: (totalCount / pageSize + 1);
 		String url = request.getServletContext().getRealPath("/");
@@ -795,21 +798,45 @@ public class TestController {
 		}
 
 		// 创建文件唯一名称
-		String uuid = UUID.randomUUID().toString();
-		String exportPath = exportFolder + File.separator + "paymentlist.xls";
-		String FileDownloadPath = "null";
-		// 循环向excel中导入文件
-		for (int i = 1; i < totalPages; i++) {
-			b = pService.createPaymentExcel(exportPath, plist, totalPages,
-					pageSize);
+		String uuid = UUID.randomUUID().toString().replace("-","");
+		String exportPath = exportFolder + File.separator + uuid+".xls";
+		System.out.println("exportPath " + exportPath);
+		File file = new File(exportPath);
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		// 循环向excel中导入文件
+		int i = 0;
+		do {
+			i++;
+			PaginationRecordsAndNumber<Payment, Number> eachPrn = pService
+					.getPaginationRecords(null, i, pageSize);
+			// 每一页数据循环导入其中
+			List<Payment> plist = (List<Payment>) eachPrn.getRecords();
+			b = pService.createPaymentExcel(exportPath, plist, i,
+					pageSize);
+			//清空plist数据
+		//	plist = null;
+
+		} while (i < totalPages);
+		String FileDownloadPath = "";
 		if (b) {
 			String destPath = request.getLocalAddr() + ":"
 					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/download/payment/"
-					+ "1.xls";
+					+ uuid+".xls";
 		}
-		// logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArr);
 		return "redirect:" + FileDownloadPath;
+	}
+	
+	@RequestMapping("/60")
+	@ResponseBody
+	public Map<String, Object> test60() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		map.put("entity", entity);
+		return map;
 	}
 }

@@ -22,6 +22,7 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.HesfException;
+import com.esd.hesf.service.KitService;
 import com.esd.hesf.service.PaymentService;
 
 /**
@@ -364,9 +365,11 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		int startRow = (page - 1) * pageSize;
 		// 插入的起始行
+		int k = 0;
 		for (int i = 1 + startRow; i <= (page - 1) * pageSize
 				+ paymentList.size(); i++) {
-			Payment payment = paymentList.get(i - 1);
+			Payment payment = paymentList.get(k);
+			k++;
 			// 创建一个Excel的单元格
 			HSSFRow row = sheet.createRow(i);
 			// HSSFCell cell = row.createCell(0);
@@ -490,7 +493,7 @@ public class PaymentServiceImpl implements PaymentService {
 			// 初审日期
 			if (payment.getAudit().getInitAuditDate() != null) {
 				row.createCell(29).setCellValue(
-						payment.getAudit().getInitAuditDate());
+						KitService.getStringDate(payment.getAudit().getInitAuditDate()));
 			}
 			// 初审人意见
 			row.createCell(30).setCellValue(
@@ -500,7 +503,7 @@ public class PaymentServiceImpl implements PaymentService {
 			// 复审日期
 			if (payment.getAudit().getVerifyAuditDate() != null) {
 				row.createCell(31).setCellValue(
-						payment.getAudit().getVerifyAuditDate());
+						KitService.getStringDate(payment.getAudit().getVerifyAuditDate()));
 			}
 			// 复审人意见
 			row.createCell(32).setCellValue(
@@ -515,7 +518,7 @@ public class PaymentServiceImpl implements PaymentService {
 			row.createCell(34).setCellValue(
 					payment.getAudit().getUnauditYears());
 			// 缴款时间
-			row.createCell(35).setCellValue(payment.getPaymentDate());
+			row.createCell(35).setCellValue(KitService.getStringDate(payment.getPaymentDate()));
 			// 缴款金额
 			if (payment.getPaymentMoney() != null) {
 				row.createCell(36).setCellValue(
@@ -530,11 +533,11 @@ public class PaymentServiceImpl implements PaymentService {
 			row.createCell(39).setCellValue(payment.getPaymentType().getText());
 			// 打票日期
 			if (payment.getBillPrintDate() != null) {
-				row.createCell(40).setCellValue(payment.getBillPrintDate());
+				row.createCell(40).setCellValue(KitService.getStringDate(payment.getBillPrintDate()));
 			}
 			// 换票日期
 			if (payment.getBillExchangeDate() != null) {
-				row.createCell(41).setCellValue(payment.getBillExchangeDate());
+				row.createCell(41).setCellValue(KitService.getStringDate(payment.getBillExchangeDate()));
 			}
 			// 是否返票
 			if (payment.getBillReturn()) {
@@ -559,9 +562,9 @@ public class PaymentServiceImpl implements PaymentService {
 			os.close();
 			// companyList.clear();
 			// companyList = null;
-			os = null;
-			wb = null;
-			System.gc();
+//			os = null;
+//			wb = null;
+		//	System.gc();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -570,6 +573,7 @@ public class PaymentServiceImpl implements PaymentService {
 		return true;
 	}
 
+	
 	// @Override
 	// public boolean createPaymentExcel(String FilePath, List<Payment>
 	// paymentList) {

@@ -503,6 +503,14 @@
 						and au.year = #{payment.audit.year,jdbcType=CHAR} 
 					</if>
 				</if>
+				<choose>
+					<when test="payment.isActive != null">
+						and pay.is_active = #{payment.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and pay.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
 			<!-- 缴款时间范围 -->
 			<if test="startDate != null and startDate != ''">
@@ -512,7 +520,7 @@
 				and substring(pay.payment_date,1,10) &lt;= #{endDate}
 			</if>
 		</trim>
-		order by pay.id
+		order by c.company_code
 		limit #{start}, #{size}
 	</select>
 
@@ -551,19 +559,19 @@
 						and pay.payment_company = #{payment.paymentCompany.id,jdbcType=INTEGER}
 					</if>
 					<if test="payment.paymentCompany.companyCode != null and payment.paymentCompany.companyCode != ''">
-						and c.company_code like concat('%',#{payment.paymentCompany.companyCode, jdbcType=VARCHAR},'%') 
+						and c.company_code like concat('%',#{payment.paymentCompany.companyCode, jdbcType=VARCHAR},'%')
 					</if>
 					<if test="payment.paymentCompany.companyName != null and payment.paymentCompany.companyName != ''">
 						and c.company_name like concat('%',#{payment.paymentCompany.companyName, jdbcType=VARCHAR},'%') 
 					</if>
 					<if test="payment.paymentCompany.companyOrganizationCode != null and payment.paymentCompany.companyOrganizationCode != ''">
-						and c.company_organization_code like concat('%',#{payment.paymentCompany.companyOrganizationCode, jdbcType=VARCHAR},'%') 
+						and c.company_organization_code like concat('%',#{payment.paymentCompany.companyOrganizationCode, jdbcType=VARCHAR},'%')  
 					</if>
 					<if test="payment.paymentCompany.companyTaxCode != null and payment.paymentCompany.companyTaxCode != ''">
 						and c.company_tax_code like concat('%',#{payment.paymentCompany.companyTaxCode, jdbcType=VARCHAR},'%') 
 					</if>
 					<if test="payment.paymentCompany.companyZipCode != null and payment.paymentCompany.companyZipCode != ''">
-						and c.company_zip_code like concat('%',#{payment.paymentCompany.companyZipCode, jdbcType=VARCHAR},'%')
+						and c.company_zip_code like concat('%',#{payment.paymentCompany.companyZipCode, jdbcType=VARCHAR},'%')  
 					</if>
 					<if test="payment.paymentCompany.companyType != null">
 						<if test="payment.paymentCompany.companyType.id != null and payment.paymentCompany.companyType.id > 0">
@@ -625,6 +633,21 @@
 						and au.year = #{payment.audit.year,jdbcType=CHAR} 
 					</if>
 				</if>
+				<choose>
+					<when test="payment.isActive != null">
+						and pay.is_active = #{payment.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and pay.is_active = 0
+					</otherwise>
+				</choose>
+			</if>
+			<!-- 缴款时间范围 -->
+			<if test="startDate != null and startDate != ''">
+				and substring(pay.payment_date,1,10) &gt;=  #{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and substring(pay.payment_date,1,10) &lt;= #{endDate}
 			</if>
 		</trim>
 	</select>

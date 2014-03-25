@@ -66,21 +66,32 @@ public class KitService {
 		// 格式或为标准格式
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String todayStr = sdf.format(today);
-		// 获得出生年  =  当前年 - 年龄
-		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(0, 4)) - iAge));
+		// 获得出生年 = 当前年 - 年龄
+		String birthYear = String.valueOf((Integer.parseInt(todayStr.substring(
+				0, 4)) - iAge));
 		// 后面的 月日时分秒信息
-//		String birthLast = todayStr.substring(4);
+		// String birthLast = todayStr.substring(4);
 		// 年和月日等信息拼接起来
-//		String birthStr = birthYear + birthLast;
-//		// 再将其格式化为Date类型
-//		Date birth = null;
-//		try {
-//			birth = sdf.parse(birthStr);
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// String birthStr = birthYear + birthLast;
+		// // 再将其格式化为Date类型
+		// Date birth = null;
+		// try {
+		// birth = sdf.parse(birthStr);
+		// } catch (ParseException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		return birthYear;
+	}
+
+	public static String getStringDate(Date date) {
+		if (date == null) {
+			return null;
+		}
+		// 格式或为标准格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String str = sdf.format(date);
+		return str;
 	}
 
 }
