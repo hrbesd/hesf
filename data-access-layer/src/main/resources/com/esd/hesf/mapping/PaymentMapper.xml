@@ -127,7 +127,7 @@
 		<!-- payment exceptional -->
 		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value,
 		<!-- audit -->
-		au.year as au_year, au.company_emp_total as au_company_emp_total,
+		au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
 		au.company_handicap_total as au_company_handicap_total,
 		au.company_predict_total as au_company_predict_total,
 		au.company_should_total as au_company_should_total,
