@@ -27,12 +27,18 @@
 			<c:if test="${process==2}">
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
+			<c:if test="${process==3}">
+				<jsp:include page="audit_view.jsp" />
+			</c:if>
 		</div>
 		<!--endprint-->
 		<c:if test="${process==1}">
 			<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
 		<c:if test="${process==2}">
+			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
+		</c:if>
+		<c:if test="${process==3}">
 			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
 		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
