@@ -16,7 +16,9 @@ view.bindMenu = function() {
 		// 绑定单击事件
 		onSelect : function(e, node) {
 			if(e.text=='退出'){
-				window.top.location.href="http://localhost:8080/cs/quit";
+				var host = document.location.host;
+			//	$.messager.alert('提示信息',host);
+				window.top.location.href='http://'+host+'/cs/quit';
 				return;
 			}
 			if (e.attributes != undefined) {
