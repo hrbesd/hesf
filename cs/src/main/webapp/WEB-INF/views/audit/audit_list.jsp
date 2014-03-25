@@ -87,7 +87,7 @@
 		</c:if>
 	};
 	initAuditList.viewAudit = function(index) {
-		esd.common.defaultOpenWindowEx("查看", 920, 600, "${contextPath}/security/audits/view/" + index);
+		esd.common.defaultOpenWindowEx("查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/3");
 	};
 	/**
 	 * 新建审计记录

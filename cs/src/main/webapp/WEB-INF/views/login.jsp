@@ -58,7 +58,7 @@ padding: 40px 0 0 0;
 	<h2 class="bbc-name bbc-shop" >残疾人就业保障金管理系统</h2>
 	<h2 style="font-family: 'Microsoft YaHei';color: #0074A7; text-align: center;" >Handicapped Employment Security Fund</h2>
 	<div id="main" style=" display: none;">
-		<div id="win" class="easyui-window" title="登录" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
+		<div id="win" class="easyui-window" title="登录 v1.0-Bate" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
 			<form id="loginform" action="${contextPath}/login" method="post" style="padding-left: 80px; padding-top: 30px;">
 				<div style="text-align: left;">
 					<div style="color: red;" id="message">${message}</div>
