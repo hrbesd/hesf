@@ -74,11 +74,11 @@ public class UserController {
 				User it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
-				map.put("userName", it.getUserName());// 组织机关代码
-				map.put("userRealName", it.getUserName());// 档案编码
-				map.put("userMobile", it.getUserMobile());// 企业名称
-				map.put("userGroup", it.getUserGroup().getUserGroupName());// 企业名称
-				map.put("userStatus", it.getUserStatus());// 企业名称
+				map.put("userName", it.getUserName());// 用户登陆名
+				map.put("userRealName", it.getUserRealName());// 用户真实姓名
+				map.put("userMobile", it.getUserMobile());// 电话
+				map.put("userGroup", it.getUserGroup().getUserGroupName());// 所在用户组
+				map.put("userStatus", it.getUserStatus());// 用户使用状态
 				list.add(map);
 			}
 			entity.put("total", total);
