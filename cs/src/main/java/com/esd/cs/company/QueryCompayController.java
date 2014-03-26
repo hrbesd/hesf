@@ -87,10 +87,14 @@ public class QueryCompayController {
 			Company it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", it.getId());// id
+			map.put("companyArea", it.getArea().getName());// 地区
 			map.put("companyCode", it.getCompanyCode());// 档案编码
 			map.put("companyTaxCode", it.getCompanyTaxCode());// 税务编码
 			map.put("companyName", it.getCompanyName());// 企业名称
-			map.put("companyArea", it.getArea().getName());// 地区
+			map.put("companyProperty", it.getCompanyProperty().getCompanyProperty());
+			map.put("companyEconomyType", it.getCompanyEconomyType().getCompanyEconomyType());
+			map.put("companyType", it.getCompanyType().getCompanyType());
+			map.put("companyPhone", it.getCompanyPhone());
 			list.add(map);
 		}
 		entity.put("total", total);

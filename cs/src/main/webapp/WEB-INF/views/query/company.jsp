@@ -45,26 +45,42 @@
 	queryCompany.loadData = function(params) {
 		esd.common.datagrid("#queryCompanyGrid", "query/company/list", "#queryCompany_boolbar", [ [ {
 			field : 'companyArea',
-			title : '地区',
-			width : 230
+			title : '所在地区',
+			width : 100
 		}, {
 			field : 'companyCode',
 			title : '档案编码',
-			width : 230
+			width : 80
 		}, {
 			field : 'companyTaxCode',
 			title : '税务编码',
-			width : 230
+			width : 100
 		}, {
 			field : 'companyName',
 			title : '企业名称',
-			width : 800,
+			width : 300,
 			formatter : function(value, row, index) {
 			
 				var c = '<a href="#" onclick="queryCompany.openViewCompany(\'' + row.id + '\')">' + value + '</a>';
 				return c;
 			}
 
+		}, {
+			field : 'companyProperty',
+			title : '企业性质',
+			width : '100'
+		}, {
+			field : 'companyEconomyType',
+			title : '企业经济类型',
+			width : '100'
+		}, {
+			field : 'companyType',
+			title : '企业类型',
+			width : '100'
+		},{
+			field : 'companyPhone',
+			title : '联系方式',
+			width : '100'
 		} ] ], params);
 
 	};
