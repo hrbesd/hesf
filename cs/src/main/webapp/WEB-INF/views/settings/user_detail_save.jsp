@@ -44,7 +44,7 @@
 
 				<tr>
 					<td>登陆密码:</td>
-					<td><input class="easyui-validatebox" name="userPassword" type="password" /></td>
+					<td><input class="easyui-validatebox" required="true" name="userPassword" type="password" /></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -63,7 +63,7 @@
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" /></td>
+					<td><input name="userMobile" class="easyui-validatebox" required="true" type="text" value="${entity.userMobile}" /></td>
 					<td><span id="mobile_message"></span>
 					</td>
 				</tr>
