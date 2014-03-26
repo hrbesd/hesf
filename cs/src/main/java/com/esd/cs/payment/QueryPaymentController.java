@@ -124,7 +124,7 @@ public class QueryPaymentController {
 			String paymentMoney = String.valueOf(format.format(p.getPaymentMoney()));
 			map.put("paymentMoney", paymentMoney); // 缴款金额
 			map.put("paymentType", p.getPaymentType().getText()); // 缴款类型
-			map.put("paymentPerson", p.getPaymentPerson().getUserName()); // 缴款操作人
+			map.put("paymentPerson", p.getPaymentPerson().getUserRealName()); // 缴款操作人
 			map.put("paymentExceptional", p.getPaymentExceptional().getPaymentExceptional()); // 缴款方式
 			map.put("billReturn", p.getBillReturn()); // 是否返票了
 			map.put("billFinance", p.getBillFinance()); // 是否财政
