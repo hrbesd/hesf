@@ -92,14 +92,9 @@
 <table id="user_list_grid"></table>
 
 <!-- 自定义菜单 -->
-<div id="user_list_boolbar" style="white-space: nowrap;height: 60px;margin-top: 5px">
+<div id="user_list_boolbar" style="white-space: nowrap;margin-top: 5px">
 	<div style="text-align: right;">
-		<a href="javascript:user_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加用户</a> <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel">批量删除</a>
-	</div>
-	<div>
-		<input type="text" style="width: 7%" /> <input type=""  style="width: 6%" /> <input type="" style="width: 68%" /> 
-		<a href="#" class="easyui-linkbutton" plain="true"  iconCls="icon-search">查找</a>
-		
+		<a href="javascript:user_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加用户</a>
 	</div>
 </div>
 
