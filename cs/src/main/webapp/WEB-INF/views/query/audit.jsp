@@ -94,12 +94,12 @@
 								{
 									field : 'companyCode',
 									title : '档案编码',
-									width : 200
+									width : 80
 								},
 								{
 									field : 'companyTaxCode',
 									title : '税务编码',
-									width : 200
+									width : 150
 								},
 								{
 									field : 'companyId',
@@ -108,7 +108,7 @@
 								{
 									field : 'companyName',
 									title : '企业名称',
-									width : 800,
+									width : 300,
 									formatter : function(value, row, index) {
 										var c = '<a href="javascript:void(0);" onclick="queryAudit.openViewCompany('
 												+ row.companyId
@@ -117,11 +117,19 @@
 												+ '</a>';
 										return c;
 									}
+								},{
+									field : 'companyLegal',
+									title : '企业法人',
+									width : 100
+								},{
+									field : 'companyAddress',
+									title : '地址',
+									width : 250
 								},
 								{
-									field : 'auditProcessStatus',
-									title : '流程状态',
-									width : 150
+									field : 'companyPhone',
+									title : '联系电话',
+									width : 110
 								},
 								{
 									field : 'auditProcessStatusId',
@@ -130,7 +138,7 @@
 								{
 									field : 'action',
 									title : '操作',
-									width : 100,
+									width : 80,
 									align : 'center',
 									formatter : function(value, row, index) {
 										var v = '<a href="#" onclick="queryAudit.openAudit('
