@@ -84,7 +84,8 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpServletRequest request, HttpSession session) {
-		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		//String nowYear = (String) session.getAttribute(Constants.YEAR);
+		String nowYear = CalendarUtil.getNowYear();
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("payment/payment_list");
@@ -168,6 +169,7 @@ public class PaymentController {
 		}
 		// 获取应缴金额和已缴对比相等 则修改状态为 已缴款
 		Accounts accounts = accountsService.getByPrimaryKey(queryPayment.getAccounts().getId());
+		accountsService.get(year, companyId, auditId);
 		if (payments.compareTo(accounts.getTotalMoney()) == 0) {
 			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_YJK);
 
