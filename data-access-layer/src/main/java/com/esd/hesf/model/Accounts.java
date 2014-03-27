@@ -15,6 +15,7 @@ public class Accounts extends PrimaryKey_Int {
 	private Audit audit; // 审核审核对象
 	private BigDecimal totalMoney; // 总应缴款金额
 	private Boolean isFinished; // 是否缴款完毕
+	private AuditProcessStatus auditProcessStatus;	//审核进程状态 对象
 
 	@Override
 	public String toString() {
@@ -70,4 +71,13 @@ public class Accounts extends PrimaryKey_Int {
 		this.isFinished = isFinished;
 	}
 
+	public AuditProcessStatus getAuditProcessStatus() {
+		return auditProcessStatus;
+	}
+
+	public void setAuditProcessStatus(AuditProcessStatus auditProcessStatus) {
+		this.auditProcessStatus = auditProcessStatus;
+	}
+
+	
 }

@@ -28,7 +28,8 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param auditId	大于0的正整数
 	 * @return
 	 */
-	BigDecimal getAlreadyPayByAudit(Integer auditId);
+	BigDecimal getAlreadyPayByAccounts(Integer accountsId);
+	
 	
 	/**
 	 * 根据公司id, 得到已经付款的金额
@@ -39,14 +40,14 @@ public interface PaymentService extends BaseService<Payment> {
 	BigDecimal getAlreadyPayByCompany(Integer companyId);
 
 	/**
-	 * 根据审核id, 得到缴款列表
+	 * 根据账目id, 得到缴款列表
 	 * 
 	 * @param auditId	大于0的正整数
 	 * @param page	页数
 	 * @param pageSize	返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAudit(Integer auditId, Integer page, Integer pageSize);
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAccounts(Integer accountId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据公司id, 得到缴款列表

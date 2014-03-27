@@ -34,6 +34,10 @@ public class Company extends PrimaryKey_Int {
 	public Company(Integer id) {
 		super.setId(id);
 	}
+	
+	public Company(String companyCode){
+		this.companyCode = companyCode;
+	}
 
 	@Override
 	public String toString() {

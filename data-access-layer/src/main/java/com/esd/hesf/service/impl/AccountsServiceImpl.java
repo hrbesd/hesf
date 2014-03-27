@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AccountsDao;
 import com.esd.hesf.model.Accounts;
+import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.HesfException;
@@ -101,7 +103,7 @@ public class AccountsServiceImpl implements AccountsService {
 			Accounts t, Integer page, Integer pageSize) {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("payment", t);
+		map.put("accounts", t);
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
 		// 返回量
@@ -125,6 +127,42 @@ public class AccountsServiceImpl implements AccountsService {
 		// 返回量
 		map.put("size", Constants.SIZE);
 		return dao.retrieveByPage(map);
+	}
+
+	@Override
+	public List<Accounts> get(String year, Integer companyId, Integer auditId) {
+		Accounts t = new Accounts();
+		t.setYear(year);
+		t.setCompany(new Company(companyId));
+		t.setAudit(new Audit(auditId));
+		// 将参数放入到map中
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("accounts", t);
+		// 起始索引值
+		map.put("start", Constants.START);
+		// 返回量
+		map.put("size", Constants.SIZE);
+		// 返回的数据
+		List<Accounts> list = dao.retrieveByPage(map);
+		return list;
+	}
+
+	@Override
+	public List<Accounts> get(String year, String companyCode, Integer auditId) {
+		Accounts t = new Accounts();
+		t.setYear(year);
+		t.setCompany(new Company(companyCode));
+		t.setAudit(new Audit(auditId));
+		// 将参数放入到map中
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("accounts", t);
+		// 起始索引值
+		map.put("start", Constants.START);
+		// 返回量
+		map.put("size", Constants.SIZE);
+		// 返回的数据
+		List<Accounts> list = dao.retrieveByPage(map);
+		return list;
 	}
 
 }
