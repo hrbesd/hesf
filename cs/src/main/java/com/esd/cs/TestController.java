@@ -2,7 +2,6 @@ package com.esd.cs;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Accounts;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
@@ -33,6 +33,7 @@ import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
+import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -116,6 +117,9 @@ public class TestController {
 	@Autowired
 	private CompanyTypeService ctService;
 
+	@Autowired
+	private AccountsService acService;
+	
 	// 菜单
 	@RequestMapping("/1")
 	@ResponseBody
@@ -811,6 +815,15 @@ public class TestController {
 	public Map<String, Object> test60() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		map.put("entity", entity);
+		return map;
+	}
+	
+	@RequestMapping("/61")
+	@ResponseBody
+	public Map<String, Object> test61() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		PaginationRecordsAndNumber<Accounts, Number> entity =acService.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
