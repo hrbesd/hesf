@@ -22,7 +22,7 @@
 		<association property="paymentCompany" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
 		<association property="paymentType" javaType="com.esd.hesf.model.PaymentType" resultMap="ResultPaymentType" />
 		<association property="paymentExceptional" javaType="com.esd.hesf.model.PaymentExceptional" resultMap="ResultPaymentExceptional" />
-		<association property="audit" javaType="com.esd.hesf.model.Audit" resultMap="ResultAudit" />
+		<association property="accounts" javaType="com.esd.hesf.model.Accounts" resultMap="ResultAccounts" />
 	</resultMap>
 
 	<resultMap id="ResultUser" type="com.esd.hesf.model.User">
@@ -69,47 +69,16 @@
 		<result column="pe_value" jdbcType="VARCHAR" property="value" />
 	</resultMap>
 
-	<resultMap id="ResultAudit" type="com.esd.hesf.model.Audit">
-		<id column="au_id" jdbcType="INTEGER" property="id" />
-		<result column="au_year" jdbcType="CHAR" property="year" />
-		<result column="au_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
-		<result column="au_company_handicap_total" jdbcType="INTEGER" property="companyHandicapTotal" />
-		<result column="au_company_predict_total" jdbcType="INTEGER" property="companyPredictTotal" />
-		<result column="au_company_should_total" jdbcType="DECIMAL" property="companyShouldTotal" />
-		<result column="au_company_already_total" jdbcType="INTEGER" property="companyAlreadyTotal" />
-		<result column="au_amount_payable" jdbcType="DECIMAL" property="amountPayable" />
-		<result column="au_reduction_amount" jdbcType="DECIMAL" property="reductionAmount" />
-		<result column="au_actual_amount" jdbcType="DECIMAL" property="actualAmount" />
-		<result column="au_pay_amount" jdbcType="DECIMAL" property="payAmount" />
-		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
-		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
-		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
-		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
-		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
-		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
-		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
-		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
-		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
-		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
-		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
-		<result column="au_is_exempt" jdbcType="BIT" property="isExempt" />
-		<result column="au_reduction_type" jdbcType="INTEGER" property="reductionType" />
-		<result column="au_reducion_apply_user" jdbcType="VARCHAR" property="reducionApplyUser" />
-		<result column="au_reduction_date" jdbcType="TIMESTAMP" property="reductionDate" />
-		<result column="au_reduction_reason" jdbcType="VARCHAR" property="reductionReason" />
-		<result column="au_reduction_answer_user" jdbcType="VARCHAR" property="reductionAnswerUser" />
-		<result column="au_reduction_answer_date" jdbcType="VARCHAR" property="reductionAnswerDate" />
-		<result column="au_reduction_answer_option" jdbcType="VARCHAR" property="reductionAnswerOption" />
-		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
-		<result column="au_unaudit_years" jdbcType="INTEGER" property="unauditYears" />
-		<result column="au_supplement_year" jdbcType="CHAR" property="supplementYear" />
-		<result column="au_delay_days" jdbcType="INTEGER" property="delayDays" />
-		<result column="au_refuse_times" jdbcType="INTEGER" property="refuseTimes" />
-		<result column="au_create_time" jdbcType="TIMESTAMP" property="createTime" />
-		<result column="au_update_time" jdbcType="TIMESTAMP" property="updateTime" />
-		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
-		<result column="au_is_active" jdbcType="BIT" property="isActive" />
-		<result column="au_version" jdbcType="INTEGER" property="version" />
+	<resultMap id="ResultAccounts" type="com.esd.hesf.model.Accounts">
+		<id column="ac_id" property="id" jdbcType="INTEGER" />
+		<result column="ac_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="ac_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="ac_user_id" property="userId" jdbcType="INTEGER" />
+		<result column="ac_is_active" property="isActive" jdbcType="BIT" />
+		<result column="ac_version" property="version" jdbcType="INTEGER" />
+		<result column="ac_year" property="year" jdbcType="TIMESTAMP" />
+		<result column="ac_total_money" property="totalMoney" jdbcType="DECIMAL" />
+		<result column="ac_is_finished" property="isFinished" jdbcType="BIT" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -126,32 +95,10 @@
 		pt.id as pt_id, pt.text as pt_text, 
 		<!-- payment exceptional -->
 		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value,
-		<!-- audit -->
-		au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
-		au.company_handicap_total as au_company_handicap_total,
-		au.company_predict_total as au_company_predict_total,
-		au.company_should_total as au_company_should_total,
-		au.company_already_total as au_company_already_total, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
-		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount,
-		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount,
-		au.is_delay_pay as au_is_delay_pay,
-		au.init_audit_user_id as au_init_audit_user_id,
-		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
-		au.verify_audit_user_id as
-		au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
-		au.verify_audit_comment as au_verify_audit_comment, au.remark as au_remark, au.is_exempt as au_is_exempt,
-		au.reduction_type as
-		au_reduction_type, au.reducion_apply_user as au_reducion_apply_user,
-		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
-		au.reduction_answer_user as
-		au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date,
-		au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
-		au.unaudit_years
-		as au_unaudit_years, au.supplement_year as au_supplement_year,
-		au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
-		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id,
-		au.is_active
-		as au_is_active, au.version as au_version
+		<!-- accounts -->
+		ac.id as ac_id, ac.create_time as ac_create_time, ac.update_time as ac_update_time,ac.user_id as ac_user_id, ac.is_active as ac_is_active, ac.version as ac_version,
+		ac.year as ac_year, ac.total_money as ac_total_money,
+		ac.is_finished as ac_is_finished
 	</sql>
 
 	<sql id="From_Column">
@@ -159,7 +106,7 @@
 		left join company as c on (pay.payment_company = c.id ) 
 		left join payment_type as pt on (pay.payment_type = pt.id)
 		left join payment_exceptional as pe on (pay.payment_exceptional = pe.id)
-		left join audit as au on (pay.audit_id = au.id)
+		left join accounts as ac on (pay.accounts_id = ac.id)
 	</sql>
 
 	<!-- insert -->
@@ -169,7 +116,7 @@
 		</selectKey>
 		insert into payment (create_time, update_time, user_id, is_active, payment_date, payment_money,
 		payment_person,payment_company, payment_bill, payment_type, payment_exceptional, bill_print_date,
-		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, audit_id, version)
+		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, accounts_id, version)
 		values
 		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, now(),
 		#{paymentMoney,jdbcType=DECIMAL}, #{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},
@@ -177,7 +124,7 @@
 		#{paymentExceptional,jdbcType=INTEGER},
 		#{billPrintDate,jdbcType=TIMESTAMP},#{billExchangeDate,jdbcType=TIMESTAMP},#{billReturn,jdbcType=BIT},
 		#{billFinance,jdbcType=BIT},#{billObsolete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR},
-		#{audit.id,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
+		#{accounts.id,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Payment">
@@ -239,9 +186,9 @@
 			<if test="remark != null">
 				remark,
 			</if>
-			<if test="audit != null">
-				<if test="audit.id != null and audit.id > 0">
-					audit_id,
+			<if test="accounts != null">
+				<if test="accounts.id != null and accounts.id > 0">
+					accounts_id,
 				</if>
 			</if>
 			version
@@ -299,9 +246,9 @@
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
 			</if>
-			<if test="audit != null">
-				<if test="audit.id != null and audit.id > 0">
-					#{audit.id,jdbcType=INTEGER},
+			<if test="accounts != null">
+				<if test="accounts.id != null and accounts.id > 0">
+					#{accounts.id,jdbcType=INTEGER},
 				</if>
 			</if>
 			default
@@ -373,9 +320,9 @@
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
 			</if>
-			<if test="audit != null">
-				<if test="audit.id != null and audit.id > 0">
-					audit_id = #{audit.id,jdbcType=INTEGER},
+			<if test="accounts != null">
+				<if test="accounts.id != null and accounts.id > 0">
+					accounts_id = #{accounts.id,jdbcType=INTEGER},
 				</if>
 			</if>
 			version = version + 1
@@ -494,13 +441,13 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
-				<!-- audit -->
-				<if test="payment.audit != null">
-					<if test="payment.audit.id != null and payment.audit.id > 0">
-						and pay.audit_id = #{payment.audit.id,jdbcType=INTEGER}
+				<!-- accounts -->
+				<if test="payment.accounts != null">
+					<if test="payment.accounts.id != null and payment.accounts.id > 0">
+						and pay.accounts_id = #{payment.accounts.id,jdbcType=INTEGER}
 					</if>
-					<if test="payment.audit.year != null and payment.audit.year != ''">
-						and au.year = #{payment.audit.year,jdbcType=CHAR} 
+					<if test="payment.accounts.year != null and payment.accounts.year != ''">
+						and ac.year = #{payment.accounts.year,jdbcType=CHAR} 
 					</if>
 				</if>
 				<choose>
@@ -624,13 +571,13 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
-				<!-- audit -->
-				<if test="payment.audit != null">
-					<if test="payment.audit.id != null and payment.audit.id > 0">
-						and pay.audit_id = #{payment.audit.id,jdbcType=INTEGER}
+				<!-- accounts -->
+				<if test="payment.accounts != null">
+					<if test="payment.accounts.id != null and payment.accounts.id > 0">
+						and pay.accounts_id = #{payment.accounts.id,jdbcType=INTEGER}
 					</if>
-					<if test="payment.audit.year != null and payment.audit.year != ''">
-						and au.year = #{payment.audit.year,jdbcType=CHAR} 
+					<if test="payment.accounts.year != null and payment.accounts.year != ''">
+						and ac.year = #{payment.accounts.year,jdbcType=CHAR} 
 					</if>
 				</if>
 				<choose>
@@ -665,9 +612,9 @@
 					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR}
 				</if>
 			</if>
-			<if test="audit != null">
-				<if test="audit.id != null and audit.id > 0">
-					and pay.audit_id = #{audit.id, jdbcType=INTEGER}
+			<if test="accounts != null">
+				<if test="accounts.id != null and accounts.id > 0">
+					and pay.accounts_id = #{accounts.id, jdbcType=INTEGER}
 				</if>
 			</if>
 		</trim>
@@ -675,9 +622,9 @@
 
 	<select id="retrieveByCompanyAndYear" resultType="decimal" parameterType="map">
 		select sum(pay.payment_money)
-		from company as c, payment as pay, audit as au 
+		from company as c, payment as pay, accounts as ac 
 		<where>
-			c.id = pay.payment_company and pay.audit_id = au.id 
+			c.id = pay.payment_company and pay.accounts_id = ac.id 
 			<if test="companyType != null and companyType > 0">
 				and c.company_type = #{companyType,jdbcType=INTEGER}
 			</if>
@@ -687,7 +634,7 @@
 			<if test="areaCode != null and areaCode != ''">
 				and c.area_code = #{areaCode,jdbcType=CHAR}
 			</if>
-			and au.year = #{year,jdbcType=CHAR}
+			and ac.year = #{year,jdbcType=CHAR}
 		</where>
 	</select>
 

@@ -29,7 +29,7 @@ public class Payment extends PrimaryKey_Int {
 	private Boolean billObsolete; // 是否 作废票据 默认为否
 	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
 	private String remark; // 备注
-	private Audit audit; // 缴款所属于的审核对象
+	private Accounts accounts; // 缴款明细所属于的账目对象
 
 	public Payment() {
 	}
@@ -38,12 +38,17 @@ public class Payment extends PrimaryKey_Int {
 		super.setId(id);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Payment [paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson+ ", paymentCompany=" + paymentCompany + ", paymentBill=" + paymentBill
-				+ ", paymentType=" + paymentType + ", billPrintDate=" + billPrintDate + ", billExchangeDate=" + billExchangeDate + ", billReturn=" + billReturn + ", billFinance=" + billFinance
-				+ ", billObsolete=" + billObsolete + ", paymentExceptional=" + paymentExceptional + ", remark=" + remark + ", audit=" + audit + "]";
+		return "Payment [paymentDate=" + paymentDate + ", paymentMoney="
+				+ paymentMoney + ", paymentPerson=" + paymentPerson
+				+ ", paymentCompany=" + paymentCompany + ", paymentBill="
+				+ paymentBill + ", paymentType=" + paymentType
+				+ ", billPrintDate=" + billPrintDate + ", billExchangeDate="
+				+ billExchangeDate + ", billReturn=" + billReturn
+				+ ", billFinance=" + billFinance + ", billObsolete="
+				+ billObsolete + ", paymentExceptional=" + paymentExceptional
+				+ ", remark=" + remark + ", accounts=" + accounts + "]";
 	}
 
 	public Date getPaymentDate() {
@@ -150,12 +155,12 @@ public class Payment extends PrimaryKey_Int {
 		this.remark = remark;
 	}
 
-	public Audit getAudit() {
-		return audit;
+	public Accounts getAccounts() {
+		return accounts;
 	}
 
-	public void setAudit(Audit audit) {
-		this.audit = audit;
+	public void setAccounts(Accounts accounts) {
+		this.accounts = accounts;
 	}
 
 }

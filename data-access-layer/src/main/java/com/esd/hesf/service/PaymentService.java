@@ -23,12 +23,12 @@ public interface PaymentService extends BaseService<Payment> {
 	public List<Payment> getAll();
 
 	/**
-	 * 根据审核id, 得到已经付款的金额
+	 * 根据账目id, 得到已经付款的金额
 	 * 
 	 * @param auditId	大于0的正整数
 	 * @return
 	 */
-	BigDecimal getAlreadyPayByAudit(Integer auditId);
+	BigDecimal getAlreadyPayByAudit1(Integer auditId);
 	
 	/**
 	 * 根据公司id, 得到已经付款的金额
