@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class Payment extends PrimaryKey_Int {
 
+	private String year; // 缴款年限
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date paymentDate;
 	private BigDecimal paymentMoney;
@@ -40,15 +41,24 @@ public class Payment extends PrimaryKey_Int {
 
 	@Override
 	public String toString() {
-		return "Payment [paymentDate=" + paymentDate + ", paymentMoney="
-				+ paymentMoney + ", paymentPerson=" + paymentPerson
-				+ ", paymentCompany=" + paymentCompany + ", paymentBill="
-				+ paymentBill + ", paymentType=" + paymentType
-				+ ", billPrintDate=" + billPrintDate + ", billExchangeDate="
-				+ billExchangeDate + ", billReturn=" + billReturn
-				+ ", billFinance=" + billFinance + ", billObsolete="
-				+ billObsolete + ", paymentExceptional=" + paymentExceptional
-				+ ", remark=" + remark + ", accounts=" + accounts + "]";
+		return "Payment [year=" + year + ", paymentDate=" + paymentDate
+				+ ", paymentMoney=" + paymentMoney + ", paymentPerson="
+				+ paymentPerson + ", paymentCompany=" + paymentCompany
+				+ ", paymentBill=" + paymentBill + ", paymentType="
+				+ paymentType + ", billPrintDate=" + billPrintDate
+				+ ", billExchangeDate=" + billExchangeDate + ", billReturn="
+				+ billReturn + ", billFinance=" + billFinance
+				+ ", billObsolete=" + billObsolete + ", paymentExceptional="
+				+ paymentExceptional + ", remark=" + remark + ", accounts="
+				+ accounts + "]";
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 
 	public Date getPaymentDate() {
