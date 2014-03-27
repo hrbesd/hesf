@@ -7,11 +7,25 @@ import java.util.Date;
 
 public class CalendarUtil {
 
-
-	public static String getLastYear() {
+	/**
+	 * 获取前一年
+	 * @return
+	 */
+	public static String getBeforeYear() {
 		Calendar cal = Calendar.getInstance();// 使用日历类
 		int year = cal.get(Calendar.YEAR);// 得到年
 		return String.valueOf(year - 1);
+	}
+
+	/**
+	 * 获取当年
+	 * 
+	 * @return
+	 */
+	public static String getNowYear() {
+		Calendar cal = Calendar.getInstance();// 使用日历类
+		int year = cal.get(Calendar.YEAR);// 得到年
+		return String.valueOf(year);
 	}
 
 	/**

@@ -540,9 +540,9 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test36() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity = pService.getAlreadyPayByAudit(47634);
-		// BigDecimal entity = pService.getAlreadyPayByCompany(11);
-		map.put("entity", entity);
+//		BigDecimal entity = pService.getAlreadyPayByAudit(47634);
+//		// BigDecimal entity = pService.getAlreadyPayByCompany(11);
+//		map.put("entity", entity);
 		return map;
 	}
 
@@ -561,8 +561,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test38() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecordByAudit(47634, 1, 999);
-		map.put("entity", entity);
+//		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecordByAudit(47634, 1, 999);
+//		map.put("entity", entity);
 		return map;
 	}
 

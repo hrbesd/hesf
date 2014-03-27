@@ -124,7 +124,7 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addGet(HttpServletRequest request) {
-		String year = CalendarUtil.getLastYear();
+		String year = CalendarUtil.getBeforeYear();
 		request.setAttribute("year", year);
 		return new ModelAndView("settings/parameter_save");
 	}
