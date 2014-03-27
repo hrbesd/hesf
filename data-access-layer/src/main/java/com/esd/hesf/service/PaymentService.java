@@ -28,7 +28,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param auditId	大于0的正整数
 	 * @return
 	 */
-	BigDecimal getAlreadyPayByAudit1(Integer auditId);
+	BigDecimal getAlreadyPayByAudit(Integer auditId);
 	
 	/**
 	 * 根据公司id, 得到已经付款的金额
