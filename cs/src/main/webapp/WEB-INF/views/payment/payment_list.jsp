@@ -94,7 +94,7 @@
 			<td width="100%"></td>
 		</tr>
 		<tr>
-			<td style="text-align: right;">档案编码 :</td>
+			<td style="text-align: right;">档案编码:</td>
 			<td><input type="text" style="width: 100%" id="companyCode" />
 			</td>
 			<td style="text-align: right;">税务编码:</td>

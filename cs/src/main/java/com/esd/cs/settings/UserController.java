@@ -66,6 +66,12 @@ public class UserController {
 		Map<String, Object> entity = new HashMap<>();
 		try {
 			User user = new User();
+			String userName = request.getParameter("userName");
+			String userRealName = request.getParameter("userRealName");
+			String userMobile = request.getParameter("userMobile");
+			user.setUserName(userName);
+			user.setUserRealName(userRealName);
+			user.setUserMobile(userMobile);
 			PaginationRecordsAndNumber<User, Number> query = null;
 			query = userService.getPaginationRecords(user, page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
@@ -115,7 +121,7 @@ public class UserController {
 	public ModelAndView addGet() {
 		List<UserGroup> list = userGroupService.getAll();
 		logger.debug("UserGroups:{}", list);
-		return new ModelAndView("settings/user_detail_save","group",list);
+		return new ModelAndView("settings/user_detail_save", "group", list);
 	}
 
 	@RequestMapping(value = "/checkName", method = RequestMethod.POST)
@@ -234,7 +240,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable("id") int id,HttpServletRequest request) {
+	public ModelAndView editGet(@PathVariable("id") int id, HttpServletRequest request) {
 		logger.debug("id:{}", id);
 		User user = userService.getByPrimaryKey(id);
 		List<UserGroup> list = userGroupService.getAll();

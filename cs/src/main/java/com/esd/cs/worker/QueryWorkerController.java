@@ -52,10 +52,9 @@ public class QueryWorkerController {
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		try {
-		
+
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			
-		
+
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
 			paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名
@@ -117,7 +116,7 @@ public class QueryWorkerController {
 	@ResponseBody
 	public Map<String, Object> companyHireList(WorkerParamModel params, HttpServletRequest request) {
 		logger.debug("queryCompanyWorkerParams{}", params);
-	
+
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		List<Map<String, Object>> list = null;

@@ -160,8 +160,10 @@ public class CompanyParamModel extends PrimaryKey_String {
 
 	@Override
 	public String toString() {
-		return "CompanyParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode + ", companyProperty=" + companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2=" + companyEmpTotal_2 + ", companyName="
-				+ companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", companyHandicapTotal_1=" + companyHandicapTotal_1 + ", companyHandicapTotal_2=" + companyHandicapTotal_2 + ", page=" + page + ", rows=" + rows + "]";
+		return "CompanyParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode
+				+ ", companyProperty=" + companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2="
+				+ companyEmpTotal_2 + ", companyName=" + companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", companyHandicapTotal_1=" + companyHandicapTotal_1
+				+ ", companyHandicapTotal_2=" + companyHandicapTotal_2 + ", page=" + page + ", rows=" + rows + "]";
 	}
 
 }

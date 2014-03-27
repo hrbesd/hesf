@@ -4,8 +4,19 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <script type="text/javascript">
-	$(function() {
+	payment = {};
+	payment.getParams = function() {
+		var params = {};
+		params.userName = $('#userName').val();
+		params.userRealName = $('#userRealName').val();
+		params.userMobile = $('#userMobile').val();
+		return params;
+	};
 
+	user_list = {};
+	user_list.loadData = function() {
+
+		var params = payment.getParams();
 		esd.common.datagrid("#user_list_grid", "${contextPath}/security/settings/user/list", "#user_list_boolbar", [ [ {
 			field : 'userName',
 			title : '用户名',
@@ -44,9 +55,9 @@
 				var u = '<a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a>';
 				return e + d + u;
 			}
-		} ] ]);
-	});
-	user_list = {};
+		} ] ], params);
+
+	};
 	user_list.addWindow = function() {
 		esd.common.defaultOpenWindowEx("添加用户", 750, 550, "${contextPath}/security/settings/user/add");
 	};
@@ -83,6 +94,9 @@
 		});
 
 	};
+	$(function() {
+		user_list.loadData();
+	});
 </script>
 
 
@@ -95,6 +109,23 @@
 <div id="user_list_boolbar" style="white-space: nowrap;margin-top: 5px">
 	<div style="text-align: right;">
 		<a href="javascript:user_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加用户</a>
+	</div>
+	<div>
+		<table width="100%" border="0">
+			<tr>
+				<td width="80" style="text-align: right;">用户名:</td>
+				<td width="150"><input id="userName" type="text" />
+				</td>
+				<td width="80" style="text-align: right;">真实姓名:</td>
+				<td width="150"><input id="userRealName" type="text" />
+				</td>
+				<td width="80" style="text-align: right;">手机:</td>
+				<td width="150"><input type="text" id="userMobile" />
+				</td>
+				<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="user_list.loadData()">查找</a>
+				</td>
+			</tr>
+		</table>
 	</div>
 </div>
 

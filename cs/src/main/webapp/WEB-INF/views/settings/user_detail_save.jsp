@@ -57,13 +57,13 @@
 				</tr>
 				<tr>
 					<td>真实姓名:</td>
-					<td><input name="userRealName" type="text" value="${entity.userRealName}" /></td>
+					<td><input name="userRealName" type="text" class="easyui-validatebox"  required="true" value="${entity.userRealName}" /></td>
 					<td><span id="realname_message"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" class="easyui-validatebox" required="true" type="text" value="${entity.userMobile}" /></td>
+					<td><input name="userMobile" class="easyui-validatebox"  required="true" type="text" value="${entity.userMobile}" /></td>
 					<td><span id="mobile_message"></span>
 					</td>
 				</tr>

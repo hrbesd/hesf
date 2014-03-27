@@ -32,15 +32,15 @@ public class WorkerUtil {
 	// 返回职工年龄
 	public static Integer conversionAge(String param) {
 		if (param != null) {
-				try {
-					// 初审日期
-					Integer age = Integer.valueOf(param.substring(6, 10));
-					// 当前年份
-					Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
-					return (nowYear - age) + 1;
-				} catch (Exception e) {
-					logger.error("conversionAge:{}", e.getMessage());
-				}
+			try {
+				// 初审日期
+				Integer age = Integer.valueOf(param.substring(6, 10));
+				// 当前年份
+				Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
+				return (nowYear - age) + 1;
+			} catch (Exception e) {
+				logger.error("conversionAge:{}", e.getMessage());
+			}
 		}
 		logger.error("conversionAge:{}", -1);
 		return -1;
@@ -116,8 +116,8 @@ public class WorkerUtil {
 		list = new ArrayList<Worker>();
 
 		if (obj instanceof HSSFWorkbook) {// 97-2003
-			logger.debug("excelFileType:{}","97-2003");
-			
+			logger.debug("excelFileType:{}", "97-2003");
+
 			HExcelSheetParser parser = new HExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
 			for (int i = 1; i < datas.size(); i++) {
@@ -125,7 +125,7 @@ public class WorkerUtil {
 				list.add(parseRow(row));
 			}
 		} else if (obj instanceof XSSFWorkbook) { // 2003-2010
-			logger.debug("excelFileType:{}"," 2003-2010");
+			logger.debug("excelFileType:{}", " 2003-2010");
 			XExcelSheetParser parser = new XExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
 			for (int i = 1; i < datas.size(); i++) {
@@ -141,14 +141,14 @@ public class WorkerUtil {
 	 * 根据残疾证号 组装职工对象
 	 */
 	public static Worker assembly(Worker w) {
-		Worker worker=new Worker();
+		Worker worker = new Worker();
 		// 残疾证号
 		String handicapCode = w.getWorkerHandicapCode();
 		worker.setWorkerName(w.getWorkerName());
 		worker.setWorkerHandicapCode(handicapCode);
 		// 身份证号
 		worker.setWorkerIdCard(handicapCode.substring(0, 18));
-		
+
 		int age = Integer.valueOf(handicapCode.substring(16, 17));
 		// 性别
 		if (age % 2 == 0) {
@@ -165,23 +165,24 @@ public class WorkerUtil {
 		// 残疾等级
 		int handicapLeve = Integer.valueOf(handicapCode.substring(19, 20));
 		worker.setWorkerHandicapLevel(new WorkerHandicapLevel(handicapLeve));
-	
-		//出生日期
-		String year = handicapCode.substring(6, 10);//年份
-		String month = handicapCode.substring(10, 12);//月
-		String day = handicapCode.substring(12, 14);//日
-		
-		worker.setWorkerBirth(year+"-"+month+"-"+day);
+
+		// 出生日期
+		String year = handicapCode.substring(6, 10);// 年份
+		String month = handicapCode.substring(10, 12);// 月
+		String day = handicapCode.substring(12, 14);// 日
+
+		worker.setWorkerBirth(year + "-" + month + "-" + day);
 		// 出生年份--供后台查询使用
 		worker.setWorkerBirthYear(year);
 		logger.debug("assemblyWorker:{}", worker);
-	
+
 		return worker;
 
 	}
 
 	/**
 	 * 年龄检测
+	 * 
 	 * @param workerHandicapCode
 	 * @param param
 	 * @return

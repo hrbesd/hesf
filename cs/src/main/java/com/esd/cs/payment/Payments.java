@@ -23,7 +23,8 @@ public class Payments {
 
 	@Override
 	public String toString() {
-		return "Payments [id=" + id + ", paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson + ", paymentBill=" + paymentBill + ", paymentType=" + paymentType + ", remark=" + remark + ", auditId=" + auditId + ", companyId=" + companyId + "]";
+		return "Payments [id=" + id + ", paymentDate=" + paymentDate + ", paymentMoney=" + paymentMoney + ", paymentPerson=" + paymentPerson + ", paymentBill=" + paymentBill + ", paymentType="
+				+ paymentType + ", remark=" + remark + ", auditId=" + auditId + ", companyId=" + companyId + "]";
 	}
 
 	public Integer getAuditId() {

@@ -105,7 +105,7 @@ public class QueryAuditController {
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("companyLegal",it.getCompany().getCompanyLegal());
+				map.put("companyLegal", it.getCompany().getCompanyLegal());
 				map.put("companyAddress", it.getCompany().getCompanyAddress());
 				map.put("companyPhone", it.getCompany().getCompanyPhone());// 流程状态
 				list.add(map);

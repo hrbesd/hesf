@@ -40,7 +40,6 @@ public class CompayController {
 	@Autowired
 	private AuditService auditService;// 审核
 
-
 	/**
 	 * 转到基本档案页面 省直 中直 机关事业
 	 * 
@@ -74,7 +73,7 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-	public ModelAndView view_company(@PathVariable(value = "id") Integer id,HttpServletRequest request) {
+	public ModelAndView view_company(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
 		logger.debug("company{}", company);
@@ -88,7 +87,7 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editCompany(@PathVariable(value = "id") Integer id,HttpServletRequest request) {
+	public ModelAndView editCompany(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
 		logger.debug("editCompany{}", company);
@@ -108,7 +107,7 @@ public class CompayController {
 	public Object get_company(@RequestParam(value = "id") Integer id, HttpServletRequest request) {
 
 		try {
-			logger.debug("getByIdCompanyId:{}",id);
+			logger.debug("getByIdCompanyId:{}", id);
 			Company company = companyService.getByPrimaryKey(id);
 			logger.debug(" getcompany{}", company);
 			request.setAttribute("company", company);
@@ -137,8 +136,8 @@ public class CompayController {
 				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			String nowYear = (String)session.getAttribute(Constants.YEAR);
-			boolean b = companyService.save(company,nowYear);
+			String nowYear = (String) session.getAttribute(Constants.YEAR);
+			boolean b = companyService.save(company, nowYear);
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
@@ -210,15 +209,14 @@ public class CompayController {
 
 	/**
 	 * 根据企业id 获取企业信息
+	 * 
 	 * @param companyId
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/getinformation/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId,
-			@PathVariable(value = "year") String year,
-			HttpServletRequest request) {
+	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
 
 		logger.debug("getComapnmyInformation:{}", companyId);
 		List<Map<String, String>> list = null;
@@ -233,13 +231,13 @@ public class CompayController {
 			map.put("companyTaxCode", c.getCompanyTaxCode());// 税务编码
 			map.put("companyEconomyType", c.getCompanyEconomyType().getCompanyEconomyType());// 经济类型
 			map.put("companyArea", c.getArea().getName());// 地区
-			Audit audit= auditService.getByPrimaryKey(year, companyId);
-			if(audit==null){
-				logger.error("get_comapnmy_information:{}","null");
+			Audit audit = auditService.getByPrimaryKey(year, companyId);
+			if (audit == null) {
+				logger.error("get_comapnmy_information:{}", "null");
 				return null;
 			}
-			map.put("companyEmpTotal",audit.getCompanyEmpTotal() + "");// 员工总人数
-			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId,year)+ "");// 残疾职工总人数
+			map.put("companyEmpTotal", audit.getCompanyEmpTotal() + "");// 员工总人数
+			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId, year) + "");// 残疾职工总人数
 			list.add(map);
 			logger.debug("getComapnmyInformationResult:{}", list);
 			return list;
@@ -247,7 +245,7 @@ public class CompayController {
 
 		return null;
 	}
-	
+
 	/**
 	 * 验证 档案编码
 	 * 
@@ -259,7 +257,7 @@ public class CompayController {
 	@ResponseBody
 	public Boolean validate_companyCode(@RequestParam(value = "param") String param, HttpServletRequest request) {
 
-		if (companyService.getByCompanyCode(param)==null) {
+		if (companyService.getByCompanyCode(param) == null) {
 			logger.debug("validate_companyCode:{},Result{}", param, "true");
 			return true;
 		} else {

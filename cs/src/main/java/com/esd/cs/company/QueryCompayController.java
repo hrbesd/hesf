@@ -40,8 +40,8 @@ public class QueryCompayController {
 	private CompanyService companyService;// 企业
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView company_list(HttpServletRequest request,HttpSession session) {
-		String nowYear = (String)session.getAttribute(Constants.YEAR);
+	public ModelAndView company_list(HttpServletRequest request, HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		logger.debug("goToPage:{}", "queryCompany");
 		return new ModelAndView("query/company");

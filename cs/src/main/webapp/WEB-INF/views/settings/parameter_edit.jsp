@@ -82,10 +82,19 @@
 				</tr>
 
 			</table>
-			<div>残疾人等级计算：</div>
-			<table style="margin-top: 10px; margin-left: 20px;">
+			<div>
+				<strong>残疾人等级计算：</strong>
+			</div>
+			<table style="margin-top: 10px; margin-left: 20px; float: left;" border="0">
 				<tr>
-					<td width="120">视力1,2,3,4级:</td>
+					<td width="80">&nbsp;</td>
+					<td>一级</td>
+					<td>二级</td>
+					<td>三级</td>
+					<td>四级</td>
+				</tr>
+				<tr>
+					<td>视力残疾:</td>
 					<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.eyeOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.eyeOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -108,7 +117,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>听力1,2,3,4级:</td>
+					<td>听力残疾:</td>
 					<td><select class="easyui-combobox" name="hearingOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.hearingOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.hearingOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -131,7 +140,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>言语1,2,3,4级:</td>
+					<td>言语残疾:</td>
 					<td><select class="easyui-combobox" name="speakOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.speakOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.speakOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -154,7 +163,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>肢体1,2,3,4级:</td>
+					<td>肢体残疾:</td>
 					<td><select class="easyui-combobox" name="bodyOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.bodyOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.bodyOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -177,7 +186,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>智力1,2,3,4级:</td>
+					<td>智力残疾:</td>
 					<td><select class="easyui-combobox" name="intelligenceOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.intelligenceOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.intelligenceOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -200,7 +209,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>精神1,2,3,4级:</td>
+					<td>精神残疾:</td>
 					<td><select class="easyui-combobox" name="mentalOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.mentalOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.mentalOne eq '2'}">selected="selected"</c:if>>2</option>
@@ -223,7 +232,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>多重1,2,3,4级:</td>
+					<td>多重残疾:</td>
 					<td><select class="easyui-combobox" name="multiOne" data-options="panelHeight:70,height:30">
 							<option value="1" <c:if test="${entity.multiOne eq '1'}">selected="selected"</c:if>>1</option>
 							<option value="2" <c:if test="${entity.multiOne eq '2'}">selected="selected"</c:if>>2</option>

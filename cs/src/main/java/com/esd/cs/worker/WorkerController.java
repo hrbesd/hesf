@@ -367,7 +367,7 @@ public class WorkerController {
 					// 写入文件
 					File file = new File(sbRealPath.toString());
 					item.write(file);
-					
+
 					logger.info("上传文件成功,filePath：" + file.getPath());
 					// 返回文件路径
 					result.put("filePath", file.getPath());
@@ -393,7 +393,7 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/importworker", method = RequestMethod.POST)
 	public ModelAndView importworker(HttpServletRequest request, HttpServletResponse response) {
-		
+
 		logger.debug("importWorker:{}");
 		// 初始化上传文件目录
 		String upload = "upload";

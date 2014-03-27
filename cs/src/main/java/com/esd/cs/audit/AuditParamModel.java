@@ -156,8 +156,10 @@ public class AuditParamModel {
 
 	@Override
 	public String toString() {
-		return "AuditParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode + ", companyProperty=" + companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2=" + companyEmpTotal_2 + ", companyName="
-				+ companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", auditProcessStatus=" + auditProcessStatus + ", paymentPerson=" + paymentPerson + ", overYear=" + overYear + ", isExempt=" + isExempt + ", page=" + page + ", rows=" + rows + "]";
+		return "AuditParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode + ", companyProperty="
+				+ companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2=" + companyEmpTotal_2
+				+ ", companyName=" + companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", auditProcessStatus=" + auditProcessStatus + ", paymentPerson="
+				+ paymentPerson + ", overYear=" + overYear + ", isExempt=" + isExempt + ", page=" + page + ", rows=" + rows + "]";
 	}
 
 	public String getIsExempt() {

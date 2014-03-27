@@ -95,7 +95,7 @@ public class QueryPaymentController {
 		}
 		// 审核对象放入其中
 		if (model.getYear() != null) {
-			payment.setAudit(audit);
+			// payment.setAudit(audit);
 		}
 		// 公司对象放入其中
 		payment.setPaymentCompany(company);

@@ -93,7 +93,7 @@ public class IndexController {
 		String checkCode = request.getParameter("checkCode");
 
 		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
-		
+
 		CaptchaService captchaService = new CaptchaService();
 		Boolean b = captchaService.checkCode(checkCode, request);
 		logger.debug("checkcode status:{}", b);

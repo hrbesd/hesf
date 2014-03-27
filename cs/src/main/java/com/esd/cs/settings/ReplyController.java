@@ -108,7 +108,7 @@ public class ReplyController {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping(value="/delete",method=RequestMethod.POST)
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean delete(@RequestParam(value = "params[]") int[] ids) {
 		logger.debug(ids.toString());
@@ -126,10 +126,10 @@ public class ReplyController {
 	 * @return
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ModelAndView updateGet(@RequestParam(value="id") Integer id) {
-		logger.debug("id: "+id);
+	public ModelAndView updateGet(@RequestParam(value = "id") Integer id) {
+		logger.debug("id: " + id);
 		Reply reply = rService.getByPrimaryKey(id);
-		return new ModelAndView("settings/reply_update","entity",reply);
+		return new ModelAndView("settings/reply_update", "entity", reply);
 	}
 
 	/**
@@ -146,18 +146,7 @@ public class ReplyController {
 		Boolean bl = rService.update(reply);
 		return bl;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	// 将Date 转成 yyyy-MM-dd 格式的字符串
 	private String getStringDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
