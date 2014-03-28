@@ -29,7 +29,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyCode
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(String year, String companyCode);
+	BigDecimal getEffPaid(String year, String companyCode);
 
 	/**
 	 * 根据公司id, 年份year得到有效的支付金额
@@ -38,7 +38,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyId
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(String year, Integer companyId);
+	BigDecimal getEffPaid(String year, Integer companyId);
 
 	/**
 	 * 根据年份year, 公司id, 得到缴款明细列表
@@ -93,11 +93,4 @@ public interface PaymentService extends BaseService<Payment> {
 	boolean createPaymentExcel(String FilePath, List<Payment> paymentList,
 			Integer page, Integer pageSize);
 	
-	/**
-	 * 根据年(year), 公司id(companyid)获取有效的支付额度
-	 * @param year
-	 * @param companyId
-	 * @return
-	 */
-	BigDecimal getEffPaid(String year, Integer companyId);
 }

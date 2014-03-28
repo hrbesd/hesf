@@ -131,7 +131,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getAlreadyPay(String year, String companyCode) {
+	public BigDecimal getEffPaid(String year, String companyCode) {
 		Payment payment = new Payment();
 		payment.setYear(year);
 		payment.setPaymentCompany(new Company(companyCode));
@@ -139,7 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getAlreadyPay(String year, Integer companyId) {
+	public BigDecimal getEffPaid(String year, Integer companyId) {
 		Payment payment = new Payment();
 		payment.setYear(year);
 		payment.setPaymentCompany(new Company(companyId));
@@ -562,15 +562,6 @@ public class PaymentServiceImpl implements PaymentService {
 		return true;
 	}
 
-	@Override
-	public BigDecimal getEffPaid(String year, Integer companyId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	
-	
 	
 	// @Override
 	// public boolean createPaymentExcel(String FilePath,
