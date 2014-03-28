@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AccountsDao;
 import com.esd.hesf.model.Accounts;
-import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.Constants;
@@ -168,4 +167,14 @@ public class AccountsServiceImpl implements AccountsService {
 		return dao.retrieveAuditYears();
 	}
 
+	@Override
+	public List<Accounts> getByYearAndCompany(String year, Integer companyId) {
+		Accounts accounts = new Accounts();
+		accounts.setYear(year);
+		accounts.setCompany(new Company(companyId));
+		return dao.retrieveByAccounts(accounts);
+	}
+
+	
+	
 }

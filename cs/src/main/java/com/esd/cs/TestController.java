@@ -860,7 +860,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test65() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity =pService.getAlreadyPay(null, "");
+		BigDecimal entity =pService.getEffPaid(null, "");
 		map.put("entity", entity);
 		return map;
 	}
@@ -891,4 +891,14 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	@RequestMapping("/69")
+	@ResponseBody
+	public Map<String, Object> test69() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Accounts> entity =acService.getByYearAndCompany("2012", 22);
+		map.put("entity", entity);
+		return map;
+	}
+	
 }

@@ -45,4 +45,12 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @return
 	 */
 	String[] getAccountsYears();
+	
+	/**
+	 * 根据年份和公司id获得账目列表 
+	 * @param year
+	 * @param companyId
+	 * @return
+	 */
+	List<Accounts> getByYearAndCompany(String year, Integer companyId);
 }
