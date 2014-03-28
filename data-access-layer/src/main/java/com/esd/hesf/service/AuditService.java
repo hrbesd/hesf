@@ -59,4 +59,10 @@ public interface AuditService extends BaseService<Audit> {
 	PaginationRecordsAndNumber<Audit, Number> getByMultiCondition(
 			Map<String, Object> map);
 
+	/**
+	 * 获得审核表中实际存在的所有审核年份
+	 * 
+	 * @return
+	 */
+	String[] getAuditYears();
 }

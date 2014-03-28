@@ -53,4 +53,11 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @return
 	 */
 	List<Audit> retireveUnauditByCompany(Audit audit);
+
+	/**
+	 * 查询审核表中已经存在的审核年份
+	 * 
+	 * @return
+	 */
+	String[] retrieveAuditYears();
 }

@@ -41,7 +41,8 @@ import com.esd.hesf.service.UserGroupService;
 @Controller
 @RequestMapping(value = "/security/settings/yearAuditParameter")
 public class YearAuditParameterController {
-	private static final Logger logger = LoggerFactory.getLogger(YearAuditParameterController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(YearAuditParameterController.class);
 
 	@Autowired
 	private UserGroupService userGroupService;
@@ -68,7 +69,9 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/list")
 	@ResponseBody
-	public Map<String, Object> list(@RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows, HttpServletRequest request) {
+	public Map<String, Object> list(@RequestParam(value = "page") Integer page,
+			@RequestParam(value = "rows") Integer rows,
+			HttpServletRequest request) {
 		Map<String, Object> entity = new HashMap<>();
 		String year = request.getParameter("year");
 		try {
@@ -77,10 +80,12 @@ public class YearAuditParameterController {
 				auditParameter.setYear(year);
 			}
 			PaginationRecordsAndNumber<AuditParameter, Number> query = null;
-			query = auditParameterService.getPaginationRecords(auditParameter, page, rows);
+			query = auditParameterService.getPaginationRecords(auditParameter,
+					page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			for (Iterator<AuditParameter> iterator = query.getRecords().iterator(); iterator.hasNext();) {
+			for (Iterator<AuditParameter> iterator = query.getRecords()
+					.iterator(); iterator.hasNext();) {
 				AuditParameter it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
@@ -88,7 +93,8 @@ public class YearAuditParameterController {
 				map.put("areaCode", it.getArea().getName());// 地区
 				map.put("averageSalary", it.getAverageSalary());// 计算基数
 				map.put("putScale", it.getPutScale());// 安置比例
-				String payCloseDate = CalendarUtil.dateFormat(it.getPayCloseDate());
+				String payCloseDate = CalendarUtil.dateFormat(it
+						.getPayCloseDate());
 				map.put("payCloseDate", payCloseDate);// 支付截至日期
 				list.add(map);
 			}
@@ -137,18 +143,31 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean addPost(AuditParameter auditParameter, HttpServletRequest request, HttpSession session) {
+	public Boolean addPost(AuditParameter auditParameter,
+			HttpServletRequest request, HttpSession session) {
 		logger.debug("auditParameter:{}", auditParameter);
 		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
 		if (copy) {
-			try {
-				String currentYear = auditParameter.getYear(); // 获取指定要审核的年
-				if (currentYear != null) {
-					auditService.initAuditData(currentYear);
+			// 检查审核表中该年份的审核数据是否存在,已经不存在-则进行复制以产生审核数据, 不存在-则不进行复制
+			Boolean isExist = false;
+			String[] years = auditService.getAuditYears();
+			for (String year : years) {
+				if (auditParameter.getYear().equals(year)) {
+					isExist = true;
+					break;
 				}
-			} catch (Exception e) {
-				logger.error("copy audit date error", e);
-				return false;
+			}
+			if(!isExist){
+				// 产生审核数据
+				try {
+					String currentYear = auditParameter.getYear(); // 获取指定要审核的年
+					if (currentYear != null) {
+						auditService.initAuditData(currentYear);
+					}
+				} catch (Exception e) {
+					logger.error("copy audit date error", e);
+					return false;
+				}
 			}
 		}
 		try {
@@ -203,7 +222,8 @@ public class YearAuditParameterController {
 	public ModelAndView editGetByYear(@PathVariable("year") String year) {
 		logger.debug("year:{}", year);
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
-		return new ModelAndView("settings/parameter_edit", "entity", auditParameter);
+		return new ModelAndView("settings/parameter_edit", "entity",
+				auditParameter);
 	}
 
 	/**
@@ -215,7 +235,9 @@ public class YearAuditParameterController {
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView editGet(@PathVariable("id") int id) {
 		logger.debug("id:{}", id);
-		AuditParameter auditParameter = auditParameterService.getByPrimaryKey(id);
-		return new ModelAndView("settings/parameter_edit", "entity", auditParameter);
+		AuditParameter auditParameter = auditParameterService
+				.getByPrimaryKey(id);
+		return new ModelAndView("settings/parameter_edit", "entity",
+				auditParameter);
 	}
 }

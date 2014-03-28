@@ -775,4 +775,8 @@
 		</trim>
 		order by au.year, c.company_code
 	</select>
+
+	<select id="retrieveAuditYears" parameterType="java.lang.String" resultType="java.lang.String">
+		select year from audit group by year order by year;
+	</select>
 </mapper>

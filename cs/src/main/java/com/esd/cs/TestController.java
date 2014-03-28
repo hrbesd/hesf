@@ -883,4 +883,12 @@ public class TestController {
 		return map;
 	}
 	
+	@RequestMapping("/68")
+	@ResponseBody
+	public Map<String, Object> test68() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] entity =auditService.getAuditYears();
+		map.put("entity", entity);
+		return map;
+	}
 }
