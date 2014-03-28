@@ -740,4 +740,39 @@
 		year &lt; #{year,jdbcType=CHAR}
 		order by year
 	</select>
+	
+	<select id="retireveUnauditByCompany" parameterType="com.esd.hesf.model.Audit" resultMap="ResultAudit">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_List" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_List" />
+				<if test="year != null and year != ''">
+					and au.year &lt; #{year,jdbcType=CHAR}
+				</if>
+				<if test="company != null">
+					<if test="company.id != null and company.id > 0">
+						and c.id = #{company.id,jdbcType=INTEGER}
+					</if>
+					<if test="company.companyCode != null and company.companyCode != ''">
+						and c.company_code = #{company.companyCode, jdbcType=VARCHAR} 
+					</if>
+				</if>
+				<if test="auditProcessStatus != null">
+					<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0 ">
+						and au.audit_process_status = #{auditProcessStatus.id,jdbcType=CHAR}
+					</if>
+				</if>
+				<choose>
+					<when test="isActive != null">
+						and au.is_active = #{isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and au.is_active = 0
+					</otherwise>
+				</choose>
+		</trim>
+		order by au.year, c.company_code
+	</select>
 </mapper>

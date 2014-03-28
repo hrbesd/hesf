@@ -45,4 +45,8 @@ public class HesfException extends Exception {
 		return "HesfException: " + msg;
 	}
 
+	
+	public static void main(String[] args) {
+		new HesfException("1").printStackTrace();
+	}
 }

@@ -45,4 +45,12 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @return
 	 */
 	Audit retrieveByYearAndCompanyId(Map<String, Object> map);
+
+	/**
+	 * 根据audit对象中的公司id/code, 年(year), 审核状态(auditProcessStatus)来取得过去未审的列表
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	List<Audit> retireveUnauditByCompany(Audit audit);
 }

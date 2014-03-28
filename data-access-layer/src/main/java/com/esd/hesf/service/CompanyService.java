@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
 
@@ -114,12 +115,31 @@ public interface CompanyService extends BaseService<Company> {
 	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, Integer companyId, Integer page, Integer pageSize);
 
 	/**
-	 * 根据公司档案号和当前年份得到该公司过去为审核的年份列表
+	 * 根据公司档案号和当前年份得到该公司过去未审核的年份列表
 	 * 
 	 * @param companyId --公司id 
 	 *            year --当前审核年份
 	 * @return
 	 */
 	String[] getUnauditYearByCompany(Integer companyId, String year);
+	
+	/**
+	 * 根据公司id,当前年份, 审核状态 得到该公司过去未审核列表
+	 * 
+	 * @param companyId --公司id 
+	 * @param year 当前审核年
+	 * @param auditProcessStatus 审核状态
+	 * @return
+	 */
+	List<Audit> getUnauditByCompany(Integer companyId,String year, Integer auditProcessStatus);
 
+	/**
+	 * 根据公司档案号,当前年份, 审核状态 得到该公司过去未审核列表
+	 * 
+	 * @param companyCode --公司id 
+	 * @param year 当前审核年
+	 * @param auditProcessStatus 审核状态
+	 * @return
+	 */
+	List<Audit> getUnauditByCompany(String companyCode,String year, Integer auditProcessStatus);
 }

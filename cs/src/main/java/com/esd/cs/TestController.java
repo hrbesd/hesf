@@ -874,6 +874,13 @@ public class TestController {
 		return map;
 	}
 	
-	
+	@RequestMapping("/67")
+	@ResponseBody
+	public Map<String, Object> test67() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Audit> entity =cService.getUnauditByCompany(33, "2011", 1);
+		map.put("entity", entity);
+		return map;
+	}
 	
 }
