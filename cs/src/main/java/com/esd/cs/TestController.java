@@ -120,7 +120,7 @@ public class TestController {
 
 	@Autowired
 	private AccountsService acService;
-	
+
 	// 菜单
 	@RequestMapping("/1")
 	@ResponseBody
@@ -223,7 +223,8 @@ public class TestController {
 		// company.setCompanyCode("00002");
 		// company.setCompanyName("f");
 		// company.setCompanyEconomyType(new CompanyEconomyType(1));
-		PaginationRecordsAndNumber<Company, Number> entity = cService.getPaginationRecords(company, 1, 20);
+		PaginationRecordsAndNumber<Company, Number> entity = cService
+				.getPaginationRecords(company, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -257,7 +258,8 @@ public class TestController {
 		// paramMap.put("workerHandicapLevel", 1); // 残疾等级 对应的id
 		// paramMap.put("page", 1); // 分页--起始页 ******************************
 		// paramMap.put("pageSize", 50);// 分页--返回量
-		PaginationRecordsAndNumber<Worker, Number> entity = wService.getPaginationRecords(paramMap);
+		PaginationRecordsAndNumber<Worker, Number> entity = wService
+				.getPaginationRecords(paramMap);
 		map.put("entity", entity);
 		return map;
 	}
@@ -291,7 +293,8 @@ public class TestController {
 		// au.setYear("2014");
 		// au.setCompany(new Company("1"));
 		au.setIsExempt(true);
-		PaginationRecordsAndNumber<Audit, Number> entity = auditService.getPaginationRecords(au, 1, 20);
+		PaginationRecordsAndNumber<Audit, Number> entity = auditService
+				.getPaginationRecords(au, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -333,7 +336,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test20() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<AuditParameter, Number> entity = apService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<AuditParameter, Number> entity = apService
+				.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -383,7 +387,8 @@ public class TestController {
 		// PaymentExceptional pe = new PaymentExceptional();
 		// pe.setId(1);
 		// p.setPaymentExceptional(pe);
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(p, 1, 1);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService
+				.getPaginationRecords(p, 1, 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -395,7 +400,8 @@ public class TestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> map1 = new HashMap<String, Object>();
 		map1.put("year", "2012");
-		PaginationRecordsAndNumber<Audit, Number> entity = auditService.getByMultiCondition(map1);
+		PaginationRecordsAndNumber<Audit, Number> entity = auditService
+				.getByMultiCondition(map1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -431,7 +437,8 @@ public class TestController {
 		paramMap.put("maxHandicapTotal", 10); // 查询范围中 残疾职工最多人数
 		// paramMap.put("year", "2013");
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Company, Number> entity = cService.getByMultiCondition(paramMap);
+		PaginationRecordsAndNumber<Company, Number> entity = cService
+				.getByMultiCondition(paramMap);
 		map.put("entity", entity);
 		return map;
 	}
@@ -455,7 +462,8 @@ public class TestController {
 		// paramMap.put("pageSize", 50);// 分页--返回量
 		// ******************************
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<WorkerViewModel, Number> entity = wService.getByMultiCondition(paramMap);
+		PaginationRecordsAndNumber<WorkerViewModel, Number> entity = wService
+				.getByMultiCondition(paramMap);
 		map.put("entity", entity);
 		return map;
 	}
@@ -476,7 +484,8 @@ public class TestController {
 	public Map<String, Object> test29() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Audit entity = auditService.getByPrimaryKey(47634);
-		map.put("entity", entity.getCompanyHandicapTotal() + "   " + entity.getYear());
+		map.put("entity",
+				entity.getCompanyHandicapTotal() + "   " + entity.getYear());
 		return map;
 	}
 
@@ -505,7 +514,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test32() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = wService.retrieveCompanyByWorker("2013", "232623196309160029");
+		Company entity = wService.retrieveCompanyByWorker("2013",
+				"232623196309160029");
 		map.put("entity", entity);
 		return map;
 	}
@@ -515,7 +525,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test33() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Worker entity = wService.getByWorkerHandicapCode("23262319630916002943");
+		Worker entity = wService
+				.getByWorkerHandicapCode("23262319630916002943");
 		map.put("entity", entity + " ********* ");
 		return map;
 	}
@@ -545,9 +556,9 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test36() {
 		Map<String, Object> map = new HashMap<String, Object>();
-//		BigDecimal entity = pService.getAlreadyPayByAudit(47634);
-//		// BigDecimal entity = pService.getAlreadyPayByCompany(11);
-//		map.put("entity", entity);
+		// BigDecimal entity = pService.getAlreadyPayByAudit(47634);
+		// // BigDecimal entity = pService.getAlreadyPayByCompany(11);
+		// map.put("entity", entity);
 		return map;
 	}
 
@@ -566,8 +577,9 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test38() {
 		Map<String, Object> map = new HashMap<String, Object>();
-//		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaymentRecordByAudit(47634, 1, 999);
-//		map.put("entity", entity);
+		// PaginationRecordsAndNumber<Payment, Number> entity =
+		// pService.getPaymentRecordByAudit(47634, 1, 999);
+		// map.put("entity", entity);
 		return map;
 	}
 
@@ -576,7 +588,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test39() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService
+				.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -586,7 +599,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test40() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<PaymentType, Number> entity = ptService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<PaymentType, Number> entity = ptService
+				.getPaginationRecords(null, 1, 20);
 		List<PaymentType> list = ptService.getAll();
 		map.put("lit", list);
 		map.put("entity", entity);
@@ -598,7 +612,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test41() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Worker, Number> entity = cService.getOverproofAge("2013", 1366, 1, 20);
+		PaginationRecordsAndNumber<Worker, Number> entity = cService
+				.getOverproofAge("2013", 1366, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -650,7 +665,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test46() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ReportViewModel> entity = rvmService.getByCompanyEconomyType("2011");
+		List<ReportViewModel> entity = rvmService
+				.getByCompanyEconomyType("2011");
 		map.put("entity", entity);
 		return map;
 	}
@@ -683,7 +699,8 @@ public class TestController {
 		Map<String, Object> condition = new HashMap<String, Object>();
 		condition.put("paymentPerson", 1);
 		condition.put("year", "2013");
-		PaginationRecordsAndNumber<Audit, Number> entity = auditService.getByMultiCondition(condition);
+		PaginationRecordsAndNumber<Audit, Number> entity = auditService
+				.getByMultiCondition(condition);
 		map.put("entity", entity);
 		return map;
 	}
@@ -693,7 +710,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test52() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<PaymentExceptional, Number> entity = peService.getPaginationRecords(null, 1, 10);
+		PaginationRecordsAndNumber<PaymentExceptional, Number> entity = peService
+				.getPaginationRecords(null, 1, 10);
 		map.put("entity", entity);
 		return map;
 	}
@@ -713,7 +731,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test54() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService
+				.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
@@ -762,11 +781,13 @@ public class TestController {
 		boolean b = true;
 		// 每次导入量
 		Integer pageSize = 99999;
-		PaginationRecordsAndNumber<Payment, Number> prn = pService.getPaginationRecords(null, 1, pageSize);
+		PaginationRecordsAndNumber<Payment, Number> prn = pService
+				.getPaginationRecords(null, 1, pageSize);
 		// 总条数
 		int totalCount = (Integer) prn.getNumber();
 		// 总页数
-		int totalPages = totalCount % pageSize == 0 ? (totalCount / pageSize) : (totalCount / pageSize + 1);
+		int totalPages = totalCount % pageSize == 0 ? (totalCount / pageSize)
+				: (totalCount / pageSize + 1);
 		String url = request.getServletContext().getRealPath("/");
 
 		// 创建导出文件夹
@@ -795,7 +816,8 @@ public class TestController {
 		int i = 0;
 		do {
 			i++;
-			PaginationRecordsAndNumber<Payment, Number> eachPrn = pService.getPaginationRecords(null, i, pageSize);
+			PaginationRecordsAndNumber<Payment, Number> eachPrn = pService
+					.getPaginationRecords(null, i, pageSize);
 			// 每一页数据循环导入其中
 			List<Payment> plist = (List<Payment>) eachPrn.getRecords();
 			b = pService.createPaymentExcel(exportPath, plist, i, pageSize);
@@ -805,8 +827,10 @@ public class TestController {
 		} while (i < totalPages);
 		String FileDownloadPath = "";
 		if (b) {
-			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-			FileDownloadPath = "http://" + destPath + "/download/payment/" + uuid + ".xls";
+			String destPath = request.getLocalAddr() + ":"
+					+ request.getLocalPort() + request.getContextPath();
+			FileDownloadPath = "http://" + destPath + "/download/payment/"
+					+ uuid + ".xls";
 		}
 		return "redirect:" + FileDownloadPath;
 	}
@@ -815,90 +839,93 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test60() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity = pService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService
+				.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/61")
 	@ResponseBody
 	public Map<String, Object> test61() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Accounts, Number> entity =acService.getPaginationRecords(null, 1, 20);
+		PaginationRecordsAndNumber<Accounts, Number> entity = acService
+				.getPaginationRecords(null, 1, 20);
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/62")
 	@ResponseBody
 	public Map<String, Object> test62() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity =acService.getAccountsYears();
+		String[] entity = acService.getAccountsYears();
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/63")
 	@ResponseBody
 	public Map<String, Object> test63() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity =acService.getAccountsYears();
+		String[] entity = acService.getAccountsYears();
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/64")
 	@ResponseBody
 	public Map<String, Object> test64() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Accounts> entity =acService.getCompanyAccount(null, "");
+		List<Accounts> entity = acService.getCompanyAccount(null, "");
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/65")
 	@ResponseBody
 	public Map<String, Object> test65() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity =pService.getEffPaid(null, "");
+		BigDecimal entity = pService.getEffPaid(null, "");
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/66")
 	@ResponseBody
 	public Map<String, Object> test66() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> entity =pService.getPaymentRecords(null, 4, 1, 50);
+		PaginationRecordsAndNumber<Payment, Number> entity = pService
+				.getPaymentRecords(null, 4, 1, 50);
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/67")
 	@ResponseBody
 	public Map<String, Object> test67() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Audit> entity =cService.getUnauditByCompany(33, "2011", 1);
+		List<Audit> entity = cService.getUnauditByCompany(33, "2011", 1);
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/68")
 	@ResponseBody
 	public Map<String, Object> test68() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity =auditService.getAuditYears();
+		String[] entity = auditService.getAuditYears();
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/69")
 	@ResponseBody
 	public Map<String, Object> test69() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Accounts> entity =acService.getByYearAndCompany("2012", 22);
+		List<Accounts> entity = acService.getByYearAndCompany("2012", 22, 3);
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 }

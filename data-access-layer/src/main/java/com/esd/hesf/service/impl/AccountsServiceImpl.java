@@ -171,7 +171,7 @@ public class AccountsServiceImpl implements AccountsService {
 	@Override
 	public List<Accounts> getByYearAndCompany(String year, Integer companyId,Integer auditProcessStatus) {
 		if(auditProcessStatus == null ||auditProcessStatus <=0){
-			new HesfException("auditProcessStatus", HesfException.type_null);
+			new HesfException("auditProcessStatus", HesfException.type_null).printStackTrace();
 			return null;
 		}
 		Accounts accounts = new Accounts();
@@ -181,6 +181,4 @@ public class AccountsServiceImpl implements AccountsService {
 		return dao.retrieveByAccounts(accounts);
 	}
 
-	
-	
 }
