@@ -581,7 +581,7 @@
 		select sum(pay.payment_money)
 		from payment as pay, company as c
 		<trim prefix="where" prefixOverrides="and|or">
-			pay.payment_company = c.id
+			pay.payment_company = c.id and pay.bill_obsolete = 0 and bill_return  = 1 
 			<if test="paymentCompany != null">
 				<if test="paymentCompany.id != null and paymentCompany.id != ''">
 					and pay.payment_company = #{paymentCompany.id, jdbcType=VARCHAR}
