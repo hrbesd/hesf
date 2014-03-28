@@ -836,4 +836,22 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	@RequestMapping("/63")
+	@ResponseBody
+	public Map<String, Object> test63() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] entity =acService.getAccountsYears();
+		map.put("entity", entity);
+		return map;
+	}
+	
+	@RequestMapping("/64")
+	@ResponseBody
+	public Map<String, Object> test64() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Accounts> entity =acService.getCompanyAccount(null, "");
+		map.put("entity", entity);
+		return map;
+	}
 }

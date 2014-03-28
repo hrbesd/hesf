@@ -26,7 +26,7 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @param auditId
 	 * @return
 	 */
-	public List<Accounts> get(String year, Integer companyId, Integer auditId);
+	public List<Accounts> getCompanyAccount(String year, Integer companyId);
 	
 	/**
 	 * 根据年份, 公司档案code, 审核id获得账目列表
@@ -35,7 +35,7 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @param auditId
 	 * @return
 	 */
-	public List<Accounts> get(String year, String companyCode, Integer auditId);
+	public List<Accounts> getCompanyAccount(String year, String companyCode);
 	
 	/**
 	 *  获得缴款账目中, 年份列表

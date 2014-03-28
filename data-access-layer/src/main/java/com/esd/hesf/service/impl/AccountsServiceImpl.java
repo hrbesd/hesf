@@ -130,11 +130,10 @@ public class AccountsServiceImpl implements AccountsService {
 	}
 
 	@Override
-	public List<Accounts> get(String year, Integer companyId, Integer auditId) {
+	public List<Accounts> getCompanyAccount(String year, Integer companyId) {
 		Accounts t = new Accounts();
 		t.setYear(year);
 		t.setCompany(new Company(companyId));
-		t.setAudit(new Audit(auditId));
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("accounts", t);
@@ -148,11 +147,10 @@ public class AccountsServiceImpl implements AccountsService {
 	}
 
 	@Override
-	public List<Accounts> get(String year, String companyCode, Integer auditId) {
+	public List<Accounts> getCompanyAccount(String year, String companyCode) {
 		Accounts t = new Accounts();
 		t.setYear(year);
 		t.setCompany(new Company(companyCode));
-		t.setAudit(new Audit(auditId));
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("accounts", t);
