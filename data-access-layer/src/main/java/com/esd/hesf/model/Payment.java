@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 缴款表
+ * 缴款明细表
  * 
  * @author Administrator
  * 
@@ -30,7 +30,6 @@ public class Payment extends PrimaryKey_Int {
 	private Boolean billObsolete; // 是否 作废票据 默认为否
 	private PaymentExceptional paymentExceptional; // 特殊缴款方式类别
 	private String remark; // 备注
-	private Accounts accounts; // 缴款明细所属于的账目对象
 
 	public Payment() {
 	}
@@ -49,8 +48,7 @@ public class Payment extends PrimaryKey_Int {
 				+ ", billExchangeDate=" + billExchangeDate + ", billReturn="
 				+ billReturn + ", billFinance=" + billFinance
 				+ ", billObsolete=" + billObsolete + ", paymentExceptional="
-				+ paymentExceptional + ", remark=" + remark + ", accounts="
-				+ accounts + "]";
+				+ paymentExceptional + ", remark=" + remark + "]";
 	}
 
 	public String getYear() {
@@ -163,14 +161,6 @@ public class Payment extends PrimaryKey_Int {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public Accounts getAccounts() {
-		return accounts;
-	}
-
-	public void setAccounts(Accounts accounts) {
-		this.accounts = accounts;
 	}
 
 }

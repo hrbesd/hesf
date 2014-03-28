@@ -23,41 +23,46 @@ public interface PaymentService extends BaseService<Payment> {
 	public List<Payment> getAll();
 
 	/**
-	 * 根据账目id, 得到已经付款的金额
+	 * 根据公司档案code, 年份year得到已经付款的金额
 	 * 
-	 * @param auditId	大于0的正整数
+	 * @param year
+	 * @param companyCode
 	 * @return
 	 */
-	BigDecimal getAlreadyPayByAccounts(Integer accountsId);
-	
+	BigDecimal getAlreadyPay(String year,String companyCode);
 	
 	/**
-	 * 根据公司id, 得到已经付款的金额
+	 * 根据公司id, 年份year得到已经付款的金额
 	 * 
-	 * @param companyId	公司id
+	 * @param year
+	 * @param companyId
 	 * @return
 	 */
-	BigDecimal getAlreadyPayByCompany(Integer companyId);
+	BigDecimal getAlreadyPay(String year,Integer companyId);
+	
+	
 
 	/**
-	 * 根据账目id, 得到缴款列表
+	 * 根据年份year, 公司id, 得到缴款明细列表
 	 * 
-	 * @param auditId	大于0的正整数
+	 * @param year 年份
+	 * @param companyId 公司id
 	 * @param page	页数
 	 * @param pageSize	返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByAccounts(Integer accountId, Integer page, Integer pageSize);
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year, Integer companyId, Integer page, Integer pageSize);
 
 	/**
-	 * 根据公司id, 得到缴款列表
+	 * 根据年份, 公司档案code, 得到缴款明细列表
 	 * 
-	 * @param companyId	公司id
+	 * @param year 年份
+	 * @param companyCode 公司档案code
 	 * @param page	页数
 	 * @param pageSize	返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecordByCompany(Integer companyId, Integer page, Integer pageSize);
+	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year, String companyCode, Integer page, Integer pageSize);
 	
 	/**
 	 * 多条件查询  缴款数据

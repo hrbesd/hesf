@@ -23,7 +23,6 @@
 		<association property="paymentCompany" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
 		<association property="paymentType" javaType="com.esd.hesf.model.PaymentType" resultMap="ResultPaymentType" />
 		<association property="paymentExceptional" javaType="com.esd.hesf.model.PaymentExceptional" resultMap="ResultPaymentExceptional" />
-		<association property="accounts" javaType="com.esd.hesf.model.Accounts" resultMap="ResultAccounts" />
 	</resultMap>
 
 	<resultMap id="ResultUser" type="com.esd.hesf.model.User">
@@ -96,11 +95,7 @@
 		<!-- payment type -->
 		pt.id as pt_id, pt.text as pt_text, 
 		<!-- payment exceptional -->
-		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value,
-		<!-- accounts -->
-		ac.id as ac_id, ac.create_time as ac_create_time, ac.update_time as ac_update_time,ac.user_id as ac_user_id, ac.is_active as ac_is_active, ac.version as ac_version,
-		ac.year as ac_year, ac.total_money as ac_total_money,
-		ac.is_finished as ac_is_finished
+		pe.id as pe_id, pe.payment_exceptional as pe_payment_exceptional, pe.value as pe_value
 	</sql>
 
 	<sql id="From_Column">
@@ -108,7 +103,6 @@
 		left join company as c on (pay.payment_company = c.id ) 
 		left join payment_type as pt on (pay.payment_type = pt.id)
 		left join payment_exceptional as pe on (pay.payment_exceptional = pe.id)
-		left join accounts as ac on (pay.accounts_id = ac.id)
 	</sql>
 
 	<!-- insert -->
@@ -118,7 +112,7 @@
 		</selectKey>
 		insert into payment (create_time, update_time, user_id, is_active, year, payment_date, payment_money,
 		payment_person,payment_company, payment_bill, payment_type, payment_exceptional, bill_print_date,
-		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, accounts_id, version)
+		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, version)
 		values
 		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{year, jdbcType=CHAR}, now(),
 		#{paymentMoney,jdbcType=DECIMAL}, #{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},
@@ -126,7 +120,7 @@
 		#{paymentExceptional,jdbcType=INTEGER},
 		#{billPrintDate,jdbcType=TIMESTAMP},#{billExchangeDate,jdbcType=TIMESTAMP},#{billReturn,jdbcType=BIT},
 		#{billFinance,jdbcType=BIT},#{billObsolete,jdbcType=BIT}, #{remark,jdbcType=VARCHAR},
-		#{accounts.id,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
+		#{version,jdbcType=INTEGER})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Payment">
@@ -191,11 +185,6 @@
 			<if test="remark != null">
 				remark,
 			</if>
-			<if test="accounts != null">
-				<if test="accounts.id != null and accounts.id > 0">
-					accounts_id,
-				</if>
-			</if>
 			version
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -253,11 +242,6 @@
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
-			</if>
-			<if test="accounts != null">
-				<if test="accounts.id != null and accounts.id > 0">
-					#{accounts.id,jdbcType=INTEGER},
-				</if>
 			</if>
 			default
 		</trim>
@@ -330,11 +314,6 @@
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
-			</if>
-			<if test="accounts != null">
-				<if test="accounts.id != null and accounts.id > 0">
-					accounts_id = #{accounts.id,jdbcType=INTEGER},
-				</if>
 			</if>
 			version = version + 1
 		</set>
@@ -453,15 +432,6 @@
 				<if test="payment.paymentExceptional != null">
 					<if test="payment.paymentExceptional.id != null and payment.paymentExceptional.id > 0">
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
-					</if>
-				</if>
-				<!-- accounts -->
-				<if test="payment.accounts != null">
-					<if test="payment.accounts.id != null and payment.accounts.id > 0">
-						and pay.accounts_id = #{payment.accounts.id,jdbcType=INTEGER}
-					</if>
-					<if test="payment.accounts.year != null and payment.accounts.year != ''">
-						and ac.year = #{payment.accounts.year,jdbcType=CHAR} 
 					</if>
 				</if>
 				<choose>
@@ -588,15 +558,6 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
-				<!-- accounts -->
-				<if test="payment.accounts != null">
-					<if test="payment.accounts.id != null and payment.accounts.id > 0">
-						and pay.accounts_id = #{payment.accounts.id,jdbcType=INTEGER}
-					</if>
-					<if test="payment.accounts.year != null and payment.accounts.year != ''">
-						and ac.year = #{payment.accounts.year,jdbcType=CHAR} 
-					</if>
-				</if>
 				<choose>
 					<when test="payment.isActive != null">
 						and pay.is_active = #{payment.isActive,jdbcType=BIT}
@@ -629,17 +590,15 @@
 					and c.company_code = #{paymentCompany.companyCode, jdbcType=VARCHAR}
 				</if>
 			</if>
-			<if test="accounts != null">
-				<if test="accounts.id != null and accounts.id > 0">
-					and pay.accounts_id = #{accounts.id, jdbcType=INTEGER}
-				</if>
+			<if test="year != null and year !='' ">
+				and pay.year = #{year, jdbcType=CHAR}
 			</if>
 		</trim>
 	</select>
 
 	<select id="retrieveByCompanyAndYear" resultType="decimal" parameterType="map">
 		select sum(pay.payment_money)
-		from company as c, payment as pay, accounts as ac 
+		from company as c, payment as pay
 		<where>
 			c.id = pay.payment_company and pay.accounts_id = ac.id 
 			<if test="companyType != null and companyType > 0">
@@ -651,15 +610,11 @@
 			<if test="areaCode != null and areaCode != ''">
 				and c.area_code = #{areaCode,jdbcType=CHAR}
 			</if>
-			and ac.year = #{year,jdbcType=CHAR}
+			<if test="year != null and year != ''">
+				and pay.year = #{year, jdbcType=CHAR}
+			</if>
 		</where>
 	</select>
-
-	<select id="retrieveByFullField">
-		
-	
-	</select>
-
 
 
 </mapper>

@@ -2,6 +2,7 @@ package com.esd.cs;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -854,4 +855,25 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	@RequestMapping("/65")
+	@ResponseBody
+	public Map<String, Object> test65() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		BigDecimal entity =pService.getAlreadyPay(null, "");
+		map.put("entity", entity);
+		return map;
+	}
+	
+	@RequestMapping("/66")
+	@ResponseBody
+	public Map<String, Object> test66() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		PaginationRecordsAndNumber<Payment, Number> entity =pService.getPaymentRecords(null, 4, 1, 50);
+		map.put("entity", entity);
+		return map;
+	}
+	
+	
+	
 }

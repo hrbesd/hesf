@@ -6,7 +6,7 @@ import java.util.Map;
 import com.esd.hesf.model.Payment;
 
 /**
- * 交款表 dao接口
+ * 缴款明细表 dao接口
  * 
  * @author Administrator
  * 
@@ -14,9 +14,9 @@ import com.esd.hesf.model.Payment;
 public interface PaymentDao extends BaseDao<Payment> {
 
 	/**
-	 * 根据审核表id 获得缴款总数
+	 * 根据公司id/code, 年份 获得该公司某年度已缴款总额
 	 * 
-	 * @param auditId
+	 * @param payment对象
 	 * @return
 	 */
 	BigDecimal retrieveAlreadyPay(Payment payment);
