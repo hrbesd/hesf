@@ -52,5 +52,6 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @param companyId
 	 * @return
 	 */
-	List<Accounts> getByYearAndCompany(String year, Integer companyId);
+	List<Accounts> getByYearAndCompany(String year, Integer companyId,
+			Integer auditProcessStatus);
 }

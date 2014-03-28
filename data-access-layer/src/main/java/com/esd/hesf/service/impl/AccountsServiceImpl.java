@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AccountsDao;
 import com.esd.hesf.model.Accounts;
+import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.Constants;
@@ -168,10 +169,15 @@ public class AccountsServiceImpl implements AccountsService {
 	}
 
 	@Override
-	public List<Accounts> getByYearAndCompany(String year, Integer companyId) {
+	public List<Accounts> getByYearAndCompany(String year, Integer companyId,Integer auditProcessStatus) {
+		if(auditProcessStatus == null ||auditProcessStatus <=0){
+			new HesfException("auditProcessStatus", HesfException.type_null);
+			return null;
+		}
 		Accounts accounts = new Accounts();
 		accounts.setYear(year);
 		accounts.setCompany(new Company(companyId));
+		accounts.setAuditProcessStatus(new AuditProcessStatus(auditProcessStatus));
 		return dao.retrieveByAccounts(accounts);
 	}
 
