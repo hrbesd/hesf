@@ -17,5 +17,5 @@ public interface PaymentExceptionalService extends BaseService<PaymentExceptiona
 	 * 
 	 * @return
 	 */
-	public List<PaymentExceptional> getAll();
+	List<PaymentExceptional> getAll();
 }

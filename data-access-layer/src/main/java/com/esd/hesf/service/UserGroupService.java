@@ -12,6 +12,9 @@ import com.esd.hesf.model.UserGroup;
  */
 public interface UserGroupService extends BaseService<UserGroup> {
 
-	// 获得说有数据
-	public List<UserGroup> getAll();
+	/**
+	 *  获得所有数据
+	 * @return
+	 */
+	List<UserGroup> getAll();
 }

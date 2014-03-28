@@ -20,7 +20,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * 
 	 * @return
 	 */
-	public List<Payment> getAll();
+	List<Payment> getAll();
 
 	/**
 	 * 根据公司档案code, 年份year得到已经付款的金额
@@ -29,8 +29,8 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyCode
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(String year,String companyCode);
-	
+	BigDecimal getAlreadyPay(String year, String companyCode);
+
 	/**
 	 * 根据公司id, 年份year得到已经付款的金额
 	 * 
@@ -38,47 +38,58 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyId
 	 * @return
 	 */
-	BigDecimal getAlreadyPay(String year,Integer companyId);
-	
-	
+	BigDecimal getAlreadyPay(String year, Integer companyId);
 
 	/**
 	 * 根据年份year, 公司id, 得到缴款明细列表
 	 * 
-	 * @param year 年份
-	 * @param companyId 公司id
-	 * @param page	页数
-	 * @param pageSize	返回量
+	 * @param year
+	 *            年份
+	 * @param companyId
+	 *            公司id
+	 * @param page
+	 *            页数
+	 * @param pageSize
+	 *            返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year, Integer companyId, Integer page, Integer pageSize);
+	PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year,
+			Integer companyId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据年份, 公司档案code, 得到缴款明细列表
 	 * 
-	 * @param year 年份
-	 * @param companyCode 公司档案code
-	 * @param page	页数
-	 * @param pageSize	返回量
+	 * @param year
+	 *            年份
+	 * @param companyCode
+	 *            公司档案code
+	 * @param page
+	 *            页数
+	 * @param pageSize
+	 *            返回量
 	 * @return
 	 */
-	public PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year, String companyCode, Integer page, Integer pageSize);
-	
+	PaginationRecordsAndNumber<Payment, Number> getPaymentRecords(String year,
+			String companyCode, Integer page, Integer pageSize);
+
 	/**
-	 * 多条件查询  缴款数据
+	 * 多条件查询 缴款数据
 	 * 
 	 * @param map
-	 *            --map对象 参照 com.esd.hesf.ExampleMap 中的example_payment()样例 
-	 *            测试样例见 com.esd.cs.TestController 的测试方法 26
+	 *            --map对象 参照 com.esd.hesf.ExampleMap 中的example_payment()样例 测试样例见
+	 *            com.esd.cs.TestController 的测试方法 26
 	 * @return
 	 */
-	PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(Map<String, Object> map);
-	
+	PaginationRecordsAndNumber<Payment, Number> getByMultiCondition(
+			Map<String, Object> map);
+
 	/**
 	 * 导出缴款数据
+	 * 
 	 * @param FilePath
 	 * @param paymentList
 	 * @return
 	 */
-	public boolean createPaymentExcel(String FilePath, List<Payment> paymentList,Integer page,Integer pageSize);
+	boolean createPaymentExcel(String FilePath, List<Payment> paymentList,
+			Integer page, Integer pageSize);
 }

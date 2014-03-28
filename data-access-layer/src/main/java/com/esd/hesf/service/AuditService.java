@@ -19,16 +19,17 @@ public interface AuditService extends BaseService<Audit> {
 	 * 
 	 * @return
 	 */
-	public List<Audit> getAll();
+	List<Audit> getAll();
 
 	/**
 	 * 根据 年份year, 公司档案号companyCode 插入一条年审记录
+	 * 
 	 * @param year
 	 * @param companyCode
 	 * @return
 	 */
-	boolean save(String year,String companyCode);
-	
+	boolean save(String year, String companyCode);
+
 	/**
 	 * 根据年份year, 公司id companyId获得一条审核数据
 	 * 
@@ -41,10 +42,11 @@ public interface AuditService extends BaseService<Audit> {
 	/**
 	 * 初始化审计参数--包括创建 年度审核信息
 	 * 
-	 * @param year 年度
+	 * @param year
+	 *            年度
 	 * @return
 	 */
-	public boolean initAuditData(String year);
+	boolean initAuditData(String year);
 
 	/**
 	 * 多条件查询 公司审核数据 数据
@@ -54,6 +56,7 @@ public interface AuditService extends BaseService<Audit> {
 	 *            com.esd.cs.TestController 的测试方法 23
 	 * @return
 	 */
-	PaginationRecordsAndNumber<Audit, Number> getByMultiCondition(Map<String, Object> map);
+	PaginationRecordsAndNumber<Audit, Number> getByMultiCondition(
+			Map<String, Object> map);
 
 }

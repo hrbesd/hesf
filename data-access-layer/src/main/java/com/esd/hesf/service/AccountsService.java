@@ -17,29 +17,32 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * 
 	 * @return
 	 */
-	public List<Accounts> getAll();
+	List<Accounts> getAll();
 
 	/**
 	 * 根据年份, 公司id, 审核id获得账目列表
+	 * 
 	 * @param year
 	 * @param companyId
 	 * @param auditId
 	 * @return
 	 */
-	public List<Accounts> getCompanyAccount(String year, Integer companyId);
-	
+	List<Accounts> getCompanyAccount(String year, Integer companyId);
+
 	/**
 	 * 根据年份, 公司档案code, 审核id获得账目列表
+	 * 
 	 * @param year
 	 * @param companyCode
 	 * @param auditId
 	 * @return
 	 */
-	public List<Accounts> getCompanyAccount(String year, String companyCode);
-	
+	List<Accounts> getCompanyAccount(String year, String companyCode);
+
 	/**
-	 *  获得缴款账目中, 年份列表
+	 * 获得缴款账目中, 年份列表
+	 * 
 	 * @return
 	 */
-	public String[] getAccountsYears();
+	String[] getAccountsYears();
 }

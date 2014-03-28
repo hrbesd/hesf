@@ -17,6 +17,6 @@ public interface PaymentTypeService extends BaseService<PaymentType> {
 	 * 
 	 * @return
 	 */
-	public List<PaymentType> getAll();
+	List<PaymentType> getAll();
 
 }

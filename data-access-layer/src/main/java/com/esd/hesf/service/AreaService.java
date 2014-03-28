@@ -17,21 +17,21 @@ public interface AreaService extends BaseService<Area> {
 	 * 
 	 * @return
 	 */
-	public List<Area> getAll();
+	List<Area> getAll();
 
 	/**
 	 * 根据地区code, 查询他所下属的所有地区
 	 * 
 	 * @param code
 	 * @return
-	 * @throws HesfException 
+	 * @throws HesfException
 	 */
-	public List<Area> getSubArea(String code);
+	List<Area> getSubArea(String code);
 
 	/**
 	 * 查询黑龙江地区省市列表
 	 * 
 	 * @return
 	 */
-	public List<Area> getHeiLongjiangCities();
+	List<Area> getHeiLongjiangCities();
 }

@@ -12,6 +12,9 @@ import com.esd.hesf.model.CompanyType;
  */
 public interface CompanyTypeService extends BaseService<CompanyType> {
 
-	// 获得所有数据 , 测试用
-	public List<CompanyType> getAll();
+	/**
+	 * 获得所有数据 , 测试用
+	 * @return
+	 */
+	List<CompanyType> getAll();
 }

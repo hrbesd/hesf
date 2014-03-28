@@ -17,5 +17,5 @@ public interface CompanyPropertyService extends BaseService<CompanyProperty> {
 	 * 
 	 * @return
 	 */
-	public List<CompanyProperty> getAll();
+	List<CompanyProperty> getAll();
 }

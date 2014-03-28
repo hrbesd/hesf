@@ -18,7 +18,7 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 	 * 
 	 * @return
 	 */
-	public List<AuditParameter> getAll();
+	List<AuditParameter> getAll();
 
 	/**
 	 * 根据年份获得该年的年审参数
@@ -26,7 +26,7 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 	 * @param year
 	 * @return
 	 */
-	public AuditParameter getByYear(String year);
+	AuditParameter getByYear(String year);
 
 	/**
 	 * 查询残疾人设定比例不为 1 的参数组
@@ -37,29 +37,29 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 	List<WorkerCalculator> getSpecialSetting(String year);
 
 	/**
-	 * 查询 指定公司, 指定年度, 指定残疾类型和等级的残疾人数 
+	 * 查询 指定公司, 指定年度, 指定残疾类型和等级的残疾人数
 	 * 
-	 * year-年份, companyId--公司id, workerHandicapType--残疾类型, workerHandicapLevel--残疾等级
+	 * year-年份, companyId--公司id, workerHandicapType--残疾类型,
+	 * workerHandicapLevel--残疾等级
 	 * 
 	 * @return
 	 */
-	int getSpecialCount(Integer companyId, String year, int workerHandicapType, int workerHandicapLevel);
+	int getSpecialCount(Integer companyId, String year, int workerHandicapType,
+			int workerHandicapLevel);
 
-	
 	/**
 	 * 得到最近一个审核参数的年份
 	 * 
 	 * @return
 	 */
-	public String getLastestYear();
-	
+	String getLastestYear();
+
 	/**
 	 * 
 	 * 得到所有审核年度列表
 	 * 
 	 * @return
 	 */
-	public String[] getYears();
-	
-	
+	String[] getYears();
+
 }

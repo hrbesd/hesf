@@ -11,11 +11,11 @@ public interface MenuService extends BaseService<Menu> {
 	 * 
 	 * @return
 	 */
-	public List<Menu> getTreeMap();
+	List<Menu> getTreeMap();
 
 	/**
 	 * 根据权限值获得菜单列表
 	 */
-	public List<Menu> getByPermissionType(int pid);
+	List<Menu> getByPermissionType(int pid);
 
 }

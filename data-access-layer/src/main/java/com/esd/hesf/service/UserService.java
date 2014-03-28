@@ -17,7 +17,7 @@ public interface UserService extends BaseService<User> {
 	 * 
 	 * @return
 	 */
-	public List<User> getAll();
+	List<User> getAll();
 
 	/**
 	 * 根据用户名查询对象
@@ -25,7 +25,7 @@ public interface UserService extends BaseService<User> {
 	 * @param userName
 	 * @return
 	 */
-	public User getUserByUserName(String userName);
+	User getUserByUserName(String userName);
 
 	/**
 	 * 根据手机号码查询用户
@@ -33,7 +33,7 @@ public interface UserService extends BaseService<User> {
 	 * @param mobile
 	 * @return
 	 */
-	public User getUserByUserMobile(String mobile);
+	User getUserByUserMobile(String mobile);
 
 	/**
 	 * 根据用户真实姓名查询用户
@@ -41,13 +41,13 @@ public interface UserService extends BaseService<User> {
 	 * @param realName
 	 * @return
 	 */
-	public List<User> getUserByRealName(String realName);
+	List<User> getUserByRealName(String realName);
 
 	/**
 	 * 获得所有缴款用户数据
 	 * 
 	 * @return
 	 */
-	public List<User> getPayer();
+	List<User> getPayer();
 
 }

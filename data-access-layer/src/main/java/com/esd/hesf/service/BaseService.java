@@ -53,6 +53,7 @@ public interface BaseService<T> {
 	 *            :返回条数
 	 * @return PaginationRecordsAndNumber<T, Number>
 	 */
-	PaginationRecordsAndNumber<T, Number> getPaginationRecords(T t, Integer page, Integer pageSize);
+	PaginationRecordsAndNumber<T, Number> getPaginationRecords(T t,
+			Integer page, Integer pageSize);
 
 }

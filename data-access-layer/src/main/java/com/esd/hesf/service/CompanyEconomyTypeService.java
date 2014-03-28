@@ -17,5 +17,5 @@ public interface CompanyEconomyTypeService extends BaseService<CompanyEconomyTyp
 	 * 
 	 * @return
 	 */
-	public List<CompanyEconomyType> getAll();
+	List<CompanyEconomyType> getAll();
 }

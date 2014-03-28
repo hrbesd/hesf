@@ -17,5 +17,5 @@ public interface WorkerHandicapLevelService extends BaseService<WorkerHandicapLe
 	 * 
 	 * @return
 	 */
-	public List<WorkerHandicapLevel> getAll();
+	List<WorkerHandicapLevel> getAll();
 }

@@ -10,7 +10,13 @@ import com.esd.hesf.model.AuditProcessStatus;
  * @author Administrator
  * 
  */
-public interface AuditProcessStatusService extends BaseService<AuditProcessStatus> {
+public interface AuditProcessStatusService extends
+		BaseService<AuditProcessStatus> {
 
-	public List<AuditProcessStatus> getAll();
+	/**
+	 * 获得所有数据
+	 * 
+	 * @return
+	 */
+	List<AuditProcessStatus> getAll();
 }

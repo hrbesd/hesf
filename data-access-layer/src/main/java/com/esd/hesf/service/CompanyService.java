@@ -18,12 +18,13 @@ public interface CompanyService extends BaseService<Company> {
 
 	/**
 	 * 保存一个企业: 保存企业用此方法!
+	 * 
 	 * @param company
 	 * @param year
 	 * @return
 	 */
-	public boolean save(Company company,String year);
-	
+	boolean save(Company company, String year);
+
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);
 
@@ -31,10 +32,11 @@ public interface CompanyService extends BaseService<Company> {
 	boolean deleteMultiById(int[] arr);
 
 	// 自动生成最新档案号
-	public String getDocumentCode();
+	String getDocumentCode();
 
 	/**
 	 * 根据公司档案号code 得到一个公司对象,如不存在则返回null
+	 * 
 	 * @param companyCode
 	 * @return
 	 */
@@ -54,7 +56,7 @@ public interface CompanyService extends BaseService<Company> {
 	 * @param companyOrganizationCode
 	 * @return
 	 */
-	public Company getCompanyByOrganizationCode(String companyOrganizationCode);
+	Company getCompanyByOrganizationCode(String companyOrganizationCode);
 
 	// /**
 	// * 复制上一年的信息
@@ -65,7 +67,7 @@ public interface CompanyService extends BaseService<Company> {
 	// * 上年度
 	// * @return
 	// */
-	// public boolean copyLatYearData(String currentYear, String lastYear);
+	// boolean copyLatYearData(String currentYear, String lastYear);
 
 	/**
 	 * 从一个企业中删除一条员工数据,三个参数都不能为空
@@ -78,7 +80,8 @@ public interface CompanyService extends BaseService<Company> {
 	 *            员工id
 	 * @return
 	 */
-	public boolean deleteWorkerFromCompany(String year, Integer companyId, Integer workerId);
+	boolean deleteWorkerFromCompany(String year, Integer companyId,
+			Integer workerId);
 
 	/**
 	 * 多条件查询 公司 数据
@@ -88,7 +91,8 @@ public interface CompanyService extends BaseService<Company> {
 	 *            com.esd.cs.TestController 的测试方法 26
 	 * @return
 	 */
-	PaginationRecordsAndNumber<Company, Number> getByMultiCondition(Map<String, Object> map);
+	PaginationRecordsAndNumber<Company, Number> getByMultiCondition(
+			Map<String, Object> map);
 
 	/**
 	 * 查询 指定公司指定年度残疾职工人数
@@ -112,34 +116,43 @@ public interface CompanyService extends BaseService<Company> {
 	 *            --返回量
 	 * @return
 	 */
-	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year, Integer companyId, Integer page, Integer pageSize);
+	PaginationRecordsAndNumber<Worker, Number> getOverproofAge(String year,
+			Integer companyId, Integer page, Integer pageSize);
 
 	/**
 	 * 根据公司档案号和当前年份得到该公司过去未审核的年份列表
 	 * 
-	 * @param companyId --公司id 
-	 *            year --当前审核年份
+	 * @param companyId
+	 *            --公司id year --当前审核年份
 	 * @return
 	 */
 	String[] getUnauditYearByCompany(Integer companyId, String year);
-	
+
 	/**
 	 * 根据公司id,当前年份, 审核状态 得到该公司过去未审核列表
 	 * 
-	 * @param companyId --公司id 
-	 * @param year 当前审核年
-	 * @param auditProcessStatus 审核状态
+	 * @param companyId
+	 *            --公司id
+	 * @param year
+	 *            当前审核年
+	 * @param auditProcessStatus
+	 *            审核状态
 	 * @return
 	 */
-	List<Audit> getUnauditByCompany(Integer companyId,String year, Integer auditProcessStatus);
+	List<Audit> getUnauditByCompany(Integer companyId, String year,
+			Integer auditProcessStatus);
 
 	/**
 	 * 根据公司档案号,当前年份, 审核状态 得到该公司过去未审核列表
 	 * 
-	 * @param companyCode --公司id 
-	 * @param year 当前审核年
-	 * @param auditProcessStatus 审核状态
+	 * @param companyCode
+	 *            --公司id
+	 * @param year
+	 *            当前审核年
+	 * @param auditProcessStatus
+	 *            审核状态
 	 * @return
 	 */
-	List<Audit> getUnauditByCompany(String companyCode,String year, Integer auditProcessStatus);
+	List<Audit> getUnauditByCompany(String companyCode, String year,
+			Integer auditProcessStatus);
 }

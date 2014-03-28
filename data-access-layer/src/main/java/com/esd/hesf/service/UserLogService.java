@@ -12,5 +12,10 @@ import com.esd.hesf.model.UserLog;
  */
 public interface UserLogService extends BaseService<UserLog> {
 
-	public List<UserLog> getAll();
+	/**
+	 * 获得所有数据--测试用
+	 * 
+	 * @return
+	 */
+	List<UserLog> getAll();
 }

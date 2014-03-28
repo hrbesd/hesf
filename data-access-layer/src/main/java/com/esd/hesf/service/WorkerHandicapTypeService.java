@@ -17,5 +17,5 @@ public interface WorkerHandicapTypeService extends BaseService<WorkerHandicapTyp
 	 * 
 	 * @return
 	 */
-	public List<WorkerHandicapType> getAll();
+	List<WorkerHandicapType> getAll();
 }

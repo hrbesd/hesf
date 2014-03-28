@@ -12,7 +12,9 @@ import com.esd.hesf.model.PermissionType;
  */
 public interface PermissionTypeService extends BaseService<PermissionType> {
 
-	// 查询所有权限列表
+	/*
+	 * 8 查询所有权限列表
+	 */
 	List<PermissionType> getAll();
 
 }

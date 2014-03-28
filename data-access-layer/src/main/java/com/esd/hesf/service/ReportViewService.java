@@ -11,25 +11,26 @@ import com.esd.hesf.viewmodels.ReportViewModel;
  * 
  */
 public interface ReportViewService {
-	
+
 	/**
 	 * 当前查询的种类, 关键字
 	 */
-	public static final String SEARCH_KEY="currentSearch";
+	public static final String SEARCH_KEY = "currentSearch";
 	/**
 	 * 年份key words
 	 */
-	public static final String SEARCH_KEY_YEAR="year";
-	public static final String SEARCH_KEY_COMPANY_TYPE="companyType";
-	public static final String SEARCH_KEY_COMPANY_ECONOMY_TYPE="companyEconomyType";
-	public static final String SEARCH_KEY_AREA="area";
+	public static final String SEARCH_KEY_YEAR = "year";
+	public static final String SEARCH_KEY_COMPANY_TYPE = "companyType";
+	public static final String SEARCH_KEY_COMPANY_ECONOMY_TYPE = "companyEconomyType";
+	public static final String SEARCH_KEY_AREA = "area";
+
 	/**
 	 * 年审情况汇总(单位性质)
 	 * 
 	 * @param year
 	 * @return
 	 */
-	public List<ReportViewModel> getByCompanyType(String year);
+	List<ReportViewModel> getByCompanyType(String year);
 
 	/**
 	 * 年审情况汇总(地区)
@@ -37,7 +38,7 @@ public interface ReportViewService {
 	 * @param year
 	 * @return
 	 */
-	public List<ReportViewModel> getByArea(String year);
+	List<ReportViewModel> getByArea(String year);
 
 	/**
 	 * 年审情况汇总(经济类型)
@@ -45,5 +46,5 @@ public interface ReportViewService {
 	 * @param year
 	 * @return
 	 */
-	public List<ReportViewModel> getByCompanyEconomyType(String year);
+	List<ReportViewModel> getByCompanyEconomyType(String year);
 }
