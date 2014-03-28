@@ -148,7 +148,7 @@ public class YearAuditParameterController {
 		logger.debug("auditParameter:{}", auditParameter);
 		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
 		if (copy) {
-			// 检查审核表中该年份的审核数据是否存在,已经不存在-则进行复制以产生审核数据, 不存在-则不进行复制
+			// 检查审核表中该年份的审核数据是否存在,如不存在-则进行复制以产生审核数据, 如存在-则不进行复制
 			Boolean isExist = false;
 			String[] years = auditService.getAuditYears();
 			for (String year : years) {
