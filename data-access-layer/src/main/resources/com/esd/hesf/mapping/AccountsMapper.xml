@@ -450,4 +450,8 @@
 		</trim>
 	</select>
 
+	<select id="retrieveAuditYears" resultType="java.lang.String">
+		select year from accounts group by year order by year desc;
+	</select>
+
 </mapper>

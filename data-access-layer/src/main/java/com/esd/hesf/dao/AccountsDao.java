@@ -10,4 +10,9 @@ import com.esd.hesf.model.Accounts;
  */
 public interface AccountsDao extends BaseDao<Accounts> {
 
+	/**
+	 * 获得缴款账目的年份列表
+	 * @return
+	 */
+	String[] retrieveAuditYears();
 }

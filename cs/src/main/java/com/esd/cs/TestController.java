@@ -827,4 +827,13 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	@RequestMapping("/62")
+	@ResponseBody
+	public Map<String, Object> test62() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] entity =acService.getAccountsYears();
+		map.put("entity", entity);
+		return map;
+	}
 }

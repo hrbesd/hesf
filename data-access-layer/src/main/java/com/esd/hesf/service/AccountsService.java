@@ -36,4 +36,10 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @return
 	 */
 	public List<Accounts> get(String year, String companyCode, Integer auditId);
+	
+	/**
+	 *  获得缴款账目中, 年份列表
+	 * @return
+	 */
+	public String[] getAccountsYears();
 }

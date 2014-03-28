@@ -165,4 +165,9 @@ public class AccountsServiceImpl implements AccountsService {
 		return list;
 	}
 
+	@Override
+	public String[] getAccountsYears() {
+		return dao.retrieveAuditYears();
+	}
+
 }
