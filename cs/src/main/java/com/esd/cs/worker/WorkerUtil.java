@@ -36,7 +36,7 @@ public class WorkerUtil {
 				// 初审日期
 				Integer age = Integer.valueOf(param.substring(6, 10));
 				// 当前年份
-				Integer nowYear = Integer.valueOf(CalendarUtil.getLastYear());
+				Integer nowYear = Integer.valueOf(CalendarUtil.getNowYear());
 				return (nowYear - age) + 1;
 			} catch (Exception e) {
 				logger.error("conversionAge:{}", e.getMessage());

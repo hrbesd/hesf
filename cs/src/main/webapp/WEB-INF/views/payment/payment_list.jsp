@@ -16,11 +16,11 @@
 		return params;
 	};
 	/**
-	加载初审列表数据
+		加载账目列表数据
 	 */
 	payment.loadData = function() {
 		var params = payment.getParams();
-		esd.common.datagrid("#paymentList_datagrid", "${contextPath}/security/audits/list", "#paymentList_boolbar", [ [ {
+		esd.common.datagrid("#paymentList_datagrid", "${contextPath}/security/accounts/list", "#paymentList_boolbar", [ [ {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 150
@@ -29,7 +29,7 @@
 			title : '税务编码',
 			width : 150
 		}, {
-			field : 'companyId',
+			field : 'accountsId',
 			hidden : true
 		}, {
 			field : 'companyName',
@@ -71,7 +71,7 @@
 		} ] ], params);
 	};
 	/*
-	打开单位初审面板
+	打开单位缴款面板
 	 */
 	payment.open = function(index) {
 		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + index);

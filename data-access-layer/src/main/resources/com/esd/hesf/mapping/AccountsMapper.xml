@@ -292,8 +292,8 @@
 		<include refid="From_Column" />
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="accounts != null">
-				<if test="accounts.userId != null and accounts.userId > 0">
-					ac.user_id = #{accounts.userId,jdbcType=INTEGER}
+				<if test="accounts.year != null and accounts.year != ''">
+					ac.year = #{accounts.year,jdbcType=CHAR}
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
@@ -367,8 +367,8 @@
 		<include refid="From_Column" />
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="accounts != null">
-				<if test="accounts.userId != null and accounts.userId > 0">
-					ac.user_id = #{accounts.userId,jdbcType=INTEGER}
+				<if test="accounts.year != null and accounts.year != ''">
+					ac.year = #{accounts.year,jdbcType=CHAR}
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
