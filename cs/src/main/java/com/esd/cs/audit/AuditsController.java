@@ -31,17 +31,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
+import com.esd.hesf.model.Accounts;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
-import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
+import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
@@ -74,6 +75,8 @@ public class AuditsController {
 	private AuditParameterService auditParameterService;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private AccountsService accountsService;
 
 	@Autowired
 	private AuditProcessStatusService auditProcessStatusService;
@@ -341,7 +344,7 @@ public class AuditsController {
 
 		// ============================================================欠缴金额 部分缴款
 		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
-		BigDecimal qianJiao = getSectionPaid(companyId, qianJiaoMingXi);
+		BigDecimal qianJiao = getSectionPaid(year, companyId, qianJiaoMingXi);
 		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
 		// ============================================================未审年度
 		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
@@ -349,7 +352,7 @@ public class AuditsController {
 		calculateModel.setWeiShenMingXi(weiShenMingXi);
 		// =============================================================未缴款
 		List<AccountModel> weiJiaoMingXi = new ArrayList<AccountModel>();
-		BigDecimal weiJiao = getUnpaid(companyId, weiJiaoMingXi);
+		BigDecimal weiJiao = getUnpaid(year, companyId, weiJiaoMingXi);
 		calculateModel.setWeiJiaoMingXi(weiJiaoMingXi);
 		// ==================================================================上年未缴金额
 		logger.debug("qianJiao:{} weiShen:{} weiJiao{}", qianJiao, weiShen, weiJiao);
@@ -417,9 +420,6 @@ public class AuditsController {
 				int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 				// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
 				BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-				// if (mian) {
-				// penalty = new BigDecimal("0.00");
-				// }
 				BigDecimal unYearTotal = payableAmount.add(penalty);
 				logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
 				AccountModel am = new AccountModel();
@@ -447,39 +447,32 @@ public class AuditsController {
 	 * @param companyCode
 	 * @return
 	 */
-	private BigDecimal getSectionPaid(Integer companyId, List<AccountModel> sb) {
+	private BigDecimal getSectionPaid(String year, Integer companyId, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		// 未缴金额
-		Audit param = new Audit();
-		Company company = new Company();
-		company.setId(companyId);
-		param.setCompany(company);
-
-		AuditProcessStatus bfjk = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
-		param.setAuditProcessStatus(bfjk);
-		PaginationRecordsAndNumber<Audit, Number> query_bfjk = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
-		for (Audit a : query_bfjk.getRecords()) {
-			String year = a.getYear();
-			// 查询支付记录
-			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
-			BigDecimal paymentTotal = new BigDecimal(0);
-			if (payments != null) {
-				for (Payment p : payments.getRecords()) {
-					paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
-				}
+		// List<Accounts> audits =
+		// accountsService.getUnauditByCompany(companyId, year,
+		// Constants.PROCESS_STATIC_BFJK);
+		List<Accounts> accounts = accountsService.getByYearAndCompany(year, companyId, Constants.PROCESS_STATIC_BFJK);
+		Map<String, Accounts> map = new HashMap<>();
+		for (Accounts group : accounts) {
+			Object obj = map.get(group.getYear());
+			if (obj == null) {
+				map.put(group.getYear(), group);
+			} else {
+				Accounts a = (Accounts) obj;
+				a.setTotalMoney(a.getTotalMoney().add(group.getTotalMoney()));
 			}
-			BigDecimal qj = a.getPayAmount().subtract(paymentTotal);
+		}
+		for (Accounts a : map.values()) {
+			BigDecimal paymentTotal = paymentService.getEffPaid(a.getYear(), companyId);// 获得真实的已缴款记录
+			BigDecimal qj = a.getTotalMoney().subtract(paymentTotal);
 			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
 			Date auditDelayDate = auditParameter.getAuditDelayDate();
 			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 			BigDecimal penalty = qj.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
-			// Boolean mian = a.getIsDelayPay();
-			// if (mian) {
-			// penalty = new BigDecimal("0.00");
-			// }
 			BigDecimal total = qj.add(penalty);
 			AccountModel am = new AccountModel();
-			am.setYear(year);
+			am.setYear(a.getYear());
 			am.setDays(String.valueOf(days));
 			am.setMoney(df.format(qj));
 			am.setPenalty(df.format(penalty));
@@ -503,36 +496,30 @@ public class AuditsController {
 	 * @param sb
 	 * @return
 	 */
-	private BigDecimal getUnpaid(Integer companyId, List<AccountModel> sb) {
+	private BigDecimal getUnpaid(String year, Integer companyId, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		// 未缴金额
-		Audit param = new Audit();
-		Company company = new Company();
-		company.setId(companyId);
-		param.setCompany(company);
-
-		AuditProcessStatus wjk = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
-		param.setAuditProcessStatus(wjk);
-		PaginationRecordsAndNumber<Audit, Number> query_wjk = auditService.getPaginationRecords(param, 1, Integer.MAX_VALUE);
-
-		for (Audit a : query_wjk.getRecords()) {
-			String year = a.getYear();
-			// 查询支付记录
-			PaginationRecordsAndNumber<Payment, Number> payments = paymentService.getPaymentRecordByCompany(companyId, 1, Integer.MAX_VALUE);
-			BigDecimal paymentTotal = new BigDecimal(0);
-			if (payments != null) {
-				for (Payment p : payments.getRecords()) {
-					paymentTotal = paymentTotal.add(p.getPaymentMoney());// 把所有缴款记录相加
-				}
+		List<Accounts> accounts = accountsService.getByYearAndCompany(year, companyId, Constants.PROCESS_STATIC_WJK);
+		Map<String, Accounts> map = new HashMap<>();
+		for (Accounts group : accounts) {
+			Object obj = map.get(group.getYear());
+			if (obj == null) {
+				map.put(group.getYear(), group);
+			} else {
+				Accounts a = (Accounts) obj;
+				a.setTotalMoney(a.getTotalMoney().add(group.getTotalMoney()));
 			}
-			BigDecimal qj = a.getPayAmount().subtract(paymentTotal);
+		}
+		for (Accounts a : map.values()) {
+			BigDecimal total = a.getTotalMoney();
 			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
-			BigDecimal total = a.getPayAmount();
+			Date auditDelayDate = auditParameter.getAuditDelayDate();
+			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
+			BigDecimal penalty = total.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
 			AccountModel am = new AccountModel();
-			am.setYear(year);
-			am.setDays(String.valueOf(a.getDelayDays()));
-			am.setMoney(df.format(qj));
-			am.setPenalty(df.format(a.getDelayPayAmount()));
+			am.setYear(a.getYear());
+			am.setDays(String.valueOf(days));
+			am.setMoney(df.format(total));
+			am.setPenalty(df.format(penalty));
 			am.setProp(df4.format(auditParameter.getAuditDelayRate()));
 			am.setTotal(df.format(total));
 			sb.add(am);
