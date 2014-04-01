@@ -28,7 +28,9 @@
 </script>
 <div id="payment_add" style="padding: 10px 10px 10px 10px;">
 	<form id="add_form" action="${contextPath}/security/payment/add" method="post">
-		<input type="hidden" name="audit.id" value="${entity.audit.id}" /> <input type="hidden" value="1" name="version" />
+		<input type="hidden" value="${entity.version }" name="version" />
+		<input type="hidden" value="${entity.paymentCompany.id }" name="paymentCompany.id" />
+		<input type="hidden" value="${entity.year }" name="year" />
 		<table border="0">
 			<tbody>
 				<tr>

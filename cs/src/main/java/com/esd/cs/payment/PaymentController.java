@@ -150,7 +150,7 @@ public class PaymentController {
 	@RequestMapping(value = "/confirm/{id}", method = RequestMethod.GET)
 	public ModelAndView confirmGet(@PathVariable(value = "id") Integer id,
 			HttpSession session) {
-		logger.debug("aduitId:{}", id);
+		logger.debug("payment.id:{}", id);
 		Payment payment = paymentService.getByPrimaryKey(id);
 		return new ModelAndView("payment/payment_detail_confirm", "entity",
 				payment);
@@ -293,7 +293,7 @@ public class PaymentController {
 	}
 
 	/**
-	 * 获取新建缴款记录
+	 * 跳转到新建缴款记录页面	
 	 * 
 	 * @param id
 	 * @return
@@ -301,28 +301,34 @@ public class PaymentController {
 	@RequestMapping(value = "/add/{id}", method = RequestMethod.GET)
 	public ModelAndView addGet(@PathVariable(value = "id") Integer id,
 			HttpSession session) {
-		logger.debug("aduitId:{}", id);
+		logger.debug("accounts.id:{}", id);
 		Payment payment = new Payment();
 		Accounts accounts = accountsService.getByPrimaryKey(id);
-		// payment.setAccounts(accounts);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
+		//缴款 所属审核年\
+		payment.setYear(accounts.getYear());
+		//设置缴款人
 		payment.setPaymentPerson(user);
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-				.getPaymentRecords(audit., companyId, page, pageSize)getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-		BigDecimal readyPayments = new BigDecimal(0.00);
-		for (Payment pt : query.getRecords()) {
-			if (pt.getBillReturn() == Boolean.FALSE) {
-				readyPayments = readyPayments.add(pt.getPaymentMoney());
-			}
+		//设置缴款公司
+		payment.setPaymentCompany(accounts.getCompany());
+//		PaginationRecordsAndNumber<Payment, Number> query = paymentService
+//				.getPaymentRecords(audit., companyId, page, pageSize)getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+		BigDecimal readyPayments = paymentService.getEffPaid(accounts.getYear(), accounts.getCompany().getId());
+		if(readyPayments == null){
+			readyPayments = new BigDecimal("0.00");
 		}
-		readyPayments = accounts.getTotalMoney().subtract(readyPayments);
-		payment.setPaymentMoney(readyPayments);
+//		for (Payment pt : query.getRecords()) {
+//			if (pt.getBillReturn() == Boolean.FALSE) {
+//				readyPayments = readyPayments.add(pt.getPaymentMoney());
+//			}
+//		}
+		payment.setPaymentMoney(accounts.getTotalMoney().subtract(readyPayments));
 		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
 
 	/**
-	 * 插入新建缴款记录
+	 * 保存 新建缴款记录
 	 * 
 	 * @param payment
 	 * @param session
@@ -332,13 +338,10 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean outPost(Payment payment, HttpSession session) {
 		logger.debug(payment.toString());
-		Accounts account = accountsService.getByPrimaryKey(payment
-				.getAccounts().getId());
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		payment.setUserId(userId);
 		payment.setPaymentPerson(user);
-		payment.setPaymentCompany(account.getCompany());
 		PaymentExceptional paymentExceptional = paymentExceptionalService
 				.getByPrimaryKey(payment.getPaymentExceptional().getId());
 		payment.setPaymentExceptional(paymentExceptional);
@@ -479,22 +482,22 @@ public class PaymentController {
 		return b;
 	}
 
-	@RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public Boolean backAudit(@PathVariable(value = "id") Integer id,
-			HttpSession session) {
-		Audit audit = auditService.getByPrimaryKey(id);
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-				.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-		if (query == null || query.getRecords().size() > 0) {
-			return false;
-		}
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService
-				.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
-		audit.setAuditProcessStatus(auditProcessStatus);
-		Boolean b = auditService.update(audit);
-		return b;
-	}
+//	@RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
+//	@ResponseBody
+//	public Boolean backAudit(@PathVariable(value = "id") Integer id,
+//			HttpSession session) {
+//		Audit audit = auditService.getByPrimaryKey(id);
+//		PaginationRecordsAndNumber<Payment, Number> query = paymentService
+//				.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+//		if (query == null || query.getRecords().size() > 0) {
+//			return false;
+//		}
+//		AuditProcessStatus auditProcessStatus = auditProcessStatusService
+//				.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
+//		audit.setAuditProcessStatus(auditProcessStatus);
+//		Boolean b = auditService.update(audit);
+//		return b;
+//	}
 
 	@RequestMapping(value = "/download")
 	@ResponseBody
