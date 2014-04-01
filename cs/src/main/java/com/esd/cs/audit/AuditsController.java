@@ -69,12 +69,16 @@ public class AuditsController {
 
 	@Autowired
 	private AuditService auditService;
+	
 	@Autowired
 	private CompanyService companyService;
+	
 	@Autowired
 	private AuditParameterService auditParameterService;
+	
 	@Autowired
 	private PaymentService paymentService;
+	
 	@Autowired
 	private AccountsService accountsService;
 
@@ -83,8 +87,10 @@ public class AuditsController {
 
 	@Autowired
 	private CompanyPropertyService companyPropertyService;
+	
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;
+	
 	@Autowired
 	private ReplyService replyService;
 
@@ -175,10 +181,18 @@ public class AuditsController {
 			}
 		}
 		// 处理未审年度结束
-
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
+		
+		//生成账单
+		Accounts accounts = new Accounts();
+		accounts.setYear(getAudit.getYear());	//账目的审核年
+		accounts.setAudit(getAudit);	//账目对应的审核审核对象
+		accounts.setCompany(getAudit.getCompany()); //账单公司
+		accounts.setTotalMoney(getAudit.getPayAmount());	//实际应缴金额
+		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
+		accountsService.save(accounts);
 		return true;
 	}
 

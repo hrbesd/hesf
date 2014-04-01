@@ -237,7 +237,7 @@ public class PaymentController {
 	}
 
 	/**
-	 * 确认保存
+	 * 确认缴款信息（返票--为true）
 	 * 
 	 * @param id
 	 * @return
@@ -254,8 +254,10 @@ public class PaymentController {
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
 		Boolean b = paymentService.update(queryPayment);
+		//获取此缴款对应的账单
+//		Accounts accounts = accountsService.ge
 		// 获取所有缴款记录
-		// 把以回单的费用相加获取所有已缴的金额
+		// 把以回单的费用相加 = 所有已缴的金额
 		BigDecimal payments = paymentService.getEffPaid(queryPayment.getYear(),
 				queryPayment.getPaymentCompany().getId());
 		// 获取应缴金额和已缴对比相等 则修改状态为 已缴款

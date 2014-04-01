@@ -81,8 +81,8 @@
 <div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
 	<table width="100%" border="0">
 		<tr>
-			<td width="80" style="text-align: right;">缴款时间:</td>
-			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear}"
+			<td width="80" style="text-align: right;">审核时间:</td>
+			<td width="150"><input id="year" class="easyui-combobox" value=""
 				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />
 			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
