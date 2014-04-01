@@ -1,6 +1,7 @@
 package com.esd.hesf.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.esd.hesf.model.Accounts;
 
@@ -11,6 +12,15 @@ import com.esd.hesf.model.Accounts;
  * 
  */
 public interface AccountsDao extends BaseDao<Accounts> {
+
+	/**
+	 * 根据 accounts的 year和其中的company.id 得到以公司分组后的accounts对象,其中的id为不可用的-为防止乱用,
+	 * 写死为0
+	 * 
+	 * @param t
+	 * @return
+	 */
+	Accounts retrieveByCompanyGroup(Accounts t);
 
 	/**
 	 * 获得缴款账目的年份列表
@@ -26,4 +36,20 @@ public interface AccountsDao extends BaseDao<Accounts> {
 	 * @return
 	 */
 	List<Accounts> retrieveByAccounts(Accounts accounts);
+
+	/**
+	 * 运用的以公司分组的 账目分页查询
+	 * 
+	 * @param map
+	 * @return List<Accounts>
+	 */
+	List<Accounts> retrievePageByCompanyGroup(Map<String, Object> map);
+
+	/**
+	 * 运用的以公司分组的 账目分页查询 返回总条数
+	 * 
+	 * @param map
+	 * @return Integer
+	 */
+	Integer retrievePageByCompanyGroupCount(Map<String, Object> map);
 }

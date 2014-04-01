@@ -61,17 +61,17 @@ public class AccountsController {
 		ac.setAuditProcessStatus(new AuditProcessStatus(process));
 		// 根据公司的相关信息, 查询账目表
 		PaginationRecordsAndNumber<Accounts, Number> query = acService
-				.getPaginationRecords(ac, page, pageSize);
+				.getPaginationRecordsGroupByCompany(ac, page, pageSize);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for (Iterator<Accounts> iterator = query.getRecords().iterator(); iterator
 				.hasNext();) {
 			Accounts it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
-			map.put("id", it.getId());// id
+			map.put("year", it.getYear());	//出账年份
 			map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 			map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
-			map.put("accountsId", it.getId());// 账目id名称
+//			map.put("accountsId", it.getId());// 账目id名称
 			map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 			map.put("companyId", it.getCompany().getId()); // 公司id
 			map.put("auditProcessStatus", it.getAuditProcessStatus()

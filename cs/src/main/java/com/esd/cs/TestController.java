@@ -928,4 +928,25 @@ public class TestController {
 		return map;
 	}
 
+	@RequestMapping("/70")
+	@ResponseBody
+	public Map<String, Object> test70() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Accounts accounts = new Accounts();
+		accounts.setAuditProcessStatus(new AuditProcessStatus(3));
+		PaginationRecordsAndNumber<Accounts, Number> entity = acService
+				.getPaginationRecordsGroupByCompany(accounts, 1, 100);
+		map.put("entity", entity);
+		return map;
+	}
+	
+	@RequestMapping("/71")
+	@ResponseBody
+	public Map<String, Object> test71() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Accounts entity = acService.getByYearAndCompany("2014", 2);
+		map.put("entity", entity);
+		return map;
+	}
+
 }

@@ -124,6 +124,42 @@
 		aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
 	</sql>
 
+	<sql id="Base_Group_Column_List">
+		<!-- accounts (id can't be use)-->
+		ac.id as ac_id, ac.create_time as ac_create_time, ac.update_time as ac_update_time,ac.user_id as ac_user_id, ac.is_active as ac_is_active, ac.version as ac_version,
+		ac.year as ac_year, sum(ac.total_money) as ac_total_money, ac.is_finished as ac_is_finished,
+		<!-- company -->
+		c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
+		c.company_contact_person as c_company_contact_person, c.company_organization_code as c_company_organization_code, 
+		c.company_tax_code as c_company_tax_code, c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+		c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, c.company_bank as c_company_bank, 
+		c.company_bank_account as c_company_bank_account, c.company_remark as c_company_remark, c.create_time as c_create_time, 
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
+		<!-- audit -->
+		au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+		au.company_handicap_total as au_company_handicap_total,
+		au.company_predict_total as au_company_predict_total,
+		au.company_should_total as au_company_should_total,
+		au.company_already_total as au_company_already_total, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount,
+		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount,
+		au.is_delay_pay as au_is_delay_pay, au.init_audit_user_id as au_init_audit_user_id,
+		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
+		au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
+		au.verify_audit_comment as au_verify_audit_comment, au.remark as au_remark, au.is_exempt as au_is_exempt,
+		au.reduction_type as au_reduction_type, au.reducion_apply_user as au_reducion_apply_user,
+		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+		au.reduction_answer_user as
+		au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date,
+		au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+		au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year,
+		au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id,
+		au.is_active as au_is_active, au.version as au_version,
+		<!-- auditProcessStatus -->
+		aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
+	</sql>
+	
 	<sql id="From_Column">
 		accounts as ac 
 		left join audit_process_status as aup on (ac.audit_process_status = aup.id)
@@ -282,9 +318,17 @@
 		from
 		<include refid="From_Column" />
 		where ac.id = #{id,jdbcType=INTEGER}
-		order by ac.id
 	</select>
 
+	<select id="retrieveByCompanyGroup" resultMap="ResultAccounts" parameterType="com.esd.hesf.model.Accounts">
+		select
+			<include refid="Base_Group_Column_List" />
+		from
+			<include refid="From_Column" />
+		where ac.is_active = 0 and c.id = #{company.id,jdbcType=INTEGER} and ac.year = #{year, jdbcType=CHAR}
+		group by ac.company_id ;
+	</select>
+	
 	<select id="retrieveByPage" resultMap="ResultAccounts" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
@@ -484,4 +528,160 @@
 		</trim>
 		order by ac.year, c.id
 	</select>
+	
+	<!--  -->
+	<select id="retrievePageByCompanyGroup" resultMap="ResultAccounts" parameterType="map">
+		select
+		<include refid="Base_Group_Column_List" />
+		from
+		<include refid="From_Column" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="accounts != null">
+				<if test="accounts.year != null and accounts.year != ''">
+					ac.year = #{accounts.year,jdbcType=CHAR}
+				</if>
+				<!-- accounts company -->
+				<if test="accounts.company != null">
+					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
+						and c.company_code like concat('%',#{accounts.company.companyCode, jdbcType=VARCHAR},'%')
+					</if>
+					<if test="accounts.company.companyName != null and accounts.company.companyName != ''">
+						and c.company_name like concat('%',#{accounts.company.companyName, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="accounts.company.companyOrganizationCode != null and accounts.company.companyOrganizationCode != ''">
+						and c.company_organization_code like concat('%',#{accounts.company.companyOrganizationCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="accounts.company.companyTaxCode != null and accounts.company.companyTaxCode != ''">
+						and c.company_tax_code like concat('%',#{accounts.company.companyTaxCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="accounts.company.companyZipCode != null and accounts.company.companyZipCode != ''">
+						and c.company_zip_code like concat('%',#{accounts.company.companyZipCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="accounts.company.companyType != null">
+						<if test="accounts.company.companyType.id != null and accounts.company.companyType.id > 0">
+							and c.company_type = #{accounts.company.companyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.companyEconomyType != null">
+						<if test="accounts.company.companyEconomyType.id != null and accounts.company.companyEconomyType.id > 0">
+							and c.company_economy_type = #{accounts.company.companyEconomyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.companyProperty != null">
+						<if test="accounts.company.companyProperty.id != null and accounts.company.companyProperty.id > 0">
+							and c.company_property = #{accounts.company.companyProperty.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.area != null">
+						<if test="accounts.company.area.code != null and accounts.company.area.code != '' ">
+							and c.area_code = #{accounts.company.area.code, jdbcType=CHAR} 
+						</if>
+					</if>
+				</if>
+				<!-- audit -->
+				<if test="accounts.audit != null">
+					<if test="accounts.audit.id != null and accounts.audit.id > 0">
+						and ac.audit_id = #{accounts.audit.id,jdbcType=INTEGER}
+					</if>
+					<if test="accounts.audit.year != null and accounts.audit.year != ''">
+						and au.year = #{accounts.audit.year,jdbcType=CHAR} 
+					</if>
+				</if>
+				<choose>
+					<when test="accounts.isActive != null">
+						and ac.is_active = #{accounts.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and ac.is_active = 0
+					</otherwise>
+				</choose>
+				<if test="accounts.auditProcessStatus != null">
+					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
+						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
+					</if>
+				</if>
+			</if>
+		</trim>
+		group by ac.company_id 
+		order by ac.year, c.company_code
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrievePageByCompanyGroupCount" resultType="int" parameterType="map">
+		select count(*) 
+		from
+		(select	<include refid="Base_Group_Column_List" />
+			from  <include refid="From_Column" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="accounts != null">
+				<if test="accounts.year != null and accounts.year != ''">
+					ac.year = #{accounts.year,jdbcType=CHAR}
+				</if>
+				<!-- accounts company -->
+				<if test="accounts.company != null">
+					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
+						and c.company_code like concat('%',#{accounts.company.companyCode, jdbcType=VARCHAR},'%')
+					</if>
+					<if test="accounts.company.companyName != null and accounts.company.companyName != ''">
+						and c.company_name like concat('%',#{accounts.company.companyName, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="accounts.company.companyOrganizationCode != null and accounts.company.companyOrganizationCode != ''">
+						and c.company_organization_code like concat('%',#{accounts.company.companyOrganizationCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="accounts.company.companyTaxCode != null and accounts.company.companyTaxCode != ''">
+						and c.company_tax_code like concat('%',#{accounts.company.companyTaxCode, jdbcType=VARCHAR},'%') 
+					</if>
+					<if test="accounts.company.companyZipCode != null and accounts.company.companyZipCode != ''">
+						and c.company_zip_code like concat('%',#{accounts.company.companyZipCode, jdbcType=VARCHAR},'%')  
+					</if>
+					<if test="accounts.company.companyType != null">
+						<if test="accounts.company.companyType.id != null and accounts.company.companyType.id > 0">
+							and c.company_type = #{accounts.company.companyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.companyEconomyType != null">
+						<if test="accounts.company.companyEconomyType.id != null and accounts.company.companyEconomyType.id > 0">
+							and c.company_economy_type = #{accounts.company.companyEconomyType.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.companyProperty != null">
+						<if test="accounts.company.companyProperty.id != null and accounts.company.companyProperty.id > 0">
+							and c.company_property = #{accounts.company.companyProperty.id, jdbcType=INTEGER} 
+						</if>
+					</if>
+					<if test="accounts.company.area != null">
+						<if test="accounts.company.area.code != null and accounts.company.area.code != '' ">
+							and c.area_code = #{accounts.company.area.code, jdbcType=CHAR} 
+						</if>
+					</if>
+				</if>
+				<!-- audit -->
+				<if test="accounts.audit != null">
+					<if test="accounts.audit.id != null and accounts.audit.id > 0">
+						and ac.audit_id = #{accounts.audit.id,jdbcType=INTEGER}
+					</if>
+					<if test="accounts.audit.year != null and accounts.audit.year != ''">
+						and au.year = #{accounts.audit.year,jdbcType=CHAR} 
+					</if>
+				</if>
+				<choose>
+					<when test="accounts.isActive != null">
+						and ac.is_active = #{accounts.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and ac.is_active = 0
+					</otherwise>
+				</choose>
+				<if test="accounts.auditProcessStatus != null">
+					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
+						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
+					</if>
+				</if>
+			</if>
+		</trim>
+		group by ac.company_id) as t 
+	</select>
+
+
+
 </mapper>

@@ -94,19 +94,25 @@ public class PaymentController {
 		return new ModelAndView("payment/payment_list");
 	}
 
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable(value = "id") Integer id,
+	/**
+	 * 跳转到 缴款 页面
+	 * @param id
+	 * @param year
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/edit/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView editGet(@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
 			HttpServletRequest request) {
-		// 账目id
-		logger.debug("id:{}", id);
-		// 获得账目对象
-		Accounts accounts = accountsService.getByPrimaryKey(id);
+		// 根据公司id和账目年限, 获得综合的账目对象(其中的id不准确-不要使用)
+		Accounts accounts = accountsService.getByYearAndCompany(year, companyId);
 		Audit audit = accounts.getAudit();
 		AuditParameter auditParameter = auditParameterService.getByYear(audit
 				.getYear());
 		Map<String, String> entity = new HashMap<String, String>();
 		// 账目id
-		entity.put("id", String.valueOf(accounts.getId()));
+//		entity.put("id", String.valueOf(accounts.getId()));
 		entity.put("companyId", String.valueOf(accounts.getCompany().getId()));
 		entity.put("companyCode", accounts.getCompany().getCompanyCode());
 		entity.put("companyTaxCode", accounts.getCompany().getCompanyTaxCode());
@@ -254,8 +260,8 @@ public class PaymentController {
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
 		Boolean b = paymentService.update(queryPayment);
-		//获取此缴款对应的账单
-//		Accounts accounts = accountsService.ge
+		// 获取此缴款对应的账单
+		// Accounts accounts = accountsService.ge
 		// 获取所有缴款记录
 		// 把以回单的费用相加 = 所有已缴的金额
 		BigDecimal payments = paymentService.getEffPaid(queryPayment.getYear(),
@@ -295,7 +301,7 @@ public class PaymentController {
 	}
 
 	/**
-	 * 跳转到新建缴款记录页面	
+	 * 跳转到新建缴款记录页面
 	 * 
 	 * @param id
 	 * @return
@@ -308,24 +314,27 @@ public class PaymentController {
 		Accounts accounts = accountsService.getByPrimaryKey(id);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
-		//缴款 所属审核年\
-		payment.setYear(accounts.getYear());
-		//设置缴款人
+		// 缴款 出账年份
+		payment.setYear(CalendarUtil.getNowYear());
+		// 设置缴款人
 		payment.setPaymentPerson(user);
-		//设置缴款公司
+		// 设置缴款公司
 		payment.setPaymentCompany(accounts.getCompany());
-//		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-//				.getPaymentRecords(audit., companyId, page, pageSize)getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-		BigDecimal readyPayments = paymentService.getEffPaid(accounts.getYear(), accounts.getCompany().getId());
-		if(readyPayments == null){
+		// PaginationRecordsAndNumber<Payment, Number> query = paymentService
+		// .getPaymentRecords(audit., companyId, page,
+		// pageSize)getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+		BigDecimal readyPayments = paymentService.getEffPaid(
+				accounts.getYear(), accounts.getCompany().getId());
+		if (readyPayments == null) {
 			readyPayments = new BigDecimal("0.00");
 		}
-//		for (Payment pt : query.getRecords()) {
-//			if (pt.getBillReturn() == Boolean.FALSE) {
-//				readyPayments = readyPayments.add(pt.getPaymentMoney());
-//			}
-//		}
-		payment.setPaymentMoney(accounts.getTotalMoney().subtract(readyPayments));
+		// for (Payment pt : query.getRecords()) {
+		// if (pt.getBillReturn() == Boolean.FALSE) {
+		// readyPayments = readyPayments.add(pt.getPaymentMoney());
+		// }
+		// }
+		payment.setPaymentMoney(accounts.getTotalMoney()
+				.subtract(readyPayments));
 		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
 
@@ -413,13 +422,13 @@ public class PaymentController {
 	@ResponseBody
 	public Map<String, Object> getPayment(
 			@PathVariable(value = "id") Integer id, HttpSession session) {
-		//获得账目对象
+		// 获得账目对象
 		Accounts accounts = accountsService.getByPrimaryKey(id);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> query = null;
 		// 4个参数分别为: 缴款年限, 公司id, 起始页, 返回量
-		query = paymentService.getPaymentRecords(accounts.getYear(), accounts.getCompany().getId(),
-				1, Integer.MAX_VALUE);
+		query = paymentService.getPaymentRecords(accounts.getYear(), accounts
+				.getCompany().getId(), 1, Integer.MAX_VALUE);
 		entity.put("total", query.getNumber());
 		List<Map<String, Object>> list = new ArrayList<>();
 		for (Iterator<Payment> iterator = query.getRecords().iterator(); iterator
@@ -484,22 +493,22 @@ public class PaymentController {
 		return b;
 	}
 
-//	@RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
-//	@ResponseBody
-//	public Boolean backAudit(@PathVariable(value = "id") Integer id,
-//			HttpSession session) {
-//		Audit audit = auditService.getByPrimaryKey(id);
-//		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-//				.getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-//		if (query == null || query.getRecords().size() > 0) {
-//			return false;
-//		}
-//		AuditProcessStatus auditProcessStatus = auditProcessStatusService
-//				.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
-//		audit.setAuditProcessStatus(auditProcessStatus);
-//		Boolean b = auditService.update(audit);
-//		return b;
-//	}
+	// @RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
+	// @ResponseBody
+	// public Boolean backAudit(@PathVariable(value = "id") Integer id,
+	// HttpSession session) {
+	// Audit audit = auditService.getByPrimaryKey(id);
+	// PaginationRecordsAndNumber<Payment, Number> query = paymentService
+	// .getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+	// if (query == null || query.getRecords().size() > 0) {
+	// return false;
+	// }
+	// AuditProcessStatus auditProcessStatus = auditProcessStatusService
+	// .getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
+	// audit.setAuditProcessStatus(auditProcessStatus);
+	// Boolean b = auditService.update(audit);
+	// return b;
+	// }
 
 	@RequestMapping(value = "/download")
 	@ResponseBody

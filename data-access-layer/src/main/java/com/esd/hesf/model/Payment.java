@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class Payment extends PrimaryKey_Int {
 
-	private String year; // 审核年限
+	private String year; // 出账年份
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date paymentDate;
 	private BigDecimal paymentMoney;

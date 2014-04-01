@@ -10,18 +10,19 @@ import java.math.BigDecimal;
  */
 public class Accounts extends PrimaryKey_Int {
 
-	private String year; // 审核年度
+	private String year; // 出账年份
 	private Company company; // 公司对象
 	private Audit audit; // 审核审核对象
 	private BigDecimal totalMoney; // 总应缴款金额
 	private Boolean isFinished; // 是否缴款完毕
-	private AuditProcessStatus auditProcessStatus;	//审核进程状态 对象
+	private AuditProcessStatus auditProcessStatus; // 审核进程状态 对象
 
 	@Override
 	public String toString() {
 		return "Accounts [year=" + year + ", company=" + company + ", audit="
 				+ audit + ", totalMoney=" + totalMoney + ", isFinished="
-				+ isFinished + "]";
+				+ isFinished + ", auditProcessStatus=" + auditProcessStatus
+				+ "]";
 	}
 
 	public Accounts() {
@@ -79,5 +80,4 @@ public class Accounts extends PrimaryKey_Int {
 		this.auditProcessStatus = auditProcessStatus;
 	}
 
-	
 }

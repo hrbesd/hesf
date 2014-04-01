@@ -187,7 +187,7 @@ public class AuditsController {
 		
 		//生成账单
 		Accounts accounts = new Accounts();
-		accounts.setYear(getAudit.getYear());	//账目的审核年
+		accounts.setYear(CalendarUtil.getNowYear());	//账目的出账年份
 		accounts.setAudit(getAudit);	//账目对应的审核审核对象
 		accounts.setCompany(getAudit.getCompany()); //账单公司
 		accounts.setTotalMoney(getAudit.getPayAmount());	//实际应缴金额

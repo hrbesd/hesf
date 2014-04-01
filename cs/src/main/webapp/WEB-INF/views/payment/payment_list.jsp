@@ -32,6 +32,9 @@
 			field : 'accountsId',
 			hidden : true
 		}, {
+			field : 'year',
+			hidden : true
+		},{
 			field : 'companyName',
 			title : '企业名称',
 			width : 900,
@@ -53,7 +56,7 @@
 				var c = '<a href="javascript:void(0);" >待初审</a>';
 				var f = '<a href="javascript:void(0);" >待复审</a>';
 				var d = '<a href="javascript:void(0);" >已达标</a>';
-				var j = '<a href="javascript:payment.open(' + row.id + ');" >缴款</a>';
+				var j = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +');" >缴款</a>';
 				if (row.auditProcessStatusId == 1 || row.auditProcessStatusId == 7) {
 					return c;
 				}
@@ -73,7 +76,7 @@
 	/*
 	打开单位缴款面板
 	 */
-	payment.open = function(index) {
+	payment.open = function(index,year) {
 		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + index);
 	};
 </script>
