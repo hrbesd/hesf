@@ -29,7 +29,7 @@
 			title : '税务编码',
 			width : 150
 		}, {
-			field : 'accountsId',
+			field : 'companyId',
 			hidden : true
 		}, {
 			field : 'year',
@@ -77,14 +77,14 @@
 	打开单位缴款面板
 	 */
 	payment.open = function(index,year) {
-		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + index);
+		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + year+"/"+index);
 	};
 </script>
 <!-- 自定义菜单 -->
 <div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
 	<table width="100%" border="0">
 		<tr>
-			<td width="80" style="text-align: right;">审核时间:</td>
+			<td width="80" style="text-align: right;">结算年度:</td>
 			<td width="150"><input id="year" class="easyui-combobox" value=""
 				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />
 			</td>

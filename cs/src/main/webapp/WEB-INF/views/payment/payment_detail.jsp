@@ -101,14 +101,14 @@
 		});
 	};
 	payment.getBalance = function() {
-		var auditId = $('#auditId').val();
+	//	var v = '${entity.year}/${entity.companyId}';
 		$.ajax({
-			url : 'payment/getBalance/' + auditId,
+			url : 'payment/getBalance/${entity.year}/${entity.companyId}',			
 			type : 'GET',
 			success : function(data) {
-				$('#payments').html(data.payments);
-				$('#balance').html(data.balance);
-				$('#readyPayments').html(data.readyPayments);
+				$('#alreadyPayAmount').html(data.alreadyPayAmount);
+				$('#lessPayAmount').html(data.lessPayAmount);
+			//	$('#readyPayments').html(data.readyPayments);
 			},
 			error : function() {
 				alert("请求错误");
@@ -117,9 +117,9 @@
 			async : true
 		});
 	};
-	payment.open = function(index) {
+/*	payment.open = function(index) {
 		esd.common.defaultOpenWindow("新建缴款记录", "${contextPath}/security/payment/edit/" + index);
-	};
+	};	*/
 	payment.pay = function() {
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/payment/confirm", function(data) {
 			if (data == true) {
@@ -140,7 +140,7 @@
 		esd.common.defaultOpenWindowClose();
 	};
 	payment.insert = function() {
-		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/${entity.id}");
+		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/${entity.year}/${entity.companyId}/${entity.lessPayAmount}");
 	};
 	payment.confirm = function(id) {
 		esd.common.openWindow("#add", "确认缴款", 750, 350, "${contextPath}/security/payment/confirm/" + id);
@@ -168,7 +168,7 @@
 	};
 
 	payment.loadPaymentData = function() {
-		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.id}", [ {
+		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.year}/${entity.companyId}", [ {
 			text : '新建缴款记录',
 			iconCls : 'icon-add',
 			handler : payment.insert
@@ -265,7 +265,7 @@
 		} ] ]);
 	};
 	$.parser.onComplete = function() {
-		payment.getBalance();
+	//	payment.getBalance();
 		payment.loadPaymentData();
 	};
 </script>
@@ -275,30 +275,28 @@
 	<table cellspacing="0" cellpadding="0" border="0" title="企业年审信息" class="company-examined">
 		<tbody>
 			<tr>
-				<td class="td_short">档案号码:</td>
-				<td class="bj_belu readonly" style="width: 200px;" colspan="3">${entity.companyCode}</td>
+				<td class="td_short">单位名称:</td>
+				<td class="bj_belu readonly" style="width: 200px;" colspan="3">${entity.companyName}</td>
 				<td class="td_short">税务代码:</td>
 				<td class="td_long bj_belu readonly" colspan="3">${entity.companyTaxCode}</td>
 			</tr>
 			<tr>
-				<td class="td_short">单位名称:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.companyName}</td>
-				<td class="td_short">年审年度:</td>
+				<td class="td_short">档案号码:</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.companyCode}</td>
+				<td class="td_short">缴款年度:</td>
 				<td class="td_long bj_belu readonly" colspan="3">${entity.year}</td>
 			</tr>
 			<tr>
-				<td class="td_short">应缴金额:</td>
-				<td class="bj_belu2 readonly">${entity.amountPayable }</td>
-				<td class="td_short">补缴金额:</td>
-				<td class="bj_belu2 readonly">${entity.remainAmount }</td>
-				<td class="td_short">减缴金额:</td>
-				<td class="bj_belu2 readonly">${entity.reductionAmount }</td>
-				<td class="td_short">滞纳金:</td>
-				<td class="bj_belu readonly">${entity.delayPayAmount}</td>
+				<td class="bj_belu2" style="text-align:center;">应缴金额:</td>
+				<td class="td_short readonly" colspan="3" id="payAmount">${entity.payAmount}</td>
+				<td class="td_short">已缴金额:</td>
+				<td class="bj_belu2 readonly" id="alreadyPayAmount">${entity.alreadyPayAmount}</td>
+				<td class="td_short">待缴金额:</td>
+				<td class="bj_belu readonly" id="lessPayAmount">${entity.lessPayAmount}</td>
 
 
 			</tr>
-			<tr>
+		<!-- 	<tr>
 				<td class="td_short">预缴金额:</td>
 				<td class="bj_belu2 readonly" id="readyPayments"></td>
 				<td class="td_short">已缴金额:</td>
@@ -308,7 +306,7 @@
 				<td class="td_short">实缴总金额:</td>
 				<td class="bj_belu2 readonly">${entity.payAmount }</td>
 
-			</tr>
+			</tr>	 -->
 			<tr>
 				<td class="td_short" rowspan="3">备注:</td>
 				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>

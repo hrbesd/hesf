@@ -13,7 +13,9 @@
 					if (data == true) {
 						$.messager.alert('消息', '确认缴款成功', 'info', function() {
 							payment.add.back();
+							//更新显示的已缴金额, 代缴金额
 							payment.getBalance();
+							//重载 缴款页面
 							$("#payment_datagrid").datagrid('reload');
 							$("#paymentList_datagrid").datagrid('reload');
 						});

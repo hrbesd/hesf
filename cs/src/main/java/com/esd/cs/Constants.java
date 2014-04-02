@@ -24,8 +24,8 @@ public class Constants {
 	public static final Integer PROCESS_STATIC_WCS = 1;// 未初审
 	public static final Integer PROCESS_STATIC_WFS = 2;// 已初审 未复审
 	public static final Integer PROCESS_STATIC_WJK = 3;// 已复审 未缴款
-	public static final Integer PROCESS_STATIC_BFJK = 4;// 已缴款
-	public static final Integer PROCESS_STATIC_YJK = 5;// 部分缴款
+	public static final Integer PROCESS_STATIC_BFJK = 4;// 部分缴款
+	public static final Integer PROCESS_STATIC_YJK = 5;// 已缴款
 	public static final Integer PROCESS_STATIC_OK = 6;// 达标
 	public static final Integer PROCESS_STATIC_WTG = 7;// 已复审 未通过
 

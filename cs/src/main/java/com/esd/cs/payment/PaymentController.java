@@ -96,34 +96,45 @@ public class PaymentController {
 
 	/**
 	 * 跳转到 缴款 页面
+	 * 
 	 * @param id
 	 * @param year
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/edit/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable(value = "companyId") Integer companyId,
-			@PathVariable(value = "year") String year,
+	@RequestMapping(value = "/edit/{year}/{companyId}", method = RequestMethod.GET)
+	public ModelAndView editGet(@PathVariable(value = "year") String year,
+			@PathVariable(value = "companyId") Integer companyId,
 			HttpServletRequest request) {
 		// 根据公司id和账目年限, 获得综合的账目对象(其中的id不准确-不要使用)
-		Accounts accounts = accountsService.getByYearAndCompany(year, companyId);
+		Accounts accounts = accountsService
+				.getByYearAndCompany(year, companyId);
+		// 根据公司id和账目年限,获得已缴款总额
+		BigDecimal alreadyPayment = paymentService.getEffPaid(year, companyId);
+		if (alreadyPayment == null) {
+			alreadyPayment = new BigDecimal("0.00");
+		}
 		Audit audit = accounts.getAudit();
 		AuditParameter auditParameter = auditParameterService.getByYear(audit
 				.getYear());
 		Map<String, String> entity = new HashMap<String, String>();
 		// 账目id
-//		entity.put("id", String.valueOf(accounts.getId()));
+		// entity.put("id", String.valueOf(accounts.getId()));
 		entity.put("companyId", String.valueOf(accounts.getCompany().getId()));
 		entity.put("companyCode", accounts.getCompany().getCompanyCode());
 		entity.put("companyTaxCode", accounts.getCompany().getCompanyTaxCode());
 		entity.put("companyName", accounts.getCompany().getCompanyName());
-		entity.put("year", audit.getYear());
-		entity.put("amountPayable", df.format(audit.getAmountPayable()));
-		entity.put("remainAmount", df.format(audit.getRemainAmount()));
-		entity.put("reductionAmount", df.format(audit.getReductionAmount()));
-		entity.put("actualAmount", df.format(audit.getActualAmount()));
-		entity.put("payAmount", df.format(audit.getPayAmount()));
-		entity.put("delayPayAmount", df.format(audit.getDelayPayAmount()));
+		entity.put("year", accounts.getYear()); // 缴款年度
+		entity.put("payAmount", accounts.getTotalMoney().toString()); // 应交款总数
+		entity.put("alreadyPayAmount", alreadyPayment.toString()); // 已缴款总数
+		entity.put("lessPayAmount",
+				(accounts.getTotalMoney().subtract(alreadyPayment)).toString()); // 欠缴金额
+		// entity.put("amountPayable", df.format(audit.getAmountPayable()));
+		// entity.put("remainAmount", df.format(audit.getRemainAmount()));
+		// entity.put("reductionAmount", df.format(audit.getReductionAmount()));
+		// entity.put("actualAmount", df.format(audit.getActualAmount()));
+		// entity.put("payAmount", df.format(audit.getPayAmount()));
+		// entity.put("delayPayAmount", df.format(audit.getDelayPayAmount()));
 		entity.put("remark", audit.getRemark());
 		entity.put("companyEmpTotal",
 				String.valueOf(audit.getCompanyEmpTotal()));
@@ -162,44 +173,44 @@ public class PaymentController {
 				payment);
 	}
 
-	/**
-	 * 获取有效的支付金额
-	 * 
-	 * @return
-	 */
-	private BigDecimal getEffPaid(String year, Integer companyId) {
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-				.getPaymentRecords(year, companyId, 1, Integer.MAX_VALUE);
-		// 把以回单的费用相加获取所有已缴的金额
-		BigDecimal bd = new BigDecimal(0.00);
-		for (Payment pt : query.getRecords()) {
-			if (pt.getBillObsolete() == Boolean.TRUE) {
-				continue;
-			}
-			if (pt.getBillReturn() == Boolean.TRUE) {
-				bd = bd.add(pt.getPaymentMoney());
-			}
-		}
-		return bd;
-	}
+	// /**
+	// * 获取有效的支付金额
+	// *
+	// * @return
+	// */
+	// private BigDecimal getEffPaid(String year, Integer companyId) {
+	// PaginationRecordsAndNumber<Payment, Number> query = paymentService
+	// .getPaymentRecords(year, companyId, 1, Integer.MAX_VALUE);
+	// // 把以回单的费用相加获取所有已缴的金额
+	// BigDecimal bd = new BigDecimal(0.00);
+	// for (Payment pt : query.getRecords()) {
+	// if (pt.getBillObsolete() == Boolean.TRUE) {
+	// continue;
+	// }
+	// if (pt.getBillReturn() == Boolean.TRUE) {
+	// bd = bd.add(pt.getPaymentMoney());
+	// }
+	// }
+	// return bd;
+	// }
 
-	/**
-	 * 获得支付记录总和
-	 * 
-	 * @param payment
-	 * @return
-	 */
-	private BigDecimal getTotalMoney(Payment payment) {
-		String year = payment.getYear();
-		Integer companyId = payment.getPaymentCompany().getId();
-		List<Accounts> query = accountsService.getCompanyAccount(year,
-				companyId);
-		BigDecimal bd = new BigDecimal(0.00);
-		for (Accounts at : query) {
-			bd = bd.add(at.getTotalMoney());
-		}
-		return bd;
-	}
+	// /**
+	// * 获得支付记录总和
+	// *
+	// * @param payment
+	// * @return
+	// */
+	// private BigDecimal getTotalMoney(Payment payment) {
+	// String year = payment.getYear();
+	// Integer companyId = payment.getPaymentCompany().getId();
+	// List<Accounts> query = accountsService.getCompanyAccount(year,
+	// companyId);
+	// BigDecimal bd = new BigDecimal(0.00);
+	// for (Accounts at : query) {
+	// bd = bd.add(at.getTotalMoney());
+	// }
+	// return bd;
+	// }
 
 	/**
 	 * 批量更新状态
@@ -207,19 +218,26 @@ public class PaymentController {
 	 * @param payment
 	 * @return
 	 */
-	private Boolean batchUpdateAuditStatus(Payment payment, Integer status) {
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService
-				.getByPrimaryKey(status);
+	private Boolean batchUpdateAuditStatus(Payment payment,
+			Integer auditProcessStatus) {
+		AuditProcessStatus aup = auditProcessStatusService
+				.getByPrimaryKey(auditProcessStatus);
 		String year = payment.getYear();
 		Integer companyId = payment.getPaymentCompany().getId();
 		List<Accounts> query = accountsService.getCompanyAccount(year,
 				companyId);
 		try {
 			for (Accounts at : query) {
+				// 更新审核表 即时审核状态,
 				Audit audit = auditService.getByPrimaryKey(at.getAudit()
 						.getId());
-				audit.setAuditProcessStatus(auditProcessStatus);
+				audit.setAuditProcessStatus(aup);
+				// 补缴年份
+				audit.setSupplementYear(payment.getYear());
 				auditService.update(audit);
+				// 更新账目 即时审核状态
+				at.setAuditProcessStatus(aup);
+				accountsService.update(at);
 			}
 		} catch (Exception e) {
 			logger.error("{}", e);
@@ -228,19 +246,19 @@ public class PaymentController {
 		return Boolean.TRUE;
 	}
 
-	private Boolean batchUpdateAttachmentAuditStatus(Integer companyId,
-			String year, Integer status) {
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService
-				.getByPrimaryKey(status);
-		List<Audit> list = new ArrayList<Audit>();
-		for (Audit a : list) {
-			// a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
-			a.setAuditProcessStatus(auditProcessStatus);// 设置状态
-			a.setSupplementYear(year);// 设置补审年度
-			auditService.update(a);
-		}
-		return Boolean.TRUE;
-	}
+	// private Boolean batchUpdateAttachmentAuditStatus(Integer companyId,
+	// String year, Integer status) {
+	// AuditProcessStatus auditProcessStatus = auditProcessStatusService
+	// .getByPrimaryKey(status);
+	// List<Audit> list = new ArrayList<Audit>();
+	// for (Audit a : list) {
+	// // a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+	// a.setAuditProcessStatus(auditProcessStatus);// 设置状态
+	// a.setSupplementYear(year);// 设置补审年度
+	// auditService.update(a);
+	// }
+	// return Boolean.TRUE;
+	// }
 
 	/**
 	 * 确认缴款信息（返票--为true）
@@ -260,29 +278,41 @@ public class PaymentController {
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
 		Boolean b = paymentService.update(queryPayment);
-		// 获取此缴款对应的账单
-		// Accounts accounts = accountsService.ge
-		// 获取所有缴款记录
+		// 获取此缴款对应公司, 该缴款年度应缴金额总额
+		Accounts accounts = accountsService.getByYearAndCompany(queryPayment
+				.getYear(), queryPayment.getPaymentCompany().getId());
+		BigDecimal paymentAmount = new BigDecimal("0.00");
+		if (accounts != null) {
+			paymentAmount = accounts.getTotalMoney();
+		}
+		// 获取此缴款对应公司, 该缴款年度实缴总金额(已回单的)
 		// 把以回单的费用相加 = 所有已缴的金额
-		BigDecimal payments = paymentService.getEffPaid(queryPayment.getYear(),
-				queryPayment.getPaymentCompany().getId());
+		BigDecimal alreadyPayments = paymentService.getEffPaid(queryPayment
+				.getYear(), queryPayment.getPaymentCompany().getId());
 		// 获取应缴金额和已缴对比相等 则修改状态为 已缴款
-		BigDecimal totalMoney = getTotalMoney(queryPayment);
-		if (payments.compareTo(totalMoney) == 0) {
+		// BigDecimal totalMoney = getTotalMoney(queryPayment);
+		if (alreadyPayments.compareTo(paymentAmount) == 0) {
+			// 批量更新相关联的审核表和账目表所处的 即时审核状态
 			batchUpdateAuditStatus(queryPayment, Constants.PROCESS_STATIC_YJK);
-			// 更新,补缴年度,未审。未缴。部分缴款
-			batchUpdateAttachmentAuditStatus(queryPayment.getPaymentCompany()
-					.getId(), queryPayment.getYear(),
-					Constants.PROCESS_STATIC_YJK);
+			// // 更新,补缴年度,未审。未缴。部分缴款
+			// batchUpdateAttachmentAuditStatus(queryPayment.getPaymentCompany()
+			// .getId(), queryPayment.getYear(),
+			// Constants.PROCESS_STATIC_YJK);
 		} else {
 			// 已缴金额大于0 ， 则修改状态为 部分缴款
-			if (payments.signum() > 0) {
+			if (paymentAmount.compareTo(new BigDecimal("0.00")) > 0) {
 				batchUpdateAuditStatus(queryPayment,
 						Constants.PROCESS_STATIC_BFJK);
 			}
 		}
 
 		return b;
+	}
+
+	public static void main(String[] args) {
+		BigDecimal b1 = new BigDecimal("-0.01");
+		BigDecimal b2 = new BigDecimal("0.00");
+		System.out.println(b1.compareTo(b2));
 	}
 
 	/**
@@ -306,35 +336,39 @@ public class PaymentController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/add/{id}", method = RequestMethod.GET)
-	public ModelAndView addGet(@PathVariable(value = "id") Integer id,
+	@RequestMapping(value = "/add/{year}/{companyId}/{lessPayAmount}", method = RequestMethod.GET)
+	public ModelAndView addGet(@PathVariable(value = "year") String year,
+			@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "lessPayAmount") BigDecimal lessPayAmount,
 			HttpSession session) {
-		logger.debug("accounts.id:{}", id);
+		// 待缴金额(应缴-已缴)
+		logger.debug("lessPayAmount{}", lessPayAmount);
 		Payment payment = new Payment();
-		Accounts accounts = accountsService.getByPrimaryKey(id);
+		Company company = companyService.getByPrimaryKey(companyId);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		// 缴款 出账年份
-		payment.setYear(CalendarUtil.getNowYear());
+		payment.setYear(year);
 		// 设置缴款人
 		payment.setPaymentPerson(user);
 		// 设置缴款公司
-		payment.setPaymentCompany(accounts.getCompany());
+		payment.setPaymentCompany(company);
 		// PaginationRecordsAndNumber<Payment, Number> query = paymentService
 		// .getPaymentRecords(audit., companyId, page,
 		// pageSize)getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-		BigDecimal readyPayments = paymentService.getEffPaid(
-				accounts.getYear(), accounts.getCompany().getId());
-		if (readyPayments == null) {
-			readyPayments = new BigDecimal("0.00");
-		}
+		// BigDecimal readyPayments = paymentService.getEffPaid(
+		// accounts.getYear(), accounts.getCompany().getId());
+		// if (readyPayments == null) {
+		// readyPayments = new BigDecimal("0.00");
+		// }
 		// for (Payment pt : query.getRecords()) {
 		// if (pt.getBillReturn() == Boolean.FALSE) {
 		// readyPayments = readyPayments.add(pt.getPaymentMoney());
 		// }
 		// }
-		payment.setPaymentMoney(accounts.getTotalMoney()
-				.subtract(readyPayments));
+		// payment.setPaymentMoney(accounts.getTotalMoney()
+		// .subtract(readyPayments));
+		payment.setPaymentMoney(lessPayAmount);
 		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
 
@@ -349,6 +383,7 @@ public class PaymentController {
 	@ResponseBody
 	public Boolean outPost(Payment payment, HttpSession session) {
 		logger.debug(payment.toString());
+		// 保存缴款记录
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		payment.setUserId(userId);
@@ -418,17 +453,18 @@ public class PaymentController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/getPayments/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getPayments/{year}/{companyId}", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getPayment(
-			@PathVariable(value = "id") Integer id, HttpSession session) {
+			@PathVariable(value = "year") String year,
+			@PathVariable(value = "companyId") Integer companyId,
+			HttpSession session) {
 		// 获得账目对象
-		Accounts accounts = accountsService.getByPrimaryKey(id);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		PaginationRecordsAndNumber<Payment, Number> query = null;
 		// 4个参数分别为: 缴款年限, 公司id, 起始页, 返回量
-		query = paymentService.getPaymentRecords(accounts.getYear(), accounts
-				.getCompany().getId(), 1, Integer.MAX_VALUE);
+		query = paymentService.getPaymentRecords(year, companyId, 1,
+				Integer.MAX_VALUE);
 		entity.put("total", query.getNumber());
 		List<Map<String, Object>> list = new ArrayList<>();
 		for (Iterator<Payment> iterator = query.getRecords().iterator(); iterator
@@ -456,32 +492,25 @@ public class PaymentController {
 		return entity;
 	}
 
-	@RequestMapping(value = "/getBalance/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getBalance/{year}/{companyId}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getBalance(@PathVariable(value = "id") Integer id) {
-		// 获得审核对象
-		Audit audit = auditService.getByPrimaryKey(id);
-		Map<String, Object> entity = new HashMap<String, Object>();
-		PaginationRecordsAndNumber<Payment, Number> query = paymentService
-				.getPaymentRecords(audit.getYear(), audit.getCompany().getId(),
-						1, Integer.MAX_VALUE);
-		BigDecimal payments = new BigDecimal(0.00);
-		BigDecimal readyPayments = new BigDecimal(0.00);
-		for (Payment payment : query.getRecords()) {
-			if (payment.getBillObsolete() == Boolean.TRUE) {
-				continue;
-			}
-			if (payment.getBillReturn() == Boolean.FALSE) {
-				readyPayments = readyPayments.add(payment.getPaymentMoney());
-			} else {
-				payments = payments.add(payment.getPaymentMoney());
-			}
+	public Map<String, Object> getBalance(
+			@PathVariable(value = "year") String year,
+			@PathVariable(value = "companyId") Integer companyId,
+			HttpServletRequest request) {
+		// 根据公司id和账目年限, 获得综合的账目对象(其中的id不准确-不要使用)
+		Accounts accounts = accountsService
+				.getByYearAndCompany(year, companyId);
+		// 根据公司id和账目年限,获得已缴款总额
+		BigDecimal alreadyPayment = paymentService.getEffPaid(year, companyId);
+		if (alreadyPayment == null) {
+			alreadyPayment = new BigDecimal("0.00");
 		}
-		entity.put("readyPayments", df.format(readyPayments));
-		entity.put("payments", df.format(payments));
-		// Audit audit = accountsService.get()
-		BigDecimal balance = audit.getPayAmount().subtract(payments);
-		entity.put("balance", df.format(balance));
+
+		Map<String, Object> entity = new HashMap<String, Object>();
+		entity.put("alreadyPayAmount", df.format(alreadyPayment));
+		entity.put("lessPayAmount",
+				df.format(accounts.getTotalMoney().subtract(alreadyPayment)));
 		return entity;
 	}
 

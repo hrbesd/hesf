@@ -14,10 +14,10 @@ import com.esd.hesf.model.Accounts;
 public interface AccountsService extends BaseService<Accounts> {
 
 	/**
-	 * 根据 year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的-为防止乱用,写死为0
+	 * 根据 year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的
 	 * @param year
 	 * @param companyId
-	 * @return
+	 * @return Accounts id - 不要使用, 不准确; totalMoney - 已经进行了合计, 为缴款总额; 
 	 */
 	Accounts getByYearAndCompany(String year,Integer companyId);
 	
