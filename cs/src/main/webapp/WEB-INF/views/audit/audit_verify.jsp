@@ -210,7 +210,10 @@
 	};
 	initAudit.reasons = function(t){
 		var title = $('#reasons').find('option:selected').attr("title");
-		$('#fsyj').html(title);
+	//	$('#fsyj').html('');
+		$('#fsyj').val('');
+	//	$('#fsyj').html(title);
+		$('#fsyj').val(title);
 	};
 	
 	
