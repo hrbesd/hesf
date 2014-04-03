@@ -855,23 +855,23 @@ public class TestController {
 		return map;
 	}
 
-	@RequestMapping("/62")
-	@ResponseBody
-	public Map<String, Object> test62() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = acService.getAccountsYears();
-		map.put("entity", entity);
-		return map;
-	}
-
-	@RequestMapping("/63")
-	@ResponseBody
-	public Map<String, Object> test63() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		String[] entity = acService.getAccountsYears();
-		map.put("entity", entity);
-		return map;
-	}
+//	@RequestMapping("/62")
+//	@ResponseBody
+//	public Map<String, Object> test62() {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		String[] entity = acService.getAccountsYears();
+//		map.put("entity", entity);
+//		return map;
+//	}
+//
+//	@RequestMapping("/63")
+//	@ResponseBody
+//	public Map<String, Object> test63() {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		String[] entity = acService.getAccountsYears();
+//		map.put("entity", entity);
+//		return map;
+//	}
 
 	@RequestMapping("/64")
 	@ResponseBody
@@ -949,4 +949,12 @@ public class TestController {
 		return map;
 	}
 
+	@RequestMapping("/72")
+	@ResponseBody
+	public Map<String, Object> test72() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] entity = acService.getAccountsYears();
+		map.put("entity", entity);
+		return map;
+	}
 }
