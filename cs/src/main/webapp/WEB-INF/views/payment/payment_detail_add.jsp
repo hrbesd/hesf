@@ -9,8 +9,14 @@
 	payment.add.save = function() {
 		//验证缴款金额必须为大于零的数字
 		var paymentMoney = $('#paymentMoney').val();
+		//余缴金额
+		var prePaymentMoney = $('#prePaymentMoney').val();
 		if(paymentMoney <= 0){
-			$.messager.alert('消息','缴款金额必须大于零');
+			$.messager.alert('消息','缴款金额必须大于零!');
+			return;
+		}
+		if(prePaymentMoney > paymentMoney){
+			$.messager.alert('消息','缴款金额不能大于代缴金额!');
 			return;
 		}
 		esd.common.syncPostSubmit("#add_form", function(data) {
@@ -62,6 +68,7 @@
 					</td>
 					<td>缴费金额:</td>
 					<td><input name="paymentMoney" id="paymentMoney" type="text" maxlength="16" class="easyui-numberbox" data-options="required:true,precision:2" value="${entity.paymentMoney }" />
+						<input type="hidden" id="prePaymentMoney" value="${entity.paymentMoney }"  />
 					</td>
 				</tr>
 			</tbody>
