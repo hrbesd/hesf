@@ -307,7 +307,7 @@
 		</tr>
 		<tr>
 			<td class="">联系电话:</td>
-			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="validType:['_number']" />
+			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" />
 			</td>
 			<td class="">现任岗位:</td>
 			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
