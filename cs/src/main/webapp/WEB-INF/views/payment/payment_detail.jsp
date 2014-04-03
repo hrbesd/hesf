@@ -173,10 +173,6 @@
 			iconCls : 'icon-add',
 			handler : payment.insert
 		}, {
-			text : '重审',
-			iconCls : 'icon-reload',
-			handler : payment.backAudit
-		}, {
 			text : '返回',
 			iconCls : 'icon-back',
 			handler : payment.back

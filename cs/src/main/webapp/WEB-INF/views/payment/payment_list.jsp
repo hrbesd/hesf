@@ -76,15 +76,15 @@
 	/*
 	打开单位缴款面板
 	 */
-	payment.open = function(index,year) {
-		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + year+"/"+index);
+	payment.open = function(companyId,year) {
+		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + year+"/"+companyId);
 	};
 </script>
 <!-- 自定义菜单 -->
 <div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
 	<table width="100%" border="0">
 		<tr>
-			<td width="80" style="text-align: right;">结算年度:</td>
+			<td width="80" style="text-align: right;">缴款年度:</td>
 			<td width="150"><input id="year" class="easyui-combobox" value=""
 				data-options="height:30,editable:false,valueField:'id',textField:'text',url:'${contextPath }/security/parameter/getyears'" />
 			</td>
