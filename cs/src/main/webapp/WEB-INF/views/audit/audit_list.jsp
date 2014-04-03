@@ -106,7 +106,7 @@
 </script>
 <!-- 自定义菜单 -->
 
-<div id="initAuditList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
+<div id="initAuditList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;">
 	<table border="0" width="100%">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
