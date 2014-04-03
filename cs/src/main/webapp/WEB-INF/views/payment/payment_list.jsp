@@ -81,7 +81,7 @@
 	};
 </script>
 <!-- 自定义菜单 -->
-<div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;margin-top: 5px">
+<div id="paymentList_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;height: 70px;">
 	<table width="100%" border="0">
 		<tr>
 			<td width="80" style="text-align: right;">缴款年度:</td>
