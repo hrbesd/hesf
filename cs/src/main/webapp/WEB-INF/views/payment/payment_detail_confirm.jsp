@@ -7,6 +7,13 @@
 <script type="text/javascript">
 	payment.add = {};
 	payment.add.save = function() {
+		//校验返票和作废票不可同时为true
+		var billReturn = $('#billReturn').combobox('getValue');
+		var billObsolete = $('#billObsolete').combobox('getValue');
+		if(billReturn == 'true' && billObsolete == 'true'){
+			$.messager.alert('提示','已经返票的缴款不可以作废, 请重新操作!');
+			return false;
+		}
 		$.messager.confirm('警告', '确认缴款后本条记录将不能更改', function(r) {
 			if (r) {
 				esd.common.syncPostSubmit("#add_form", function(data) {
@@ -74,13 +81,13 @@
 						</c:if> <input class="easyui-datebox easyui-validatebox" name="billExchangeDate" data-options="height:30,showSeconds:false" value="${billExchangeDate}" style="width:150px" />
 					</td>
 					<td>是否返票:</td>
-					<td><select style="font-size: 12px;" class="easyui-combobox" name="billReturn" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
+					<td><select style="font-size: 12px;" class="easyui-combobox" id="billReturn" name="billReturn" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
 							<option value="true" <c:if test="${entity.billReturn eq 'true'}">selected="selected"</c:if>>是</option>
 							<option value="false" <c:if test="${entity.billReturn eq 'false'}">selected="selected"</c:if>>否</option>
 					</select>
 					</td>
 					<td>作废票据号:</td>
-					<td><select style="font-size: 12px;" class="easyui-combobox" name="billObsolete" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
+					<td><select style="font-size: 12px;" class="easyui-combobox" id="billObsolete" name="billObsolete" data-options="value:true,width:100,panelHeight:80,height:30,editable:false">
 							<option value="true" <c:if test="${entity.billObsolete eq 'true'}">selected="selected"</c:if>>是</option>
 							<option value="false" <c:if test="${entity.billObsolete eq 'false'}">selected="selected"</c:if>>否</option>
 					</select></td>
