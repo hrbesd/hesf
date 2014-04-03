@@ -188,6 +188,23 @@ public class WorkerController {
 	}
 
 	/**
+	 * 转到产看残疾职工页面
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+	public ModelAndView viewWorker(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
+		// 续传企业id
+		logger.debug("editWorkerParamsID:{}", id);
+		Worker w = workerService.getByPrimaryKey(id);
+		request.setAttribute("worker", w);
+		logger.debug("goToedit_worker{}", w);
+		return new ModelAndView("basicInfo/view_worker");
+	}
+	
+	/**
 	 * 转到编辑残疾职工页面
 	 * 
 	 * @param id
@@ -683,6 +700,10 @@ public class WorkerController {
 				if (w != null) {
 					logger.debug("validateWorkerHandicapCodeResult:{}", "type:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
 					paramsMap.put("type", "2");
+					paramsMap.put("workerName", w.getWorkerName());	//姓名
+					paramsMap.put("careerCard", w.getCareerCard());	//就业证号
+					paramsMap.put("phone", w.getPhone());	//联系电话
+					paramsMap.put("remark", w.getRemark());	//备注
 					list.add(paramsMap);
 					return list;
 					// 第三种情况，不存在.

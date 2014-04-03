@@ -123,9 +123,11 @@
 			width : 250,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
-				var d = '<a href="#" onclick="workerList.deleteWorker(' + row.id + ',0)">删除</a>';
-				return e + d;
+			//	var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
+			//	var d = '<a href="#" onclick="workerList.deleteWorker(' + row.id + ',0)">删除</a>';
+			//	return e + d;
+				var e = '<a href="#" onclick="workerList.openViewWorker(' + row.id + ')">查看</a> ';
+				return e;
 			},
 			styler : function(value, row, index) {
 				//年龄检测
@@ -194,10 +196,10 @@
 	};
 
 	/**
-	打开编辑残疾职工页面
+	打开 查看残疾职工页面
 	 **/
-	workerList.openEditWorker = function(id) {
-		esd.common.openWindow("#workerWindow", "编辑残疾职工", 960, 550, 'worker/edit/' + id);
+	workerList.openViewWorker = function(id) {
+		esd.common.openWindow("#workerWindow", "查看残疾职工", 960, 550, 'worker/view/' + id);
 	};
 	/**
 	打开导入残疾职工页面

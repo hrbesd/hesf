@@ -229,8 +229,12 @@
 							});
 					return;
 					//第二种情况，员工存在，不再任何公司
-				} else {
-					
+				} else if(data[0].type == '2') {
+					//将员工相关控件信息补全
+					$("#addWorkerForm #workerName").val(data[0].workerName);//姓名
+					$("#addWorkerForm #careerCard").val(data[0].careerCard);//就业证号
+					$("#addWorkerForm #phone").val(data[0].phone);//电话
+					$("#addWorkerForm #remark").val(data[0].remark);//备注
 					$.messager.alert('消息', '验证通过，可以注册', 'ok');
 					return;
 				}
@@ -259,7 +263,7 @@
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
-			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
+			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">1212增加残疾职工</span>
 			</td>
 		</tr>
 		<tr>
@@ -267,14 +271,14 @@
 			<td colspan="5">
 
 				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="93230119880529463711" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
+					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
 						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
 						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
 				</div></td>
 		</tr>
 		<tr>
 			<td class="">姓名(<label class="red_notice"> *</label>):</td>
-			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
+			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="" />
 			</td>
 			<td class="">性别:</td>
 			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
