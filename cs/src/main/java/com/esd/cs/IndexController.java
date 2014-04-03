@@ -114,7 +114,7 @@ public class IndexController {
 				session.setAttribute(Constants.USER_NAME, user.getUserName());
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
 
-				// 登录成功获得年度
+				// 登录成功获得审核年度
 				String year = auditParameterService.getLastestYear();
 				session.setAttribute(Constants.YEAR, year);
 				return new ModelAndView("redirect:/security/index");

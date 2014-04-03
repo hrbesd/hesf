@@ -23,13 +23,6 @@ public interface AccountsDao extends BaseDao<Accounts> {
 	Accounts retrieveByCompanyGroup(Accounts t);
 
 	/**
-	 * 获得缴款账目的年份列表
-	 * 
-	 * @return
-	 */
-	String[] retrieveAuditYears();
-
-	/**
 	 * 根据账目对象的各属性值 来查询相类似的账目列表
 	 * 
 	 * @param accounts
@@ -52,4 +45,10 @@ public interface AccountsDao extends BaseDao<Accounts> {
 	 * @return Integer
 	 */
 	Integer retrievePageByCompanyGroupCount(Map<String, Object> map);
+	
+	/**
+	 * 获得账目年限(已缴款年份列表)
+	 * @return
+	 */
+	String[] retrieveAccountsYears();
 }

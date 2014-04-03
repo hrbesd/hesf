@@ -27,7 +27,8 @@ import com.esd.hesf.service.HesfException;
 @Service
 public class AuditParameterServiceImpl implements AuditParameterService {
 
-	private static final Logger log = LoggerFactory.getLogger(AuditParameterServiceImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(AuditParameterServiceImpl.class);
 
 	@Autowired
 	private AuditParameterDao dao;
@@ -39,12 +40,14 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	public boolean save(AuditParameter t) {
 		log.debug("t: " + t);
 		if (t.getYear() == null) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
 			return false;
 		}
 		int k = dao.insert(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
 		return true;
@@ -54,7 +57,8 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 			return false;
 		}
 		return true;
@@ -64,7 +68,8 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	public boolean update(AuditParameter t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
 		return true;
@@ -74,13 +79,15 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	public AuditParameter getByPrimaryKey(Integer id) {
 		AuditParameter t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 		}
 		return t;
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<AuditParameter, Number> getPaginationRecords(AuditParameter t, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<AuditParameter, Number> getPaginationRecords(
+			AuditParameter t, Integer page, Integer pageSize) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("auditParameter", t);
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
@@ -104,7 +111,8 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	@Override
 	public AuditParameter getByYear(String year) {
 		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
 		return dao.retrieveByYear(year);
@@ -114,28 +122,34 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 	public List<WorkerCalculator> getSpecialSetting(String year) {
 		// 如果year为空的话, 则查询当前年份的
 		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
 		return wcDao.retrieveSpecialSetting(year);
 	}
 
 	@Override
-	public int getSpecialCount(Integer companyId, String year, int workerHandicapType, int workerHandicapLevel) {
+	public int getSpecialCount(Integer companyId, String year,
+			int workerHandicapType, int workerHandicapLevel) {
 		if (companyId == null || companyId <= 0) {
-			new HesfException("companyId", HesfException.type_null).printStackTrace();
+			new HesfException("companyId", HesfException.type_null)
+					.printStackTrace();
 			return -1;
 		}
 		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
 			return -1;
 		}
 		if (workerHandicapType <= 0) {
-			new HesfException("workerHandicapType", HesfException.type_number_negative).printStackTrace();
+			new HesfException("workerHandicapType",
+					HesfException.type_number_negative).printStackTrace();
 			return -1;
 		}
 		if (workerHandicapLevel <= 0) {
-			new HesfException("workerHandicapLevel", HesfException.type_number_negative).printStackTrace();
+			new HesfException("workerHandicapLevel",
+					HesfException.type_number_negative).printStackTrace();
 			return -1;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();

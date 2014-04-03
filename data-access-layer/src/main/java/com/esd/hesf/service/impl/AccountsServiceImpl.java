@@ -182,7 +182,7 @@ public class AccountsServiceImpl implements AccountsService {
 
 	@Override
 	public String[] getAccountsYears() {
-		return dao.retrieveAuditYears();
+		return dao.retrieveAccountsYears();
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
+import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -56,7 +57,8 @@ import com.esd.hesf.service.WorkerHandicapTypeService;
 @RequestMapping(value = "/security/parameter")
 public class ParameterController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ParameterController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ParameterController.class);
 	@Autowired
 	private CompanyTypeService companyTypeService;// 企业类型
 	@Autowired
@@ -82,13 +84,15 @@ public class ParameterController {
 	private PaymentTypeService paymentTypeService;
 	@Autowired
 	private ReplyService replyService;
+	@Autowired
+	private AccountsService accountsService;
 
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyType;
 	private static List<CompanyType> companyTypes;
 
 	/**
-	 * 返回年份
+	 * 返回审核年份
 	 * 
 	 * @param request
 	 * @return
@@ -117,11 +121,41 @@ public class ParameterController {
 	}
 
 	/**
+	 * 返回缴款年份
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/getAccountsYears")
+	@ResponseBody
+	public List<Map<String, String>> getAccountsYears(HttpServletRequest request) {
+		logger.debug("getAccountsYears");
+		List<Map<String, String>> list = new ArrayList<>();
+		try {
+			String[] arr = accountsService.getAccountsYears();
+			for (String str : arr) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("text", str);
+				map.put("id", str);
+				list.add(map);
+			}
+			if (list != null) {
+				logger.debug("getYearsSize{}:" + list.size());
+				return list;
+			}
+		} catch (Exception e) {
+			logger.error("error{}", e);
+		}
+		return null;
+	}
+
+	/**
 	 * 返回 企业性质
 	 */
 	@RequestMapping(value = "/property")
 	@ResponseBody
-	public List<CompanyProperty> companyPropertyService(HttpServletRequest request) {
+	public List<CompanyProperty> companyPropertyService(
+			HttpServletRequest request) {
 
 		companyPropertys = companyPropertyService.getAll();
 		if (companyPropertys == null) {
@@ -140,7 +174,8 @@ public class ParameterController {
 	 */
 	@RequestMapping(value = "/propertyEx")
 	@ResponseBody
-	public List<CompanyProperty> companyPropertyServiceEx(HttpServletRequest request) {
+	public List<CompanyProperty> companyPropertyServiceEx(
+			HttpServletRequest request) {
 
 		companyPropertys = companyPropertyService.getAll();
 		if (companyPropertys == null) {
@@ -178,7 +213,8 @@ public class ParameterController {
 	 */
 	@RequestMapping(value = "/economytype")
 	@ResponseBody
-	public List<CompanyEconomyType> companyEconomyTypeService(HttpServletRequest request) {
+	public List<CompanyEconomyType> companyEconomyTypeService(
+			HttpServletRequest request) {
 
 		companyEconomyType = companyEconomyTypeService.getAll();
 		if (companyEconomyType == null) {
@@ -230,7 +266,8 @@ public class ParameterController {
 	 */
 	@RequestMapping(value = "/workerHandicapTypeService", method = RequestMethod.POST)
 	@ResponseBody
-	public List<WorkerHandicapType> workerHandicapTypeService(HttpServletRequest request) {
+	public List<WorkerHandicapType> workerHandicapTypeService(
+			HttpServletRequest request) {
 
 		return getHandicapType();
 	}
@@ -260,7 +297,8 @@ public class ParameterController {
 	 */
 	@RequestMapping(value = "/workerHandicapLevelService", method = RequestMethod.POST)
 	@ResponseBody
-	public List<WorkerHandicapLevel> workerHandicapLevelService(HttpServletRequest request) {
+	public List<WorkerHandicapLevel> workerHandicapLevelService(
+			HttpServletRequest request) {
 		List<WorkerHandicapLevel> list = null;
 		try {
 			list = workerHandicapLevelService.getAll();

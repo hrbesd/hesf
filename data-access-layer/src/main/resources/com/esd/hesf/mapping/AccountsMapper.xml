@@ -484,10 +484,6 @@
 		</trim>
 	</select>
 
-	<select id="retrieveAuditYears" resultType="java.lang.String">
-		select year from accounts group by year order by year desc;
-	</select>
-
 	<select id="retrieveByAccounts" resultMap="ResultAccounts" parameterType="com.esd.hesf.model.Accounts">
 		select
 		<include refid="Base_Column_List" />
@@ -688,6 +684,8 @@
 		group by ac.company_id) as t 
 	</select>
 
-
+	<select id="retrieveAccountsYears" resultType="java.lang.String">
+		select year from accounts group by year order by year desc;
+	</select>
 
 </mapper>

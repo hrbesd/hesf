@@ -1,6 +1,5 @@
 package com.esd.hesf.service.impl;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -237,11 +236,11 @@ public class PaymentServiceImpl implements PaymentService {
 		return prn;
 	}
 
-//	public static void main(String[] args) {
-//		PaymentServiceImpl im = new PaymentServiceImpl();
-//		// im.createPaymentExcel(filePath, paymentList);
-//		System.out.println(new File("1.xls"));
-//	}
+	// public static void main(String[] args) {
+	// PaymentServiceImpl im = new PaymentServiceImpl();
+	// // im.createPaymentExcel(filePath, paymentList);
+	// System.out.println(new File("1.xls"));
+	// }
 
 	@Override
 	public boolean createPaymentExcel(String FilePath,
@@ -562,7 +561,6 @@ public class PaymentServiceImpl implements PaymentService {
 		return true;
 	}
 
-	
 	// @Override
 	// public boolean createPaymentExcel(String FilePath,
 	// List<Payment> paymentList, Integer page, Integer pageSize) {
