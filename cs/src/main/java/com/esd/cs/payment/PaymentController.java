@@ -148,6 +148,19 @@ public class PaymentController {
 				String.valueOf(audit.getCompanyHandicapTotal()));
 		entity.put("companyPredictTotal",
 				String.valueOf(audit.getCompanyPredictTotal()));
+		
+		//获得 此账目涵盖的审计年度s
+		String[] auditYears = accountsService.getAuditYears(year, companyId);
+		if(auditYears!=null){
+			String years = "";
+			for(int i=0;i<auditYears.length;i++){
+				years += auditYears[i];
+				if(i!=auditYears.length-1){
+					years += ", ";
+				}
+			}
+			entity.put("auditYears", years);
+		}
 		return new ModelAndView("payment/payment_detail", "entity", entity);
 	}
 

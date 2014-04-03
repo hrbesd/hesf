@@ -271,20 +271,22 @@
 	<table cellspacing="0" cellpadding="0" border="0" title="企业年审信息" class="company-examined">
 		<tbody>
 			<tr>
+				<td class="td_short">档案号码:</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.companyCode}</td>
+				<td class="td_short">审计年度:</td>
+				<td class="td_long bj_belu readonly" colspan="3">${entity.auditYears}</td>
+			</tr>
+			<tr>
 				<td class="td_short">单位名称:</td>
 				<td class="bj_belu readonly" style="width: 200px;" colspan="3">${entity.companyName}</td>
 				<td class="td_short">税务代码:</td>
 				<td class="td_long bj_belu readonly" colspan="3">${entity.companyTaxCode}</td>
 			</tr>
 			<tr>
-				<td class="td_short">档案号码:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.companyCode}</td>
-				<td class="td_short">缴款年度:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.year}</td>
-			</tr>
-			<tr>
+				<td class="bj_belu2" style="text-align:center;">缴款年度:</td>
+				<td class="td_short readonly">${entity.year}</td>
 				<td class="bj_belu2" style="text-align:center;">应缴金额:</td>
-				<td class="td_short readonly" colspan="3" id="payAmount">${entity.payAmount}</td>
+				<td class="td_short readonly"id="payAmount">${entity.payAmount}</td>
 				<td class="td_short">已缴金额:</td>
 				<td class="bj_belu2 readonly" id="alreadyPayAmount">${entity.alreadyPayAmount}</td>
 				<td class="td_short">待缴金额:</td>

@@ -223,4 +223,21 @@ public class AccountsServiceImpl implements AccountsService {
 		return prn;
 	}
 
+	@Override
+	public String[] getAuditYears(String accountsYear, Integer companyId) {
+		if (accountsYear == null || "".equals(accountsYear)) {
+			new HesfException("accountsYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (companyId == null || companyId <= 0) {
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("accountsYear", accountsYear);
+		map.put("companyId", companyId);
+		return dao.retrieveAuditYears(map);
+	}
+
+	
 }

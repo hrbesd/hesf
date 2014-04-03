@@ -51,4 +51,11 @@ public interface AccountsDao extends BaseDao<Accounts> {
 	 * @return
 	 */
 	String[] retrieveAccountsYears();
+	
+	/**
+	 * 根据账目年份和公司id, 得到该公司当前缴款 包含的审核年度
+	 * @param map	包含accountsYear String 类型, companyId Integer 类型
+	 * @return	String[]
+	 */
+	String[] retrieveAuditYears(Map<String,Object> map);
 }

@@ -15,13 +15,13 @@ public interface AccountsService extends BaseService<Accounts> {
 
 	/**
 	 * 根据 year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的
+	 * 
 	 * @param year
 	 * @param companyId
-	 * @return Accounts id - 不要使用, 不准确; totalMoney - 已经进行了合计, 为缴款总额; 
+	 * @return Accounts id - 不要使用, 不准确; totalMoney - 已经进行了合计, 为缴款总额;
 	 */
-	Accounts getByYearAndCompany(String year,Integer companyId);
-	
-	
+	Accounts getByYearAndCompany(String year, Integer companyId);
+
 	/**
 	 * 获取所有数据 测试用
 	 * 
@@ -76,4 +76,15 @@ public interface AccountsService extends BaseService<Accounts> {
 	 */
 	PaginationRecordsAndNumber<Accounts, Number> getPaginationRecordsGroupByCompany(
 			Accounts t, Integer page, Integer pageSize);
+
+	/**
+	 * 根据账目年份和公司id, 得到该公司当前缴款 包含的审核年度
+	 * 
+	 * @param accountsYear
+	 *            缴款/出账年份
+	 * @param companyId
+	 *            公司id
+	 * @return
+	 */
+	String[] getAuditYears(String accountsYear, Integer companyId);
 }

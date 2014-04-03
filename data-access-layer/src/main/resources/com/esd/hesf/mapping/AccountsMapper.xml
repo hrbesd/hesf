@@ -688,4 +688,8 @@
 		select year from accounts group by year order by year desc;
 	</select>
 
+	<select id="retrieveAuditYears" resultType="java.lang.String" parameterType="map">
+		select au.year from accounts as ac, audit as au 
+		where ac.audit_id = au.id and ac.year = #{accountsYear,jdbcType=CHAR} and ac.company_id = #{companyId, jdbcType=INTEGER};
+	</select>
 </mapper>
