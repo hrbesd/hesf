@@ -341,6 +341,9 @@
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
+					<if test="accounts.company.id != null and accounts.company.id > 0 ">
+						and c.id = #{accounts.company.id, jdbcType=INTEGER} 
+					</if>
 					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
 						and c.company_code like concat('%',#{accounts.company.companyCode, jdbcType=VARCHAR},'%')
 					</if>
@@ -416,6 +419,9 @@
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
+					<if test="accounts.company.id != null and accounts.company.id > 0 ">
+						and c.id = #{accounts.company.id, jdbcType=INTEGER} 
+					</if>
 					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
 						and c.company_code like concat('%',#{accounts.company.companyCode, jdbcType=VARCHAR},'%')
 					</if>

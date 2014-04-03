@@ -30,7 +30,7 @@ public interface AccountsService extends BaseService<Accounts> {
 	List<Accounts> getAll();
 
 	/**
-	 * 根据年份, 公司id, 审核id获得账目列表
+	 * 根据出账年份, 公司id, 审核id获得账目列表
 	 * 
 	 * @param year
 	 * @param companyId

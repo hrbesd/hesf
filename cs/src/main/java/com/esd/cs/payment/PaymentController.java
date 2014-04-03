@@ -277,6 +277,7 @@ public class PaymentController {
 		queryPayment.setPaymentExceptional(payment.getPaymentExceptional());// 特殊情况
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
+		//更新缴款明细
 		Boolean b = paymentService.update(queryPayment);
 		// 获取此缴款对应公司, 该缴款年度应缴金额总额
 		Accounts accounts = accountsService.getByYearAndCompany(queryPayment
@@ -286,7 +287,7 @@ public class PaymentController {
 			paymentAmount = accounts.getTotalMoney();
 		}
 		// 获取此缴款对应公司, 该缴款年度实缴总金额(已回单的)
-		// 把以回单的费用相加 = 所有已缴的金额
+		// 把以回单的费用  = 所有已缴的金额
 		BigDecimal alreadyPayments = paymentService.getEffPaid(queryPayment
 				.getYear(), queryPayment.getPaymentCompany().getId());
 		// 获取应缴金额和已缴对比相等 则修改状态为 已缴款
