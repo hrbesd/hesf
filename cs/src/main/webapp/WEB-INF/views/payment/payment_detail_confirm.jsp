@@ -12,7 +12,7 @@
 		var billObsolete = $('#billObsolete').combobox('getValue');
 		if(billReturn == 'true' && billObsolete == 'true'){
 			$.messager.alert('提示','已经返票的缴款不可以作废, 请重新操作!');
-			return false;
+			return;
 		}
 		$.messager.confirm('警告', '确认缴款后本条记录将不能更改', function(r) {
 			if (r) {
