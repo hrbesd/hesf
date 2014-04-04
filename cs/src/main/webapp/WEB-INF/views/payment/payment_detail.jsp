@@ -102,12 +102,19 @@
 	};
 	payment.getBalance = function() {
 	//	var v = '${entity.year}/${entity.companyId}';
+		//复选框选中的年份s
+		var ckb_value = new Array();
+		$('input[name="ckbAuditYear"]:checked').each(function(){
+			ckb_value.push($(this).val());
+		});
+		
 		$.ajax({
-			url : 'payment/getBalance/${entity.year}/${entity.companyId}',			
+			url : 'payment/getBalance/'+ckb_value+'/${entity.year}/${entity.companyId}',			
 			type : 'GET',
 			success : function(data) {
-				$('#alreadyPayAmount').html(data.alreadyPayAmount);
-				$('#lessPayAmount').html(data.lessPayAmount);
+				$('#payAmount').html(data.payAmount);	//应缴
+				$('#alreadyPayAmount').html(data.alreadyPayAmount);	//已缴
+				$('#lessPayAmount').html(data.lessPayAmount);//未缴
 			//	$('#readyPayments').html(data.readyPayments);
 			},
 			error : function() {
@@ -167,6 +174,12 @@
 		});
 	};
 
+	payment.ckbclick = function(){
+		var ckb_value = new Array();
+		$('input[name="ckbAuditYear"]:checked').each(function(){
+			ckb_value.push($(this).val());
+		});
+	};
 	payment.loadPaymentData = function() {
 		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.year}/${entity.companyId}", [ {
 			text : '新建缴款记录',
@@ -274,7 +287,23 @@
 				<td class="td_short">档案号码:</td>
 				<td class="td_long bj_belu readonly" colspan="3">${entity.companyCode}</td>
 				<td class="td_short">审计年度:</td>
-				<td class="td_long bj_belu readonly" colspan="3">${entity.auditYears}</td>
+				<td class="td_long bj_belu readonly" colspan="3">
+					<c:forEach items="${entity.auditYears}" var="item">
+						<input type="checkbox" checked="checked" value="${item }" name="ckbAuditYear" id="ckbAuditYear${item }" onclick="payment.getBalance()" style="width:auto;margin-left:15px;"/>${item }
+					</c:forEach>
+			<!--		<input type="radio" name="rdoAuditYears" style="width:auto;margin-left:15px;margin-right:5px;"/>
+					所有审核年(
+						<c:forEach items="${entity.auditYears}" var="item">
+							${item},
+						</c:forEach>)
+			 		<input type="radio" name="rdoAuditYears" style="width:auto;margin-left:15px;margin-right:5px;" />
+					单选
+					<select>
+						<c:forEach items="${entity.auditYears}" var="item">
+							<option value="${item}" title="${item }">${item}</option>
+						</c:forEach>
+					</select>	 -->
+				</td>
 			</tr>
 			<tr>
 				<td class="td_short">单位名称:</td>
@@ -286,7 +315,7 @@
 				<td class="bj_belu2" style="text-align:center;">缴款年度:</td>
 				<td class="td_short readonly">${entity.year}</td>
 				<td class="bj_belu2" style="text-align:center;">应缴金额:</td>
-				<td class="td_short readonly"id="payAmount">${entity.payAmount}</td>
+				<td class="td_short readonly" id="payAmount">${entity.payAmount}</td>
 				<td class="td_short">已缴金额:</td>
 				<td class="bj_belu2 readonly" id="alreadyPayAmount">${entity.alreadyPayAmount}</td>
 				<td class="td_short">待缴金额:</td>
