@@ -15,7 +15,7 @@
 			$.messager.alert('消息','缴款金额必须大于零!');
 			return;
 		}
-		if(prePaymentMoney > paymentMoney){
+		if(prePaymentMoney < paymentMoney){
 			$.messager.alert('消息','缴款金额不能大于代缴金额!');
 			return;
 		}
