@@ -886,7 +886,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test65() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity = pService.getEffPaid(null, "");
+		BigDecimal entity = pService.getEffPaid(null,null, "");
 		map.put("entity", entity);
 		return map;
 	}

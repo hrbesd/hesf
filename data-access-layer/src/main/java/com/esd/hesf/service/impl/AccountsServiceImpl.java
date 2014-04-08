@@ -1,5 +1,6 @@
 package com.esd.hesf.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AccountsDao;
 import com.esd.hesf.model.Accounts;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AccountsService;
@@ -233,11 +235,72 @@ public class AccountsServiceImpl implements AccountsService {
 			new HesfException("year", HesfException.type_null)
 					.printStackTrace();
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("accountsYear", accountsYear);
 		map.put("companyId", companyId);
 		return dao.retrieveAuditYears(map);
 	}
 
-	
+	@Override
+	public BigDecimal getCompanyAuditYear(String auditYear,
+			String accountsYear, Integer companyId) {
+		if (accountsYear == null || "".equals(accountsYear)) {
+			new HesfException("accountsYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (companyId == null || companyId <= 0) {
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
+		}
+		Accounts ac = new Accounts();
+		ac.setAudit(new Audit(auditYear));
+		ac.setYear(accountsYear);
+		ac.setCompany(new Company(companyId));
+		return dao.retrieveByCompanyAuditYear(ac);
+	}
+
+	@Override
+	public Accounts getOneByCompanyAuditYear(String auditYear,
+			String accountsYear, String companyCode) {
+		if (auditYear == null || "".equals(auditYear)) {
+			new HesfException("auditYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (accountsYear == null || "".equals(accountsYear)) {
+			new HesfException("accountsYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (companyCode == null || "".equals(companyCode)) {
+			new HesfException("companyCode", HesfException.type_null)
+					.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("auditYear", auditYear);
+		map.put("accountsYear", accountsYear);
+		map.put("companyCode", companyCode);
+		return dao.retrieveOneByCompanyAuditYear(map);
+	}
+
+	@Override
+	public Accounts getOneByCompanyAuditYear(String auditYear,
+			String accountsYear, Integer companyId) {
+		if (auditYear == null || "".equals(auditYear)) {
+			new HesfException("auditYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (accountsYear == null || "".equals(accountsYear)) {
+			new HesfException("accountsYear", HesfException.type_null)
+					.printStackTrace();
+		}
+		if (companyId == null || companyId <= 0) {
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("auditYear", auditYear);
+		map.put("accountsYear", accountsYear);
+		map.put("companyId", companyId);
+		return dao.retrieveOneByCompanyAuditYear(map);
+	}
+
 }

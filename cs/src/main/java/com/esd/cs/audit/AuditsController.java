@@ -478,7 +478,7 @@ public class AuditsController {
 			}
 		}
 		for (Accounts a : map.values()) {
-			BigDecimal paymentTotal = paymentService.getEffPaid(a.getYear(), companyId);// 获得真实的已缴款记录
+			BigDecimal paymentTotal = paymentService.getEffPaid(null,a.getYear(), companyId);// 获得真实的已缴款记录
 			BigDecimal qj = a.getTotalMoney().subtract(paymentTotal);
 			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
 			Date auditDelayDate = auditParameter.getAuditDelayDate();

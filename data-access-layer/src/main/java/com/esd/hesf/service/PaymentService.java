@@ -23,22 +23,22 @@ public interface PaymentService extends BaseService<Payment> {
 	List<Payment> getAll();
 
 	/**
-	 * 根据公司档案code, 年份year得到有效的支付金额
+	 * 根据公司档案code,账目年限,审核年份, 得到已缴款数
 	 * 
 	 * @param year
 	 * @param companyCode
 	 * @return
 	 */
-	BigDecimal getEffPaid(String year, String companyCode);
+	BigDecimal getEffPaid(String auditYear, String accountsYear, String companyCode);
 
 	/**
-	 * 根据公司id, 年份year得到有效的支付金额
+	 * 根据公司id,账目年限,审核年份, 得到已缴款数
 	 * 
 	 * @param year
 	 * @param companyId
 	 * @return
 	 */
-	BigDecimal getEffPaid(String year, Integer companyId);
+	BigDecimal getEffPaid(String auditYear, String accountsYear, Integer companyId);
 
 	/**
 	 * 根据年份year, 公司id, 得到缴款明细列表

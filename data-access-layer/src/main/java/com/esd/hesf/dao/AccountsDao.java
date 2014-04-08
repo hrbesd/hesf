@@ -1,5 +1,6 @@
 package com.esd.hesf.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -58,4 +59,17 @@ public interface AccountsDao extends BaseDao<Accounts> {
 	 * @return	String[]
 	 */
 	String[] retrieveAuditYears(Map<String,Object> map);
+	
+	/**
+	 * 根据账目表中的    审核年份, 账目年份, 公司id 得到该公司某年的总应交款数
+	 * @return	总应缴款数
+	 */
+	BigDecimal retrieveByCompanyAuditYear(Accounts accounts);
+	
+	/**
+	 * 根据账目表中的    审核年份, 账目年份, 公司id 得到该公司某年的总应交款数
+	 * @param map中包含auditYear String, accountsYear String 类型, companyId Integer 类型, companyCode String 类型 (companyId,companyCode 为二选一)
+	 * @return	总应缴款数
+	 */
+	Accounts retrieveOneByCompanyAuditYear(Map<String,Object> map);
 }

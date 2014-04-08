@@ -8,15 +8,15 @@
 	payment.add = {};
 	payment.add.save = function() {
 		//验证缴款金额必须为大于零的数字
-		var paymentMoney = $('#paymentMoney').val();
-		//余缴金额
 		var prePaymentMoney = $('#prePaymentMoney').val();
+		var paymentMoney = $('#paymentMoney').val();
+	//	alert('paymentMoney = '+ paymentMoney+ ' prePaymentMoney = '+prePaymentMoney +(eval(paymentMoney)==eval(prePaymentMoney)));
+		//余缴金额
 		if(paymentMoney <= 0){
 			$.messager.alert('消息','缴款金额必须大于零!');
 			return;
-		}
-		if(prePaymentMoney < paymentMoney){
-			$.messager.alert('消息','缴款金额不能大于代缴金额!');
+		}else if(eval(paymentMoney) > eval(prePaymentMoney)){
+			$.messager.alert('消息','缴款金额不能大于待缴金额!');
 			return;
 		}
 		esd.common.syncPostSubmit("#add_form", function(data) {
@@ -43,6 +43,7 @@
 		<input type="hidden" value="${entity.version }" name="version" />
 		<input type="hidden" value="${entity.paymentCompany.id }" name="paymentCompany.id" />
 		<input type="hidden" value="${entity.year }" name="year" />
+		<input type="hidden" value="${entity.auditYear }" name="auditYear" />
 		<table border="0">
 			<tbody>
 				<tr>

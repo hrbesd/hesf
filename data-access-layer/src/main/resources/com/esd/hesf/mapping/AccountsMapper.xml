@@ -312,13 +312,28 @@
 	</update>
 
 	<!-- retrieve -->
-	<select id="retrieveByPrimaryKey" resultMap="ResultAccounts" parameterType="java.lang.Integer">
+	<select id="retrieveOneByCompanyAuditYear" resultMap="ResultAccounts" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
 		from
 		<include refid="From_Column" />
-		where ac.id = #{id,jdbcType=INTEGER}
+		<where>
+			<if test="year != null and year != ''">
+				ac.year = #{year, jdbcType=CHAR}
+			</if>
+			<if test="companyId != null and companyId > 0">
+				and c.id = #{companyId,jdbcType=INTEGER}
+			</if>
+			<if test="companyCode != null and companyCode != ''">
+				and c.company_code = #{companyCode,jdbcType=VARCHAR}
+			</if>
+			<if test="auditYear != null and auditYear != ''">
+				and au.year = #{auditYear, jdbcType=CHAR}
+			</if>
+		</where> 
 	</select>
+	
+	
 
 	<select id="retrieveByCompanyGroup" resultMap="ResultAccounts" parameterType="com.esd.hesf.model.Accounts">
 		select
@@ -691,5 +706,47 @@
 	<select id="retrieveAuditYears" resultType="java.lang.String" parameterType="map">
 		select au.year from accounts as ac, audit as au 
 		where ac.audit_id = au.id and ac.year = #{accountsYear,jdbcType=CHAR} and ac.company_id = #{companyId, jdbcType=INTEGER};
+	</select>
+
+	<select id="retrieveByCompanyAuditYear" resultType="decimal" parameterType="com.esd.hesf.model.Accounts">
+		select sum(ac.total_money)
+		from
+			<include refid="From_Column" />
+		<where>
+			<if test="year != null and year != ''">
+				ac.year = #{year, jdbcType=CHAR}
+			</if>
+			<if test="company != null">
+				<if test="company.id != null and company.id > 0">
+					and c.id = #{company.id,jdbcType=INTEGER}
+				</if>
+			</if>
+			<if test="audit != null">
+				<if test="audit.year != null and audit.year != ''">
+					and au.year = #{audit.year, jdbcType=CHAR}
+				</if>
+			</if>
+			<choose>
+				<when test="isFinished != null">
+					and ac.is_finished = #{isFinished,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and ac.is_finished = 0
+				</otherwise>
+			</choose>
+			<if test="auditProcessStatus != null">
+				<if test="auditProcessStatus.id != null and auditProcessStatus > 0">
+					and ac.auditProcessStatus = #{auditProcessStatus, jdbcTyupe=INTEGER}
+				</if>
+			</if>
+			<choose>
+				<when test="isActive != null">
+					and ac.is_active = #{isActive,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and ac.is_active = 0
+				</otherwise>
+			</choose>
+		</where> 
 	</select>
 </mapper>

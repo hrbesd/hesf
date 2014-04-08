@@ -65,16 +65,39 @@ public class Audit extends PrimaryKey_Int {
 		super.setId(id);
 	}
 
+	public Audit(String year) {
+		this.year = year;
+	}
+
 	@Override
 	public String toString() {
-		return "Audit [year=" + year + ", company=" + company + ", area=" + area + ", auditProcessStatus=" + auditProcessStatus + ", companyEmpTotal=" + companyEmpTotal + ", companyHandicapTotal="
-				+ companyHandicapTotal + ", companyPredictTotal=" + companyPredictTotal + ", companyShouldTotal=" + companyShouldTotal + ", companyAlreadyTotal=" + companyAlreadyTotal
-				+ ", amountPayable=" + amountPayable + ", reductionAmount=" + reductionAmount + ", actualAmount=" + actualAmount + ", payAmount=" + payAmount + ", remainAmount=" + remainAmount
-				+ ", complementAmount=" + complementAmount + ", delayPayAmount=" + delayPayAmount + ", isDelayPay=" + isDelayPay + ", initAuditUser=" + initAuditUser + ", initAuditDate="
-				+ initAuditDate + ", initAuditComment=" + initAuditComment + ", verifyAuditUser=" + verifyAuditUser + ", verifyAuditDate=" + verifyAuditDate + ", verifyAuditComment="
-				+ verifyAuditComment + ", remark=" + remark + ", isExempt=" + isExempt + ", reductionType=" + reductionType + ", reducionApplyUser=" + reducionApplyUser + ", reductionDate="
-				+ reductionDate + ", reductionReason=" + reductionReason + ", reductionAnswerUser=" + reductionAnswerUser + ", reductionAnswerDate=" + reductionAnswerDate + ", reductionAnswerOption="
-				+ reductionAnswerOption + ", reductionRemark=" + reductionRemark + ", unauditYears=" + unauditYears + ", supplementYear=" + supplementYear + ", delayDays=" + delayDays + "]";
+		return "Audit [year=" + year + ", company=" + company + ", area="
+				+ area + ", auditProcessStatus=" + auditProcessStatus
+				+ ", companyEmpTotal=" + companyEmpTotal
+				+ ", companyHandicapTotal=" + companyHandicapTotal
+				+ ", companyPredictTotal=" + companyPredictTotal
+				+ ", companyShouldTotal=" + companyShouldTotal
+				+ ", companyAlreadyTotal=" + companyAlreadyTotal
+				+ ", amountPayable=" + amountPayable + ", reductionAmount="
+				+ reductionAmount + ", actualAmount=" + actualAmount
+				+ ", payAmount=" + payAmount + ", remainAmount=" + remainAmount
+				+ ", complementAmount=" + complementAmount
+				+ ", delayPayAmount=" + delayPayAmount + ", isDelayPay="
+				+ isDelayPay + ", initAuditUser=" + initAuditUser
+				+ ", initAuditDate=" + initAuditDate + ", initAuditComment="
+				+ initAuditComment + ", verifyAuditUser=" + verifyAuditUser
+				+ ", verifyAuditDate=" + verifyAuditDate
+				+ ", verifyAuditComment=" + verifyAuditComment + ", remark="
+				+ remark + ", isExempt=" + isExempt + ", reductionType="
+				+ reductionType + ", reducionApplyUser=" + reducionApplyUser
+				+ ", reductionDate=" + reductionDate + ", reductionReason="
+				+ reductionReason + ", reductionAnswerUser="
+				+ reductionAnswerUser + ", reductionAnswerDate="
+				+ reductionAnswerDate + ", reductionAnswerOption="
+				+ reductionAnswerOption + ", reductionRemark="
+				+ reductionRemark + ", unauditYears=" + unauditYears
+				+ ", supplementYear=" + supplementYear + ", delayDays="
+				+ delayDays + "]";
 	}
 
 	public String getYear() {

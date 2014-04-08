@@ -130,19 +130,31 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public BigDecimal getEffPaid(String year, String companyCode) {
+	public BigDecimal getEffPaid(String auditYear, String accountsYear,
+			String companyCode) {
 		Payment payment = new Payment();
-		payment.setYear(year);
+		payment.setAuditYear(auditYear);
+		payment.setYear(accountsYear);
 		payment.setPaymentCompany(new Company(companyCode));
-		return dao.retrieveAlreadyPay(payment);
+		BigDecimal r = dao.retrieveAlreadyPay(payment);
+		if (r == null) {
+			r = new BigDecimal("0.00");
+		}
+		return r;
 	}
 
 	@Override
-	public BigDecimal getEffPaid(String year, Integer companyId) {
+	public BigDecimal getEffPaid(String auditYear, String accountsYear,
+			Integer companyId) {
 		Payment payment = new Payment();
-		payment.setYear(year);
+		payment.setAuditYear(auditYear);
+		payment.setYear(accountsYear);
 		payment.setPaymentCompany(new Company(companyId));
-		return dao.retrieveAlreadyPay(payment);
+		BigDecimal r = dao.retrieveAlreadyPay(payment);
+		if (r == null) {
+			r = new BigDecimal("0.00");
+		}
+		return r;
 	}
 
 	@Override

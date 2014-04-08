@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <style>
 
@@ -101,15 +102,11 @@
 		});
 	};
 	payment.getBalance = function() {
-	//	var v = '${entity.year}/${entity.companyId}';
-		//复选框选中的年份s
-		var ckb_value = new Array();
-		$('input[name="ckbAuditYear"]:checked').each(function(){
-			ckb_value.push($(this).val());
-		});
-		
+	//	var v = '${entity.accountsYear}/${entity.companyId}';
+		//单选框选中的年份s
+		var rdo_value = $('input[name="rdoAuditYear"]:checked').val();
 		$.ajax({
-			url : 'payment/getBalance/'+ckb_value+'/${entity.year}/${entity.companyId}',			
+			url : 'payment/getBalance/'+rdo_value+'/${entity.accountsYear}/${entity.companyId}',			
 			type : 'GET',
 			success : function(data) {
 				$('#payAmount').html(data.payAmount);	//应缴
@@ -118,7 +115,7 @@
 			//	$('#readyPayments').html(data.readyPayments);
 			},
 			error : function() {
-				alert("请求错误");
+			//	alert("请求错误");
 			},
 			dataType : "json",
 			async : true
@@ -147,7 +144,9 @@
 		esd.common.defaultOpenWindowClose();
 	};
 	payment.insert = function() {
-		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/${entity.year}/${entity.companyId}/${entity.lessPayAmount}");
+		var lessPayAmount = $('#lessPayAmount').html();
+		var auditYear = $("input[name='rdoAuditYear']:checked").val();
+		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/"+auditYear+"/${entity.accountsYear}/${entity.companyId}/" + lessPayAmount);
 	};
 	payment.confirm = function(id) {
 		esd.common.openWindow("#add", "确认缴款", 750, 350, "${contextPath}/security/payment/confirm/" + id);
@@ -174,14 +173,8 @@
 		});
 	};
 
-	payment.ckbclick = function(){
-		var ckb_value = new Array();
-		$('input[name="ckbAuditYear"]:checked').each(function(){
-			ckb_value.push($(this).val());
-		});
-	};
 	payment.loadPaymentData = function() {
-		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.year}/${entity.companyId}", [ {
+		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.accountsYear}/${entity.companyId}", [ {
 			text : '新建缴款记录',
 			iconCls : 'icon-add',
 			handler : payment.insert
@@ -289,8 +282,11 @@
 				<td class="td_short">审计年度:</td>
 				<td class="td_long bj_belu readonly" colspan="3">
 					<c:forEach items="${entity.auditYears}" var="item">
-						<input type="checkbox" checked="checked" value="${item }" name="ckbAuditYear" id="ckbAuditYear${item }" onclick="payment.getBalance()" style="width:auto;margin-left:15px;"/>${item }
+						 ${item }<input type="radio" checked="checked" value="${item }" name="rdoAuditYear" id="rdoAuditYear${item }" onclick="payment.getBalance()" style="width:auto;margin-right:15px;"/>
 					</c:forEach>
+					<c:if test="${fn:length(entity.auditYears) > 1 }">
+						全部 <input type="radio" checked="checked" value="all" name="rdoAuditYear" id="rdoAuditYear" onclick="payment.getBalance()" style="width:auto;margin-right:15px;"/>
+					</c:if>
 			<!--		<input type="radio" name="rdoAuditYears" style="width:auto;margin-left:15px;margin-right:5px;"/>
 					所有审核年(
 						<c:forEach items="${entity.auditYears}" var="item">
@@ -313,10 +309,10 @@
 			</tr>
 			<tr>
 				<td class="bj_belu2" style="text-align:center;">缴款年度:</td>
-				<td class="td_short readonly">${entity.year}</td>
+				<td class="td_short readonly">${entity.accountsYear}</td>
 				<td class="bj_belu2" style="text-align:center;">应缴金额:</td>
 				<td class="td_short readonly" id="payAmount">${entity.payAmount}</td>
-				<td class="td_short">已缴金额:</td>
+				<td class="td_short">已缴金额(总):</td>
 				<td class="bj_belu2 readonly" id="alreadyPayAmount">${entity.alreadyPayAmount}</td>
 				<td class="td_short">待缴金额:</td>
 				<td class="bj_belu readonly" id="lessPayAmount">${entity.lessPayAmount}</td>

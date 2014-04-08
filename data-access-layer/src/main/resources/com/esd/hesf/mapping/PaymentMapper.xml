@@ -9,6 +9,7 @@
 		<result column="pay_user_id" property="userId" jdbcType="INTEGER" />
 		<result column="pay_is_active" jdbcType="BIT" property="isActive" />
 		<result column="pay_year" jdbcType="CHAR" property="year" />
+		<result column="pay_audit_year" jdbcType="CHAR" property="auditYear" />
 		<result column="pay_payment_date" property="paymentDate" jdbcType="TIMESTAMP" />
 		<result column="pay_payment_money" property="paymentMoney" jdbcType="DECIMAL" />
 		<result column="pay_payment_bill" property="paymentBill" jdbcType="VARCHAR" />
@@ -84,7 +85,7 @@
 	<sql id="Base_Column_List">
 		<!-- payment -->
 		pay.id as pay_id, pay.create_time as pay_create_time, pay.update_time as pay_update_time,pay.user_id as pay_user_id, pay.is_active as pay_is_active,
-		pay.year as pay_year, 
+		pay.year as pay_year, pay.audit_year as pay_audit_year, 
 		pay.payment_date as pay_payment_date, pay.payment_money as pay_payment_money, pay.payment_bill as pay_payment_bill, pay.bill_print_date as pay_bill_print_date,
 		pay.bill_exchange_date as pay_bill_exchange_date, pay.bill_return as pay_bill_return, pay.bill_finance as pay_bill_finance,
 		pay.bill_obsolete as pay_bill_obsolete, pay.remark as pay_remark, pay.version as pay_version, 
@@ -110,12 +111,12 @@
 		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into payment (create_time, update_time, user_id, is_active, year, payment_date, payment_money,
+		insert into payment (create_time, update_time, user_id, is_active, year, audit_year, payment_date, payment_money,
 		payment_person,payment_company, payment_bill, payment_type, payment_exceptional, bill_print_date,
 		bill_exchange_date, bill_return, bill_finance, bill_obsolete, remark, version)
 		values
-		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{year, jdbcType=CHAR}, now(),
-		#{paymentMoney,jdbcType=DECIMAL}, #{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},
+		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{year, jdbcType=CHAR}, #{auditYear, jdbcType=CHAR},
+		now(), #{paymentMoney,jdbcType=DECIMAL}, #{paymentPerson.id},,#{paymentCompany.id,jdbcType=VARCHAR},
 		#{paymentBill,jdbcType=VARCHAR}, #{paymentType.id,jdbcType=INTEGER},
 		#{paymentExceptional,jdbcType=INTEGER},
 		#{billPrintDate,jdbcType=TIMESTAMP},#{billExchangeDate,jdbcType=TIMESTAMP},#{billReturn,jdbcType=BIT},
@@ -139,6 +140,9 @@
 			</if>
 			<if test="year != null">
 				year,
+			</if>
+			<if test="auditYear != null">
+				audit_year,
 			</if>
 			payment_date,
 			<if test="paymentMoney != null">
@@ -197,6 +201,9 @@
 			</if>
 			<if test="year != null">
 				#{year,jdbcType=CHAR},
+			</if>
+			<if test="auditYear != null">
+				#{auditYear,jdbcType=CHAR},
 			</if>
 			now(),
 			<if test="paymentMoney != null">
@@ -267,6 +274,9 @@
 			</if>
 			<if test="year != null">
 				year = #{year,jdbcType=CHAR},
+			</if>
+			<if test="auditYear != null">
+				audit_year = #{auditYear,jdbcType=CHAR},
 			</if>
 			<if test="paymentDate != null">
 				payment_date = #{paymentDate,jdbcType=TIMESTAMP},
@@ -350,6 +360,9 @@
 				</choose>
 				<if test="payment.year != null and payment.year != ''">
 					and pay.year = #{payment.year, jdbcType=CHAR} 
+				</if>
+				<if test="payment.auditYear != null and payment.auditYear != ''">
+					and pay.audit_year = #{payment.auditYear, jdbcType=CHAR} 
 				</if>
 				<if test="payment.paymentDate != null">
 					and pay.payment_date = #{payment.paymentDate,jdbcType=TIMESTAMP}
@@ -475,6 +488,9 @@
 				<if test="payment.year != null and payment.year != ''">
 					and pay.year = #{payment.year, jdbcType=CHAR} 
 				</if>
+				<if test="payment.auditYear != null and payment.auditYear != ''">
+					and pay.audit_year = #{payment.auditYear, jdbcType=CHAR} 
+				</if>
 				<if test="payment.paymentDate != null">
 					and pay.payment_date = #{payment.paymentDate,jdbcType=TIMESTAMP}
 				</if>
@@ -593,6 +609,26 @@
 			<if test="year != null and year !='' ">
 				and pay.year = #{year, jdbcType=CHAR}
 			</if>
+			<if test="auditYear != null and auditYear != ''">
+				and pay.audit_year = #{auditYear, jdbcType=CHAR} 
+			</if>
+			<choose>
+				<when test="billReturn != null">
+					and pay.bill_return = #{billReturn,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and pay.bill_return = 1
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="billObsolete != null">
+					and pay.bill_obsolete = #{billObsolete,jdbcType=BIT}
+				</when>
+				<otherwise>
+					and pay.bill_obsolete = 0
+				</otherwise>
+			</choose>
+			
 		</trim>
 	</select>
 

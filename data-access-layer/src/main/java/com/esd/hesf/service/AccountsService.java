@@ -1,5 +1,6 @@
 package com.esd.hesf.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
@@ -87,4 +88,32 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * @return
 	 */
 	String[] getAuditYears(String accountsYear, Integer companyId);
+	
+	/**
+	 * 根据审核年份, 账目年份, 公司id 得到该公司某年的总应交款数
+	 * @param auditYear 审核年份(可为null)
+	 * @param accountsYear	账目年份
+	 * @param companyId	公司id
+	 * @return	总应缴款数
+	 */
+	BigDecimal getCompanyAuditYear(String auditYear,String accountsYear,Integer companyId);
+	
+	/**
+	 * 根据审核年份, 账目年份, 公司id 得到该公司某年的对应账目对象
+	 * @param auditYear 审核年份(可为null)
+	 * @param accountsYear	账目年份
+	 * @param companyCode	公司档案code
+	 * @return	账目对象
+	 */
+	Accounts getOneByCompanyAuditYear(String auditYear,String accountsYear,String companyCode);
+	
+	/**
+	 * 根据审核年份, 账目年份, 公司id 得到该公司某年的对应账目对象
+	 * @param auditYear 审核年份(可为null)
+	 * @param accountsYear	账目年份
+	 * @param companyId	公司id
+	 * @return	账目对象
+	 */
+	Accounts getOneByCompanyAuditYear(String auditYear,String accountsYear,Integer companyId);
+	
 }
