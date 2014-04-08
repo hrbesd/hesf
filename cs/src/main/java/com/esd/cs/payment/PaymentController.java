@@ -322,6 +322,13 @@ public class PaymentController {
 		queryPayment.setRemark(payment.getRemark());// 备注
 		// 更新缴款明细
 		Boolean b = paymentService.update(queryPayment);
+		
+		
+		
+		
+		
+		
+		
 		// 获取此缴款对应公司, 该缴款年度应缴金额总额
 		Accounts accounts = accountsService.getByYearAndCompany(queryPayment
 				.getYear(), queryPayment.getPaymentCompany().getId());
@@ -345,7 +352,7 @@ public class PaymentController {
 			// Constants.PROCESS_STATIC_YJK);
 		} else {
 			// 已缴金额大于0 ， 则修改状态为 部分缴款
-			if (paymentAmount.compareTo(new BigDecimal("0.00")) > 0) {
+			if (queryPayment.getPaymentMoney().compareTo(new BigDecimal("0.00")) > 0) {
 				batchUpdateAuditStatus(queryPayment,
 						Constants.PROCESS_STATIC_BFJK);
 			}
