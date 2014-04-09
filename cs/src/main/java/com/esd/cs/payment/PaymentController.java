@@ -321,57 +321,126 @@ public class PaymentController {
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
 		// 更新缴款明细
-		Boolean b = paymentService.update(queryPayment);
-		
-		
-		
-		
-		
-		
-		
-		// 获取此缴款对应公司, 该缴款年度应缴金额总额
-		Accounts accounts = accountsService.getByYearAndCompany(queryPayment
-				.getYear(), queryPayment.getPaymentCompany().getId());
-		BigDecimal paymentAmount = new BigDecimal("0.00");
-		if (accounts != null) {
-			paymentAmount = accounts.getTotalMoney();
-		}
-		// 获取此缴款对应公司, 该缴款年度实缴总金额(已回单的)
-		// 把以回单的费用 = 所有已缴的金额
-		BigDecimal alreadyPayments = paymentService.getEffPaid(null,
-				queryPayment.getYear(), queryPayment.getPaymentCompany()
+		paymentService.update(queryPayment);
+
+		// 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
+		Integer auditProcessStatus;
+		if (payment.getAuditYear() != null
+				&& !"".equals(payment.getAuditYear())) {
+			// 1-1查找对应审核年份的已交款总金额, 来判断需要更新的状态
+			BigDecimal alreadyPayment = paymentService.getEffPaid(payment
+					.getAuditYear(), payment.getYear(), payment
+					.getPaymentCompany().getId());
+			// 1-2找到对应的账目
+			Accounts accounts = accountsService.getOneByCompanyAuditYear(
+					payment.getAuditYear(), payment.getYear(), payment
+							.getPaymentCompany().getId());
+			// 1-3应交款==已交款
+			if (accounts.getTotalMoney().compareTo(alreadyPayment) == 0) {
+				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
+				Audit audit = auditService.getByPrimaryKey(accounts.getAudit()
 						.getId());
-		// 获取应缴金额和已缴对比相等 则修改状态为 已缴款
-		// BigDecimal totalMoney = getTotalMoney(queryPayment);
-		if (paymentAmount.compareTo(alreadyPayments) == 0) {
-			// 批量更新相关联的审核表和账目表所处的 即时审核状态
-			batchUpdateAuditStatus(queryPayment, Constants.PROCESS_STATIC_YJK);
-			// // 更新,补缴年度,未审。未缴。部分缴款
-			// batchUpdateAttachmentAuditStatus(queryPayment.getPaymentCompany()
-			// .getId(), queryPayment.getYear(),
-			// Constants.PROCESS_STATIC_YJK);
+				audit.setAuditProcessStatus(new AuditProcessStatus(
+						auditProcessStatus));
+				auditService.update(audit);
+				accounts.setAuditProcessStatus(new AuditProcessStatus(
+						auditProcessStatus));
+				accounts.setIsFinished(true);
+				Boolean b2 = accountsService.update(accounts);
+				return b2;
+			} else {
+			// 1-4应交款 ≠ 已交款
+				auditProcessStatus = Constants.PROCESS_STATIC_BFJK;
+				Audit audit = auditService.getByPrimaryKey(accounts.getAudit()
+						.getId());
+				audit.setAuditProcessStatus(new AuditProcessStatus(
+						auditProcessStatus));
+				auditService.update(audit);
+				accounts.setAuditProcessStatus(new AuditProcessStatus(
+						auditProcessStatus));
+				accounts.setIsFinished(true);
+				Boolean b2 = accountsService.update(accounts);
+				return b2;
+			}
 		} else {
-			// 已缴金额大于0 ， 则修改状态为 部分缴款
-			if (queryPayment.getPaymentMoney().compareTo(new BigDecimal("0.00")) > 0) {
-				batchUpdateAuditStatus(queryPayment,
-						Constants.PROCESS_STATIC_BFJK);
+			// 2-如果不存在审核年份
+			// 2-1 查找公司对应账目年份的已交款总金额, 来判断需要更新的状态
+			BigDecimal alreadyPayment = paymentService.getEffPaid(null,
+					payment.getYear(), payment.getPaymentCompany().getId());
+			// 2-2查找该公司 该账目年度 应交款总额
+			BigDecimal paymentAmount = accountsService.getCompanyAuditYear(
+					null, payment.getYear(), payment.getPaymentCompany()
+							.getId());
+			// 2-3查找公司对应账目年限的所有账目列表
+			List<Accounts> acList = accountsService.getCompanyAccount(
+					payment.getYear(), payment.getPaymentCompany().getId());
+			// 2-4 应交款==已交款
+			if (paymentAmount.compareTo(alreadyPayment) == 0) {
+				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
+				for (Accounts ac : acList) {
+					// 2-4-1如果账单表已经标记为已交款或者达标, 则跳过--减少读取数据库的操作
+					if (ac.getAuditProcessStatus().getId()
+							.equals(Constants.PROCESS_STATIC_YJK)
+							|| ac.getAuditProcessStatus().getId()
+									.equals(Constants.PROCESS_STATIC_OK)) {
+						continue;
+					}
+					// 2-4-2更新审核表状态
+					Audit audit = ac.getAudit();
+					audit.setAuditProcessStatus(new AuditProcessStatus(
+							auditProcessStatus));
+					// 设置补审年份
+					audit.setSupplementYear(payment.getYear());
+					auditService.update(audit);
+					// 2-4-3 更新账目
+					ac.setAuditProcessStatus(new AuditProcessStatus(
+							auditProcessStatus));
+					// 账目缴款缴款完成
+					ac.setIsFinished(true);
+					accountsService.update(ac);
+				}
+				return true;
+			} else {
+				// 2-5 应交款 ≠ 已交款
+				auditProcessStatus = Constants.PROCESS_STATIC_BFJK;
+				for (Accounts ac : acList) {
+					// 2-5-1如果账单表已经标记为已交款或者达标, 则跳过--减少读取数据库的操作;
+					// 同时也可预防对更新为已交款的指定审核年度的账目状态进行更新
+					if (ac.getAuditProcessStatus().getId()
+							.equals(Constants.PROCESS_STATIC_YJK)
+							|| ac.getAuditProcessStatus().getId()
+									.equals(Constants.PROCESS_STATIC_OK)) {
+						continue;
+					}
+					// 2-5-2更新审核表状态
+					Audit audit = ac.getAudit();
+					audit.setAuditProcessStatus(new AuditProcessStatus(
+							auditProcessStatus));
+					// 设置补审年份
+					audit.setSupplementYear(payment.getYear());
+					auditService.update(audit);
+					// 2-5-3 更新账目
+					ac.setAuditProcessStatus(new AuditProcessStatus(
+							auditProcessStatus));
+					accountsService.update(ac);
+				}
+				return true;
+
 			}
 		}
-
-		return b;
 	}
 
-	public static void main(String[] args) {
-		BigDecimal b1 = new BigDecimal("-0.01");
-		BigDecimal b2 = new BigDecimal("0.00");
-		// System.out.println(b1.compareTo(b2));
-		String s = "2012";
-		String[] ar = s.split(",");
-		// System.out.println(ar.length);
-		for (String t : ar) {
-			System.out.println(t);
-		}
-	}
+//	public static void main(String[] args) {
+//		BigDecimal b1 = new BigDecimal("-0.01");
+//		BigDecimal b2 = new BigDecimal("0.00");
+//		// System.out.println(b1.compareTo(b2));
+//		String s = "2012";
+//		String[] ar = s.split(",");
+//		// System.out.println(ar.length);
+//		for (String t : ar) {
+//			System.out.println(t);
+//		}
+//	}
 
 	/**
 	 * 查看
@@ -434,16 +503,16 @@ public class PaymentController {
 		// payment.setPaymentMoney(accounts.getTotalMoney()
 		// .subtract(readyPayments));
 
-//		// 根据公司id,账目年限,审核年份, 得到总应缴款数量
-//		BigDecimal payAmount = accountsService.getCompanyAuditYear(auditYear,
-//				accountsYear, companyId);
-//		// 根据公司id,账目年限,审核年份, 得到已缴款数
-//		BigDecimal alreadyPayment = paymentService.getEffPaid(auditYear,
-//				accountsYear, companyId);
-//		if (alreadyPayment == null) {
-//			alreadyPayment = new BigDecimal("0.00");
-//		}
-//		BigDecimal lessPayment = payAmount.subtract(alreadyPayment);
+		// // 根据公司id,账目年限,审核年份, 得到总应缴款数量
+		// BigDecimal payAmount = accountsService.getCompanyAuditYear(auditYear,
+		// accountsYear, companyId);
+		// // 根据公司id,账目年限,审核年份, 得到已缴款数
+		// BigDecimal alreadyPayment = paymentService.getEffPaid(auditYear,
+		// accountsYear, companyId);
+		// if (alreadyPayment == null) {
+		// alreadyPayment = new BigDecimal("0.00");
+		// }
+		// BigDecimal lessPayment = payAmount.subtract(alreadyPayment);
 		payment.setPaymentMoney(lessPayAmount);
 		return new ModelAndView("payment/payment_detail_add", "entity", payment);
 	}
