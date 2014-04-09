@@ -12,7 +12,6 @@ import com.esd.hesf.dao.AreaDao;
 import com.esd.hesf.dao.AuditReportDao;
 import com.esd.hesf.dao.CompanyEconomyTypeDao;
 import com.esd.hesf.dao.CompanyTypeDao;
-import com.esd.hesf.dao.PaymentDao;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyType;
@@ -27,9 +26,6 @@ public class ReportViewServiceImpl implements ReportViewService {
 
 	@Autowired
 	private AuditReportDao arDao;
-
-	@Autowired
-	private PaymentDao pDao;
 
 	@Autowired
 	private CompanyTypeDao ctDao;

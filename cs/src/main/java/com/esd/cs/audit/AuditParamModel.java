@@ -22,6 +22,7 @@ public class AuditParamModel {
 	private String paymentPerson; // 缴款人
 	private String overYear; // 超过指定年度未初审的企业
 	private String isExempt; // 是否免交
+	private String firstTime;
 
 	private Integer page;
 	private Integer rows;
@@ -156,10 +157,18 @@ public class AuditParamModel {
 
 	@Override
 	public String toString() {
-		return "AuditParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode + ", companyProperty="
-				+ companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2=" + companyEmpTotal_2
-				+ ", companyName=" + companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", auditProcessStatus=" + auditProcessStatus + ", paymentPerson="
-				+ paymentPerson + ", overYear=" + overYear + ", isExempt=" + isExempt + ", page=" + page + ", rows=" + rows + "]";
+		return "AuditParamModel [year=" + year + ", companyCode=" + companyCode
+				+ ", companyTaxCode=" + companyTaxCode
+				+ ", companyOrganizationCode=" + companyOrganizationCode
+				+ ", companyProperty=" + companyProperty
+				+ ", companyEconomyType=" + companyEconomyType + ", area="
+				+ area + ", companyEmpTotal_1=" + companyEmpTotal_1
+				+ ", companyEmpTotal_2=" + companyEmpTotal_2 + ", companyName="
+				+ companyName + ", companyAddress=" + companyAddress
+				+ ", companyLegal=" + companyLegal + ", auditProcessStatus="
+				+ auditProcessStatus + ", paymentPerson=" + paymentPerson
+				+ ", overYear=" + overYear + ", isExempt=" + isExempt
+				+ ", page=" + page + ", rows=" + rows + "]";
 	}
 
 	public String getIsExempt() {
@@ -176,6 +185,14 @@ public class AuditParamModel {
 
 	public void setOverYear(String overYear) {
 		this.overYear = overYear;
+	}
+
+	public String getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(String firstTime) {
+		this.firstTime = firstTime;
 	}
 
 }

@@ -229,65 +229,65 @@ public class PaymentController {
 	// return bd;
 	// }
 
-	/**
-	 * 批量更新状态
-	 * 
-	 * @param payment
-	 * @return
-	 */
-	private Boolean batchUpdateAuditStatus(Payment payment,
-			Integer auditProcessStatus) {
-		// AuditProcessStatus aup = auditProcessStatusService
-		// .getByPrimaryKey(auditProcessStatus);
-		// 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
-		if (payment.getAuditYear() != null
-				&& !"".equals(payment.getAuditYear())) {
-			Audit audit = auditService.getByPrimaryKey(payment.getAuditYear(),
-					payment.getPaymentCompany().getId());
-			audit.setAuditProcessStatus(new AuditProcessStatus(
-					auditProcessStatus));
-			auditService.update(audit);
-			Accounts accounts = accountsService.getOneByCompanyAuditYear(
-					payment.getAuditYear(), payment.getYear(), payment
-							.getPaymentCompany().getId());
-			accounts.setAuditProcessStatus(new AuditProcessStatus(
-					auditProcessStatus));
-			return accountsService.update(accounts);
-		}
-
-		// 2-如果不存在审核年份, 则将所有未完成的账目单查询出来, 逐个更新
-		String year = payment.getYear();
-		Integer companyId = payment.getPaymentCompany().getId();
-		List<Accounts> query = accountsService.getCompanyAccount(year,
-				companyId);
-		try {
-			for (Accounts at : query) {
-				// 如果账单表已经标记为已交款或者达标, 则跳过
-				if (at.getAuditProcessStatus().getId()
-						.equals(Constants.PROCESS_STATIC_YJK)
-						|| at.getAuditProcessStatus().getId()
-								.equals(Constants.PROCESS_STATIC_OK)) {
-					continue;
-				}
-				// 更新审核表 即时审核状态,
-				Audit audit = auditService.getByPrimaryKey(at.getAudit()
-						.getId());
-				audit.setAuditProcessStatus(new AuditProcessStatus(
-						auditProcessStatus));
-				// 补缴年份
-				audit.setSupplementYear(payment.getYear());
-				auditService.update(audit);
-				// 更新账目 即时审核状态,对应审核年份
-				at.setAuditProcessStatus(new AuditProcessStatus(
-						auditProcessStatus));
-				accountsService.update(at);
-			}
-		} catch (Exception e) {
-			logger.error("{}", e);
-			return Boolean.FALSE;
-		}
-		return Boolean.TRUE;
-	}
+//	/**
+//	 * 批量更新状态
+//	 * 
+//	 * @param payment
+//	 * @return
+//	 */
+//	private Boolean batchUpdateAuditStatus(Payment payment,
+//			Integer auditProcessStatus) {
+//		// AuditProcessStatus aup = auditProcessStatusService
+//		// .getByPrimaryKey(auditProcessStatus);
+//		// 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
+//		if (payment.getAuditYear() != null
+//				&& !"".equals(payment.getAuditYear())) {
+//			Audit audit = auditService.getByPrimaryKey(payment.getAuditYear(),
+//					payment.getPaymentCompany().getId());
+//			audit.setAuditProcessStatus(new AuditProcessStatus(
+//					auditProcessStatus));
+//			auditService.update(audit);
+//			Accounts accounts = accountsService.getOneByCompanyAuditYear(
+//					payment.getAuditYear(), payment.getYear(), payment
+//							.getPaymentCompany().getId());
+//			accounts.setAuditProcessStatus(new AuditProcessStatus(
+//					auditProcessStatus));
+//			return accountsService.update(accounts);
+//		}
+//
+//		// 2-如果不存在审核年份, 则将所有未完成的账目单查询出来, 逐个更新
+//		String year = payment.getYear();
+//		Integer companyId = payment.getPaymentCompany().getId();
+//		List<Accounts> query = accountsService.getCompanyAccount(year,
+//				companyId);
+//		try {
+//			for (Accounts at : query) {
+//				// 如果账单表已经标记为已交款或者达标, 则跳过
+//				if (at.getAuditProcessStatus().getId()
+//						.equals(Constants.PROCESS_STATIC_YJK)
+//						|| at.getAuditProcessStatus().getId()
+//								.equals(Constants.PROCESS_STATIC_OK)) {
+//					continue;
+//				}
+//				// 更新审核表 即时审核状态,
+//				Audit audit = auditService.getByPrimaryKey(at.getAudit()
+//						.getId());
+//				audit.setAuditProcessStatus(new AuditProcessStatus(
+//						auditProcessStatus));
+//				// 补缴年份
+//				audit.setSupplementYear(payment.getYear());
+//				auditService.update(audit);
+//				// 更新账目 即时审核状态,对应审核年份
+//				at.setAuditProcessStatus(new AuditProcessStatus(
+//						auditProcessStatus));
+//				accountsService.update(at);
+//			}
+//		} catch (Exception e) {
+//			logger.error("{}", e);
+//			return Boolean.FALSE;
+//		}
+//		return Boolean.TRUE;
+//	}
 
 	// private Boolean batchUpdateAttachmentAuditStatus(Integer companyId,
 	// String year, Integer status) {

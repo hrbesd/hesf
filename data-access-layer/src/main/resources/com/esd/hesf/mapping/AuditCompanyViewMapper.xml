@@ -46,7 +46,8 @@
 		<result column="au_is_active" jdbcType="BIT" property="isActive" />
 		<result column="au_version" jdbcType="INTEGER" property="version" />
 		<!-- auditProcessStatus -->
-		<result column="au_audit_process_status" jdbcType="INTEGER" property="auditProcessStatus.id" />
+		<result column="aup_id" jdbcType="INTEGER" property="auditProcessStatus.id" />
+		<result column="aup_audit_process_status" jdbcType="VARCHAR" property="auditProcessStatus.auditProcessStatus" />
 		<!-- company -->
 		<result column="c_id" jdbcType="INTEGER" property="company.id" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="company.companyCode" />
@@ -116,15 +117,15 @@
 				au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
 				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
 				au.is_active as au_is_active, au.version as au_version,
-			au.audit_process_status as au_audit_process_status
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
 	</sql>
 
 	<select id="retrieveByCompany" parameterType="map" resultMap="AuditCompanyViewModel">
 		select
 		<include refid="Base_Column_List" />
-		from audit as au, company as c
+		from audit as au, company as c, audit_process_status as aup
 		<trim prefix="where" prefixOverrides="and|or">
-			au.company_id = c.id 
+			au.company_id = c.id and au.audit_process_status = aup.id 
 			<if test="year != null and year != ''">
 				and au.year = #{year,jdbcType=CHAR} 
 			</if>
@@ -198,9 +199,9 @@
 	
 	<select id="retrieveCount" parameterType="map" resultType="java.lang.Integer">
 		select count(*) 
-		from audit as au, company as c
+		from audit as au, company as c, audit_process_status as aup
 		<trim prefix="where" prefixOverrides="and|or">
-			au.company_id = c.id 
+			au.company_id = c.id and au.audit_process_status = aup.id 
 			<if test="year != null and year != ''">
 				and au.year = #{year,jdbcType=CHAR} 
 			</if>
