@@ -10,20 +10,20 @@ import java.math.BigDecimal;
  */
 public class ReportViewModel {
 
-	private String reportName; // 报表依据类型名, 如单位类型, 地区, 经济类型等 11
-	private Integer unitNum; // 单位总数 11
-	private Integer empTotal; // 单位总人数11
+	private String reportName; // 报表依据类型名, 如单位类型, 地区, 经济类型等 
+	private Integer unitNum; // 单位总数 
+	private Integer empTotal; // 单位总人数
 	private Integer unAudit; // 待初审单位数
 	private Integer unReAudit; // 已初审, 待复核单位数
 	private Integer auditOk;// 已复核, 达标单位数
 	private Integer unauditOk; // 已复核, 未达标单位数
-	private BigDecimal shouldTotal; // 应安排人数11
-	private BigDecimal alreadyTotal; // 已经安排人数11
+	private BigDecimal shouldTotal; // 应安排人数
+	private BigDecimal alreadyTotal; // 已经安排人数
 	private BigDecimal lessTotal; // 少安排人数
-	private BigDecimal amountPayable; // 应缴金额11
-	private BigDecimal reductionAmount; // 减免金额11
-	private BigDecimal actualAmount; // 实际应缴金额11
-	private BigDecimal alreadyAmount; // 已缴金额11
+	private BigDecimal amountPayable; // 应缴金额
+	private BigDecimal reductionAmount; // 减免金额
+	private BigDecimal actualAmount; // 实际应缴金额
+	private BigDecimal alreadyAmount; // 已缴金额
 	private Integer companyType; // 公司类型id, 不做为前台显示字段 xxx
 	private String areaCode; // 地区code, 不作为前台显示字段 xxx
 	private Integer companyEconomyType; // 经济类型id, 不做为前台显示字段 xxx
@@ -148,6 +148,9 @@ public class ReportViewModel {
 
 	public BigDecimal getLessTotal() {
 		this.lessTotal = this.getShouldTotal().subtract(this.getAlreadyTotal());
+		if(this.lessTotal.compareTo(new BigDecimal("0"))<0){
+			this.lessTotal = new BigDecimal(0);;
+		}
 		return this.lessTotal;
 	}
 

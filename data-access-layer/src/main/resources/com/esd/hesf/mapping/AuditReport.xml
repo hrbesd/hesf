@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.AuditReportDao">
+
+	<resultMap id="ReportViewModel" type="com.esd.hesf.viewmodels.ReportViewModel">
+		<result column="report_name" property="reportName" jdbcType="VARCHAR" />
+		<result column="unit_num" property="unitNum" jdbcType="INTEGER" />
+		<result column="emp_total" property="empTotal" jdbcType="INTEGER" />
+		<result column="predict_total" property="predictTotal" jdbcType="INTEGER" />
+		<result column="un_audit" property="unAudit" jdbcType="INTEGER" />
+		<result column="un_reaudit" property="unReAudit" jdbcType="INTEGER" />
+		<result column="audit_ok" property="auditOk" jdbcType="INTEGER" />
+		<result column="unaudit_ok" property="unauditOk" jdbcType="INTEGER" />
+		<result column="should_total" property="shouldTotal" jdbcType="DECIMAL" />
+		<result column="already_total" property="alreadyTotal" jdbcType="DECIMAL" />
+		<result column="less_total" property="lessTotal" jdbcType="DECIMAL" />
+		<result column="amount_payable" property="amountPayable" jdbcType="DECIMAL" />
+		<result column="reduction_amount" property="reductionAmount" jdbcType="DECIMAL" />
+		<result column="actual_amount" property="actualAmount" jdbcType="DECIMAL" />
+		<result column="already_amount" property="alreadyAmount" jdbcType="DECIMAL" />
+		<result column="t_id" property="companyType" jdbcType="INTEGER" />
+		<result column="a_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="et_id" property="companyEconomyType" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="AuditTempModel" type="com.esd.hesf.viewmodels.AuditTempModel">
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="aup_id" property="aupId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="report_column_list">
+		count(*) as unit_num,sum(au.company_emp_total) as emp_total, 
+		sum(au.company_should_total) as should_total, sum(au.company_already_total) as already_total,
+		sum(au.amount_payable) as amount_payable, sum(au.reduction_amount) as reduction_amount, 
+		sum(au.actual_amount) as actual_amount
+	</sql>
+	
+	<select id="retrieveReport" parameterType="map" resultMap="ReportViewModel">
+		select	
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				t.id as t_id, t.company_type as report_name,
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				et.id as et_id, et.company_economy_type as report_name,
+			</if>
+			<if test="currentSearch != null and currentSearch == 'area'">
+				a.code as a_code, a.name as report_name,
+			</if>
+			<include refid="report_column_list"/>
+		from 
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				company_type as t left join company as c on(t.id=c.company_type)
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				company_economy_type as et left join company as c on(et.id=c.company_economy_type)
+			</if>
+			<if test="currentSearch != null and currentSearch == 'area'">
+				area as a left join company as c on(a.code = c.area_code)
+			</if>
+			left join audit as au on (c.id=au.company_id)
+			<!-- default searching undeleted company data -->
+		where au.year = #{year,jdbcType=CHAR} and c.is_active = 0 
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				group by t.id 
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				group by et.id 
+			</if> 
+			<if test="currentSearch != null and currentSearch == 'area'">
+				group by a.code 
+			</if>
+			
+	</select>
+	
+	<select id="retrieveAlreadyPay" parameterType="map" resultMap="ReportViewModel">
+		select	
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				t.id as t_id, t.company_type as report_name,
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				et.id as et_id, et.company_economy_type as report_name,
+			</if>
+			<if test="currentSearch != null and currentSearch == 'area'">
+				a.code as a_code, a.name as report_name,
+			</if>
+			sum(pay.payment_money) as already_amount
+		from 
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				company_type as t left join company as c on(t.id=c.company_type)
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				company_economy_type as et left join company as c on(et.id=c.company_economy_type)
+			</if>
+			<if test="currentSearch != null and currentSearch == 'area'">
+				area as a left join company as c on(a.code = c.area_code)
+			</if>
+			left join payment as pay on (pay.payment_company = c.id)
+			<!-- default searching undeleted, has returned, not obsoleted company data -->
+		where pay.year = #{year,jdbcType=CHAR} and pay.bill_return = 1 and pay.bill_obsolete=0  and c.is_active = 0 
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				group by t.id 
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				group by et.id 
+			</if> 
+			<if test="currentSearch != null and currentSearch == 'area'">
+				group by a.code 
+			</if>
+			
+	</select>
+	
+	
+	
+	<!-- retrieve company number of different audit process status -->
+	<select id="retrieveAupCount" parameterType="map" resultMap="AuditTempModel">
+		select  au.audit_process_status as aup_id,count(au.audit_process_status ) as num
+		from 
+			<if test="currentSearch != null and currentSearch == 'companyType'">
+				company_type as t left join company as c on(t.id=c.company_type)
+			</if>
+			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
+				company_economy_type as et left join company as c on(et.id=c.company_economy_type) 
+			</if>
+			<if test="currentSearch != null and currentSearch == 'area'">
+				area as a left join company as c on(a.code = c.area_code)
+			</if>
+			left join audit as au on (c.id=au.company_id)
+		<where>
+			<!-- default searching undeleted company data -->
+			au.year = #{year,jdbcType=CHAR} and c.is_active = 0 
+			<if test="companyType != null and companyType > 0">
+				and t.id = #{companyType,jdbcType=INTEGER}
+			</if>
+			<if test="companyEconomyType != null and companyEconomyType > 0">
+				and et.id = #{companyEconomyType,jdbcType=INTEGER} 
+			</if>
+			<if test="area != null and area != ''">
+				and a.code  = #{area,jdbcType=CHAR}
+			</if>
+		
+		</where>
+		group by au.audit_process_status
+	</select>
+	
+	<!-- out of date method -->
+	<select id="retrieveReportByCompanyType" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select
+			<include refid="report_column_list"/>
+		from audit_company_view 
+		<where>
+			au_year = #{year,jdbcType=CHAR}
+			<if test="companyType != null and companyType > 0">
+				and t_id = #{companyType,jdbcType=INTEGER}
+			</if>
+			<if test="companyEconomyType != null and companyEconomyType > 0">
+				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and a_code  = #{areaCode,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+	
+	<!-- out of date method -->
+	<select id="retrieveReportByCompanyEconomyType" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select et_company_economy_type as report_name,
+				<include refid="report_column_list"/>
+				,et_id
+		from audit_company_view 
+		<where>
+				au_year = #{year,jdbcType=CHAR} 
+		</where>
+		group by et_id
+	</select>
+	
+	<!-- out of date method -->
+	<select id="retrieveReportByArea" parameterType="java.lang.String" resultMap="ReportViewModel">
+		select a_name as report_name,
+				<include refid="report_column_list"/>
+				,a_code
+		from audit_company_view 
+		<where>
+				au_year = #{year,jdbcType=CHAR} 
+		</where>
+		group by a_code
+	</select>
+	
+	<insert id="create_1">
+		create view audit_company_view as 
+		select	c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
+				c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_fax as c_company_fax, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, c.create_time as c_create_time, 
+				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
+				t.id as t_id, t.company_type as t_company_type, 
+				et.id as et_id, et.company_economy_type as et_company_economy_type,
+				p.id as p_id, p.company_property as p_company_property,
+				a.code as a_code, a.name as a_name,
+				au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+					au.company_handicap_total as au_company_handicap_total, au.company_predict_total as au_company_predict_total,
+					au.company_should_total as au_company_should_total, au.company_already_total as au_company_already_total, 
+					au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+					au.actual_amount as au_actual_amount,
+					au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
+					au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
+					au.is_delay_pay as au_is_delay_pay, 
+					au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
+					au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
+					au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+					au.remark as au_remark, 
+					au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+					au.reducion_apply_user as au_reducion_apply_user, 
+					au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+					au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+					au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+					au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year, 
+					au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+					au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+					au.is_active as au_is_active, au.version as au_version,
+				aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
+		from audit as au 
+			left join audit_process_status as aup on au.audit_process_status = aup.id 
+			left join company as c on au.company_id = c.id 
+			left join company_type as t on c.company_type = t.id left join company_economy_type as et on c.company_economy_type = et.id
+			left join company_property as p on c.company_property = p.id left join area as a on c.area_code = a.code
+		group by au.id
+		order by c.company_code;
+	</insert>
+	
+	
+</mapper>

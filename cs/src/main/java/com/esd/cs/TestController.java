@@ -957,4 +957,13 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	@RequestMapping("/73")
+	@ResponseBody
+	public Map<String, Object> test73() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ReportViewModel> entity = rvmService.getByCompanyType("2013");
+		map.put("entity", entity);
+		return map;
+	}
 }

@@ -80,32 +80,6 @@
 		<result column="c_area_code" jdbcType="CHAR" property="company.area.code" />
 	</resultMap>
 	
-	<resultMap id="ReportViewModel" type="com.esd.hesf.viewmodels.ReportViewModel">
-		<result column="report_name" property="reportName" jdbcType="VARCHAR" />
-		<result column="unit_num" property="unitNum" jdbcType="INTEGER" />
-		<result column="emp_total" property="empTotal" jdbcType="INTEGER" />
-		<result column="predict_total" property="predictTotal" jdbcType="INTEGER" />
-		<result column="un_audit" property="unAudit" jdbcType="INTEGER" />
-		<result column="un_reaudit" property="unReAudit" jdbcType="INTEGER" />
-		<result column="audit_ok" property="auditOk" jdbcType="INTEGER" />
-		<result column="unaudit_ok" property="unauditOk" jdbcType="INTEGER" />
-		<result column="should_total" property="shouldTotal" jdbcType="DECIMAL" />
-		<result column="already_total" property="alreadyTotal" jdbcType="DECIMAL" />
-		<result column="less_total" property="lessTotal" jdbcType="DECIMAL" />
-		<result column="amount_payable" property="amountPayable" jdbcType="DECIMAL" />
-		<result column="reduction_amount" property="reductionAmount" jdbcType="DECIMAL" />
-		<result column="actual_amount" property="actualAmount" jdbcType="DECIMAL" />
-		<result column="already_amount" property="alreadyAmount" jdbcType="DECIMAL" />
-		<result column="t_id" property="companyType" jdbcType="INTEGER" />
-		<result column="a_code" property="areaCode" jdbcType="VARCHAR" />
-		<result column="et_id" property="companyEconomyType" jdbcType="INTEGER" />
-	</resultMap>
-	
-	<resultMap id="AuditTempModel" type="com.esd.hesf.viewmodels.AuditTempModel">
-		<result column="num" property="num" jdbcType="INTEGER" />
-		<result column="aup_id" property="aupId" jdbcType="INTEGER" />
-	</resultMap>
-	
 	<sql id="Base_Column_List">
 		c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
 				c.company_name as c_company_name, c.company_legal as c_company_legal,
@@ -296,126 +270,6 @@
 		</trim>
 	</select>
 	
-	<sql id="report_column_list">
-		count(*) as unit_num,sum(au.company_emp_total) as emp_total, 
-		sum(au.company_should_total) as should_total, sum(au.company_already_total) as already_total,
-		sum(au.amount_payable) as amount_payable, sum(au.reduction_amount) as reduction_amount, 
-		sum(au.actual_amount) as actual_amount,sum(pay.payment_money)  as already_amount
-	</sql>
-	
-	<select id="retrieveReport" parameterType="map" resultMap="ReportViewModel">
-		select	
-			<if test="currentSearch != null and currentSearch == 'companyType'">
-				t.id as t_id, t.company_type as report_name,
-			</if>
-			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
-				et.id as et_id, et.company_economy_type as report_name,
-			</if>
-			<if test="currentSearch != null and currentSearch == 'area'">
-				a.code as a_code, a.name as report_name,
-			</if>
-			<include refid="report_column_list"/>
-		from 
-			<if test="currentSearch != null and currentSearch == 'companyType'">
-				company_type as t left join company as c on(t.id=c.company_type)
-			</if>
-			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
-				company_economy_type as et left join company as c on(et.id=c.company_economy_type)
-			</if>
-			<if test="currentSearch != null and currentSearch == 'area'">
-				area as a left join company as c on(a.code = c.area_code)
-			</if>
-			left join audit as au on (c.id=au.company_id)
-			left join payment as pay on(au.id = pay.audit_id)
-			<!-- default searching undeleted company data -->
-		where au.year = #{year,jdbcType=CHAR} and c.is_active = 0 
-			<if test="currentSearch != null and currentSearch == 'companyType'">
-				group by t.id 
-			</if>
-			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
-				group by et.id 
-			</if> 
-			<if test="currentSearch != null and currentSearch == 'area'">
-				group by a.code 
-			</if>
-			
-	</select>
-	
-	<!-- retrieve company number of different audit process status -->
-	<select id="retrieveAupCount" parameterType="map" resultMap="AuditTempModel">
-		select  au.audit_process_status as aup_id,count(au.audit_process_status ) as num
-		from 
-			<if test="currentSearch != null and currentSearch == 'companyType'">
-				company_type as t left join company as c on(t.id=c.company_type)
-			</if>
-			<if test="currentSearch != null and currentSearch == 'companyEconomyType'">
-				company_economy_type as et left join company as c on(et.id=c.company_economy_type) 
-			</if>
-			<if test="currentSearch != null and currentSearch == 'area'">
-				area as a left join company as c on(a.code = c.area_code)
-			</if>
-			left join audit as au on (c.id=au.company_id)
-			left join payment as pay on(au.id = pay.audit_id)
-		<where>
-			<!-- default searching undeleted company data -->
-			au.year = #{year,jdbcType=CHAR} and c.is_active = 0 
-			<if test="companyType != null and companyType > 0">
-				and t.id = #{companyType,jdbcType=INTEGER}
-			</if>
-			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and et.id = #{companyEconomyType,jdbcType=INTEGER} 
-			</if>
-			<if test="area != null and area != ''">
-				and a.code  = #{area,jdbcType=CHAR}
-			</if>
-		
-		</where>
-		group by au.audit_process_status
-	</select>
-	
-	<!-- out of date method -->
-	<select id="retrieveReportByCompanyType" parameterType="java.lang.String" resultMap="ReportViewModel">
-		select
-			<include refid="report_column_list"/>
-		from audit_company_view 
-		<where>
-			au_year = #{year,jdbcType=CHAR}
-			<if test="companyType != null and companyType > 0">
-				and t_id = #{companyType,jdbcType=INTEGER}
-			</if>
-			<if test="companyEconomyType != null and companyEconomyType > 0">
-				and et_id = #{companyEconomyType,jdbcType=INTEGER} 
-			</if>
-			<if test="areaCode != null and areaCode != ''">
-				and a_code  = #{areaCode,jdbcType=CHAR}
-			</if>
-		</where>
-	</select>
-	
-	<!-- out of date method -->
-	<select id="retrieveReportByCompanyEconomyType" parameterType="java.lang.String" resultMap="ReportViewModel">
-		select et_company_economy_type as report_name,
-				<include refid="report_column_list"/>
-				,et_id
-		from audit_company_view 
-		<where>
-				au_year = #{year,jdbcType=CHAR} 
-		</where>
-		group by et_id
-	</select>
-	
-	<!-- out of date method -->
-	<select id="retrieveReportByArea" parameterType="java.lang.String" resultMap="ReportViewModel">
-		select a_name as report_name,
-				<include refid="report_column_list"/>
-				,a_code
-		from audit_company_view 
-		<where>
-				au_year = #{year,jdbcType=CHAR} 
-		</where>
-		group by a_code
-	</select>
-	
 	<insert id="create_5">
 		create view audit_company_view as 
 		select	c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
@@ -463,6 +317,7 @@
 		order by c.company_code;
 	</insert>
 	
+	<!-- out of date method -->
 	<insert id="create_4">
 		create view audit_company_view as 
 		select	c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
