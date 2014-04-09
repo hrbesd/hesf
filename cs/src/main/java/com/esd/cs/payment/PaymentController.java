@@ -323,17 +323,24 @@ public class PaymentController {
 		// 更新缴款明细
 		paymentService.update(queryPayment);
 
+		// 判断缴款明细是否作废, 如果作废的话, 则不执行下面的更新步骤
+		if (queryPayment.getBillObsolete()) {
+			return true;
+		}
+		/**
+		 * 以下执行更新状态步骤
+		 */
 		// 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
 		Integer auditProcessStatus;
-		if (payment.getAuditYear() != null
-				&& !"".equals(payment.getAuditYear())) {
+		if (queryPayment.getAuditYear() != null
+				&& !"".equals(queryPayment.getAuditYear())) {
 			// 1-1查找对应审核年份的已交款总金额, 来判断需要更新的状态
-			BigDecimal alreadyPayment = paymentService.getEffPaid(payment
-					.getAuditYear(), payment.getYear(), payment
+			BigDecimal alreadyPayment = paymentService.getEffPaid(queryPayment
+					.getAuditYear(), queryPayment.getYear(), queryPayment
 					.getPaymentCompany().getId());
 			// 1-2找到对应的账目
 			Accounts accounts = accountsService.getOneByCompanyAuditYear(
-					payment.getAuditYear(), payment.getYear(), payment
+					queryPayment.getAuditYear(), queryPayment.getYear(), queryPayment
 							.getPaymentCompany().getId());
 			// 1-3应交款==已交款
 			if (accounts.getTotalMoney().compareTo(alreadyPayment) == 0) {
@@ -349,7 +356,7 @@ public class PaymentController {
 				Boolean b2 = accountsService.update(accounts);
 				return b2;
 			} else {
-			// 1-4应交款 ≠ 已交款
+				// 1-4应交款 ≠ 已交款
 				auditProcessStatus = Constants.PROCESS_STATIC_BFJK;
 				Audit audit = auditService.getByPrimaryKey(accounts.getAudit()
 						.getId());
@@ -366,14 +373,14 @@ public class PaymentController {
 			// 2-如果不存在审核年份
 			// 2-1 查找公司对应账目年份的已交款总金额, 来判断需要更新的状态
 			BigDecimal alreadyPayment = paymentService.getEffPaid(null,
-					payment.getYear(), payment.getPaymentCompany().getId());
+					queryPayment.getYear(), queryPayment.getPaymentCompany().getId());
 			// 2-2查找该公司 该账目年度 应交款总额
 			BigDecimal paymentAmount = accountsService.getCompanyAuditYear(
-					null, payment.getYear(), payment.getPaymentCompany()
+					null, queryPayment.getYear(), queryPayment.getPaymentCompany()
 							.getId());
 			// 2-3查找公司对应账目年限的所有账目列表
 			List<Accounts> acList = accountsService.getCompanyAccount(
-					payment.getYear(), payment.getPaymentCompany().getId());
+					queryPayment.getYear(), queryPayment.getPaymentCompany().getId());
 			// 2-4 应交款==已交款
 			if (paymentAmount.compareTo(alreadyPayment) == 0) {
 				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
@@ -390,7 +397,7 @@ public class PaymentController {
 					audit.setAuditProcessStatus(new AuditProcessStatus(
 							auditProcessStatus));
 					// 设置补审年份
-					audit.setSupplementYear(payment.getYear());
+					audit.setSupplementYear(queryPayment.getYear());
 					auditService.update(audit);
 					// 2-4-3 更新账目
 					ac.setAuditProcessStatus(new AuditProcessStatus(
@@ -417,7 +424,7 @@ public class PaymentController {
 					audit.setAuditProcessStatus(new AuditProcessStatus(
 							auditProcessStatus));
 					// 设置补审年份
-					audit.setSupplementYear(payment.getYear());
+					audit.setSupplementYear(queryPayment.getYear());
 					auditService.update(audit);
 					// 2-5-3 更新账目
 					ac.setAuditProcessStatus(new AuditProcessStatus(
@@ -430,17 +437,17 @@ public class PaymentController {
 		}
 	}
 
-//	public static void main(String[] args) {
-//		BigDecimal b1 = new BigDecimal("-0.01");
-//		BigDecimal b2 = new BigDecimal("0.00");
-//		// System.out.println(b1.compareTo(b2));
-//		String s = "2012";
-//		String[] ar = s.split(",");
-//		// System.out.println(ar.length);
-//		for (String t : ar) {
-//			System.out.println(t);
-//		}
-//	}
+	// public static void main(String[] args) {
+	// BigDecimal b1 = new BigDecimal("-0.01");
+	// BigDecimal b2 = new BigDecimal("0.00");
+	// // System.out.println(b1.compareTo(b2));
+	// String s = "2012";
+	// String[] ar = s.split(",");
+	// // System.out.println(ar.length);
+	// for (String t : ar) {
+	// System.out.println(t);
+	// }
+	// }
 
 	/**
 	 * 查看
@@ -463,15 +470,17 @@ public class PaymentController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/add/{auditYear}/{accountsYear}/{companyId}/{lessPayAmount}", method = RequestMethod.GET)
+	@RequestMapping(value = "/add/{auditYear}/{accountsYear}/{lessPayAmount}/{companyId}", method = RequestMethod.GET)
 	public ModelAndView addGet(
 			@PathVariable(value = "auditYear") String auditYear,
 			@PathVariable(value = "accountsYear") String accountsYear,
 			@PathVariable(value = "companyId") Integer companyId,
-			@PathVariable(value = "lessPayAmount") BigDecimal lessPayAmount,
+			@PathVariable(value = "lessPayAmount") String slessPayAmount,
 			HttpSession session) {
+		BigDecimal lessPayAmount = new BigDecimal(slessPayAmount);
 		// 待缴金额(应缴-已缴)
-		logger.debug("lessPayAmount{}", lessPayAmount);
+		logger.debug("lessPayAmount:{},slessPayAmount:{}", lessPayAmount,
+				slessPayAmount);
 		Payment payment = new Payment();
 		Company company = companyService.getByPrimaryKey(companyId);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);

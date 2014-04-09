@@ -146,7 +146,7 @@
 	payment.insert = function() {
 		var lessPayAmount = $('#lessPayAmount').html();
 		var auditYear = $("input[name='rdoAuditYear']:checked").val();
-		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/"+auditYear+"/${entity.accountsYear}/${entity.companyId}/" + lessPayAmount);
+		esd.common.openWindow("#add", "新建缴款", 750, 350, "${contextPath}/security/payment/add/"+auditYear+"/${entity.accountsYear}/" + lessPayAmount+"/${entity.companyId}");
 	};
 	payment.confirm = function(id) {
 		esd.common.openWindow("#add", "确认缴款", 750, 350, "${contextPath}/security/payment/confirm/" + id);

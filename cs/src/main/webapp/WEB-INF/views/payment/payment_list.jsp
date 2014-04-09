@@ -52,7 +52,7 @@
 			width : 150,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var v = '<a href="javascript:payment.open(' + row.id + ');" >查看</a>';
+				var v = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +');" >查看</a>';
 				var c = '<a href="javascript:void(0);" >待初审</a>';
 				var f = '<a href="javascript:void(0);" >待复审</a>';
 				var d = '<a href="javascript:void(0);" >已达标</a>';
