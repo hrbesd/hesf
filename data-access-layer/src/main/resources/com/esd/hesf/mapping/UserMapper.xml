@@ -210,10 +210,10 @@
 					and u.user_email like concat('%',#{user.userEmail},'%')
 				</if>
 				<if test="user.userMobile != null and user.userMobile != ''">
-					and u.user_mobile = #{user.userMobile} 
+					and u.user_mobile like concat('%',#{user.userMobile},'%')  
 				</if>
 				<if test="user.userPhone != null and user.userPhone != ''">
-					and u.user_phone #{user.userPhone} 
+					and u.user_phone like concat('%',#{user.userPhone}, '%')  
 				</if>
 				<if test="user.userGroup != null">
 					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
@@ -223,9 +223,14 @@
 				<if test="user.userStatus != null">
 					and u.user_status = #{user.userStatus}
 				</if>
-				<if test="user.isActive != null">
-					and u.is_active = #{user.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="user.isActive != null">
+						and u.is_active = #{user.isActive, jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and u.is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
 		</trim>
 		order by u.create_time desc 
@@ -248,10 +253,10 @@
 					and u.user_email like concat('%',#{user.userEmail},'%')
 				</if>
 				<if test="user.userMobile != null and user.userMobile != ''">
-					and u.user_mobile = #{user.userMobile} 
+					and u.user_mobile like concat('%',#{user.userMobile},'%')  
 				</if>
 				<if test="user.userPhone != null and user.userPhone != ''">
-					and u.user_phone #{user.userPhone} 
+					and u.user_phone like concat('%',#{user.userPhone}, '%')  
 				</if>
 				<if test="user.userGroup != null and user.userGroup != ''">
 					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
@@ -261,9 +266,14 @@
 				<if test="user.userStatus != null">
 					and u.user_status = #{user.userStatus}
 				</if>
-				<if test="user.isActive != null">
-					and u.is_active = #{user.isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="user.isActive != null">
+						and u.is_active = #{user.isActive, jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and u.is_active = 0  
+					</otherwise>
+				</choose>
 			</if>
 		</trim>
 	</select>
