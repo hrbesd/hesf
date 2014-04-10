@@ -102,25 +102,25 @@ public class ReportViewServiceImpl implements ReportViewService {
 				}
 			}
 		}
-		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
-		// 清空该字段 值
-		map.put(SEARCH_KEY_COMPANY_TYPE, null);
-		map.put("start", Constants.START);
-		map.put("size", Constants.SIZE);
-		List<CompanyType> tList = ctDao.retrieveByPage(map);
-		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-		for (CompanyType t : tList) {
-			ReportViewModel r = new ReportViewModel();
-			r.setCompanyType(t.getId());
-			r.setReportName(t.getCompanyType());
-			tempList.add(r);
-		}
-		// 补全其余没有数据的类别
-		for (ReportViewModel t : tempList) {
-			if (!list.contains(t)) {
-				list.add(t);
-			}
-		}
+//		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
+//		// 清空该字段 值
+//		map.put(SEARCH_KEY_COMPANY_TYPE, null);
+//		map.put("start", Constants.START);
+//		map.put("size", Constants.SIZE);
+//		List<CompanyType> tList = ctDao.retrieveByPage(map);
+//		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//		for (CompanyType t : tList) {
+//			ReportViewModel r = new ReportViewModel();
+//			r.setCompanyType(t.getId());
+//			r.setReportName(t.getCompanyType());
+//			tempList.add(r);
+//		}
+//		// 补全其余没有数据的类别
+//		for (ReportViewModel t : tempList) {
+//			if (!list.contains(t)) {
+//				list.add(t);
+//			}
+//		}
 		// System.out.println("cost time: " + (System.currentTimeMillis() -
 		// now));
 		return list;
@@ -195,25 +195,25 @@ public class ReportViewServiceImpl implements ReportViewService {
 			// BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
 			// rvm.setAlreadyAmount(alreadyAmount);
 		}
-		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
-		// 清空该字段 值
-		map.put(SEARCH_KEY_AREA, null);
-		map.put("start", Constants.START);
-		map.put("size", Constants.SIZE);
-		List<Area> tList = aDao.retrieveHLJ();
-		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-		for (Area t : tList) {
-			ReportViewModel r = new ReportViewModel();
-			r.setAreaCode(t.getCode());
-			r.setReportName(t.getName());
-			tempList.add(r);
-		}
-		// 补全其余没有数据的类别
-		for (ReportViewModel t : tempList) {
-			if (!list.contains(t)) {
-				list.add(t);
-			}
-		}
+//		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
+//		// 清空该字段 值
+//		map.put(SEARCH_KEY_AREA, null);
+//		map.put("start", Constants.START);
+//		map.put("size", Constants.SIZE);
+//		List<Area> tList = aDao.retrieveHLJ();
+//		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//		for (Area t : tList) {
+//			ReportViewModel r = new ReportViewModel();
+//			r.setAreaCode(t.getCode());
+//			r.setReportName(t.getName());
+//			tempList.add(r);
+//		}
+//		// 补全其余没有数据的类别
+//		for (ReportViewModel t : tempList) {
+//			if (!list.contains(t)) {
+//				list.add(t);
+//			}
+//		}
 		// System.out.println("cost time: " + (System.currentTimeMillis() -
 		// now));
 		return list;
@@ -290,25 +290,25 @@ public class ReportViewServiceImpl implements ReportViewService {
 			// BigDecimal alreadyAmount = pDao.retrieveByCompanyAndYear(map);
 			// rvm.setAlreadyAmount(alreadyAmount);
 		}
-		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
-		// 清空该字段 值
-		map.put(SEARCH_KEY_COMPANY_ECONOMY_TYPE, null);
-		map.put("start", Constants.START);
-		map.put("size", Constants.SIZE);
-		List<CompanyEconomyType> tList = cetDao.retrieveByPage(map);
-		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
-		for (CompanyEconomyType t : tList) {
-			ReportViewModel r = new ReportViewModel();
-			r.setCompanyEconomyType(t.getId());
-			r.setReportName(t.getCompanyEconomyType());
-			tempList.add(r);
-		}
-		// 补全其余没有数据的类别
-		for (ReportViewModel t : tempList) {
-			if (!list.contains(t)) {
-				list.add(t);
-			}
-		}
+//		// 3-使用最笨的方法, 将其余没有数据的公司类型补全
+//		// 清空该字段 值
+//		map.put(SEARCH_KEY_COMPANY_ECONOMY_TYPE, null);
+//		map.put("start", Constants.START);
+//		map.put("size", Constants.SIZE);
+//		List<CompanyEconomyType> tList = cetDao.retrieveByPage(map);
+//		List<ReportViewModel> tempList = new ArrayList<ReportViewModel>();
+//		for (CompanyEconomyType t : tList) {
+//			ReportViewModel r = new ReportViewModel();
+//			r.setCompanyEconomyType(t.getId());
+//			r.setReportName(t.getCompanyEconomyType());
+//			tempList.add(r);
+//		}
+//		// 补全其余没有数据的类别
+//		for (ReportViewModel t : tempList) {
+//			if (!list.contains(t)) {
+//				list.add(t);
+//			}
+//		}
 		// System.out.println("cost time: " + (System.currentTimeMillis() -
 		// now));
 		return list;

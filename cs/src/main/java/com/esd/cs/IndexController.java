@@ -117,6 +117,10 @@ public class IndexController {
 				// 登录成功获得审核年度
 				String year = auditParameterService.getLastestYear();
 				session.setAttribute(Constants.YEAR, year);
+				//如果为查询用户组用户, 则跳转到查询页面
+				if(user.getUserGroup().getId().equals(5)){
+					return new ModelAndView("redirect:/security/query/audit/listforcompany");
+				}
 				return new ModelAndView("redirect:/security/index");
 			} else {
 				redirectAttributes.addFlashAttribute("username", userName);

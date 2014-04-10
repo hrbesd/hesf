@@ -132,7 +132,7 @@ public class QueryAuditController {
 	public ModelAndView queryAuditListForQueryer(HttpServletRequest request, HttpSession session) {
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
-		return new ModelAndView("query/audit_for_queryer");
+		return new ModelAndView("audit_for_queryer");
 	}
 
 	/**
@@ -170,12 +170,8 @@ public class QueryAuditController {
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
 				map.put("companyId", it.getCompany().getId());// id
-				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
-				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("companyLegal", it.getCompany().getCompanyLegal());
 				map.put("companyAddress", it.getCompany().getCompanyAddress());
-				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
 				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());// 审核状态
 				list.add(map);
 			}

@@ -56,27 +56,28 @@ padding: 40px 0 0 0;
 </head>
 <body style="background-color: #E9E9E9;">
 	<h2 class="bbc-name bbc-shop" >残疾人就业保障金管理系统</h2>
-	<h2 style="font-family: 'Microsoft YaHei';color: #0074A7; text-align: center;" >Handicapped Employment Security Fund</h2>
+	<h2 style="color: #0074A7; text-align: center;" >Handicapped Employment Security Fund</h2>
 	<div id="main" style=" display: none;">
 		<div id="win" class="easyui-window" title="登录 v1.0-Bate" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
 			<form id="loginform" action="${contextPath}/login" method="post" style="padding-left: 80px; padding-top: 30px;">
 				<div style="text-align: left;">
 					<div style="color: red;" id="message">${message}</div>
 					<p>
-						用户名: <input name="username" type="text" style="width: 160px;" value="${username }" />
+						<span style="display:-moz-inline-block;display:inline-block;width:50px;">用户名:</span><input name="username" type="text" style="width: 140px;padding-left: 5px;" value="${username }" />
 					</p>
 					<p>
-						密&nbsp;&nbsp;&nbsp;码: <input name="password" type="password" style="width: 160px;" value="${password }" />
+						<span style="display:-moz-inline-block;display:inline-block;width:50px;">密&nbsp;&nbsp;&nbsp;码:</span><input name="password" type="password" style="width: 140px;padding-left: 5px;" value="${password }" />
 					</p>
 					<div>
-						<div style="height: 30px; width: 230px;">
-							验证码: <input name="checkCode" type="text" style="width: 60px; " /> <img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" />
+						<div style="height: 30px; width: 216px;">
+							<span style="display:-moz-inline-block;display:inline-block;width:50px;">验证码:</span><input name="checkCode" type="text" style="width: 60px; " /> 
+							<img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" style="width:90px;height:30px;"/>
 						</div>
 					</div>
 				</div>
 				<div style="padding-left: 40px;">
-					<p>
-						<a href="javascript:getimgcode();">看不清验证码</a>
+					<p style="line-height:20px;">
+						<a href="javascript:getimgcode();" style="text-decoration:none;font-size:13px;margin-left:10px;">看不清验证码</a>
 					</p>
 					<a id="login" href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok">登录</a>
 				</div>
