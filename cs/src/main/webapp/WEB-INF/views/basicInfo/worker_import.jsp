@@ -68,9 +68,11 @@
 				<span class="red_notice">*</span>文件大小不能超过2MB。
 			</p>
 			<p>
-				<span class="red_notice">*</span> 文件格式必须是：.xls ,.xlsx格式。
+				<span class="red_notice">*</span> 文件必须是：xls, xlsx类型, 格式如下图.
 			</p>
-
+	 		<p>
+				<img src="${contextPath }/images/example_excelformat.jpg" />
+			</p>
 		</div>
 	</form>
 		<div style="margin: 65px auto 20px;text-align: center;">
