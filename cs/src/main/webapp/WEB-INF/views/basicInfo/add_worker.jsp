@@ -263,7 +263,7 @@
 	<!-- 数据表格 -->
 	<table id="company_information" align="center">
 		<tr>
-			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">1212增加残疾职工</span>
+			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
 			</td>
 		</tr>
 		<tr>
@@ -278,7 +278,7 @@
 		</tr>
 		<tr>
 			<td class="">姓名(<label class="red_notice"> *</label>):</td>
-			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="" />
+			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
 			</td>
 			<td class="">性别:</td>
 			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
