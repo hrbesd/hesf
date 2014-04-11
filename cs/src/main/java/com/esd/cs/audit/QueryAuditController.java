@@ -132,7 +132,7 @@ public class QueryAuditController {
 	public ModelAndView queryAuditListForQueryer(HttpServletRequest request, HttpSession session) {
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
-		return new ModelAndView("audit_for_queryer");
+		return new ModelAndView("query/audit_for_queryer");
 	}
 
 	/**

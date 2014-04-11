@@ -2,8 +2,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="${contextPath }/images/logo.ico" />
+<title>残疾人就业保障金</title>
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/css/cs.css" />
+<script type="text/javascript" src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${contextPath}/js/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/menu.js"></script>
 <script type="text/javascript">
 	var queryAudit = {};
 	
@@ -23,7 +34,7 @@
 		
 		//年份
 		$('#year').combobox({
-			url : 'parameter/getyears',
+			url : '${contextPath}/security/parameter/getyears',
 			valueField : 'id',
 			textField : 'text',
 			onSelect : function(){
@@ -106,50 +117,18 @@
 		esd.common
 				.datagrid(
 						"#queryAuditGrid",
-						"query/audit/listforcompany",
+						"${contextPath}/security/query/audit/listforcompany",
 						"#queryAuditBoolbar",
 						[ [
 								{
-									field : 'companyCode',
-									title : '档案编码',
-									width : 80
-								},
-								{
-									field : 'companyTaxCode',
-									title : '税务编码',
-									width : 150
-								},
-								{
-									field : 'companyId',
-									hidden : true
-								},
-								{
 									field : 'companyName',
 									title : '企业名称',
-									width : 300,
-									formatter : function(value, row, index) {
-										var c = '<a href="javascript:void(0);" onclick="queryAudit.openViewCompany('
-												+ row.companyId
-												+ ')">'
-												+ value
-												+ '</a>';
-										return c;
-									}
-								},{
-									field : 'companyLegal',
-									title : '企业法人',
-									width : 100
+									width : 200
 								},{
 									field : 'companyAddress',
 									title : '地址',
 									width : 250
-								},
-								{
-									field : 'companyPhone',
-									title : '联系电话',
-									width : 110
-								},
-								{
+								},{
 									field : 'auditProcessStatus',
 									title : '审核状态',
 									width : 100,
@@ -219,33 +198,46 @@
 	});
 </script>
 
-
-
+</head>
+<body class="easyui-layout">
+	
+<div id="super" data-options="region:'center',border:true,title:'残疾人就业保障金'">
+	<div id="tab-tools" style="background-color: #E0ECFF;width:100%;text-align:right;border-bottom: 1px solid #95B8E7;">
+		<span>登录用户&nbsp;:&nbsp;${sessionScope.userName}</span>
+		 <a href="javascript:window.parent.location.href = '/cs/security/index'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-help'">帮助</a>  
+		 <a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" >退出</a>
+	</div>
+	
 <!-- 数据表格 -->
-<table id="queryAuditGrid"></table>
+	<table id="queryAuditGrid"></table>
 
 <!-- 自定义菜单 -->
-<div id="queryAuditBoolbar">
-	<div class="paramsTab">
-		<table id="queryAuditParams" style="width:100%">
-			<tr>
-				<td style="width:30%;text-align:right;" >年度:<input id="year" class="easyui-combobox" style="width:100%;" value="${nowYear}"
-					data-options="height:30,editable:false" />
-				</td>
-				<td style="width:25%;text-align:left;"><input class="longtext inputElement"
-					id="companyName" style="width:100%;color:gray;"/>
-				</td>
-				<td style="width:28%;text-align:left;"><input id="companyAddress"
-					class="longtext inputElement" type="text" style="margin-left:2px;width:100%;color:gray;"/></td>
-				<td colspan="3" style="text-align:left;">
-					<div class="findBut">
-						<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton"
-							iconCls="icon-search">查询</a>
-					</div>
-				</td>
-			</tr>
-		</table>
+	<div id="queryAuditBoolbar">
+		<div class="paramsTab" style="width:100%;">
+			<table id="queryAuditParams" style="width:100%">
+				<tr>
+					<td style="width:30%;text-align:right;" >年度:<input id="year" class="easyui-combobox" style="width:100%;" value="${nowYear}"
+						data-options="height:42,editable:false" />
+					</td>
+					<td style="width:25%;text-align:left;height:70px;"><input class="longtext inputElement"
+						id="companyName" style="width:100%;color:gray;height:40px;padding-left: 5px;"/>
+					</td>
+					<td style="width:28%;text-align:left;height:70px;"><input id="companyAddress"
+						class="longtext inputElement" type="text" style="margin-left:5px;width:100%;color:gray;height:40px;padding-left: 5px;"/></td>
+					<td colspan="3" style="text-align:left;">
+						<div class="findBut">
+							<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton"
+								iconCls="icon-search">查询</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
+	
 </div>
 
 <div id="viewCompanyPanel"></div>
+
+</body>
+</html>
