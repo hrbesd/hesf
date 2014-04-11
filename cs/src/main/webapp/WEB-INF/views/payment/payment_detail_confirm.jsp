@@ -18,8 +18,9 @@
 			if (r) {
 				esd.common.syncPostSubmit("#add_form", function(data) {
 					if (data == true) {
-							payment.add.back();
-							payment.getBalance();
+						//先关闭弹出窗, 防止反复确认,造成数据重复提交
+						payment.add.back();
+						payment.getBalance();
 						$.messager.alert('消息', '确认缴款成功', 'info', function() {
 							//更新显示的已缴金额, 代缴金额
 							//重载 缴款页面
