@@ -53,11 +53,11 @@
 			data : params,
 			success : function(data) {
 				if (data == true) {
-					$.messager.alert('消息', '添加成功', 'info', function(data) {
+					$.messager.alert('消息', '添加成功!', 'info', function(data) {
 						esd.common.defaultOpenWindowClose();
 					});
 				} else {
-					$.messager.alert('消息', '添加失败', 'info');
+					$.messager.alert('消息', '添加失败,审核数据可能已经存在了!', 'info');
 				}
 			},
 			dataType : "json",

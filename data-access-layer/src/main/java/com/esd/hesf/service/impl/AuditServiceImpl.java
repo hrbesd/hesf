@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,8 @@ import com.esd.hesf.service.HesfException;
 @Service
 public class AuditServiceImpl implements AuditService {
 
+	public static final Logger log = LoggerFactory
+			.getLogger(AuditServiceImpl.class);
 	@Autowired
 	private AuditDao dao;
 
@@ -109,7 +113,7 @@ public class AuditServiceImpl implements AuditService {
 		map.put("companyId", company.getId());
 		Audit t = dao.retrieveByYearAndCompanyId(map);
 		if (t != null) {
-			new HesfException("该公司 " + year + " 年的审核数据已经存在!").printStackTrace();
+			log.debug("该公司 " + year + " 年的审核数据已经存在!");
 			return false;
 		}
 		t = new Audit();
