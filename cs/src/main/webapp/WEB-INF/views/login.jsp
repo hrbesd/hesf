@@ -70,7 +70,7 @@ padding: 40px 0 0 0;
 					</p>
 					<div>
 						<div style="height: 30px; width: 216px;">
-							<span style="display:-moz-inline-block;display:inline-block;width:50px;">验证码:</span><input name="checkCode" type="text" style="width: 60px; " /> 
+							<span style="display:-moz-inline-block;display:inline-block;width:50px;">验证码:</span><input name="checkCode" type="text" style="width: 60px;padding-left:5px; " /> 
 							<img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" style="width:90px;height:30px;"/>
 						</div>
 					</div>
@@ -79,7 +79,7 @@ padding: 40px 0 0 0;
 					<p style="line-height:20px;">
 						<a href="javascript:getimgcode();" style="text-decoration:none;font-size:13px;margin-left:10px;">看不清验证码</a>
 					</p>
-					<a id="login" href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok">登录</a>
+					<a id="login" href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok" style="margin-top:0px;margin-bottom:0px;">登录</a>
 				</div>
 			</form>
 		</div>
