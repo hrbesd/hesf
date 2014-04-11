@@ -18,10 +18,10 @@
 			if (r) {
 				esd.common.syncPostSubmit("#add_form", function(data) {
 					if (data == true) {
-						$.messager.alert('消息', '确认缴款成功', 'info', function() {
 							payment.add.back();
-							//更新显示的已缴金额, 代缴金额
 							payment.getBalance();
+						$.messager.alert('消息', '确认缴款成功', 'info', function() {
+							//更新显示的已缴金额, 代缴金额
 							//重载 缴款页面
 							$("#payment_datagrid").datagrid('reload');
 							$("#paymentList_datagrid").datagrid('reload');
@@ -34,6 +34,8 @@
 		});
 
 	};
+	
+	
 	payment.add.back = function() {
 		$('#add').window("close");
 	};
