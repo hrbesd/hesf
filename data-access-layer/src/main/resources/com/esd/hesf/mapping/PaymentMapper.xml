@@ -464,7 +464,7 @@
 				and substring(pay.payment_date,1,10) &lt;= #{endDate}
 			</if>
 		</trim>
-		order by c.company_code
+		order by pay.create_time desc
 		limit #{start}, #{size}
 	</select>
 

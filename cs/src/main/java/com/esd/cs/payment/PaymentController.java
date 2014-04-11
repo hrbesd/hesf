@@ -152,7 +152,7 @@ public class PaymentController {
 		entity.put("companyPredictTotal",
 				String.valueOf(audit.getCompanyPredictTotal()));
 
-		// 获得 此账目涵盖的审计年度s
+		// 获得 此账目涵盖的审计年度(已交款, 达标的除外)
 		String[] auditYears = accountsService.getAuditYears(year, companyId);
 		// if(auditYears!=null){
 		// String years = "";
@@ -437,17 +437,18 @@ public class PaymentController {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// BigDecimal b1 = new BigDecimal("-0.01");
-	// BigDecimal b2 = new BigDecimal("0.00");
-	// // System.out.println(b1.compareTo(b2));
-	// String s = "2012";
-	// String[] ar = s.split(",");
-	// // System.out.println(ar.length);
-	// for (String t : ar) {
-	// System.out.println(t);
-	// }
-	// }
+//	 public static void main(String[] args) {
+//	 BigDecimal b1 = new BigDecimal("-0.01");
+//	 BigDecimal b2 = new BigDecimal("0.00");
+//	 // System.out.println(b1.compareTo(b2));
+//	 String s = "2012";
+//	 String[] ar = s.split(",");
+//	 // System.out.println(ar.length);
+//	 for (String t : ar) {
+//	 System.out.println(t);
+//	 }
+//		 System.out.println(Integer.MAX_VALUE);
+//	 }
 
 	/**
 	 * 查看
@@ -639,7 +640,10 @@ public class PaymentController {
 					.getPaymentExceptional());
 			map.put("paymentType", it.getPaymentType().getText());
 			map.put("userRealName", it.getPaymentPerson().getUserRealName());
-			map.put("remark", it.getRemark());
+			if(it.getAuditYear()==null||"".equals(it.getAuditYear())){
+				it.setAuditYear("-");
+			}
+			map.put("auditYear", it.getAuditYear());
 			list.add(map);
 		}
 		entity.put("rows", list);
@@ -666,10 +670,31 @@ public class PaymentController {
 			alreadyPayment = new BigDecimal("0.00");
 		}
 		Map<String, Object> entity = new HashMap<String, Object>();
+		//应缴金额
 		entity.put("payAmount", df.format(payAmount));
+		//已缴金额
 		entity.put("alreadyPayAmount", df.format(alreadyPayment));
+		//少缴金额
 		entity.put("lessPayAmount",
 				df.format(payAmount.subtract(alreadyPayment)));
+		if(auditYear != null){
+			//根据审核年份和公司id 获得对应的审核对象
+			Audit audit = auditService.getByPrimaryKey(auditYear, companyId);
+			//公司总人数
+			entity.put("companyEmpTotal", audit.getCompanyEmpTotal());
+			//公司应安排人数
+			entity.put("companyShouldTotal", df.format(audit.getCompanyShouldTotal()));
+			//公司已安排人数
+			entity.put("companyAlreadyTotal", audit.getCompanyAlreadyTotal());
+			//已录入数
+			entity.put("companyHandicapTotal", audit.getCompanyHandicapTotal());
+			//预定人数
+			entity.put("companyPredictTotal", audit.getCompanyPredictTotal());
+			
+			//年审参数
+			AuditParameter ap = auditParameterService.getByYear(auditYear);
+			entity.put("averageSalary", ap.getAverageSalary());
+		}
 		return entity;
 	}
 

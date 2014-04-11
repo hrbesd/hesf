@@ -98,7 +98,7 @@ basicFile.addCompany = function() {
 	esd.common.syncPostSubmit("#addComapnyForm", function(data) {
 		if (data == true) {
 			
-			$.messager.alert('消息', '单位信息增加成功。', 'info');
+			$.messager.alert('消息', '单位信息增加成功, 可以直接进行初审啦!', 'info');
 			esd.common.defaultOpenWindowClose();
 			$('#company_grid').datagrid("reload");
 		} else {

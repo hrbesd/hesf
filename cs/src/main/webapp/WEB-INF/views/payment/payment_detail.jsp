@@ -112,6 +112,14 @@
 				$('#payAmount').html(data.payAmount);	//应缴
 				$('#alreadyPayAmount').html(data.alreadyPayAmount);	//已缴
 				$('#lessPayAmount').html(data.lessPayAmount);//未缴
+				if(rdo_value != 'all'){
+					$('#companyEmpTotal').html(data.companyEmpTotal);	//员工总数
+					$('#averageSalary').html(data.averageSalary);	//平均工资
+					$('#companyShouldTotal').html(data.companyShouldTotal);	//应安排
+					$('#companyAlreadyTotal').html(data.companyAlreadyTotal);	//已安排
+					$('#companyHandicapTotal').html(data.companyHandicapTotal);	//已录入
+					$('#companyPredictTotal').html(data.companyPredictTotal);	//预定人数
+				}
 			//	$('#readyPayments').html(data.readyPayments);
 			},
 			error : function() {
@@ -189,7 +197,8 @@
 		}, {
 			field : 'billPrintDate',
 			title : '出票日期',
-			width : 75
+			width : 80,
+			align : 'center'
 		}, {
 			field : 'paymentMoney',
 			title : '缴费金额',
@@ -206,24 +215,27 @@
 		}, {
 			field : 'paymentType',
 			title : '缴费方式',
-			width : 60
+			width : 70,
+			align : 'center'
 		}, {
 			field : 'paymentBill',
 			title : '票据号',
-			width : 80
+			width : 90
 		}, {
 			field : 'billExchangeDate',
 			title : '返票日期',
-			width : 75
+			width : 75,
+			align : 'center'
 		}, {
 			field : 'paymentExceptional',
 			title : '状态',
-			width : 60
+			width : 60,
+			align : 'center'
 		}, {
 			field : 'billReturn',
 			title : '返',
 			align : 'center',
-			width : 20,
+			width : 25,
 			formatter : function(value, row, index) {
 				val = '<strong style="color: orange;" >F</strong>';
 				if (value == true) {
@@ -234,7 +246,7 @@
 		}, {
 			field : 'billObsolete',
 			title : '废',
-			width : 20,
+			width : 25,
 			align : 'center',
 			formatter : function(value, row, index) {
 				val = '<strong style="color: orange;" >F</strong>';
@@ -244,17 +256,19 @@
 				return val;
 			}
 		}, {
-			field : 'remark',
-			title : '备注',
-			width : 150
+			field : 'auditYear',
+			title : '审核年度',
+			width : 50,
+			align : 'center'
 		}, {
 			field : 'userRealName',
 			title : '收款人',
-			width : 60
+			width : 60,
+			align : 'center'
 		}, {
 			field : 'action',
 			title : '操作',
-			width : 30,
+			width : 40,
 			align : 'center',
 			formatter : function(value, row, index) {
 				if (row.billReturn == true || row.billObsolete==true) {
@@ -335,9 +349,9 @@
 				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>
 				</td>
 				<td class="td_short">职工总人数:</td>
-				<td class="td_short readonly" style="text-align: left;">${entity.companyEmpTotal }</td>
+				<td class="td_short readonly" style="text-align: left;" id="companyEmpTotal">${entity.companyEmpTotal }</td>
 				<td class="td_short">年人均工资:</td>
-				<td class="td_short readonly" style="text-align: left;">${entity.averageSalary }</td>
+				<td class="td_short readonly" style="text-align: left;" id="averageSalary">${entity.averageSalary }</td>
 			</tr>
 			<tr>
 				<td class="td_short">应按排数:</td>
@@ -346,10 +360,10 @@
 				<td class="td_short">预定人数:</td>
 			</tr>
 			<tr>
-				<td class="td_short readonly">${entity.companyShouldTotal}</td>
-				<td class="td_short readonly">${entity.companyAlreadyTotal}</td>
-				<td class="td_short readonly">${entity.companyHandicapTotal }</td>
-				<td class="td_short readonly">${entity.companyPredictTotal }</td>
+				<td class="td_short readonly" id="companyShouldTotal">${entity.companyShouldTotal}</td>
+				<td class="td_short readonly" id="companyAlreadyTotal">${entity.companyAlreadyTotal}</td>
+				<td class="td_short readonly" id="companyHandicapTotal">${entity.companyHandicapTotal }</td>
+				<td class="td_short readonly" id="companyPredictTotal">${entity.companyPredictTotal }</td>
 			</tr>
 		</tbody>
 	</table>
