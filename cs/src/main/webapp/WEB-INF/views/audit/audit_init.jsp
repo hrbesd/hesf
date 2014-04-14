@@ -51,29 +51,47 @@
 <script type="text/javascript">
 	initAudit = {};
 	initAudit.show = function(w, q, b) {
-		var t = "<table border='1' width='500' >";
+		var t = "<table border='0' width='500' style='border:1px solid #5591E0;border-collapse:collapse;margin-left:15px;margin-top:5px;' >";
 		var s = "";
 		if (w.length > 0) {
-			var c = "<strong>未审年度计算明细</strong>(始终计算滞纳金)";
-			s = c + t + "<tr><th>未审年度</th><th>应缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
+			var c = "<span style='font-weight:bold;'>未审年度计算明细</span>(始终计算滞纳金)";
+			s = c + t + "<tr style='border: 1px solid #6E6ED6;background-color:#E0ECFF'><th>未审年度</th><th>应缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
 			for ( var i = 0; i < w.length; i++) {
-				s = s + "<tr><td>" + w[i].year + "</td><td>" + w[i].money + "</td><td>" + w[i].days + "</td><td>" + w[i].prop + "</td><td>" + w[i].penalty + "</td><td>" + w[i].total + "</td></tr>";
+				var backgroundColor;
+				if(i%2 == 0){
+					backgroundColor = "style='background-color:#c9c7ff;'";
+				}else{
+					backgroundColor = "style='background-color:#d9daf0;'";
+				}
+				s = s + "<tr "+backgroundColor+"><td>" + w[i].year + "</td><td>" + w[i].money + "</td><td>" + w[i].days + "</td><td>" + w[i].prop + "</td><td>" + w[i].penalty + "</td><td>" + w[i].total + "</td></tr>";
 			}
 			s = s + "</table>";
 		}
 		if (b.length > 0) {
-			var c = "<strong>未缴年度计算明细</strong>(按当年审计状态计算滞纳金,可重审)";
-			s = s + c + t + "<tr><th>未缴年度</th><th>未缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
+			var c = "<span style='font-weight:bold;'>未缴年度计算明细</span>(按当年审计状态计算滞纳金,可重审)";
+			s = s + c + t + "<tr style='border: 1px solid #6E6ED6;background-color:#E0ECFF'><th>未缴年度</th><th>未缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
 			for ( var i = 0; i < b.length; i++) {
-				s = s + "<tr><td>" + b[i].year + "</td><td>" + b[i].money + "</td><td>" + b[i].days + "</td><td>" + b[i].prop + "</td><td>" + b[i].penalty + "</td><td>" + b[i].total + "</td></tr>";
+				var backgroundColor;
+				if(i%2 == 0){
+					backgroundColor = "style='background-color:#c9c7ff;'";
+				}else{
+					backgroundColor = "style='background-color:#d9daf0;'";
+				}
+				s = s + "<tr "+backgroundColor+"><td>" + b[i].year + "</td><td>" + b[i].money + "</td><td>" + b[i].days + "</td><td>" + b[i].prop + "</td><td>" + b[i].penalty + "</td><td>" + b[i].total + "</td></tr>";
 			}
 			s = s + "</table>";
 		}
 		if (q.length > 0) {
-			var c = "<strong>欠缴年度计算明细</strong>(始终计算滞纳金)";
-			s = s + c + t + "<tr><th>欠缴年度</th><th>欠缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
+			var c = "<span style='font-weight:bold;'>欠缴年度计算明细</span>(始终计算滞纳金)";
+			s = s + c + t + "<tr style='border: 1px solid #6E6ED6;background-color:#E0ECFF'><th>欠缴年度</th><th>欠缴金额</th><th>逾期天数</th><th>滞纳金比例</th><th>滞纳金</th><th>年度总金额</th></tr>";
 			for ( var i = 0; i < q.length; i++) {
-				s = s + "<tr><td>" + q[i].year + "</td><td>" + q[i].money + "</td><td>" + q[i].days + "</td><td>" + q[i].prop + "</td><td>" + q[i].penalty + "</td><td>" + q[i].total + "</td></tr>";
+				var backgroundColor;
+				if(i%2 == 0){
+					backgroundColor = "style='background-color:#c9c7ff;'";
+				}else{
+					backgroundColor = "style='background-color:#d9daf0;'";
+				}
+				s = s + "<tr "+backgroundColor+"><td>" + q[i].year + "</td><td>" + q[i].money + "</td><td>" + q[i].days + "</td><td>" + q[i].prop + "</td><td>" + q[i].penalty + "</td><td>" + q[i].total + "</td></tr>";
 			}
 			s = s + "</table>";
 		}
