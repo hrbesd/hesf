@@ -35,7 +35,7 @@
 			<table class="parameter_tab">
 				<tr>
 					<td style="width: 100px;">用户名:</td>
-					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> <input class="easyui-validatebox" name="version"
+					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="" /> <input class="easyui-validatebox" name="version"
 						type="hidden" value="1" />
 					</td>
 					<td><span id="username_message"></span>
@@ -57,21 +57,21 @@
 				</tr>
 				<tr>
 					<td>真实姓名:</td>
-					<td><input name="userRealName" type="text" class="easyui-validatebox"  required="true" value="${entity.userRealName}" /></td>
+					<td><input name="userRealName" type="text" class="easyui-validatebox"  required="true" value="" /></td>
 					<td><span id="realname_message"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" class="easyui-validatebox"  required="true" type="text" value="${entity.userMobile}" /></td>
+					<td><input name="userMobile" class="easyui-validatebox"  required="true" type="text" value="" /></td>
 					<td><span id="mobile_message"></span>
 					</td>
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>状态:</td>
 					<td><select class="easyui-combobox" name="userStatus" data-options="panelHeight:70,height:30,editable:false">
-							<option value="true" <c:if test="${entity.userStatus eq 'true'}">selected="selected"</c:if>>正常</option>
-							<option value="false" <c:if test="${entity.userStatus eq 'false'}">selected="selected"</c:if>>停用</option>
+							<option value="true">正常</option>
+							<option value="false">停用</option>
 					</select>
 					</td>
 				</tr>
@@ -86,7 +86,7 @@
 				</tr>
 				<tr>
 					<td>备注</td>
-					<td colspan="3"><textarea name="userRemark" rows="5" cols="70">${entity.userRemark}</textarea></td>
+					<td colspan="3"><textarea name="userRemark" rows="5" cols="70"></textarea></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>

@@ -29,6 +29,7 @@
 					<td style="width: 100px;">用户名:</td>
 					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> <input name="id" type="hidden" value="${entity.id}" />
 						<input name="version" type="hidden" value="${entity.version}" /></td>
+						<td></td>
 					<td><span id="username_message"></span></td>
 				</tr>
 				<!--  
@@ -45,9 +46,6 @@
 					</td>
 				</tr>
 				-->
-				<tr>
-					<td>&nbsp;</td>
-				</tr>
 				<tr>
 					<td>真实姓名:</td>
 					<td><input name="userRealName" type="text" value="${entity.userRealName}" />
