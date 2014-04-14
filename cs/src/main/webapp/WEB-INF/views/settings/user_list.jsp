@@ -52,6 +52,9 @@
 			formatter : function(value, row, index) {
 				var e = '<a href="javascript:user_list.editWindow(' + row.id + ')">编辑</a> ';
 				var d = '<a href="javascript:user_list.deleteUser(' + row.id + ')">删除</a> ';
+				if(row.userName == 'admin'){
+					d = '';
+				}				
 				var u = '<a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a>';
 				return e + d + u;
 			}
