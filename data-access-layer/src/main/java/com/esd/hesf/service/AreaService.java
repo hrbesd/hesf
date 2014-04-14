@@ -34,4 +34,8 @@ public interface AreaService extends BaseService<Area> {
 	 * @return
 	 */
 	List<Area> getHeiLongjiangCities();
+	
+	
+	
+//	Boolean updatedata();
 }

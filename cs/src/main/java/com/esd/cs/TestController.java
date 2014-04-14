@@ -966,4 +966,13 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+//	@RequestMapping("/74")
+//	@ResponseBody
+//	public Map<String, Object> test74() {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		Boolean entity = aService.updatedata();
+//		map.put("entity", entity);
+//		return map;
+//	}
 }

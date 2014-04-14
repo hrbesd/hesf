@@ -70,16 +70,6 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
-		if (t.getAuditProcessStatus() == null) {
-			new HesfException("audit.auditProcessStatus",
-					HesfException.type_null).printStackTrace();
-			return false;
-		}
-		if (t.getAuditProcessStatus().getId() == null) {
-			new HesfException("audit.auditProcessStatus.id",
-					HesfException.type_null).printStackTrace();
-			return false;
-		}
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

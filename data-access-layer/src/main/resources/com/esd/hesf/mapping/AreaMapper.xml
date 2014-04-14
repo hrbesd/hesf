@@ -70,12 +70,12 @@
 
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Area">
-		update area
+		update area_back
 		<set>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
 			</if>
-			<if test="pyname != null">
+			<if test="pyName != null">
 				pyname = #{pyname,jdbcType=VARCHAR},
 			</if>
 			<if test="abbr != null">
@@ -99,7 +99,7 @@
 	<select id="retrieveByPage" resultType="com.esd.hesf.model.Area" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from area
+		from area_back
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="area != null">
 				<if test="area.code != null and area.code != ''">
@@ -121,9 +121,8 @@
 	</select>
 
 	<select id="retrieveCount" resultType="int" parameterType="map">
-		select
-		<include refid="Base_Column_List" />
-		from company_economy_type
+		select count(*) 
+		from area_back
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="area != null">
 				<if test="area.code != null and area.code != ''">

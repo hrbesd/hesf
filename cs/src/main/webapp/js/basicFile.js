@@ -91,19 +91,19 @@ basicFile.openAddCompany = function() {
 basicFile.addCompany = function() {
 	// 校验
 	if (parseInt($("#companyEmpTotal").val()) < parseInt($("#companyHandicapTotal").val())) {
-		$.messager.alert('消息', '残疾职工人数不能大于员工总人数', 'error');
+		$.messager.alert('消息', '残疾职工人数不能大于员工总人数!', 'error');
 		return;
 	}
 
 	esd.common.syncPostSubmit("#addComapnyForm", function(data) {
 		if (data == true) {
 			
-			$.messager.alert('消息', '单位信息增加成功, 可以直接进行初审啦!', 'info');
+			$.messager.alert('消息', '单位信息增加成功!', 'info');
 			esd.common.defaultOpenWindowClose();
 			$('#company_grid').datagrid("reload");
 		} else {
 		
-			$.messager.alert('消息', '单位信息增加失败。', 'error');
+			$.messager.alert('消息', '单位信息增加失败!', 'error');
 		}
 	});
 };

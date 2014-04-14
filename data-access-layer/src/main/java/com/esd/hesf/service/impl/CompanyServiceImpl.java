@@ -62,18 +62,13 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private AuditParameterDao apDao;
 
-	@Override
-	public boolean save(Company t) {
-		return false;
-	}
+//	@Override
+//	public boolean save(Company t) {
+//		return false;
+//	}
 
 	@Override
-	public boolean save(Company t, String year) {
-		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null)
-					.printStackTrace();
-			return false;
-		}
+	public boolean save(Company t) {
 		if (t.getCompanyCode() == null) {
 			new HesfException("company.companyCode", HesfException.type_null)
 					.printStackTrace();
@@ -137,13 +132,7 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		// 保存公司
 		int i = dao.insertSelective(t);
-		// 向审核表中插入信息
-		Audit audit = new Audit();
-		audit.setYear(year);
-		audit.setCompany(t);
-		audit.setArea(t.getArea());
-		int k = auDao.insertSelective(audit);
-		if (k != 1 || i != 1) {
+		if (i != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
 					.printStackTrace();
 			return false;

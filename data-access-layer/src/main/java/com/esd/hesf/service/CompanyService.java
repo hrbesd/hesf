@@ -16,14 +16,14 @@ import com.esd.hesf.model.Worker;
  */
 public interface CompanyService extends BaseService<Company> {
 
-	/**
-	 * 保存一个企业: 保存企业用此方法!
-	 * 
-	 * @param company
-	 * @param year
-	 * @return
-	 */
-	boolean save(Company company, String year);
+//	/**
+//	 * 保存一个企业: 保存企业用此方法!
+//	 * 
+//	 * @param company
+//	 * @param year
+//	 * @return
+//	 */
+//	boolean save(Company company, String year);
 
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);

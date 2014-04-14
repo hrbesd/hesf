@@ -87,7 +87,21 @@
 		</tr>
 		<tr>
 			<td class="tdRight">&nbsp;</td>
-			<td colspan="4">带" <span style="color:red;">*</span> "项为必填项, 请认真填写.</td>
+			<td colspan="4">
+				<p><input type="checkbox" value="1" name="ckbCreateAudit" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息</span></p>
+					<input type="hidden" name="createAudit" id="createAudit" value="0"/>
+				<script type="text/javascript">
+					$('#ckbCreateAudit').click(function(){
+						var ckbCreateAudit = $('#ckbCreateAudit').attr('checked');
+						if(ckbCreateAudit != null && ckbCreateAudit =='checked'){
+							$('#createAudit').val('1');
+						}else{
+							$('#createAudit').val('0');
+						}
+					});
+				</script>
+				<p>带" <span style="color:red;">*</span> "项为必填项, 请认真填写.</p>
+			</td>
 		</tr>
 
 		<tr>

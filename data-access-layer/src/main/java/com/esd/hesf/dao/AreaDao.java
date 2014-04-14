@@ -17,4 +17,5 @@ public interface AreaDao extends BaseDao<Area> {
 
 	// 查询黑龙江地区省市列表
 	List<Area> retrieveHLJ();
+
 }

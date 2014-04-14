@@ -33,7 +33,8 @@ import com.esd.hesf.service.CompanyService;
 @Controller
 @RequestMapping(value = "/security/company")
 public class CompayController {
-	private static final Logger logger = LoggerFactory.getLogger(CompayController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(CompayController.class);
 
 	@Autowired
 	private CompanyService companyService;// 企业
@@ -48,7 +49,9 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list/{property}", method = RequestMethod.GET)
-	public ModelAndView companyGet(@PathVariable(value = "property") String property, HttpServletRequest request) {
+	public ModelAndView companyGet(
+			@PathVariable(value = "property") String property,
+			HttpServletRequest request) {
 		logger.debug("companyProperty{}", property);
 		request.setAttribute("companyProperty", property);
 		return new ModelAndView("basicInfo/company_list");
@@ -73,7 +76,8 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-	public ModelAndView view_company(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
+	public ModelAndView view_company(@PathVariable(value = "id") Integer id,
+			HttpServletRequest request) {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
 		logger.debug("company{}", company);
@@ -87,7 +91,8 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editCompany(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
+	public ModelAndView editCompany(@PathVariable(value = "id") Integer id,
+			HttpServletRequest request) {
 		logger.debug("id{}", id);
 		Company company = companyService.getByPrimaryKey(id);
 		logger.debug("editCompany{}", company);
@@ -104,7 +109,8 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/get_company", method = RequestMethod.POST)
 	@ResponseBody
-	public Object get_company(@RequestParam(value = "id") Integer id, HttpServletRequest request) {
+	public Object get_company(@RequestParam(value = "id") Integer id,
+			HttpServletRequest request) {
 
 		try {
 			logger.debug("getByIdCompanyId:{}", id);
@@ -129,7 +135,8 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean add_company(Company company, HttpServletRequest request, HttpSession session) {
+	public Boolean add_company(Company company, HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("addCompany:{}", company);
 		try {
 			if (company == null) {
@@ -137,7 +144,15 @@ public class CompayController {
 				return false;
 			}
 			String nowYear = (String) session.getAttribute(Constants.YEAR);
-			boolean b = companyService.save(company, nowYear);
+			boolean b = companyService.save(company);
+			// 如果选中创建当年审核数据
+			String createAudit = request.getParameter("createAudit");
+			if (createAudit != null && "1".equals(createAudit)) {
+				Audit audit = new Audit();
+				audit.setCompany(company);
+				audit.setYear(nowYear);
+				auditService.save(audit);
+			}
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
@@ -171,7 +186,9 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean deleteCompany(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
+	public boolean deleteCompany(
+			@RequestParam(value = "params[]") Integer idArr[],
+			HttpServletRequest request) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		boolean b = true;
 		for (int i = 0; i < idArr.length; i++) {
@@ -196,13 +213,17 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/validate_companyOrganizationCode")
 	@ResponseBody
-	public Boolean validate_companyOrganizationCode(@RequestParam(value = "param") String param, HttpServletRequest request) {
+	public Boolean validate_companyOrganizationCode(
+			@RequestParam(value = "param") String param,
+			HttpServletRequest request) {
 		Company c = companyService.getCompanyByOrganizationCode(param);
 		if (c == null) {
-			logger.debug("validateCompanyOrganizationCode{} Result{}", param, "true");
+			logger.debug("validateCompanyOrganizationCode{} Result{}", param,
+					"true");
 			return true;
 		} else {
-			logger.debug("validateCompanyOrganizationCode{} Result{}", param, "false");
+			logger.debug("validateCompanyOrganizationCode{} Result{}", param,
+					"false");
 			return false;
 		}
 	}
@@ -216,7 +237,10 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/getinformation/{companyId}/{year}", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, String>> getComapnmyInformation(@PathVariable(value = "companyId") Integer companyId, @PathVariable(value = "year") String year, HttpServletRequest request) {
+	public List<Map<String, String>> getComapnmyInformation(
+			@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
 
 		logger.debug("getComapnmyInformation:{}", companyId);
 		List<Map<String, String>> list = null;
@@ -229,7 +253,8 @@ public class CompayController {
 			map.put("companyId", String.valueOf(c.getId()));// 档案编码
 			map.put("companyCode", c.getCompanyCode());// 档案编码
 			map.put("companyTaxCode", c.getCompanyTaxCode());// 税务编码
-			map.put("companyEconomyType", c.getCompanyEconomyType().getCompanyEconomyType());// 经济类型
+			map.put("companyEconomyType", c.getCompanyEconomyType()
+					.getCompanyEconomyType());// 经济类型
 			map.put("companyArea", c.getArea().getName());// 地区
 			Audit audit = auditService.getByPrimaryKey(year, companyId);
 			if (audit == null) {
@@ -237,7 +262,8 @@ public class CompayController {
 				return null;
 			}
 			map.put("companyEmpTotal", audit.getCompanyEmpTotal() + "");// 员工总人数
-			map.put("workerHandicapTotal", companyService.getWorkerHandicapTotal(companyId, year) + "");// 残疾职工总人数
+			map.put("workerHandicapTotal",
+					companyService.getWorkerHandicapTotal(companyId, year) + "");// 残疾职工总人数
 			list.add(map);
 			logger.debug("getComapnmyInformationResult:{}", list);
 			return list;
@@ -255,7 +281,9 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/validate_companyCode")
 	@ResponseBody
-	public Boolean validate_companyCode(@RequestParam(value = "param") String param, HttpServletRequest request) {
+	public Boolean validate_companyCode(
+			@RequestParam(value = "param") String param,
+			HttpServletRequest request) {
 
 		if (companyService.getByCompanyCode(param) == null) {
 			logger.debug("validate_companyCode:{},Result{}", param, "true");
