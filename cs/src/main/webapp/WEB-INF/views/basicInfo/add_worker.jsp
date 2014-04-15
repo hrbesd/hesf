@@ -188,18 +188,16 @@
 	 **/
 	addWorker.handicapCodeValidate = function() {
 		//校验表单
-		var b = $("#workerHandicapCode").validatebox('isValid');
-		if (b == false) {
-			return;
-		}
+	//	var b = $("#workerHandicapCode").validatebox('isValid');
+	//	if (b == false) {
+	//		return;
+	//	}
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		//身份证号
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		//根据残疾证号初始化其他组件
-		if(addWorker.initElement(workerHandicapCode)==false){
-			return;
-		}
+		addWorker.initElement(workerHandicapCode);
 	
 	
 
