@@ -4,7 +4,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!-- 容器面板 -->
 <script type="text/javascript">
-	$('#auditTabs').tabs({
+/*	$('#auditTabs').tabs({
 		onSelect : function(title,index) {
 			if(index==0){
 				if($('#worker_HandicapTotal').length>0){
@@ -12,7 +12,9 @@
 				};
 			};
 		}
-	});
+	});	*/
+	//如果初审选项卡被选中时, 更新里面的内容
+	
 </script>
 
 <div class="easyui-panel" data-options="closable:true,collapsible:true,minimizable:true,
@@ -20,7 +22,7 @@
 
 	<div id="auditTabs" class="easyui-tabs" data-options="fit:true">
 	<!--startprint-->
-		<div id="startaudit_tabs" title="年审信息">
+		<div id="startaudit_tabs" title="年审信息" cache="false">
 			<c:if test="${process==1}">
 				<jsp:include page="audit_init.jsp" />
 			</c:if>

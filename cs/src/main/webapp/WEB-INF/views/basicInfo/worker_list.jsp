@@ -318,17 +318,12 @@
 		
 	};
 	$(function(){
-	
 	    //年龄超标单选框
 		$("#isExceed").bind("click",function(){
-			
 			//清楚列表复选框
 			$("#workerList_dataGrid").datagrid("clearChecked");
 			workerList.loadData(workerList.getParams());
 		});
-
-		
-			
 	});
 
 

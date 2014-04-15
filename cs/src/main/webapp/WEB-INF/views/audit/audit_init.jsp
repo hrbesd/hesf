@@ -104,6 +104,7 @@
 			content : s,
 			modal : true,
 		});
+		
 	};
 	initAudit.initVerify = function() {
 		$('#zaiZhiYuanGongZongShu').attr("maxlength", "9");
@@ -215,9 +216,18 @@
 		initAudit.initVerify();
 		//初始化easyUi完成
 		$.parser.onComplete = function() {
-			
 		};
 
+	});
+	$('#auditTabs').tabs({
+		onSelect : function(title,index) {
+			if(index==0){
+				if($('#worker_HandicapTotal').length>0){
+					if($('#yiLuRuCanJiRen').val($('#worker_HandicapTotal').html()));
+				};
+			};
+			initAudit.jisuan();
+		}
 	});
 </script>
 
