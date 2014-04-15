@@ -12,6 +12,7 @@ import java.util.List;
 public class CalculateModel {
 
 	private DecimalFormat df = new DecimalFormat("0.00");
+	private DecimalFormat df4 = new DecimalFormat("0.000");
 
 	private Integer zaiZhiYuanGongZongShu;
 	private BigDecimal yingAnPaiCanJiRen;
@@ -68,7 +69,7 @@ public class CalculateModel {
 
 	public void setYingAnPaiCanJiRen(BigDecimal yingAnPaiCanJiRen) {
 		this.yingAnPaiCanJiRen = yingAnPaiCanJiRen;
-		this.s_yingAnPaiCanJiRen = String.valueOf(df.format(yingAnPaiCanJiRen));
+		this.s_yingAnPaiCanJiRen = String.valueOf(df4.format(yingAnPaiCanJiRen));
 	}
 
 	public Integer getYiAnPaiCanJiRen() {
