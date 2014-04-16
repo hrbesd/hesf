@@ -21,6 +21,10 @@
 	initAuditList.loadData = function() {
 		var params = initAuditList.getParams();
 		esd.common.datagrid("#initAuditList_datagrid", "${contextPath}/security/audits/list", "#initAuditList_boolbar", [ [ {
+			field : 'year',
+			title : '审核年度',
+			width : 100
+		}, {
 			field : 'companyCode',
 			title : '档案编码',
 			width : 200
@@ -34,7 +38,7 @@
 		}, {
 			field : 'companyName',
 			title : '企业名称',
-			width : 800,
+			width : 700,
 			formatter : function(value, row, index) {
 				var c = '<a href="javascript:void(0);" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;

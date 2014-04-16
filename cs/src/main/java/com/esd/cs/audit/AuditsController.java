@@ -274,7 +274,7 @@ public class AuditsController {
 	}
 
 	/**
-	 * 转到初审单位列表页面
+	 * 保存初审信息
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
@@ -559,7 +559,6 @@ public class AuditsController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> provincePost(HttpServletRequest request) {
-
 		String year = request.getParameter("year");
 		Integer page = Integer.valueOf(request.getParameter("page"));
 		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
@@ -573,7 +572,7 @@ public class AuditsController {
 		params.put("page", page);
 		params.put("pageSize", pageSize);
 		params.put("year", year); // 年度
-		params.put("auditProcessStatus", process); // 处理状态
+		params.put("auditProcessStatus", process); // 审核状态
 		params.put("companyCode", companyCode); // 公司档案号
 		params.put("companyTaxCode", companyTaxCode); // 公司税务编码
 		params.put("companyName", companyName); // 公司税务编码
@@ -584,10 +583,6 @@ public class AuditsController {
 		logger.debug("years:{},page:{},rows:{},process{}", year, page, pageSize, process);
 		Map<String, Object> entity = new HashMap<>();
 		try {
-			Audit audit = new Audit();
-			audit.setYear(year);
-			AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(process);
-			audit.setAuditProcessStatus(auditProcessStatus);
 			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
@@ -595,14 +590,14 @@ public class AuditsController {
 				Audit it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
+				map.put("year", it.getYear());	//审核年度
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 				Integer pId = it.getAuditProcessStatus().getId();
 				map.put("auditProcessStatusId", pId);// 流程状态
-				AuditProcessStatus processStatus = auditProcessStatusService.getByPrimaryKey(pId);
-				String statusName = processStatus.getAuditProcessStatus();
+				String statusName = it.getAuditProcessStatus().getAuditProcessStatus();
 				if (it.getRefuseTimes() > 0) {
 					statusName = statusName + "(" + it.getRefuseTimes() + ")";
 				}
