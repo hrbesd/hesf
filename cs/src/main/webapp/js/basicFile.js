@@ -81,8 +81,8 @@ basicFile.loadData = function(params) {
 /**
  * 打开增加企业信息框
  */
-basicFile.openAddCompany = function() {
-	esd.common.defaultOpenWindow("增加企业信息", 'company/add');
+basicFile.openAddCompany = function(companyProperty) {
+	esd.common.defaultOpenWindow("增加企业信息", 'company/add/'+companyProperty);
 };
 
 /**

@@ -32,7 +32,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">企业性质:</td>
-			<td><input value="1" name="companyProperty.id" class="easyui-combobox"
+			<td><input value="${companyProperty}" name="companyProperty.id" class="easyui-combobox"
 				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
 			</td>
 			<td class="tdRight">经济类型:</td>

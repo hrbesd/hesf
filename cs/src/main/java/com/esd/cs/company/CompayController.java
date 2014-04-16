@@ -63,9 +63,10 @@ public class CompayController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView addCompany(HttpServletRequest request) {
+	@RequestMapping(value = "/add/{companyProperty}", method = RequestMethod.GET)
+	public ModelAndView addCompany(@PathVariable("companyProperty") Integer companyProperty,HttpServletRequest request) {
 		logger.debug("gotoaddCompany");
+		request.setAttribute("companyProperty", companyProperty);
 		return new ModelAndView("basicInfo/add_company");
 	}
 
