@@ -77,7 +77,7 @@
 			<td colspan="4"><textarea name="companyRemark" class="longtext" rows="3" cols="90">${company.companyRemark}</textarea></td>
 		</tr>
 		<tr>
-			<td class="tdCenter" colspan="4" style="text-align:center;"><a href="javascript:esd.common.defaultOpenWindowClose();" class="easyui-linkbutton" iconCls="icon-undo">确定</a></td>
+			<td class="tdCenter" colspan="4" style="text-align:center;"><a href="javascript:esd.common.defaultOpenWindowClose();" class="easyui-linkbutton" iconCls="icon-ok">确定</a></td>
 		</tr>
 	</table>
 </form>
