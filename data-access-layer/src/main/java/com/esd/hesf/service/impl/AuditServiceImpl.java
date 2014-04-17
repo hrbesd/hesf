@@ -277,11 +277,20 @@ public class AuditServiceImpl implements AuditService {
 		map.put("currentYear", currentYear);
 		map.put("lastYear", (currentYear - 1));
 		// 向公司-员工关系表中插入数据
-		int l = cywDao.insertLastYearData(map);
-		if (l <= 0) {
-			new HesfException("向公司-员工关系表中插入数据		失败").printStackTrace();
+		// 首先验证有无上年度的数据
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		CompanyYearWorker searchCyw = new CompanyYearWorker();
+		Integer thisYear = Integer.parseInt(year);
+		searchCyw.setYear(String.valueOf(thisYear - 1));
+		searchMap.put("companyYearWorker", searchCyw);
+		int nums = cywDao.retrieveCount(searchMap);
+		if (nums > 0) {
+			cywDao.insertLastYearData(map);
 		}
-		return (k > 0 && l > 0) ? true : false;
+		// if (l <= 0) {
+		// new HesfException("向公司-员工关系表中插入数据		失败").printStackTrace();
+		// }
+		return (k > 0) ? true : false;
 	}
 
 	@Override

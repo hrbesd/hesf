@@ -90,7 +90,7 @@ public class ReportController {
 	public Object get_company(@PathVariable(value = "year") String year, HttpServletRequest request) {
 		logger.debug("printNoticeParamsYear:{}", year);
 		List<ReportViewModel> list = reportViewService.getByCompanyType(year);
-
+System.out.println(list.size());
 		logger.debug("printNoticeResult:{}", list.size());
 		return list;
 	}
