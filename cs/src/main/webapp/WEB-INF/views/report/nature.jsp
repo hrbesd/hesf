@@ -10,8 +10,13 @@
 	 */
 	printNature = {};
 	printNature.load = function() {
+		var auditYear = $('#companyYear').combobox("getText");
+		if(auditYear == null || auditYear == ''){
+			$.messager.alert('提示信息','没有相关审核年份数据, 请审核后再进行查询.','info');
+			return;
+		}
 		$.ajax({
-			url : 'report/notice/' + 	$('#companyYear').combobox("getText"),
+			url : 'report/notice/' + auditYear	,
 			type : 'post',
 			async:false,
 			success : function(data) {
@@ -27,8 +32,7 @@
 				}
 			},
 			error : function() {
-			$.messager.alert('消息', '获取单位性质报表数据时错误。', 'error');
-				
+				$.messager.alert('消息', '获取单位性质报表数据时错误。', 'error');
 			}
 		});
 	};

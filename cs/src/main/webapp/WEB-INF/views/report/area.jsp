@@ -11,8 +11,13 @@
 	 */
 	printNature = {};
 	printNature.load = function() {
+		var auditYear = $('#companyYear').combobox("getText");
+		if(auditYear == null || auditYear == ''){
+			$.messager.alert('提示信息','没有相关审核年份数据, 请审核后再进行查询.','info');
+			return;
+		}
 		$.ajax({
-			url : 'report/area/' + 	$('#companyYear').combobox("getText"),
+			url : 'report/area/' + auditYear,
 			type : 'post',
 			async:false,
 			success : function(data) {
