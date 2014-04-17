@@ -89,6 +89,8 @@
 }
 </style>
 <script type="text/javascript">
+
+	payment.auditProcessStatus;
 	payment.save = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
@@ -162,28 +164,35 @@
 	payment.view = function(id) {
 		esd.common.openWindow("#add", "查看缴款", 750, 350, "${contextPath}/security/payment/view/" + id);
 	};
+	
 	payment.backAudit = function() {
 		var rdo_value = $('input[name="rdoAuditYear"]:checked').val();
 		if(rdo_value == 'all'){
-			$.messager.alert('警告','只能单个年份返回重审,请重新选择!');
+			esd.common.noCloseButtonDialog('警告','只能单个年份返回重审,请重新选择!');
 			return;
 		}else{
-			$.ajax({
-				url : 'payment/backAudit/'+rdo_value+'/${entity.accountsYear}/${entity.companyId}',
-				type : 'GET',
-				success : function(data) {
-					if (data == true) {
-						$.messager.alert('消息', '重审提交成功', 'info', function() {
-							esd.common.defaultOpenWindowClose();
-							$("#paymentList_datagrid").datagrid('reload');
-						});
-					} else {
-						$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
-					}
-				},
-				dataType : "json",
-				async : false
+			//确认重申
+			$.messager.confirm('消息','确认要重审'+rdo_value+'年度的审核信息吗?',function(r){
+				if(!r){
+					return;
+				}else{
+					$.ajax({
+						url : 'payment/backAudit/'+rdo_value+'/${entity.accountsYear}/${entity.companyId}',
+						type : 'GET',
+						success : function(data) {
+							if (data == true) {
+								esd.common.noCloseButtonDialog('消息', '重审提交成功');
+								$("#paymentList_datagrid").datagrid('reload');
+							} else {
+								$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
+							}
+						},
+						dataType : "json",
+						async : false
+					});
+				}
 			});
+			
 		}
 	};
 
@@ -293,10 +302,19 @@
 	$.parser.onComplete = function() {
 	//	payment.getBalance();
 		payment.loadPaymentData();
+		//判断’新建缴款‘，’重申‘，‘返回’ 三个按钮是否隐藏
+		var status = '${entity.auditProcessStatus}';
+		if(status == '3' || status == '4'){
+			$('#defaultWindow .datagrid-toolbar').css('display','block');
+		}else{
+			$('#defaultWindow .datagrid-toolbar').css('display','none');
+		}
 	};
 </script>
 <div id="payment">
 	<input id="auditId" type="hidden" value="${entity.id}" />
+	<!-- ↓↓↓↓↓↓↓↓↓↓↓↓ 暂时无用 ↓↓↓↓↓↓↓↓↓↓↓↓ -->
+	<input id="auditProcessStauts" type="hidden" value="${entity.auditProcessStatus }" />
 	<!-- 年审企业表格  第一部分 -->
 	<table cellspacing="0" cellpadding="0" border="0" title="企业年审信息" class="company-examined">
 		<tbody>

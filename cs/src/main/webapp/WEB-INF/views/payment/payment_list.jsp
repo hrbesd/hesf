@@ -52,11 +52,11 @@
 			width : 150,
 			align : 'center',
 			formatter : function(value, row, index) {
-				var v = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +');" >查看</a>';
+				var v = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +','+row.auditProcessStatusId+');" >查看</a>';
 				var c = '<a href="javascript:void(0);" >待初审</a>';
 				var f = '<a href="javascript:void(0);" >待复审</a>';
 				var d = '<a href="javascript:void(0);" >已达标</a>';
-				var j = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +');" >缴款</a>';
+				var j = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +','+row.auditProcessStatusId+');" >缴款</a>';
 				if (row.auditProcessStatusId == 1 || row.auditProcessStatusId == 7) {
 					return c;
 				}
@@ -76,8 +76,8 @@
 	/*
 	打开单位缴款面板
 	 */
-	payment.open = function(companyId,year) {
-		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + year+"/"+companyId);
+	payment.open = function(companyId,year,auditProcess) {
+		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + auditProcess+"/"+companyId+"/"+year);
 	};
 </script>
 <!-- 自定义菜单 -->

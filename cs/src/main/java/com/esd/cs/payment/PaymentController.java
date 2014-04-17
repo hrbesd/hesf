@@ -103,9 +103,11 @@ public class PaymentController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/edit/{year}/{companyId}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable(value = "year") String year,
+	@RequestMapping(value = "/edit/{auditProcessStatus}/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView editGet(
+			@PathVariable(value="auditProcessStatus") Integer auditProcessStatus,
 			@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
 			HttpServletRequest request) {
 		// 根据公司id和账目年限, 获得综合的账目对象(其中的id不准确-不要使用)
 		Accounts accounts = accountsService
@@ -122,6 +124,7 @@ public class PaymentController {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		// 账目id
 		// entity.put("id", String.valueOf(accounts.getId()));
+		entity.put("auditProcessStatus", auditProcessStatus);	// 传递审核状态, 方便前台进行判断
 		entity.put("companyId", String.valueOf(accounts.getCompany().getId()));
 		entity.put("companyCode", accounts.getCompany().getCompanyCode());
 		entity.put("companyTaxCode", accounts.getCompany().getCompanyTaxCode());
