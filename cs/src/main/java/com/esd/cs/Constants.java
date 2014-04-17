@@ -30,5 +30,7 @@ public class Constants {
 	public static final Integer PROCESS_STATIC_WTG = 7;// 已复审 未通过
 
 	public static final Integer PAYMENT_EXCEPTIONAL_NORMAL = 1;
+	
+	
 
 }
