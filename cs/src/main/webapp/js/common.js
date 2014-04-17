@@ -368,7 +368,21 @@ esd.common.noCloseButtonDialog = function(title,msg){
 		closable : false,
 		cache : false,
 		modal : true,
-		content : msg,
+		content : '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+msg,
+		bodyCls : 'noCloseButtonDialogBody',
+	/*	toolbar : [{
+			text : '添加',
+			iconCls : 'icon-add',
+			handler : function(){
+				alert('add!');
+			}
+		},{
+			text : '提交',
+			iconCls : 'icon-ok',
+			handler : function(){
+				alert('ok!');
+			}
+		}],	*/
 		buttons : [{
 			text : '确定',
 			handler : function(){

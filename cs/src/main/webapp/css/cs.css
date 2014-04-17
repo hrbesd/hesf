@@ -243,3 +243,13 @@ text-align: right;
 	line-height: 1px;
 	font-size: 12px;
 }
+
+/**
+ *	自定义无关闭按钮弹出框样式--主题内容部分
+ *
+ **/
+.noCloseButtonDialogBody{
+	font-size:20px;
+	text-align:center;
+}
+ 
