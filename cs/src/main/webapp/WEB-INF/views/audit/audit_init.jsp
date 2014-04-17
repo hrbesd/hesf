@@ -216,8 +216,9 @@
 		initAudit.initVerify();
 		//初始化easyUi完成
 		$.parser.onComplete = function() {
+			
 		};
-
+		initAudit.jisuan();
 	});
 	$('#auditTabs').tabs({
 		onSelect : function(title,index) {

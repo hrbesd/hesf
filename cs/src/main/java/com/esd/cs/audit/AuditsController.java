@@ -6,6 +6,7 @@
 package com.esd.cs.audit;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -334,7 +335,7 @@ public class AuditsController {
 		// 计算出应安排人数
 		// 应安排人数=单位在职职工总数*残疾人安排比例
 		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(
-				zaiZhiYuanGongZongShu));
+				zaiZhiYuanGongZongShu)).setScale(2, BigDecimal.ROUND_DOWN);
 		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
 		// ========================================================================================
 		// 获得已录入残疾人数
@@ -685,7 +686,7 @@ public class AuditsController {
 		if (process == 2) {
 			BigDecimal alreadyPayment = paymentService.getEffPaid(
 					audit.getYear(), null, audit.getCompany().getId());
-			audit.setPayAmount(audit.getPayAmount().subtract(alreadyPayment));
+			audit.setPayAmount(audit.getAmountPayable().subtract(alreadyPayment));
 		}
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);

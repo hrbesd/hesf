@@ -69,7 +69,7 @@ public class CalculateModel {
 
 	public void setYingAnPaiCanJiRen(BigDecimal yingAnPaiCanJiRen) {
 		this.yingAnPaiCanJiRen = yingAnPaiCanJiRen;
-		this.s_yingAnPaiCanJiRen = String.valueOf(df4.format(yingAnPaiCanJiRen));
+		this.s_yingAnPaiCanJiRen = String.valueOf(df.format(yingAnPaiCanJiRen));
 	}
 
 	public Integer getYiAnPaiCanJiRen() {
