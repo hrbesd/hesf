@@ -203,11 +203,11 @@
 			handler : payment.insert
 		}, {
 			text : '重审',
-			iconCls : 'icon-back',
+			iconCls : 'icon-reload',
 			handler : payment.backAudit
 		},{
 			text : '返回',
-			iconCls : 'icon-back',
+			iconCls : 'icon-undo',
 			handler : payment.back
 
 		} ], [ [ {
