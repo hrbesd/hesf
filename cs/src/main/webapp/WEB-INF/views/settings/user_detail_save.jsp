@@ -63,7 +63,7 @@
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" class="easyui-validatebox"  required="true" type="text" value="" /></td>
+					<td><input name="userMobile" class="easyui-validatebox"  type="text" value="" /></td>
 					<td><span id="mobile_message"></span>
 					</td>
 				</tr>
