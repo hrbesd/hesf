@@ -67,9 +67,9 @@
 					<td>票据号:</td>
 					<td><input name="paymentBill" type="text" class="easyui-validatebox" data-options="required:true" value="${entity.paymentBill }" />
 					</td>
-					<td>缴费金额:</td>
-					<td><input name="paymentMoney" id="paymentMoney" type="text" maxlength="16" class="easyui-numberbox" data-options="required:true,precision:2" value="${entity.paymentMoney }" />
-						<input type="hidden" id="prePaymentMoney" value="${entity.paymentMoney }"  />
+					<td>缴费金额:</td>	<!-- 如果为全部缴款, 那么缴款数则必须为总额, 不可改变 -->
+					<td><input name="paymentMoney" id="paymentMoney" <c:if test="${auditYear == 'all' }">readonly="readonly"</c:if> title="如果选择全部缴款, 则金额不可改变, 必须全额!" type="text" maxlength="16" class="easyui-numberbox" data-options="required:true,precision:2" value="${entity.paymentMoney }" />
+						<input type="hidden" id="prePaymentMoney" value="${entity.paymentMoney }"  /><c:if test="${auditYear =='all' }"><br/><span style="font-size:8px;color:red;">全额缴款,金额不可改变!</span></c:if>
 					</td>
 				</tr>
 			</tbody>

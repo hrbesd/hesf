@@ -15,7 +15,7 @@ import com.esd.hesf.model.Accounts;
 public interface AccountsService extends BaseService<Accounts> {
 
 	/**
-	 * 根据 year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的
+	 * 根据 账目年份year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的
 	 * 
 	 * @param year
 	 * @param companyId
@@ -100,7 +100,7 @@ public interface AccountsService extends BaseService<Accounts> {
 	
 	/**
 	 * 根据审核年份, 账目年份, 公司id 得到该公司某年的对应账目对象
-	 * @param auditYear 审核年份(可为null)
+	 * @param auditYear 审核年份
 	 * @param accountsYear	账目年份
 	 * @param companyCode	公司档案code
 	 * @return	账目对象
@@ -109,7 +109,7 @@ public interface AccountsService extends BaseService<Accounts> {
 	
 	/**
 	 * 根据审核年份, 账目年份, 公司id 得到该公司某年的对应账目对象
-	 * @param auditYear 审核年份(可为null)
+	 * @param auditYear 审核年份
 	 * @param accountsYear	账目年份
 	 * @param companyId	公司id
 	 * @return	账目对象

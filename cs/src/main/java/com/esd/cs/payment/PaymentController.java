@@ -229,65 +229,65 @@ public class PaymentController {
 	// return bd;
 	// }
 
-//	/**
-//	 * 批量更新状态
-//	 * 
-//	 * @param payment
-//	 * @return
-//	 */
-//	private Boolean batchUpdateAuditStatus(Payment payment,
-//			Integer auditProcessStatus) {
-//		// AuditProcessStatus aup = auditProcessStatusService
-//		// .getByPrimaryKey(auditProcessStatus);
-//		// 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
-//		if (payment.getAuditYear() != null
-//				&& !"".equals(payment.getAuditYear())) {
-//			Audit audit = auditService.getByPrimaryKey(payment.getAuditYear(),
-//					payment.getPaymentCompany().getId());
-//			audit.setAuditProcessStatus(new AuditProcessStatus(
-//					auditProcessStatus));
-//			auditService.update(audit);
-//			Accounts accounts = accountsService.getOneByCompanyAuditYear(
-//					payment.getAuditYear(), payment.getYear(), payment
-//							.getPaymentCompany().getId());
-//			accounts.setAuditProcessStatus(new AuditProcessStatus(
-//					auditProcessStatus));
-//			return accountsService.update(accounts);
-//		}
-//
-//		// 2-如果不存在审核年份, 则将所有未完成的账目单查询出来, 逐个更新
-//		String year = payment.getYear();
-//		Integer companyId = payment.getPaymentCompany().getId();
-//		List<Accounts> query = accountsService.getCompanyAccount(year,
-//				companyId);
-//		try {
-//			for (Accounts at : query) {
-//				// 如果账单表已经标记为已交款或者达标, 则跳过
-//				if (at.getAuditProcessStatus().getId()
-//						.equals(Constants.PROCESS_STATIC_YJK)
-//						|| at.getAuditProcessStatus().getId()
-//								.equals(Constants.PROCESS_STATIC_OK)) {
-//					continue;
-//				}
-//				// 更新审核表 即时审核状态,
-//				Audit audit = auditService.getByPrimaryKey(at.getAudit()
-//						.getId());
-//				audit.setAuditProcessStatus(new AuditProcessStatus(
-//						auditProcessStatus));
-//				// 补缴年份
-//				audit.setSupplementYear(payment.getYear());
-//				auditService.update(audit);
-//				// 更新账目 即时审核状态,对应审核年份
-//				at.setAuditProcessStatus(new AuditProcessStatus(
-//						auditProcessStatus));
-//				accountsService.update(at);
-//			}
-//		} catch (Exception e) {
-//			logger.error("{}", e);
-//			return Boolean.FALSE;
-//		}
-//		return Boolean.TRUE;
-//	}
+	// /**
+	// * 批量更新状态
+	// *
+	// * @param payment
+	// * @return
+	// */
+	// private Boolean batchUpdateAuditStatus(Payment payment,
+	// Integer auditProcessStatus) {
+	// // AuditProcessStatus aup = auditProcessStatusService
+	// // .getByPrimaryKey(auditProcessStatus);
+	// // 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
+	// if (payment.getAuditYear() != null
+	// && !"".equals(payment.getAuditYear())) {
+	// Audit audit = auditService.getByPrimaryKey(payment.getAuditYear(),
+	// payment.getPaymentCompany().getId());
+	// audit.setAuditProcessStatus(new AuditProcessStatus(
+	// auditProcessStatus));
+	// auditService.update(audit);
+	// Accounts accounts = accountsService.getOneByCompanyAuditYear(
+	// payment.getAuditYear(), payment.getYear(), payment
+	// .getPaymentCompany().getId());
+	// accounts.setAuditProcessStatus(new AuditProcessStatus(
+	// auditProcessStatus));
+	// return accountsService.update(accounts);
+	// }
+	//
+	// // 2-如果不存在审核年份, 则将所有未完成的账目单查询出来, 逐个更新
+	// String year = payment.getYear();
+	// Integer companyId = payment.getPaymentCompany().getId();
+	// List<Accounts> query = accountsService.getCompanyAccount(year,
+	// companyId);
+	// try {
+	// for (Accounts at : query) {
+	// // 如果账单表已经标记为已交款或者达标, 则跳过
+	// if (at.getAuditProcessStatus().getId()
+	// .equals(Constants.PROCESS_STATIC_YJK)
+	// || at.getAuditProcessStatus().getId()
+	// .equals(Constants.PROCESS_STATIC_OK)) {
+	// continue;
+	// }
+	// // 更新审核表 即时审核状态,
+	// Audit audit = auditService.getByPrimaryKey(at.getAudit()
+	// .getId());
+	// audit.setAuditProcessStatus(new AuditProcessStatus(
+	// auditProcessStatus));
+	// // 补缴年份
+	// audit.setSupplementYear(payment.getYear());
+	// auditService.update(audit);
+	// // 更新账目 即时审核状态,对应审核年份
+	// at.setAuditProcessStatus(new AuditProcessStatus(
+	// auditProcessStatus));
+	// accountsService.update(at);
+	// }
+	// } catch (Exception e) {
+	// logger.error("{}", e);
+	// return Boolean.FALSE;
+	// }
+	// return Boolean.TRUE;
+	// }
 
 	// private Boolean batchUpdateAttachmentAuditStatus(Integer companyId,
 	// String year, Integer status) {
@@ -335,13 +335,13 @@ public class PaymentController {
 		if (queryPayment.getAuditYear() != null
 				&& !"".equals(queryPayment.getAuditYear())) {
 			// 1-1查找对应审核年份的已交款总金额, 来判断需要更新的状态
-			BigDecimal alreadyPayment = paymentService.getEffPaid(queryPayment
-					.getAuditYear(), queryPayment.getYear(), queryPayment
-					.getPaymentCompany().getId());
+			BigDecimal alreadyPayment = paymentService.getEffPaid(
+					queryPayment.getAuditYear(), queryPayment.getYear(),
+					queryPayment.getPaymentCompany().getId());
 			// 1-2找到对应的账目
 			Accounts accounts = accountsService.getOneByCompanyAuditYear(
-					queryPayment.getAuditYear(), queryPayment.getYear(), queryPayment
-							.getPaymentCompany().getId());
+					queryPayment.getAuditYear(), queryPayment.getYear(),
+					queryPayment.getPaymentCompany().getId());
 			// 1-3应交款==已交款
 			if (accounts.getTotalMoney().compareTo(alreadyPayment) == 0) {
 				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
@@ -373,14 +373,16 @@ public class PaymentController {
 			// 2-如果不存在审核年份
 			// 2-1 查找公司对应账目年份的已交款总金额, 来判断需要更新的状态
 			BigDecimal alreadyPayment = paymentService.getEffPaid(null,
-					queryPayment.getYear(), queryPayment.getPaymentCompany().getId());
+					queryPayment.getYear(), queryPayment.getPaymentCompany()
+							.getId());
 			// 2-2查找该公司 该账目年度 应交款总额
 			BigDecimal paymentAmount = accountsService.getCompanyAuditYear(
-					null, queryPayment.getYear(), queryPayment.getPaymentCompany()
-							.getId());
+					null, queryPayment.getYear(), queryPayment
+							.getPaymentCompany().getId());
 			// 2-3查找公司对应账目年限的所有账目列表
 			List<Accounts> acList = accountsService.getCompanyAccount(
-					queryPayment.getYear(), queryPayment.getPaymentCompany().getId());
+					queryPayment.getYear(), queryPayment.getPaymentCompany()
+							.getId());
 			// 2-4 应交款==已交款
 			if (paymentAmount.compareTo(alreadyPayment) == 0) {
 				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
@@ -437,18 +439,18 @@ public class PaymentController {
 		}
 	}
 
-//	 public static void main(String[] args) {
-//	 BigDecimal b1 = new BigDecimal("-0.01");
-//	 BigDecimal b2 = new BigDecimal("0.00");
-//	 // System.out.println(b1.compareTo(b2));
-//	 String s = "2012";
-//	 String[] ar = s.split(",");
-//	 // System.out.println(ar.length);
-//	 for (String t : ar) {
-//	 System.out.println(t);
-//	 }
-//		 System.out.println(Integer.MAX_VALUE);
-//	 }
+	// public static void main(String[] args) {
+	// BigDecimal b1 = new BigDecimal("-0.01");
+	// BigDecimal b2 = new BigDecimal("0.00");
+	// // System.out.println(b1.compareTo(b2));
+	// String s = "2012";
+	// String[] ar = s.split(",");
+	// // System.out.println(ar.length);
+	// for (String t : ar) {
+	// System.out.println(t);
+	// }
+	// System.out.println(Integer.MAX_VALUE);
+	// }
 
 	/**
 	 * 查看
@@ -477,7 +479,7 @@ public class PaymentController {
 			@PathVariable(value = "accountsYear") String accountsYear,
 			@PathVariable(value = "companyId") Integer companyId,
 			@PathVariable(value = "lessPayAmount") String slessPayAmount,
-			HttpSession session) {
+			HttpServletRequest request, HttpSession session) {
 		BigDecimal lessPayAmount = new BigDecimal(slessPayAmount);
 		// 待缴金额(应缴-已缴)
 		logger.debug("lessPayAmount:{},slessPayAmount:{}", lessPayAmount,
@@ -488,6 +490,7 @@ public class PaymentController {
 		User user = userService.getByPrimaryKey(userId);
 		// 审核年份
 		if ("all".equals(auditYear)) {
+			request.setAttribute("auditYear", auditYear);
 			auditYear = "";
 		}
 		payment.setAuditYear(auditYear);
@@ -640,7 +643,7 @@ public class PaymentController {
 					.getPaymentExceptional());
 			map.put("paymentType", it.getPaymentType().getText());
 			map.put("userRealName", it.getPaymentPerson().getUserRealName());
-			if(it.getAuditYear()==null||"".equals(it.getAuditYear())){
+			if (it.getAuditYear() == null || "".equals(it.getAuditYear())) {
 				it.setAuditYear("-");
 			}
 			map.put("auditYear", it.getAuditYear());
@@ -670,28 +673,29 @@ public class PaymentController {
 			alreadyPayment = new BigDecimal("0.00");
 		}
 		Map<String, Object> entity = new HashMap<String, Object>();
-		//应缴金额
+		// 应缴金额
 		entity.put("payAmount", df.format(payAmount));
-		//已缴金额
+		// 已缴金额
 		entity.put("alreadyPayAmount", df.format(alreadyPayment));
-		//少缴金额
+		// 少缴金额
 		entity.put("lessPayAmount",
 				df.format(payAmount.subtract(alreadyPayment)));
-		if(auditYear != null){
-			//根据审核年份和公司id 获得对应的审核对象
+		if (auditYear != null) {
+			// 根据审核年份和公司id 获得对应的审核对象
 			Audit audit = auditService.getByPrimaryKey(auditYear, companyId);
-			//公司总人数
+			// 公司总人数
 			entity.put("companyEmpTotal", audit.getCompanyEmpTotal());
-			//公司应安排人数
-			entity.put("companyShouldTotal", df.format(audit.getCompanyShouldTotal()));
-			//公司已安排人数
+			// 公司应安排人数
+			entity.put("companyShouldTotal",
+					df.format(audit.getCompanyShouldTotal()));
+			// 公司已安排人数
 			entity.put("companyAlreadyTotal", audit.getCompanyAlreadyTotal());
-			//已录入数
+			// 已录入数
 			entity.put("companyHandicapTotal", audit.getCompanyHandicapTotal());
-			//预定人数
+			// 预定人数
 			entity.put("companyPredictTotal", audit.getCompanyPredictTotal());
-			
-			//年审参数
+
+			// 年审参数
 			AuditParameter ap = auditParameterService.getByYear(auditYear);
 			entity.put("averageSalary", ap.getAverageSalary());
 		}
@@ -706,22 +710,39 @@ public class PaymentController {
 		return b;
 	}
 
-	// @RequestMapping(value = "/backAudit/{id}", method = RequestMethod.GET)
-	// @ResponseBody
-	// public Boolean backAudit(@PathVariable(value = "id") Integer id,
-	// HttpSession session) {
-	// Audit audit = auditService.getByPrimaryKey(id);
-	// PaginationRecordsAndNumber<Payment, Number> query = paymentService
-	// .getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
-	// if (query == null || query.getRecords().size() > 0) {
-	// return false;
-	// }
-	// AuditProcessStatus auditProcessStatus = auditProcessStatusService
-	// .getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
-	// audit.setAuditProcessStatus(auditProcessStatus);
-	// Boolean b = auditService.update(audit);
-	// return b;
-	// }
+	/**
+	 * 退回重审
+	 * 
+	 * @param auditYear
+	 * @param companyid
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/backAudit/{auditYear}/{accountsYear}/{companyId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean backAudit(
+			@PathVariable(value = "auditYear") String auditYear,
+			@PathVariable(value = "accountsYear") String accountsYear,
+			@PathVariable(value = "companyId") Integer companyId,
+			HttpSession session) {
+		// 将审核对象改回未复审状态
+		Audit audit = auditService.getByPrimaryKey(auditYear, companyId);
+		audit.setAuditProcessStatus(new AuditProcessStatus(
+				Constants.PROCESS_STATIC_WFS));
+		Boolean b = auditService.update(audit);
+		// 删除对应的账目信息
+		Accounts ac = accountsService.getOneByCompanyAuditYear(auditYear,
+				accountsYear, companyId);
+		Boolean c = accountsService.delete(ac.getId());
+
+		// PaginationRecordsAndNumber<Payment, Number> query = paymentService
+		// .getPaymentRecordByAudit(id, 1, Integer.MAX_VALUE);
+		// if (query == null || query.getRecords().size() > 0) {
+		// return false;
+		// }
+		// 更新并删除成功, 返回true
+		return (b == true && c == true) ? true : false;
+	}
 
 	@RequestMapping(value = "/download")
 	@ResponseBody

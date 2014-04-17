@@ -62,23 +62,24 @@ import com.esd.hesf.service.UserService;
 @Controller
 @RequestMapping(value = "/security/audits")
 public class AuditsController {
-	private static final Logger logger = LoggerFactory.getLogger(AuditsController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(AuditsController.class);
 
 	@Autowired
 	private UserService userService;
 
 	@Autowired
 	private AuditService auditService;
-	
+
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Autowired
 	private AuditParameterService auditParameterService;
-	
+
 	@Autowired
 	private PaymentService paymentService;
-	
+
 	@Autowired
 	private AccountsService accountsService;
 
@@ -87,10 +88,10 @@ public class AuditsController {
 
 	@Autowired
 	private CompanyPropertyService companyPropertyService;
-	
+
 	@Autowired
 	private CompanyEconomyTypeService companyEconomyTypeService;
-	
+
 	@Autowired
 	private ReplyService replyService;
 
@@ -103,7 +104,9 @@ public class AuditsController {
 	 * 转到初审单位列表页面
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit_list(@PathVariable(value = "process") Integer process, HttpSession session, HttpServletRequest request) {
+	public ModelAndView initAudit_list(
+			@PathVariable(value = "process") Integer process,
+			HttpSession session, HttpServletRequest request) {
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
@@ -126,7 +129,8 @@ public class AuditsController {
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		getAudit.setVerifyAuditUser(user);// 添加复审ID
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WTG);
+		AuditProcessStatus auditProcessStatus = auditProcessStatusService
+				.getByPrimaryKey(Constants.PROCESS_STATIC_WTG);
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
@@ -144,6 +148,7 @@ public class AuditsController {
 	@ResponseBody
 	public Boolean verifyAudit(Audit audit, HttpSession session) {
 		Integer id = audit.getId();
+
 		Audit getAudit = auditService.getByPrimaryKey(id);
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
 		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
@@ -159,18 +164,22 @@ public class AuditsController {
 		getAudit.setComplementAmount(audit.getComplementAmount());// 补缴金额
 		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
 		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
-		getAudit.setIsExempt(audit.getIsExempt());// 是否免
+		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
 
 		AuditProcessStatus auditProcessStatus = null;
 		if (getAudit.getPayAmount().signum() == 0) {
-			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
+			auditProcessStatus = auditProcessStatusService
+					.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
 		} else {
-			auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+			auditProcessStatus = auditProcessStatusService
+					.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
 		}
 		// 处理未审年度
 		Integer companyId = getAudit.getCompany().getId();
-		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId, audit.getYear());
+		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService
+				.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+				audit.getYear());
 		if (unAudits != null) {
 			for (String year : unAudits) {
 				Audit a = auditService.getByPrimaryKey(year, companyId);
@@ -184,13 +193,13 @@ public class AuditsController {
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
-		
-		//生成账单
+
+		// 生成账单
 		Accounts accounts = new Accounts();
-		accounts.setYear(CalendarUtil.getNowYear());	//账目的出账年份
-		accounts.setAudit(getAudit);	//账目对应的审核审核对象
-		accounts.setCompany(getAudit.getCompany()); //账单公司
-		accounts.setTotalMoney(getAudit.getPayAmount());	//实际应缴金额
+		accounts.setYear(CalendarUtil.getNowYear()); // 账目的出账年份
+		accounts.setAudit(getAudit); // 账目对应的审核审核对象
+		accounts.setCompany(getAudit.getCompany()); // 账单公司
+		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
 		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
 		accountsService.save(accounts);
 		return true;
@@ -214,11 +223,13 @@ public class AuditsController {
 			if (b == true) {
 				audit.setInitAuditDate(new Date()); // 添加初审计时间
 				// 添加审计人
-				Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+				Integer userId = (Integer) session
+						.getAttribute(Constants.USER_ID);
 				User user = userService.getByPrimaryKey(userId);
 				audit.setInitAuditUser(user);
 				// 更改审计状态
-				AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
+				AuditProcessStatus auditProcessStatus = auditProcessStatusService
+						.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
 				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未复审
 				auditService.update(audit);
 				return true;
@@ -256,12 +267,14 @@ public class AuditsController {
 	 */
 	@RequestMapping(value = "/create/{companyCode}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, String>> findCompanyCode(@PathVariable(value = "companyCode") String companyCode) {
+	public List<Map<String, String>> findCompanyCode(
+			@PathVariable(value = "companyCode") String companyCode) {
 		List<Map<String, String>> list = new ArrayList<>();
 
 		Company company = new Company();
 		company.setCompanyCode(companyCode);
-		PaginationRecordsAndNumber<Company, Number> query = companyService.getPaginationRecords(company, 1, 20);
+		PaginationRecordsAndNumber<Company, Number> query = companyService
+				.getPaginationRecords(company, 1, 20);
 
 		for (Company c : query.getRecords()) {
 			Map<String, String> entity = new HashMap<>();
@@ -286,7 +299,8 @@ public class AuditsController {
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
-				AuditProcessStatus auditProcessStatus = auditProcessStatusService.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
+				AuditProcessStatus auditProcessStatus = auditProcessStatusService
+						.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
 				audit.setAuditProcessStatus(auditProcessStatus);
 				auditService.update(audit);
 				return true;
@@ -310,7 +324,8 @@ public class AuditsController {
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
 
 		// 获得在职员工总数
-		Integer zaiZhiYuanGongZongShu = calculateModel.getZaiZhiYuanGongZongShu();
+		Integer zaiZhiYuanGongZongShu = calculateModel
+				.getZaiZhiYuanGongZongShu();
 		if (zaiZhiYuanGongZongShu == null) {
 			zaiZhiYuanGongZongShu = 0;
 		}
@@ -318,18 +333,21 @@ public class AuditsController {
 		BigDecimal putScale = auditParameter.getPutScale();
 		// 计算出应安排人数
 		// 应安排人数=单位在职职工总数*残疾人安排比例
-		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(zaiZhiYuanGongZongShu));
+		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(
+				zaiZhiYuanGongZongShu));
 		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
 		// ========================================================================================
 		// 获得已录入残疾人数
 		Integer yiLuRuCanJiRen = calculateModel.getYiLuRuCanJiRen();
 		// 处理残疾人残疾类型和等级不同的比例
-		List<WorkerCalculator> list = auditParameterService.getSpecialSetting(year);
+		List<WorkerCalculator> list = auditParameterService
+				.getSpecialSetting(year);
 		for (WorkerCalculator workerCalculator : list) {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
 			Integer lvl = workerCalculator.getLvl();
-			Integer num = auditParameterService.getSpecialCount(companyId, year, type, lvl);
+			Integer num = auditParameterService.getSpecialCount(companyId,
+					year, type, lvl);
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
 		}
@@ -343,7 +361,8 @@ public class AuditsController {
 		BigDecimal averageSalary = auditParameter.getAverageSalary();
 		// 计算出应缴金额
 		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
-		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
+				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
 		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
 			calculateModel.setYingJiaoJinE(yingJiaoJinE);
 		} else {
@@ -362,20 +381,25 @@ public class AuditsController {
 		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
 		// ============================================================未审年度
 		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
-		BigDecimal weiShen = getUnAudits(year, companyId, new BigDecimal(zaiZhiYuanGongZongShu), weiShenMingXi);
+		BigDecimal weiShen = getUnAudits(year, companyId, new BigDecimal(
+				zaiZhiYuanGongZongShu), weiShenMingXi);
 		calculateModel.setWeiShenMingXi(weiShenMingXi);
 		// =============================================================未缴款
 		List<AccountModel> weiJiaoMingXi = new ArrayList<AccountModel>();
 		BigDecimal weiJiao = getUnpaid(year, companyId, weiJiaoMingXi);
 		calculateModel.setWeiJiaoMingXi(weiJiaoMingXi);
 		// ==================================================================上年未缴金额
-		logger.debug("qianJiao:{} weiShen:{} weiJiao{}", qianJiao, weiShen, weiJiao);
+		logger.debug("qianJiao:{} weiShen:{} weiJiao{}", qianJiao, weiShen,
+				weiJiao);
 		// 上年未缴金额 =未缴+欠缴+未审
-		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen).add(weiJiao);
-		calculateModel.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
+		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen).add(
+				weiJiao);
+		calculateModel
+				.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
 		// =====================================================================================================
 		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE.add(shangNianDuWeiJiaoBaoZhangJin);
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE
+				.add(shangNianDuWeiJiaoBaoZhangJin);
 		// BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
 		// 计算滞纳金============================================================================================
@@ -390,7 +414,8 @@ public class AuditsController {
 		}
 		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);// 添加滞纳金天数
 		// 计算滞纳金
-		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi).multiply(new BigDecimal(zhiNanJinTianshu));
+		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi)
+				.multiply(new BigDecimal(zhiNanJinTianshu));
 		// 判断是否免除滞纳金
 		Boolean mian = calculateModel.getMianZhiNaJin();
 		if (mian) {
@@ -416,7 +441,8 @@ public class AuditsController {
 	 * @param total
 	 * @return
 	 */
-	private BigDecimal getUnAudits(String year, Integer companyId, BigDecimal total, List<AccountModel> sb) {
+	private BigDecimal getUnAudits(String year, Integer companyId,
+			BigDecimal total, List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
@@ -425,17 +451,24 @@ public class AuditsController {
 		// 残疾人安排比例
 		BigDecimal putScale = auditParameter.getPutScale();
 		// 本地区上年度职工年人均工资数*(职工总人数*残疾人安排比例)未审按一个也没有安排计算所以不减 应安排
-		BigDecimal payableAmount = averageSalary.multiply(total.multiply(putScale));
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
+		BigDecimal payableAmount = averageSalary.multiply(total
+				.multiply(putScale));
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+				year);
 		if (unAudits != null) {
 			for (String unYear : unAudits) {
-				AuditParameter oldAuditParameter = auditParameterService.getByYear(unYear);
+				AuditParameter oldAuditParameter = auditParameterService
+						.getByYear(unYear);
 				Date auditDelayDate = oldAuditParameter.getAuditDelayDate();
 				int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
 				// 滞纳金=应缴金额*滞纳金比例*滞纳金天数
-				BigDecimal penalty = payableAmount.multiply(oldAuditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
+				BigDecimal penalty = payableAmount.multiply(
+						oldAuditParameter.getAuditDelayRate()).multiply(
+						new BigDecimal(days));
 				BigDecimal unYearTotal = payableAmount.add(penalty);
-				logger.debug("payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}", payableAmount, unYear, days, penalty, unYearTotal);
+				logger.debug(
+						"payableAmount:{},year:{} date:{} penalty:{} unYearTotal:{}",
+						payableAmount, unYear, days, penalty, unYearTotal);
 				AccountModel am = new AccountModel();
 				am.setYear(unYear);
 				am.setDays(String.valueOf(days));
@@ -461,12 +494,14 @@ public class AuditsController {
 	 * @param companyCode
 	 * @return
 	 */
-	private BigDecimal getSectionPaid(String year, Integer companyId, List<AccountModel> sb) {
+	private BigDecimal getSectionPaid(String year, Integer companyId,
+			List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
 		// List<Accounts> audits =
 		// accountsService.getUnauditByCompany(companyId, year,
 		// Constants.PROCESS_STATIC_BFJK);
-		List<Accounts> accounts = accountsService.getByYearAndCompany(year, companyId, Constants.PROCESS_STATIC_BFJK);
+		List<Accounts> accounts = accountsService.getByYearAndCompany(year,
+				companyId, Constants.PROCESS_STATIC_BFJK);
 		Map<String, Accounts> map = new HashMap<>();
 		for (Accounts group : accounts) {
 			Object obj = map.get(group.getYear());
@@ -478,12 +513,16 @@ public class AuditsController {
 			}
 		}
 		for (Accounts a : map.values()) {
-			BigDecimal paymentTotal = paymentService.getEffPaid(null,a.getYear(), companyId);// 获得真实的已缴款记录
+			BigDecimal paymentTotal = paymentService.getEffPaid(null,
+					a.getYear(), companyId);// 获得真实的已缴款记录
 			BigDecimal qj = a.getTotalMoney().subtract(paymentTotal);
-			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
+			AuditParameter auditParameter = auditParameterService.getByYear(a
+					.getYear());
 			Date auditDelayDate = auditParameter.getAuditDelayDate();
 			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
-			BigDecimal penalty = qj.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
+			BigDecimal penalty = qj
+					.multiply(auditParameter.getAuditDelayRate()).multiply(
+							new BigDecimal(days));
 			BigDecimal total = qj.add(penalty);
 			AccountModel am = new AccountModel();
 			am.setYear(a.getYear());
@@ -510,9 +549,11 @@ public class AuditsController {
 	 * @param sb
 	 * @return
 	 */
-	private BigDecimal getUnpaid(String year, Integer companyId, List<AccountModel> sb) {
+	private BigDecimal getUnpaid(String year, Integer companyId,
+			List<AccountModel> sb) {
 		BigDecimal amount = new BigDecimal(0.00);
-		List<Accounts> accounts = accountsService.getByYearAndCompany(year, companyId, Constants.PROCESS_STATIC_WJK);
+		List<Accounts> accounts = accountsService.getByYearAndCompany(year,
+				companyId, Constants.PROCESS_STATIC_WJK);
 		Map<String, Accounts> map = new HashMap<>();
 		for (Accounts group : accounts) {
 			Object obj = map.get(group.getYear());
@@ -525,10 +566,13 @@ public class AuditsController {
 		}
 		for (Accounts a : map.values()) {
 			BigDecimal total = a.getTotalMoney();
-			AuditParameter auditParameter = auditParameterService.getByYear(a.getYear());
+			AuditParameter auditParameter = auditParameterService.getByYear(a
+					.getYear());
 			Date auditDelayDate = auditParameter.getAuditDelayDate();
 			int days = CalendarUtil.getDaySub(auditDelayDate, new Date());
-			BigDecimal penalty = total.multiply(auditParameter.getAuditDelayRate()).multiply(new BigDecimal(days));
+			BigDecimal penalty = total.multiply(
+					auditParameter.getAuditDelayRate()).multiply(
+					new BigDecimal(days));
 			AccountModel am = new AccountModel();
 			am.setYear(a.getYear());
 			am.setDays(String.valueOf(days));
@@ -580,24 +624,28 @@ public class AuditsController {
 			params.put("actualAmount", new BigDecimal(money)); // 实缴金额
 		}
 
-		logger.debug("years:{},page:{},rows:{},process{}", year, page, pageSize, process);
+		logger.debug("years:{},page:{},rows:{},process{}", year, page,
+				pageSize, process);
 		Map<String, Object> entity = new HashMap<>();
 		try {
-			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(params);
+			PaginationRecordsAndNumber<Audit, Number> query = auditService
+					.getByMultiCondition(params);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
+			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator
+					.hasNext();) {
 				Audit it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
-				map.put("year", it.getYear());	//审核年度
+				map.put("year", it.getYear()); // 审核年度
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 				Integer pId = it.getAuditProcessStatus().getId();
 				map.put("auditProcessStatusId", pId);// 流程状态
-				String statusName = it.getAuditProcessStatus().getAuditProcessStatus();
+				String statusName = it.getAuditProcessStatus()
+						.getAuditProcessStatus();
 				if (it.getRefuseTimes() > 0) {
 					statusName = statusName + "(" + it.getRefuseTimes() + ")";
 				}
@@ -619,7 +667,9 @@ public class AuditsController {
 	 * 转到年审单位初审页面
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
-	public ModelAndView initAudit(@PathVariable(value = "id") int id, @PathVariable(value = "process") int process, HttpServletRequest request, HttpSession session) {
+	public ModelAndView initAudit(@PathVariable(value = "id") int id,
+			@PathVariable(value = "process") int process,
+			HttpServletRequest request, HttpSession session) {
 		Audit audit = auditService.getByPrimaryKey(id);
 		if (audit.getInitAuditUser() == null) {
 			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
@@ -630,6 +680,12 @@ public class AuditsController {
 			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 			User user = userService.getByPrimaryKey(userId);
 			audit.setVerifyAuditUser(user);
+		}
+		// 如果为重审回来的数据, 则总缴款额需要-该审核年度以前已经缴过的款
+		if (process == 2) {
+			BigDecimal alreadyPayment = paymentService.getEffPaid(
+					audit.getYear(), null, audit.getCompany().getId());
+			audit.setPayAmount(audit.getPayAmount().subtract(alreadyPayment));
 		}
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
@@ -648,10 +704,12 @@ public class AuditsController {
 
 		Integer companyId = audit.getCompany().getId();
 		// 年龄超标
-		PaginationRecordsAndNumber<Worker, Number> workers = companyService.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService
+				.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
 		request.setAttribute("ageEx", workers.getNumber());
 		// 未审年度
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId, year);
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+				year);
 		StringBuilder sb = new StringBuilder();
 		for (String s : unAudits) {
 			sb.append(s).append(",");

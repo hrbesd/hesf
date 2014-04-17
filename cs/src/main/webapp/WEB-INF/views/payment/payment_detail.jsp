@@ -162,23 +162,29 @@
 	payment.view = function(id) {
 		esd.common.openWindow("#add", "查看缴款", 750, 350, "${contextPath}/security/payment/view/" + id);
 	};
-	payment.backAudit = function(id) {
-		$.ajax({
-			url : 'payment/backAudit/${entity.id}',
-			type : 'GET',
-			success : function(data) {
-				if (data == true) {
-					$.messager.alert('消息', '重审提交成功', 'info', function() {
-						esd.common.defaultOpenWindowClose();
-						$("#paymentList_datagrid").datagrid('reload');
-					});
-				} else {
-					$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
-				}
-			},
-			dataType : "json",
-			async : false
-		});
+	payment.backAudit = function() {
+		var rdo_value = $('input[name="rdoAuditYear"]:checked').val();
+		if(rdo_value == 'all'){
+			$.messager.alert('警告','只能单个年份返回重审,请重新选择!');
+			return;
+		}else{
+			$.ajax({
+				url : 'payment/backAudit/'+rdo_value+'/${entity.accountsYear}/${entity.companyId}',
+				type : 'GET',
+				success : function(data) {
+					if (data == true) {
+						$.messager.alert('消息', '重审提交成功', 'info', function() {
+							esd.common.defaultOpenWindowClose();
+							$("#paymentList_datagrid").datagrid('reload');
+						});
+					} else {
+						$.messager.alert('消息', '失败，有缴款记录不能重审', 'info');
+					}
+				},
+				dataType : "json",
+				async : false
+			});
+		}
 	};
 
 	payment.loadPaymentData = function() {
@@ -187,6 +193,10 @@
 			iconCls : 'icon-add',
 			handler : payment.insert
 		}, {
+			text : '重审',
+			iconCls : 'icon-back',
+			handler : payment.backAudit
+		},{
 			text : '返回',
 			iconCls : 'icon-back',
 			handler : payment.back
