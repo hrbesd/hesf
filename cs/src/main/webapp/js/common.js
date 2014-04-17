@@ -353,3 +353,28 @@ window.onkeydown = function(event) {
 		}
 	}
 };
+/**
+ * 自定义没有关闭按钮的alert框
+ * 适用于关闭当前默认打开的窗口
+ * */
+//重写的alert
+esd.common.noCloseButtonDialog = function(title,msg){
+	$('body').append('<div id="dd"></div>');
+	$('#dd').dialog({
+		title : title,
+		width : 280,
+		height : 120,
+		closed : false,
+		closable : false,
+		cache : false,
+		modal : true,
+		content : msg,
+		buttons : [{
+			text : '确定',
+			handler : function(){
+				$('#dd').window('close');
+				esd.common.defaultOpenWindowClose();
+			}
+		}]
+	});
+};

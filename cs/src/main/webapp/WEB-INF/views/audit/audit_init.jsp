@@ -177,47 +177,26 @@
 		});
 
 	};
-	//重写的alert
-	initAudit.noCloseButtonDialog = function(msg){
-		$('body').append('<div id="dd"></div>');
-		$('#dd').dialog({
-			title : '消息',
-			width : 280,
-			height : 120,
-			closed : false,
-			closable : false,
-			cache : false,
-			modal : true,
-			content : msg,
-			buttons : [{
-				text : '确定',
-				handler : function(){
-					$('#dd').window('close');
-					esd.common.defaultOpenWindowClose();
-				}
-			}]
-		});
-	};
 	initAudit.save = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
 				$.messager.alert.closable = false;
-				initAudit.noCloseButtonDialog('保存成功');
+				esd.common.noCloseButtonDialog('消息','保存成功');
 			/*	$.messager.alert('消息', '保存成功', 'info', function(data) {
 					esd.common.defaultOpenWindowClose();
 				});	*/
 			} else {
-				initAudit.noCloseButtonDialog('保存失败');
+				esd.common.noCloseButtonDialog('消息','保存失败');
 			}
 		});
 	};
 	initAudit.audit = function() {
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/audit", function(data) {
 			if (data == true) {
-				initAudit.noCloseButtonDialog('审批成功');
+				esd.common.noCloseButtonDialog('消息','审批成功');
 				$("#initAuditList_datagrid").datagrid('reload');
 			} else {
-				initAudit.noCloseButtonDialog('审批失败');
+				esd.common.noCloseButtonDialog('消息','审批失败');
 			}
 		});
 	};
