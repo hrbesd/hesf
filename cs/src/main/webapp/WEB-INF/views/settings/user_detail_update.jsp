@@ -54,7 +54,7 @@
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" required="true" type="text" value="${entity.userMobile}" />
+					<td><input name="userMobile" type="text" value="${entity.userMobile}" />
 					</td>
 					<td><span id="mobile_message"></span></td>
 				</tr>
