@@ -335,7 +335,7 @@ public class AuditsController {
 		// 计算出应安排人数
 		// 应安排人数=单位在职职工总数*残疾人安排比例
 		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(
-				zaiZhiYuanGongZongShu)).setScale(2, BigDecimal.ROUND_DOWN);
+				zaiZhiYuanGongZongShu)).setScale(2, BigDecimal.ROUND_HALF_UP);
 		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
 		// ========================================================================================
 		// 获得已录入残疾人数
