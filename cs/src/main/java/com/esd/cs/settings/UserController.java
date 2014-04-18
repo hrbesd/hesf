@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.common.util.UsernameAndPasswordMd5;
+import com.esd.cs.Constants;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.UserGroupService;
@@ -38,7 +39,8 @@ import com.esd.hesf.service.UserService;
 @Controller
 @RequestMapping(value = "/security/settings/user")
 public class UserController {
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -62,7 +64,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/list")
 	@ResponseBody
-	public Map<String, Object> list(@RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows, HttpServletRequest request) {
+	public Map<String, Object> list(@RequestParam(value = "page") Integer page,
+			@RequestParam(value = "rows") Integer rows,
+			HttpServletRequest request) {
 		Map<String, Object> entity = new HashMap<>();
 		try {
 			User user = new User();
@@ -76,7 +80,8 @@ public class UserController {
 			query = userService.getPaginationRecords(user, page, rows);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			for (Iterator<User> iterator = query.getRecords().iterator(); iterator.hasNext();) {
+			for (Iterator<User> iterator = query.getRecords().iterator(); iterator
+					.hasNext();) {
 				User it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
@@ -126,7 +131,8 @@ public class UserController {
 
 	@RequestMapping(value = "/checkName", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean checkUserName(@RequestParam(value = "userName") String userName) {
+	public Boolean checkUserName(
+			@RequestParam(value = "userName") String userName) {
 		User checkUserName = userService.getUserByUserName(userName);
 		if (checkUserName != null) {
 			return false;
@@ -136,7 +142,8 @@ public class UserController {
 
 	@RequestMapping(value = "/checkMobile", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean checkUserMobile(@RequestParam(value = "userMobile") String userMobile) {
+	public Boolean checkUserMobile(
+			@RequestParam(value = "userMobile") String userMobile) {
 		User checkUserMobile = userService.getUserByUserMobile(userMobile);
 		if (checkUserMobile != null) {
 			return false;
@@ -152,24 +159,31 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean addPost(User user, HttpServletRequest request) {
+	public Map<String, Object> addPost(User user, HttpServletRequest request) {
 		logger.debug("id:{}", user.getId());
 		logger.debug(user.toString());
+		Map<String, Object> entity = new HashMap<String, Object>();
+		// 检查用户名
 		User checkUserName = userService.getUserByUserName(user.getUserName());
 		if (checkUserName != null) {
-			return false;
+			entity.put(Constants.NOTICE, "用户名已经存在.");
+			return entity;
 		}
-		User checkUserMobile = userService.getUserByUserMobile(user.getUserMobile());
+		// 检查手机号
+		User checkUserMobile = userService.getUserByUserMobile(user
+				.getUserMobile());
 		if (checkUserMobile != null) {
-			return false;
+			entity.put(Constants.NOTICE, "手机号码已经存在.");
+			return entity;
 		}
 		String passWord = user.getUserPassword();
 		String userName = user.getUserName();
 		UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
 		String pwd = md5.getMd5(userName, passWord);
 		user.setUserPassword(pwd);
-		userService.save(user);
-		return true;
+		Boolean bl = userService.save(user);
+		entity.put(Constants.NOTICE, bl);
+		return entity;
 	}
 
 	/**
@@ -180,9 +194,21 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean updatePost(User user) {
+	public Map<String, Object> updatePost(User user) {
 		logger.debug(user.toString());
-		return userService.update(user);
+		Map<String, Object> entity = new HashMap<String, Object>();
+		// 检查手机号
+		User checkUserMobile = userService.getUserByUserMobile(user
+				.getUserMobile());
+		if (checkUserMobile != null
+				&& (user.getUserMobile()
+						.equals(checkUserMobile.getUserMobile()))) {
+			entity.put(Constants.NOTICE, "手机号码已经存在.");
+			return entity;
+		}
+		Boolean bl = userService.update(user);
+		entity.put(Constants.NOTICE, bl);
+		return entity;
 	}
 
 	/**
@@ -217,7 +243,8 @@ public class UserController {
 
 	@RequestMapping(value = "/change", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean changePost(@RequestParam("id") Integer id, @RequestParam("userPassword") String userPassword) {
+	public Boolean changePost(@RequestParam("id") Integer id,
+			@RequestParam("userPassword") String userPassword) {
 		logger.debug("id:{},password:{}", id, userPassword);
 		User user = userService.getByPrimaryKey(id);
 		if (user == null) {
@@ -240,7 +267,8 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editGet(@PathVariable("id") int id, HttpServletRequest request) {
+	public ModelAndView editGet(@PathVariable("id") int id,
+			HttpServletRequest request) {
 		logger.debug("id:{}", id);
 		User user = userService.getByPrimaryKey(id);
 		List<UserGroup> list = userGroupService.getAll();

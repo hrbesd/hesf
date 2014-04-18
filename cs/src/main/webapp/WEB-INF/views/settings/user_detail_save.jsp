@@ -6,13 +6,13 @@
 	var user_detail = {};
 	user_detail.submit = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
-			if (data == true) {
+			if (data.notice == true) {
 				$.messager.alert('消息', '添加成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
 					$("#user_list_grid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '添加失败', 'info');
+				$.messager.alert('消息', data.notice, 'info');
 			}
 		});
 	};
@@ -35,8 +35,8 @@
 			<table class="parameter_tab">
 				<tr>
 					<td style="width: 100px;">用户名:</td>
-					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="" /> <input class="easyui-validatebox" name="version"
-						type="hidden" value="1" />
+					<td style="width: 200px;">
+						<input class="easyui-validatebox" data-options="required:true"  id="userName" name="userName" type="text" value="" />
 					</td>
 					<td><span id="username_message"></span>
 					</td>
@@ -63,7 +63,7 @@
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" class="easyui-validatebox"  type="text" value="" /></td>
+					<td><input name="userMobile" class="easyui-validatebox"  type="text" required="true" value="" /></td>
 					<td><span id="mobile_message"></span>
 					</td>
 				</tr>

@@ -6,13 +6,13 @@
 	var user_detail = {};
 	user_detail.submit = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
-			if (data == true) {
+			if (data.notice == true) {
 				$.messager.alert('消息', '更新成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
 					$("#user_list_grid").datagrid('reload');
 				});
 			} else {
-				$.messager.alert('消息', '更新失败', 'info');
+				$.messager.alert('消息', data.notice, 'info');
 			}
 		});
 	};
@@ -27,7 +27,7 @@
 			<table class="parameter_tab">
 				<tr>
 					<td style="width: 100px;">用户名:</td>
-					<td style="width: 200px;"><input class="easyui-validatebox" required="true" name="userName" type="text" value="${entity.userName}" /> <input name="id" type="hidden" value="${entity.id}" />
+					<td style="width: 200px;"><input class="easyui-validatebox" required="true" readonly="readonly" disabled="disabled" name="userName" type="text" value="${entity.userName}" /> <input name="id" type="hidden" value="${entity.id}" />
 						<input name="version" type="hidden" value="${entity.version}" /></td>
 						<td></td>
 					<td><span id="username_message"></span></td>
@@ -54,7 +54,7 @@
 				</tr>
 				<tr>
 					<td>手机号码:</td>
-					<td><input name="userMobile" type="text" value="${entity.userMobile}" />
+					<td><input name="userMobile" type="text" required="true" value="${entity.userMobile}" />
 					</td>
 					<td><span id="mobile_message"></span></td>
 				</tr>
