@@ -31,6 +31,7 @@ public class Constants {
 
 	public static final Integer PAYMENT_EXCEPTIONAL_NORMAL = 1;
 	
+	public static final String NOTICE = "notice";	//提示标识/文字
 	
 
 }

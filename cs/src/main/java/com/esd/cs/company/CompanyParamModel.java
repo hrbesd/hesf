@@ -19,6 +19,7 @@ public class CompanyParamModel extends PrimaryKey_String {
 	private Integer companyProperty; // 公司性质 _
 	private Integer companyEconomyType; // 企业经济类型
 	private String area = ""; // 公司所属地区
+	private String firstTime;
 
 	public String getYear() {
 		return year;
@@ -158,12 +159,28 @@ public class CompanyParamModel extends PrimaryKey_String {
 		this.companyHandicapTotal_2 = companyHandicapTotal_2;
 	}
 
+	public String getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(String firstTime) {
+		this.firstTime = firstTime;
+	}
+
 	@Override
 	public String toString() {
-		return "CompanyParamModel [year=" + year + ", companyCode=" + companyCode + ", companyTaxCode=" + companyTaxCode + ", companyOrganizationCode=" + companyOrganizationCode
-				+ ", companyProperty=" + companyProperty + ", companyEconomyType=" + companyEconomyType + ", area=" + area + ", companyEmpTotal_1=" + companyEmpTotal_1 + ", companyEmpTotal_2="
-				+ companyEmpTotal_2 + ", companyName=" + companyName + ", companyAddress=" + companyAddress + ", companyLegal=" + companyLegal + ", companyHandicapTotal_1=" + companyHandicapTotal_1
-				+ ", companyHandicapTotal_2=" + companyHandicapTotal_2 + ", page=" + page + ", rows=" + rows + "]";
+		return "CompanyParamModel [year=" + year + ", companyCode="
+				+ companyCode + ", companyTaxCode=" + companyTaxCode
+				+ ", companyOrganizationCode=" + companyOrganizationCode
+				+ ", companyProperty=" + companyProperty
+				+ ", companyEconomyType=" + companyEconomyType + ", area="
+				+ area + ", companyEmpTotal_1=" + companyEmpTotal_1
+				+ ", companyEmpTotal_2=" + companyEmpTotal_2 + ", companyName="
+				+ companyName + ", companyAddress=" + companyAddress
+				+ ", companyLegal=" + companyLegal
+				+ ", companyHandicapTotal_1=" + companyHandicapTotal_1
+				+ ", companyHandicapTotal_2=" + companyHandicapTotal_2
+				+ ", page=" + page + ", rows=" + rows + "]";
 	}
 
 }

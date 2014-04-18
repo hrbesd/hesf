@@ -26,17 +26,24 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
+import com.esd.cs.company.CompanyParamModel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AuditService;
+import com.esd.hesf.service.CompanyService;
 
 @Controller
 @RequestMapping(value = "/security/query/audit")
 public class QueryAuditController {
-	private static final Logger logger = LoggerFactory.getLogger(QueryWorkerController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(QueryWorkerController.class);
 
 	@Autowired
 	private AuditService auditService;
+
+	@Autowired
+	private CompanyService companyService;
 
 	/**
 	 * 转到查询审核数据列表页
@@ -45,7 +52,8 @@ public class QueryAuditController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView queryAuditList(HttpServletRequest request, HttpSession session) {
+	public ModelAndView queryAuditList(HttpServletRequest request,
+			HttpSession session) {
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		return new ModelAndView("query/audit");
@@ -62,7 +70,8 @@ public class QueryAuditController {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> provincePost(AuditParamModel params, HttpServletRequest request) {
+	public Map<String, Object> provincePost(AuditParamModel params,
+			HttpServletRequest request) {
 		logger.debug("queryAuditParams:{}", params);
 
 		Map<String, Object> entity = new HashMap<>();
@@ -71,7 +80,8 @@ public class QueryAuditController {
 			paramsMap.put("year", params.getYear()); // 年度
 			paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
 			paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
-			paramsMap.put("companyOrganizationCode", params.getCompanyOrganizationCode()); // 组织机构代码证
+			paramsMap.put("companyOrganizationCode",
+					params.getCompanyOrganizationCode()); // 组织机构代码证
 			paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
 			paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
 			paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
@@ -94,10 +104,12 @@ public class QueryAuditController {
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
 
 			logger.debug("queryAuditParamsEx:{}", params);
-			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(paramsMap);
+			PaginationRecordsAndNumber<Audit, Number> query = auditService
+					.getByMultiCondition(paramsMap);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
+			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator
+					.hasNext();) {
 				Audit it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
 				map.put("id", it.getId());// id
@@ -120,23 +132,21 @@ public class QueryAuditController {
 		}
 		return entity;
 	}
-	
-	
+
 	/**
-	 * 转到查询审核数据列表页
+	 * 转到查询公司数据列表页
 	 * 
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/listforcompany", method = RequestMethod.GET)
-	public ModelAndView queryAuditListForQueryer(HttpServletRequest request, HttpSession session) {
-		String nowYear = (String) session.getAttribute(Constants.YEAR);
-		request.setAttribute("nowYear", nowYear);
+	public ModelAndView queryAuditListForQueryer(HttpServletRequest request,
+			HttpSession session) {
 		return new ModelAndView("query/audit_for_queryer");
 	}
 
 	/**
-	 * 获取审核列表数据
+	 * 获取公司列表数据
 	 * 
 	 * @param page
 	 * @param rows
@@ -146,42 +156,38 @@ public class QueryAuditController {
 	 */
 	@RequestMapping(value = "/listforcompany", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> provincePostForQueryer(AuditParamModel params, HttpServletRequest request) {
-		logger.debug("queryAuditParams:{}", params);
+	public Map<String, Object> provincePostForQueryer(CompanyParamModel params,
+			HttpServletRequest request) {
+		logger.debug("queryCompanyParams:{}", params);
 
 		Map<String, Object> entity = new HashMap<>();
 		try {
-			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			paramsMap.put("year", params.getYear()); // 年度
-			paramsMap.put("companyName", params.getCompanyName()); // 公司名称
-			paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
-			paramsMap.put("page", params.getPage()); // 分页--起始页
-			paramsMap.put("pageSize", params.getRows());// 分页--返回量
-			if("firstTime".equals(params.getFirstTime())){
-				paramsMap.put("pageSize", 0);// 分页--返回量
+			Company t = new Company();
+			t.setCompanyName(params.getCompanyName());
+			t.setCompanyAddress(params.getCompanyAddress());
+			if ("firstTime".equals(params.getFirstTime())) {
+				params.setRows(0);// 分页--返回量
 			}
-
-			logger.debug("queryAuditParamsEx:{}", params);
-			PaginationRecordsAndNumber<Audit, Number> query = auditService.getByMultiCondition(paramsMap);
+			PaginationRecordsAndNumber<Company, Number> query = companyService
+					.getPaginationRecords(t, params.getPage(), params.getRows());
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
-			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator.hasNext();) {
-				Audit it = iterator.next();
+			for (Iterator<Company> iterator = query.getRecords().iterator(); iterator
+					.hasNext();) {
+				Company it = iterator.next();
 				Map<String, Object> map = new HashMap<>();
-				map.put("id", it.getId());// id
-				map.put("companyId", it.getCompany().getId());// id
-				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("companyAddress", it.getCompany().getCompanyAddress());
-				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());// 审核状态
+				map.put("companyId", it.getId());// id
+				map.put("companyName", it.getCompanyName());// 企业名称
+				map.put("companyAddress", it.getCompanyAddress());
 				list.add(map);
 			}
 			entity.put("total", total);
 			entity.put("rows", list);
-			logger.debug("queryAuditResult:{}", total);
+			logger.debug("queryCompanyResult:{}", total);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("queryAuditError{}", e.getMessage());
+			logger.error("queryCompanyResult{}", e.getMessage());
 		}
 		return entity;
 	}

@@ -434,7 +434,7 @@
 					and c.company_organization_code like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="company.companyAddress != null and companyAddress != ''">
-					and c.company_address like concat('%',#{company.companyAddress,'%')
+					and c.company_address like concat('%',#{company.companyAddress},'%')
 				</if>
 				<if test="company.userId != null and company.userId > 0">
 					and c.user_id = #{company.userId,jdbcType=INTEGER}
@@ -496,7 +496,7 @@
 					and c.company_organization_code like concat('%',#{company.companyOrganizationCode,jdbcType=VARCHAR},'%')
 				</if>
 				<if test="company.companyAddress != null and companyAddress != ''">
-					and c.company_address like concat('%',#{company.companyAddress,'%')
+					and c.company_address like concat('%',#{company.companyAddress},'%')
 				</if>
 				<if test="company.userId != null and company.userId > 0">
 					and c.user_id = #{company.userId,jdbcType=INTEGER}

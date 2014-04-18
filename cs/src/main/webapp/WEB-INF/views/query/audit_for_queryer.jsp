@@ -30,17 +30,8 @@
 		
 		//禁止继承的onkeydown事件
 		window.onkeydown = function(event){
-		}
+		};
 		
-		//年份
-		$('#year').combobox({
-			url : '${contextPath}/security/parameter/getyears',
-			valueField : 'id',
-			textField : 'text',
-			onSelect : function(){
-				queryAudit.findData();
-			}
-		});
 		//名称, 地址
 		$('#companyName').val(tempCompanyName);
 		$('#companyAddress').val(tempCompanyAddress);
@@ -106,10 +97,6 @@
 		});
 
 	};
-	queryAudit.openAudit = function(index) {
-		esd.common.defaultOpenWindowEx("年审查看", 920, 600,
-				"${contextPath}/security/audits/view/" + index);
-	};
 	/*
 	 * 获取企业基本档案函数
 	 */
@@ -123,17 +110,12 @@
 								{
 									field : 'companyName',
 									title : '企业名称',
-									width : 200
+									width : 250
 								},{
 									field : 'companyAddress',
 									title : '地址',
-									width : 250
-								},{
-									field : 'auditProcessStatus',
-									title : '审核状态',
-									width : 100,
-									align : 'center'
-								} ] ], params);
+									width : 300
+								}] ], params);
 
 	};
 
@@ -142,7 +124,6 @@
 	 **/
 	queryAudit.getParams = function() {
 		var params = {};
-		params.year = $("#year").combobox("getValue"); // 年度
 		var companyName =  $("#companyName").val(); // 企业名称
 		if(companyName == tempCompanyName){
 			companyName = '';
@@ -188,7 +169,6 @@
 
 	//组件解析完成
 	$.parser.onComplete = function() {
-		queryAudit
 		//加载单位档案数据
 		queryAudit.loadData(queryAudit.getParams());
 	};
@@ -216,8 +196,7 @@
 		<div class="paramsTab" style="width:100%;">
 			<table id="queryAuditParams" style="width:100%">
 				<tr>
-					<td style="width:30%;text-align:right;" >年度:<input id="year" class="easyui-combobox" style="width:100%;" value="${nowYear}"
-						data-options="height:42,editable:false" />
+					<td style="width:20%;text-align:right;" >&nbsp;
 					</td>
 					<td style="width:25%;text-align:left;height:70px;"><input class="longtext inputElement"
 						id="companyName" style="width:100%;color:gray;height:40px;padding-left: 5px;"/>
