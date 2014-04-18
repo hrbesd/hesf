@@ -233,8 +233,14 @@
 				//onChange : initAudit.jisuan
 			//});
 			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
+			initAudit.jisuan();
 		};
 	});
+/*	$('#auditTabs').tabs({
+		onSelect : function(title,index) {
+			initAudit.jisuan();
+		}
+	});	*/
 </script>
 
 <form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 2px;">

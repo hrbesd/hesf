@@ -6,7 +6,6 @@
 package com.esd.cs.audit;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -686,7 +685,7 @@ public class AuditsController {
 		if (process == 2) {
 			BigDecimal alreadyPayment = paymentService.getEffPaid(
 					audit.getYear(), null, audit.getCompany().getId());
-			audit.setPayAmount(audit.getAmountPayable().subtract(alreadyPayment));
+			audit.setPayAmount(audit.getPayAmount().subtract(alreadyPayment));
 		}
 		String year = audit.getYear();
 		AuditParameter auditParameter = auditParameterService.getByYear(year);

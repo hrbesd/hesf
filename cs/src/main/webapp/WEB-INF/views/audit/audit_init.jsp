@@ -311,7 +311,7 @@
 				<td>补审年度:</td>
 			</tr>
 			<tr>
-				<td rowspan="2" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.companyEmpTotal }"
+				<td rowspan="2" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" onpropertychange="initAudit.propertyChange()" value="${entity.companyEmpTotal }"
 					class="easyui-numberbox warn" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" data-options="min:0" /></td>
 				<td width="97">应按排数:</td>
 				<td width="100">已安排数:</td>

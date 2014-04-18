@@ -105,7 +105,7 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/edit/{auditProcessStatus}/{companyId}/{year}", method = RequestMethod.GET)
 	public ModelAndView editGet(
-			@PathVariable(value="auditProcessStatus") Integer auditProcessStatus,
+			@PathVariable(value = "auditProcessStatus") Integer auditProcessStatus,
 			@PathVariable(value = "companyId") Integer companyId,
 			@PathVariable(value = "year") String year,
 			HttpServletRequest request) {
@@ -124,7 +124,8 @@ public class PaymentController {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		// 账目id
 		// entity.put("id", String.valueOf(accounts.getId()));
-		entity.put("auditProcessStatus", auditProcessStatus);	// 传递审核状态, 方便前台进行判断
+		entity.put("auditProcessStatus", auditProcessStatus); // 传递审核状态,
+																// 方便前台进行判断
 		entity.put("companyId", String.valueOf(accounts.getCompany().getId()));
 		entity.put("companyCode", accounts.getCompany().getCompanyCode());
 		entity.put("companyTaxCode", accounts.getCompany().getCompanyTaxCode());
@@ -732,6 +733,12 @@ public class PaymentController {
 		Audit audit = auditService.getByPrimaryKey(auditYear, companyId);
 		audit.setAuditProcessStatus(new AuditProcessStatus(
 				Constants.PROCESS_STATIC_WFS));
+		// 在备注中需要添加内容
+		BigDecimal alreadyPayment = paymentService.getEffPaid(audit.getYear(),
+				null, audit.getCompany().getId());
+		String remark = "注意! 该条是在缴款中通过\"重审\"操作返回来的数据, 其中的实缴总金额包含已缴的款额："
+				+ alreadyPayment + "元. 如有\"减缴\"操作, 注意需要扣除上述提到的已缴金额.";
+		audit.setRemark(audit.getRemark()+remark);
 		Boolean b = auditService.update(audit);
 		// 删除对应的账目信息
 		Accounts ac = accountsService.getOneByCompanyAuditYear(auditYear,

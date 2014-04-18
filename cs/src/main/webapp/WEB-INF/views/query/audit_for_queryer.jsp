@@ -184,7 +184,6 @@
 <div id="super" data-options="region:'center',border:true,title:'残疾人就业保障金'">
 	<div id="tab-tools" style="background-color: #E0ECFF;width:100%;text-align:right;border-bottom: 1px solid #95B8E7;">
 		<span>登录用户&nbsp;:&nbsp;${sessionScope.userName}</span>
-		 <a href="javascript:window.parent.location.href = '/cs/security/index'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-help'">帮助</a>  
 		 <a href="javascript:window.parent.location.href = '/cs/quit'" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" >退出</a>
 	</div>
 	
