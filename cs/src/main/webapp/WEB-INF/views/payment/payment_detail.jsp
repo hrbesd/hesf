@@ -114,6 +114,7 @@
 				$('#payAmount').html(data.payAmount);	//应缴
 				$('#alreadyPayAmount').html(data.alreadyPayAmount);	//已缴
 				$('#lessPayAmount').html(data.lessPayAmount);//未缴
+				payment.hideOrShowThreeBar();
 				if(rdo_value != 'all'){
 					$('#companyEmpTotal').html(data.companyEmpTotal);	//员工总数
 					$('#averageSalary').html(data.averageSalary);	//平均工资
@@ -196,6 +197,26 @@
 		}
 	};
 
+	//判断’新建缴款‘，’重申‘，‘返回’ 三个按钮是否隐藏
+	payment.hideOrShowThreeBar = function(){
+		//初始进入页面时使用
+		var status = '${entity.auditProcessStatus}';
+		if(status != null && '' != status){
+			if(status == '3' || status == '4'){
+				$('#defaultWindow .datagrid-toolbar').css('display','block');
+			}else{
+				$('#defaultWindow .datagrid-toolbar').css('display','none');
+			}
+		}
+		//单选按钮改变时使用
+		var lessPayAmount = $('#lessPayAmount').html();
+		if(lessPayAmount == 0.00 || lessPayAmount == '0.00'){
+			$('#defaultWindow .datagrid-toolbar').css('display','none');
+		}else{
+			$('#defaultWindow .datagrid-toolbar').css('display','block');
+		}
+	};
+	
 	payment.loadPaymentData = function() {
 		esd.common.datagridEx("#payment_datagrid", "${contextPath }/security/payment/getPayments/${entity.accountsYear}/${entity.companyId}", [ {
 			text : '新建缴款记录',
@@ -302,13 +323,7 @@
 	$.parser.onComplete = function() {
 	//	payment.getBalance();
 		payment.loadPaymentData();
-		//判断’新建缴款‘，’重申‘，‘返回’ 三个按钮是否隐藏
-		var status = '${entity.auditProcessStatus}';
-		if(status == '3' || status == '4'){
-			$('#defaultWindow .datagrid-toolbar').css('display','block');
-		}else{
-			$('#defaultWindow .datagrid-toolbar').css('display','none');
-		}
+		payment.hideOrShowThreeBar();
 	};
 </script>
 <div id="payment">

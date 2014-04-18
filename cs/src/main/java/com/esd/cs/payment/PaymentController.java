@@ -736,7 +736,7 @@ public class PaymentController {
 		// 在备注中需要添加内容
 		BigDecimal alreadyPayment = paymentService.getEffPaid(audit.getYear(),
 				null, audit.getCompany().getId());
-		String remark = "注意! 该条是在缴款中通过\"重审\"操作返回来的数据, 其中的实缴总金额包含已缴的款额："
+		String remark = "注意! 该条是在缴款中通过\"重审\"操作返回来的数据, 其中实缴总金额包含已缴的款额："
 				+ alreadyPayment + "元. 如有\"减缴\"操作, 注意需要扣除上述提到的已缴金额.";
 		audit.setRemark(audit.getRemark()+remark);
 		Boolean b = auditService.update(audit);
