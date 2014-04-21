@@ -122,6 +122,7 @@
 					$('#companyAlreadyTotal').html(data.companyAlreadyTotal);	//已安排
 					$('#companyHandicapTotal').html(data.companyHandicapTotal);	//已录入
 					$('#companyPredictTotal').html(data.companyPredictTotal);	//预定人数
+					$('#remark').val(data.remark);
 				}
 			//	$('#readyPayments').html(data.readyPayments);
 			},
@@ -389,7 +390,7 @@
 			</tr>	 -->
 			<tr>
 				<td class="td_short" rowspan="3">备注:</td>
-				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90">${entity.remark}</textarea>
+				<td colspan="3" rowspan="3"><textarea class="readonly" style="height: 100%" rows="2" cols="90" id="remark">${entity.remark}</textarea>
 				</td>
 				<td class="td_short">职工总人数:</td>
 				<td class="td_short readonly" style="text-align: left;" id="companyEmpTotal">${entity.companyEmpTotal }</td>

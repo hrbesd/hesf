@@ -698,7 +698,9 @@ public class PaymentController {
 			entity.put("companyHandicapTotal", audit.getCompanyHandicapTotal());
 			// 预定人数
 			entity.put("companyPredictTotal", audit.getCompanyPredictTotal());
-
+			// 备注信息
+			entity.put("remark", audit.getRemark());
+			
 			// 年审参数
 			AuditParameter ap = auditParameterService.getByYear(auditYear);
 			entity.put("averageSalary", ap.getAverageSalary());
