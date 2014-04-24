@@ -293,7 +293,7 @@
 				<tr>
 					<td></td>
 					<td colspan="3"><a href="javascript:parameter_save.submit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:parameter_save.back();" class="easyui-linkbutton"
-						iconCls="icon-ok">返回</a></td>
+						iconCls="icon-undo">返回</a></td>
 				</tr>
 			</table>
 		</form>

@@ -261,7 +261,7 @@
 				<tr>
 					<td></td>
 					<td colspan="3"><a href="javascript:parameter_edit.update();" class="easyui-linkbutton" iconCls="icon-ok">更新</a> <a href="javascript:parameter_edit.back();" class="easyui-linkbutton"
-						iconCls="icon-back">返回</a></td>
+						iconCls="icon-undo">返回</a></td>
 				</tr>
 			</table>
 		</form>
