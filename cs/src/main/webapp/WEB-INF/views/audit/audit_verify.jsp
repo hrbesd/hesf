@@ -196,10 +196,12 @@
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/verifyAudit", function(data) {
 			if (data == true) {
 				//先关闭弹出窗, 防止反复确认,造成数据重复提交
-				esd.common.defaultOpenWindowClose();
+				esd.common.noCloseButtonDialog('消息','审批成功');
+		//		esd.common.defaultOpenWindowClose();
 				$("#initAuditList_datagrid").datagrid('reload');
-				$.messager.alert('消息', '复审确认成功', 'info', function() {
-				});
+		//		$("#initAuditList_datagrid").datagrid('reload');
+		//		$.messager.alert('消息', '复审确认成功', 'info', function() {
+		//		});
 			} else {
 				$.messager.alert('消息', '复审确认失败', 'info');
 			}
