@@ -143,10 +143,11 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean addPost(AuditParameter auditParameter,
+	public Map<String, Object> addPost(AuditParameter auditParameter,
 			HttpServletRequest request, HttpSession session) {
 		logger.debug("auditParameter:{}", auditParameter);
 		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
+		Map<String, Object> map = new HashMap<String, Object>();
 		if (copy) {
 			// 检查审核表中该年份的审核数据是否存在,如不存在-则进行复制以产生审核数据, 如存在-则不进行复制
 			Boolean isExist = false;
@@ -157,7 +158,7 @@ public class YearAuditParameterController {
 					break;
 				}
 			}
-			if(!isExist){
+			if (!isExist) {
 				// 产生审核数据
 				try {
 					String currentYear = auditParameter.getYear(); // 获取指定要审核的年
@@ -166,19 +167,29 @@ public class YearAuditParameterController {
 					}
 				} catch (Exception e) {
 					logger.error("copy audit date error", e);
-					return false;
+					map.put(Constants.NOTICE, "产生审核数据失败");
+					return map;
 				}
 			}
 		}
 		try {
+			// 验证该年度的审核参数是否存在
+			AuditParameter tempAup = auditParameterService
+					.getByYear(auditParameter.getYear());
+			if (tempAup != null) {
+				map.put(Constants.NOTICE, "该年度的审核数据已经存在");
+				return map;
+			}
 			auditParameterService.save(auditParameter);
 			String year = auditParameterService.getLastestYear();
 			session.setAttribute(Constants.YEAR, year);
+			map.put(Constants.NOTICE, true);
 		} catch (Exception e) {
 			logger.error("add audit year parms error", e);
-			return false;
+			map.put(Constants.NOTICE, "保存审核数据失败");
 		}
-		return true;
+		return map;
+
 	}
 
 	/**

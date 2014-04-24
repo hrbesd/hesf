@@ -25,28 +25,28 @@
 				}else{
 					//提交
 					esd.common.syncPostSubmit("#form", function(data) {
-						if (data == true) {
+						if (data.notice == true || data.notice == 'true') {
 							$.messager.alert('消息', '添加成功', 'info', function() {
 								esd.common.defaultOpenWindowClose();
 								$("#parameter_list_grid").datagrid('reload');
 							});
 						} else {
-							$.messager.alert('消息', '添加失败,年度已经添加', 'info');
+							$.messager.alert('消息', data.notice, 'info');
 						}
 					});
 				}
 				
 			});
 		}else{
-			//提交. 很恶心, 有于confirm不能提到window.confirm
+			//提交. 很恶心, 由于confirm不能提到window.confirm
 			esd.common.syncPostSubmit("#form", function(data) {
-				if (data == true) {
+				if (data.notice == true || data.notice == 'true') {
 					$.messager.alert('消息', '添加成功', 'info', function() {
 						esd.common.defaultOpenWindowClose();
 						$("#parameter_list_grid").datagrid('reload');
 					});
 				} else {
-					$.messager.alert('消息', '添加失败,年度已经添加', 'info');
+					$.messager.alert('消息', data.notice, 'info');
 				}
 			});
 		}
