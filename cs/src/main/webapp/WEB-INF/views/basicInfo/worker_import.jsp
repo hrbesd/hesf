@@ -65,7 +65,7 @@
 		<input type="hidden" name="year" id="currentyear" value="${year}" />
 		<div>
 			<p>
-				<span class="red_notice">*</span>文件大小不能超过2MB。
+				<span class="red_notice">*</span>导入数据条数(残疾员工数)不超过3000条。
 			</p>
 			<p>
 				<span class="red_notice">*</span> 文件必须是：xls, xlsx类型, 格式如下图.
