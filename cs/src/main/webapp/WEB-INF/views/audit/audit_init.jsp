@@ -237,9 +237,13 @@
 	<div style="border: #95B8E7 1px solid; width: 900px;">
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="100">档案号码:</td>
-				<td width="290" colspan="3"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
-					value="${entity.company.id}" /> <input type="hidden" name="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /></td>
+				<td width="100">档案号码123:</td>
+				<td width="290" colspan="3"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> 
+					<input type="hidden" id="companyId" name="company.id" value="${entity.company.id}" /> 
+					<input type="hidden" name="year" value="${entity.year}" /> 
+					<input type="hidden" name="company.version" value="${entity.company.version}" />
+					<input type="hidden" name="auditProcessStatus.id" value="${entity.auditProcessStatus.id }" />
+				</td>
 				<td>年审年度:</td>
 				<td colspan="2"><input name="year" class="readonly" type="text" value="${entity.year}" /></td>
 				<td>未审年度:</td>

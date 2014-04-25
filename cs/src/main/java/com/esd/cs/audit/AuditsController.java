@@ -299,9 +299,9 @@ public class AuditsController {
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
-				AuditProcessStatus auditProcessStatus = auditProcessStatusService
-						.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
-				audit.setAuditProcessStatus(auditProcessStatus);
+//				AuditProcessStatus auditProcessStatus = auditProcessStatusService
+//						.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
+//				audit.setAuditProcessStatus(auditProcessStatus);
 				auditService.update(audit);
 				return true;
 			}
