@@ -63,10 +63,10 @@ padding: 40px 0 0 0;
 				<div style="text-align: left;">
 					<div style="color: red;" id="message">${message}</div>
 					<p>
-						<span style="display:-moz-inline-block;display:inline-block;width:50px;">用户名:</span><input name="username" type="text" style="width: 140px;padding-left: 5px;" value="${username }" />
+						<span style="display:-moz-inline-block;display:inline-block;width:50px;">用户名:</span><input name="username" type="text" style="width: 140px;padding-left: 5px;" value="" />
 					</p>
 					<p>
-						<span style="display:-moz-inline-block;display:inline-block;width:50px;">密&nbsp;&nbsp;&nbsp;码:</span><input name="password" type="password" style="width: 140px;padding-left: 5px;" value="${password }" />
+						<span style="display:-moz-inline-block;display:inline-block;width:50px;">密&nbsp;&nbsp;&nbsp;码:</span><input name="password" type="password" style="width: 140px;padding-left: 5px;" value="" />
 					</p>
 					<div>
 						<div style="height: 30px; width: 216px;">
