@@ -61,7 +61,7 @@
 		$('#paymentPerson').combobox({
 			url : 'parameter/getPayer',
 			valueField : 'id',
-			textField : 'userName',
+			textField : 'userRealName',
 			onSelect:function(){
 				queryPayment.findData();
 			}
