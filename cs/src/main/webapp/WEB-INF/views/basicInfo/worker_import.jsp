@@ -50,7 +50,11 @@
 </script>
 
 <div class="importWorker" id="importWorkerPan">
-
+	
+<!-- 	<div id="upload_progress" class="easyui-progressbar" data-options="value:60" style="width:400px">
+	
+	</div>  -->
+	
 	<form class="importWorkerForm" id="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
 	<div class="importWorkerTitle"  id="importWorkerTitle"  >导入残疾职工</div>
 		<table>
