@@ -14,7 +14,7 @@ import com.esd.hesf.model.PrimaryKey_Int;
  * 
  */
 public class WorkerParamModel extends PrimaryKey_Int {
-	private String companyId;// 年度
+	private String companyId;// 公司年度
 
 	public String getCompanyId() {
 		return companyId;

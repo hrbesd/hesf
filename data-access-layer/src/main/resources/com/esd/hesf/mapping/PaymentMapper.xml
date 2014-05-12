@@ -447,6 +447,13 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<!-- 缴款时间范围 -->
+				<if test="startDate != null and startDate != ''">
+					and substring(pay.payment_date,1,10) &gt;=  #{startDate}
+				</if>
+				<if test="endDate != null and endDate != ''">
+					and substring(pay.payment_date,1,10) &lt;= #{endDate}
+				</if>
 				<choose>
 					<when test="payment.isActive != null">
 						and pay.is_active = #{payment.isActive,jdbcType=BIT}
@@ -456,13 +463,15 @@
 					</otherwise>
 				</choose>
 			</if>
-			<!-- 缴款时间范围 -->
-			<if test="startDate != null and startDate != ''">
-				and substring(pay.payment_date,1,10) &gt;=  #{startDate}
-			</if>
-			<if test="endDate != null and endDate != ''">
-				and substring(pay.payment_date,1,10) &lt;= #{endDate}
-			</if>
+			<choose>
+				<when test="payment != null">
+					<if test="payment.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and pay.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by pay.create_time desc
 		limit #{start}, #{size}
@@ -574,6 +583,13 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
+				<!-- 缴款时间范围 -->
+				<if test="startDate != null and startDate != ''">
+					and substring(pay.payment_date,1,10) &gt;=  #{startDate}
+				</if>
+				<if test="endDate != null and endDate != ''">
+					and substring(pay.payment_date,1,10) &lt;= #{endDate}
+				</if>
 				<choose>
 					<when test="payment.isActive != null">
 						and pay.is_active = #{payment.isActive,jdbcType=BIT}
@@ -583,13 +599,15 @@
 					</otherwise>
 				</choose>
 			</if>
-			<!-- 缴款时间范围 -->
-			<if test="startDate != null and startDate != ''">
-				and substring(pay.payment_date,1,10) &gt;=  #{startDate}
-			</if>
-			<if test="endDate != null and endDate != ''">
-				and substring(pay.payment_date,1,10) &lt;= #{endDate}
-			</if>
+			<choose>
+				<when test="payment != null">
+					<if test="payment.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and pay.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

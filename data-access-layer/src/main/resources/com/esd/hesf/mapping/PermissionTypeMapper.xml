@@ -109,7 +109,24 @@
 				<if test="permissionType.isActive != null">
 					and is_active = #{permissionType.isActive}
 				</if>
+				<choose>
+					<when test="permissionType.isActive != null">
+						and is_active = #{permissionType.isActive}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="permissionType != null">
+					<if test="permissionType.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by update_time asc 
 		limit #{start}, #{size}
@@ -123,10 +140,24 @@
 				<if test="permissionType.userId != null and permissionType.userId > 0 ">
 					user_id = #{permissionType.userId}
 				</if>
-				<if test="permissionType.isActive != null">
-					and is_active = #{permissionType.isActive}
-				</if>
+				<choose>
+					<when test="permissionType.isActive != null">
+						and is_active = #{permissionType.isActive}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="permissionType != null">
+					<if test="permissionType.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

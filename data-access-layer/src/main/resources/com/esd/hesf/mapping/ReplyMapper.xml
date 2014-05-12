@@ -104,7 +104,24 @@
 				<if test="reply.title != null and reply.title != ''">
 					title like concat('%',#{reply.title,jdbcType=VARCHAR},'%')
 				</if>
+				<choose>
+					<when test="reply.isActive != null">
+						and is_active = #{reply.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="reply != null">
+					<if test="reply.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</where>
 		order by id
 		<!-- not include no comment -->
@@ -119,7 +136,24 @@
 				<if test="reply.title != null and reply.title != ''">
 					title like concat('%',#{reply.title,jdbcType=VARCHAR},'%')
 				</if>
+				<choose>
+					<when test="reply.isActive != null">
+						and is_active = #{reply.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="reply != null">
+					<if test="reply.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</where>
 	</select>
 

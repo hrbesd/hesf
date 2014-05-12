@@ -23,6 +23,7 @@ import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyType;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
@@ -39,6 +40,7 @@ import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
 import com.esd.hesf.service.AuditService;
+import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
 import com.esd.hesf.service.MenuService;
@@ -117,6 +119,9 @@ public class TestController {
 
 	@Autowired
 	private CompanyTypeService ctService;
+
+	@Autowired
+	private CompanyEconomyTypeService cetService;
 
 	@Autowired
 	private AccountsService acService;
@@ -198,7 +203,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test10() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getCompanyByOrganizationCode("123");
+		Company entity = cService.getByCompanyOrganizationCode("123");
 		map.put("entity", entity);
 		return map;
 	}
@@ -855,23 +860,23 @@ public class TestController {
 		return map;
 	}
 
-//	@RequestMapping("/62")
-//	@ResponseBody
-//	public Map<String, Object> test62() {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		String[] entity = acService.getAccountsYears();
-//		map.put("entity", entity);
-//		return map;
-//	}
-//
-//	@RequestMapping("/63")
-//	@ResponseBody
-//	public Map<String, Object> test63() {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		String[] entity = acService.getAccountsYears();
-//		map.put("entity", entity);
-//		return map;
-//	}
+	// @RequestMapping("/62")
+	// @ResponseBody
+	// public Map<String, Object> test62() {
+	// Map<String, Object> map = new HashMap<String, Object>();
+	// String[] entity = acService.getAccountsYears();
+	// map.put("entity", entity);
+	// return map;
+	// }
+	//
+	// @RequestMapping("/63")
+	// @ResponseBody
+	// public Map<String, Object> test63() {
+	// Map<String, Object> map = new HashMap<String, Object>();
+	// String[] entity = acService.getAccountsYears();
+	// map.put("entity", entity);
+	// return map;
+	// }
 
 	@RequestMapping("/64")
 	@ResponseBody
@@ -886,7 +891,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test65() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		BigDecimal entity = pService.getEffPaid(null,null, "");
+		BigDecimal entity = pService.getEffPaid(null, null, "");
 		map.put("entity", entity);
 		return map;
 	}
@@ -939,7 +944,7 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/71")
 	@ResponseBody
 	public Map<String, Object> test71() {
@@ -957,7 +962,7 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	@RequestMapping("/73")
 	@ResponseBody
 	public Map<String, Object> test73() {
@@ -966,13 +971,22 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
-//	@RequestMapping("/74")
-//	@ResponseBody
-//	public Map<String, Object> test74() {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		Boolean entity = aService.updatedata();
-//		map.put("entity", entity);
-//		return map;
-//	}
+
+	@RequestMapping("/75")
+	@ResponseBody
+	public Map<String, Object> test75() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CompanyEconomyType> list = cetService.getAll();
+		map.put("entity", list);
+		return map;
+	}
+
+	// @RequestMapping("/74")
+	// @ResponseBody
+	// public Map<String, Object> test74() {
+	// Map<String, Object> map = new HashMap<String, Object>();
+	// Boolean entity = aService.updatedata();
+	// map.put("entity", entity);
+	// return map;
+	// }
 }

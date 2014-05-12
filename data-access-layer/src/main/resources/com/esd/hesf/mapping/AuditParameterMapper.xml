@@ -618,9 +618,6 @@
 				<if test="auditParameter.userId != null and auditParameter.userId > 0">
 					and ap.user_id = #{auditParameter.userId}
 				</if>
-				<if test="auditParameter.isActive != null">
-					and ap.is_active = #{auditParameter.isActive}
-				</if>
 				<if test="auditParameter.year != null">
 					and ap.year = #{auditParameter.year}
 				</if>
@@ -629,7 +626,24 @@
 						and ap.area_code = #{auditParameter.areaCode}
 					</if>
 				</if>
+				<choose>
+					<when test="auditParameter.isActive != null">
+						and ap.is_active = #{auditParameter.isActive}
+					</when>
+					<otherwise>
+						and ap.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="auditParameter != null">
+					<if test="auditParameter.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and ap.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by ap.year asc 
 		limit #{start}, #{size}
@@ -643,9 +657,6 @@
 				<if test="auditParameter.userId != null and auditParameter.userId > 0">
 					and ap.user_id = #{auditParameter.userId}
 				</if>
-				<if test="auditParameter.isActive != null">
-					and ap.is_active = #{auditParameter.isActive}
-				</if>
 				<if test="auditParameter.year != null">
 					and ap.year = #{auditParameter.year}
 				</if>
@@ -654,7 +665,25 @@
 						and ap.area_code = #{auditParameter.areaCode}
 					</if>
 				</if>
+				<choose>
+					<when test="auditParameter.isActive != null">
+						and ap.is_active = #{auditParameter.isActive}
+					</when>
+					<otherwise>
+						and ap.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="auditParameter != null">
+					<if test="auditParameter.isActive != null">
+						and ap.is_active = #{auditParameter.isActive}
+					</if>
+				</when>
+				<otherwise>
+					and ap.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 	

@@ -96,10 +96,24 @@
 				<if test="paymentType.text != null and paymentType != ''">
 					text like concat('%',#{paymentType.text,jdbcType=VARCHAR},'%')
 				</if>
-				<if test="paymentType.isActive != null">
-					and  is_active = #{isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="paymentType.isActive != null">
+						and is_active = #{paymentType.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="paymentType != null">
+					<if test="paymentType.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		limit #{start},#{size} 
 	</select>
@@ -112,10 +126,24 @@
 				<if test="paymentType.text != null and paymentType != ''">
 					text like concat('%',#{paymentType.text,jdbcType=VARCHAR},'%')
 				</if>
-				<if test="paymentType.isActive != null">
-					and  is_active = #{isActive,jdbcType=BIT}
-				</if>
+				<choose>
+					<when test="paymentType.isActive != null">
+						and is_active = #{paymentType.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="paymentType != null">
+					<if test="paymentType.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

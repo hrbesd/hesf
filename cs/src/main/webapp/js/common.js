@@ -312,6 +312,27 @@ esd.common.printWindow = function() {
 	// window.print();
 
 };
+
+/**
+ * 打印终审信息 <!--startprint--> 开始部分 <!--endprint--> 结束部分
+ */
+esd.common.printFinalAuditWindow = function() {
+
+	bdhtml = window.document.body.innerHTML;
+	sprnstr = "<!--startfinalauditprint-->";
+	eprnstr = "<!--endfinalauditprint-->";
+	prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 27);
+	prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+	var newWindow = window.open();
+	newWindow.window.document.body.innerHTML = prnhtml;
+	newWindow.window.document.head.innerHTML = window.document.head.innerHTML;
+	newWindow.window.print();
+
+	// window.document.body.innerHTML=prnhtml;
+	// window.print();
+
+};
+
 /**
  * 查看企业
  */
@@ -388,6 +409,46 @@ esd.common.noCloseButtonDialog = function(title,msg){
 			handler : function(){
 				$('#dd').window('close');
 				esd.common.defaultOpenWindowClose();
+			}
+		}]
+	});
+};
+
+/**
+ * 自定义没有关闭按钮的alert框
+ * 适用于不关闭当前默认打开的窗口
+ * */
+//重写的alert
+esd.common.noCloseButtonDialogNoCloseWindow = function(title,msg){
+	$('body').append('<div id="dd"></div>');
+	$('#dd').dialog({
+		title : title,
+		width : 280,
+		height : 120,
+		closed : false,
+		closable : false,
+		cache : false,
+		modal : true,
+		content : '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+msg,
+		bodyCls : 'noCloseButtonDialogBody',
+	/*	toolbar : [{
+			text : '添加',
+			iconCls : 'icon-add',
+			handler : function(){
+				alert('add!');
+			}
+		},{
+			text : '提交',
+			iconCls : 'icon-ok',
+			handler : function(){
+				alert('ok!');
+			}
+		}],	*/
+		buttons : [{
+			text : '确定',
+			handler : function(){
+				$('#dd').window('close');
+			//	esd.common.defaultOpenWindowClose();
 			}
 		}]
 	});

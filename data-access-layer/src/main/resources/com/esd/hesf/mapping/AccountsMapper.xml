@@ -404,20 +404,29 @@
 						and au.year = #{accounts.audit.year,jdbcType=CHAR} 
 					</if>
 				</if>
-				<choose>
-					<when test="accounts.isActive != null">
-						and ac.is_active = #{accounts.isActive,jdbcType=BIT}
-					</when>
-					<otherwise>
-						and ac.is_active = 0
-					</otherwise>
-				</choose>
 				<if test="accounts.auditProcessStatus != null">
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
 				</if>
+				<choose>
+					<when test="accounts.isActive != null">
+						ac.is_active = #{accounts.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						ac.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="accounts != null">
+					<if test="accounts.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					ac.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by ac.year, c.company_code
 		limit #{start}, #{size}
@@ -482,20 +491,30 @@
 						and au.year = #{accounts.audit.year,jdbcType=CHAR} 
 					</if>
 				</if>
-				<choose>
-					<when test="accounts.isActive != null">
-						and ac.is_active = #{accounts.isActive,jdbcType=BIT}
-					</when>
-					<otherwise>
-						and ac.is_active = 0
-					</otherwise>
-				</choose>
 				<if test="accounts.auditProcessStatus != null">
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
 				</if>
+				<choose>
+					<when test="accounts.isActive != null">
+						ac.is_active = #{accounts.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						ac.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="accounts != null">
+					<if test="accounts.isActive != null">
+						ac.is_active = #{accounts.isActive,jdbcType=BIT}
+					</if>
+				</when>
+				<otherwise>
+					ac.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

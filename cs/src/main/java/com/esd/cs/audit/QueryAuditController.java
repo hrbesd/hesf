@@ -5,6 +5,7 @@
  */
 package com.esd.cs.audit;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,19 +20,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.company.CompanyParamModel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.WorkerService;
 
 @Controller
 @RequestMapping(value = "/security/query/audit")
@@ -44,6 +49,9 @@ public class QueryAuditController {
 
 	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private WorkerService workerService;
 
 	/**
 	 * 转到查询审核数据列表页
@@ -189,6 +197,62 @@ public class QueryAuditController {
 			e.printStackTrace();
 			logger.error("queryCompanyResult{}", e.getMessage());
 		}
+		return entity;
+	}
+
+	@RequestMapping(value = "/getFinalPrintInfo/{auditId}",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getFinalPrintInfo(
+			@PathVariable(value = "auditId") Integer auditId) {
+		Map<String, Object> entity = new HashMap<String, Object>();
+		Audit audit = auditService.getByPrimaryKey(auditId);
+		Company company = companyService.getByPrimaryKey(audit.getCompany()
+				.getId());
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("year", audit.getYear());
+		params.put("companyId", company.getId());
+		params.put("page", 1);
+		params.put("pageSize", Integer.MAX_VALUE);
+		PaginationRecordsAndNumber<Worker, Number> workers = workerService
+				.getPaginationRecords(params);
+		// 企业信息
+		entity.put("companyName", company.getCompanyName());
+		entity.put("companyProperty", company.getCompanyProperty()
+				.getCompanyProperty());
+		entity.put("companyManagement", company.getCompanyManagement());
+		entity.put("companyLegal", company.getCompanyLegal());
+		entity.put("companyAddress", company.getCompanyAddress());
+		entity.put("companyPhone", company.getCompanyPhone());
+		// 审核信息
+		entity.put("year", audit.getYear()); // 审核年度
+		entity.put("empTotal", audit.getCompanyEmpTotal()); // 员工总数
+		entity.put("shouldTotal", audit.getCompanyShouldTotal());// 应安排数
+		entity.put("alreadyTotal", audit.getCompanyAlreadyTotal());// 已安排数
+		// 将已安排数由Integer转化为BigDecimal
+		BigDecimal tempAlreadyTotal = new BigDecimal(
+				audit.getCompanyAlreadyTotal());
+		// 少安排人数,和0进行比较, 如果比0小, 则统一改成0.00, 否则正常显示差值
+		BigDecimal lessTotal = ((audit.getCompanyShouldTotal()
+				.subtract(tempAlreadyTotal)).compareTo(new BigDecimal("0"))) < 0 ? (new BigDecimal(
+				"0.00")) : (audit.getCompanyShouldTotal()
+				.subtract(tempAlreadyTotal));
+		entity.put("lessTotal", lessTotal); // 尚缺残疾人数
+		entity.put("payAmount", audit.getPayAmount()); // 应缴保障金金额
+		// 所有残疾职工列表
+		List<Map<String, Object>> workerList = new ArrayList<Map<String, Object>>();
+		for (Worker worker : workers.getRecords()) {
+			Map<String, Object> workerMap = new HashMap<String, Object>();
+			workerMap.put("name", worker.getWorkerName());
+			workerMap.put("gender", worker.getWorkerGender());
+			// 计算年龄
+			int age = Integer.parseInt(CalendarUtil.getNowYear())
+					- Integer.parseInt(worker.getWorkerBirthYear());
+			workerMap.put("age", age);
+			workerMap.put("handicapCode", worker.getWorkerHandicapCode());
+			workerMap.put("isRetired", worker.getIsRetired());
+			workerList.add(workerMap);
+		}
+		entity.put("workerList", workerList);
 		return entity;
 	}
 }

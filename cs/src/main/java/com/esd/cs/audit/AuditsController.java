@@ -101,7 +101,7 @@ public class AuditsController {
 	private DecimalFormat df4 = new DecimalFormat("0.0000");
 
 	/**
-	 * 转到初审单位列表页面
+	 * 转到审核单位列表页面(根据审核进程id来区分不同状态的审核数据)
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit_list(
@@ -111,98 +111,6 @@ public class AuditsController {
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("audit/audit_list");
-	}
-
-	/**
-	 * 拒绝
-	 * 
-	 * @param audit
-	 * @return
-	 */
-	@RequestMapping(value = "/refusal", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean refusal(Audit audit, HttpSession session) {
-		Integer id = audit.getId();
-		Audit getAudit = auditService.getByPrimaryKey(id);
-		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
-		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
-		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
-		User user = userService.getByPrimaryKey(userId);
-		getAudit.setVerifyAuditUser(user);// 添加复审ID
-		AuditProcessStatus auditProcessStatus = auditProcessStatusService
-				.getByPrimaryKey(Constants.PROCESS_STATIC_WTG);
-		getAudit.setAuditProcessStatus(auditProcessStatus);
-		logger.debug(getAudit.toString());
-		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
-		auditService.update(getAudit);
-		return true;
-	}
-
-	/**
-	 * 复审
-	 * 
-	 * @param audit
-	 * @return
-	 */
-	@RequestMapping(value = "/verifyAudit", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean verifyAudit(Audit audit, HttpSession session) {
-		Integer id = audit.getId();
-
-		Audit getAudit = auditService.getByPrimaryKey(id);
-		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
-		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
-		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
-		User user = userService.getByPrimaryKey(userId);
-		getAudit.setVerifyAuditUser(user);// 添加复审ID
-
-		getAudit.setAmountPayable(audit.getAmountPayable());// 应缴金额
-		getAudit.setReductionAmount(audit.getReductionAmount());// 减缴金额
-		getAudit.setActualAmount(audit.getActualAmount());// 实际应缴金额
-		getAudit.setPayAmount(audit.getPayAmount());// 实际应缴金额
-		getAudit.setRemainAmount(audit.getRemainAmount());// 上年度未缴金额
-		getAudit.setComplementAmount(audit.getComplementAmount());// 补缴金额
-		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
-		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
-		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
-
-		AuditProcessStatus auditProcessStatus = null;
-		if (getAudit.getPayAmount().signum() == 0) {
-			auditProcessStatus = auditProcessStatusService
-					.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
-		} else {
-			auditProcessStatus = auditProcessStatusService
-					.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
-		}
-		// 处理未审年度
-		Integer companyId = getAudit.getCompany().getId();
-		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService
-				.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
-				audit.getYear());
-		if (unAudits != null) {
-			for (String year : unAudits) {
-				Audit a = auditService.getByPrimaryKey(year, companyId);
-				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
-				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
-				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
-				auditService.update(a);
-			}
-		}
-		// 处理未审年度结束
-		getAudit.setAuditProcessStatus(auditProcessStatus);
-		logger.debug(getAudit.toString());
-		auditService.update(getAudit);
-
-		// 生成账单
-		Accounts accounts = new Accounts();
-		accounts.setYear(CalendarUtil.getNowYear()); // 账目的出账年份
-		accounts.setAudit(getAudit); // 账目对应的审核审核对象
-		accounts.setCompany(getAudit.getCompany()); // 账单公司
-		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
-		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
-		accountsService.save(accounts);
-		return true;
 	}
 
 	/**
@@ -237,6 +145,183 @@ public class AuditsController {
 		}
 		return false;
 	}
+	
+	/**
+	 * 复审
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/verifyAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean verifyAudit(Audit audit, HttpSession session) {
+		System.out.println("-----------------------------------------------");
+		logger.debug(audit.toString());
+		Company company = audit.getCompany();
+		if (company != null) {
+			logger.debug(company.toString());
+			boolean b = companyService.update(company);
+			logger.debug("save Company:{}", b);
+			if (b) {
+				audit.setVerifyAuditDate(new Date()); // 添加复审时间
+				// 添加复审人
+				Integer userId = (Integer) session
+						.getAttribute(Constants.USER_ID);
+				User user = userService.getByPrimaryKey(userId);
+				audit.setVerifyAuditUser(user);
+				// 更改审计状态
+				AuditProcessStatus auditProcessStatus = auditProcessStatusService
+						.getByPrimaryKey(Constants.PROCESS_STATIC_WZS);
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未终审
+				auditService.update(audit);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 终审
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/finalAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean finalAudit(Audit audit, HttpSession session) {
+		logger.debug(audit.toString());
+		Company company = audit.getCompany();
+		if (company != null) {
+			logger.debug(company.toString());
+			boolean b = companyService.update(company);
+			logger.debug("save Company:{}", b);
+			if (b == true) {
+				audit.setVerifyAuditDate(new Date()); // 添加复审时间
+				// 添加复审人
+				Integer userId = (Integer) session
+						.getAttribute(Constants.USER_ID);
+				User user = userService.getByPrimaryKey(userId);
+				audit.setVerifyAuditUser(user);
+				// 更改审计状态
+				AuditProcessStatus auditProcessStatus = auditProcessStatusService
+						.getByPrimaryKey(Constants.PROCESS_STATIC_ZSOK);
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未终审
+				auditService.update(audit);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 复审拒绝--
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/refusal", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean refusal(Audit audit, HttpSession session) {
+		Integer id = audit.getId();
+		Audit getAudit = auditService.getByPrimaryKey(id);
+		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
+		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		getAudit.setVerifyAuditUser(new User(userId));// 添加复审用户
+		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_WTG));
+		logger.debug(getAudit.toString());
+		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
+		auditService.update(getAudit);
+		return true;
+	}
+	
+	/**
+	 * 终审拒绝--
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/finalRefusal", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean finalrefusal(Audit audit, HttpSession session) {
+		Integer id = audit.getId();
+		Audit getAudit = auditService.getByPrimaryKey(id);
+		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
+		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		getAudit.setVerifyAuditUser(new User(userId));// 添加终审人
+		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_ZSWTG));
+		logger.debug(getAudit.toString());
+		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
+		auditService.update(getAudit);
+		return true;
+	}
+//	/**
+//	 * 复审		--原来的复审, 保存使用
+//	 * 
+//	 * @param audit
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/verifyAudit", method = RequestMethod.POST)
+//	@ResponseBody
+//	public Boolean verifyAudit(Audit audit, HttpSession session) {
+//		Integer id = audit.getId();
+//
+//		Audit getAudit = auditService.getByPrimaryKey(id);
+//		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
+//		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
+//		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+//		User user = userService.getByPrimaryKey(userId);
+//		getAudit.setVerifyAuditUser(user);// 添加复审ID
+//
+//		getAudit.setAmountPayable(audit.getAmountPayable());// 应缴金额
+//		getAudit.setReductionAmount(audit.getReductionAmount());// 减缴金额
+//		getAudit.setActualAmount(audit.getActualAmount());// 实际应缴金额
+//		getAudit.setPayAmount(audit.getPayAmount());// 实际应缴金额
+//		getAudit.setRemainAmount(audit.getRemainAmount());// 上年度未缴金额
+//		getAudit.setComplementAmount(audit.getComplementAmount());// 补缴金额
+//		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
+//		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
+//		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
+//
+//		AuditProcessStatus auditProcessStatus = null;
+//		if (getAudit.getPayAmount().signum() == 0) {
+//			auditProcessStatus = auditProcessStatusService
+//					.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
+//		} else {
+//			auditProcessStatus = auditProcessStatusService
+//					.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+//		}
+//		// 处理未审年度
+//		Integer companyId = getAudit.getCompany().getId();
+//		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService
+//				.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
+//		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+//				audit.getYear());
+//		if (unAudits != null) {
+//			for (String year : unAudits) {
+//				Audit a = auditService.getByPrimaryKey(year, companyId);
+//				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+//				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
+//				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
+//				auditService.update(a);
+//			}
+//		}
+//		// 处理未审年度结束
+//		getAudit.setAuditProcessStatus(auditProcessStatus);
+//		logger.debug(getAudit.toString());
+//		auditService.update(getAudit);
+//
+//		// 生成账单
+//		Accounts accounts = new Accounts();
+//		accounts.setYear(CalendarUtil.getNowYear()); // 账目的出账年份
+//		accounts.setAudit(getAudit); // 账目对应的审核审核对象
+//		accounts.setCompany(getAudit.getCompany()); // 账单公司
+//		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
+//		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
+//		accountsService.save(accounts);
+//		return true;
+//	}
 
 	/**
 	 * 转到创建页面
@@ -299,9 +384,10 @@ public class AuditsController {
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
-//				AuditProcessStatus auditProcessStatus = auditProcessStatusService
-//						.getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
-//				audit.setAuditProcessStatus(auditProcessStatus);
+				// AuditProcessStatus auditProcessStatus =
+				// auditProcessStatusService
+				// .getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
+				// audit.setAuditProcessStatus(auditProcessStatus);
 				auditService.update(audit);
 				return true;
 			}
@@ -333,8 +419,9 @@ public class AuditsController {
 		BigDecimal putScale = auditParameter.getPutScale();
 		// 计算出应安排人数
 		// 应安排人数=单位在职职工总数*残疾人安排比例
-		BigDecimal yingAnPaiCanJiRen = putScale.multiply(new BigDecimal(
-				zaiZhiYuanGongZongShu)).setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal yingAnPaiCanJiRen = putScale.multiply(
+				new BigDecimal(zaiZhiYuanGongZongShu)).setScale(2,
+				BigDecimal.ROUND_HALF_UP);
 		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
 		// ========================================================================================
 		// 获得已录入残疾人数
@@ -664,22 +751,30 @@ public class AuditsController {
 	}
 
 	/**
-	 * 转到年审单位初审页面
+	 * 转到年审信息详细页面--初审,复审,终审.
 	 */
 	@RequestMapping(value = "/edit/{id}/{process}", method = RequestMethod.GET)
 	public ModelAndView initAudit(@PathVariable(value = "id") int id,
 			@PathVariable(value = "process") int process,
 			HttpServletRequest request, HttpSession session) {
 		Audit audit = auditService.getByPrimaryKey(id);
+		//添加初审人
 		if (audit.getInitAuditUser() == null) {
 			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 			User user = userService.getByPrimaryKey(userId);
 			audit.setInitAuditUser(user);
 		}
+		//添加复审人
 		if (audit.getVerifyAuditUser() == null && process == 2) {
 			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 			User user = userService.getByPrimaryKey(userId);
 			audit.setVerifyAuditUser(user);
+		}
+		//添加终审人
+		if (audit.getFinalAuditUser() == null && process == 8) {
+			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+			User user = userService.getByPrimaryKey(userId);
+			audit.setFinalAuditUser(user);
 		}
 		// 如果为重审回来的数据, 则总缴款额需要-该审核年度以前已经缴过的款
 		if (process == 2) {
@@ -723,4 +818,89 @@ public class AuditsController {
 		return new ModelAndView("audit/audit_detail", "entity", audit);
 	}
 
+	/**
+	 * 跳转到公司添加审核信息页面--公司页面
+	 */
+	@RequestMapping(value = "/createCompany", method = RequestMethod.GET)
+	public ModelAndView createCompany(HttpServletRequest request,
+			HttpSession session) {
+		// 获得当年的年审数据
+		AuditParameter auditParameter = auditParameterService
+				.getByYear(CalendarUtil.getBeforeYear());
+		String areaName = auditParameter.getArea().getName();
+		request.setAttribute("areaName", areaName);
+		request.setAttribute("params", auditParameter);
+		if (companyPropertys == null) {
+			companyPropertys = companyPropertyService.getAll();
+		}
+		request.setAttribute("companyPropertys", companyPropertys);
+		if (companyEconomyTypes == null) {
+			companyEconomyTypes = companyEconomyTypeService.getAll();
+		}
+		request.setAttribute("companyEconomyTypes", companyEconomyTypes);
+		return new ModelAndView("audit/audit_create_detail");
+	}
+
+	/**
+	 * 得到 公司添加审核信息 -- 审核信息
+	 */
+	@RequestMapping(value = "/getInitAuditInfo", method = RequestMethod.GET)
+	public Map<String, Object> getInitAuditInfo(HttpServletRequest request,
+			HttpSession session) {
+		Integer companyId = Integer.parseInt(request.getParameter("companyId")
+				.toString());
+		Map<String, Object> entity = new HashMap<String, Object>();
+		String year = session.getAttribute(Constants.YEAR).toString();
+		// 企业信息
+		Company company = companyService.getByPrimaryKey(companyId);
+		// 审核信息
+		Audit audit = auditService.getByPrimaryKey(year, companyId);
+		entity.put("company", company);
+		entity.put("audit", audit);
+		// AuditParameter auditParameter =
+		// auditParameterService.getByYear(year);
+		// String areaName = auditParameter.getArea().getName();
+		// request.setAttribute("areaName", areaName);
+		// request.setAttribute("params", auditParameter);
+		// if (companyPropertys == null) {
+		// companyPropertys = companyPropertyService.getAll();
+		// }
+		// request.setAttribute("companyPropertys", companyPropertys);
+		// if (companyEconomyTypes == null) {
+		// companyEconomyTypes = companyEconomyTypeService.getAll();
+		// }
+		// request.setAttribute("companyEconomyTypes", companyEconomyTypes);
+
+		// 年龄超标
+		PaginationRecordsAndNumber<Worker, Number> workers = companyService
+				.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);
+		entity.put("ageEx", workers.getNumber());
+		// 未审年度
+		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+				year);
+		StringBuilder sb = new StringBuilder();
+		for (String s : unAudits) {
+			sb.append(s).append(",");
+		}
+		// 未审核年数
+		audit.setUnauditYears(unAudits.length);
+		// 未审年度
+		entity.put("unAudityear", sb.toString());
+
+		// request.setAttribute("unAudityear", sb.toString());
+		// request.setAttribute("unAudityearNum", unAudits.length);
+		return entity;
+	}
+
+	/**
+	 * 保存初审信息
+	 */
+	@RequestMapping(value = "/saveAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean saveAudit(Audit audit) {
+		logger.debug(audit.toString());
+		audit.setAuditProcessStatus(new AuditProcessStatus(
+				Constants.PROCESS_STATIC_WCS));
+		return auditService.update(audit);
+	}
 }

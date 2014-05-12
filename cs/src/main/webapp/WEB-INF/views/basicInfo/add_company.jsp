@@ -85,7 +85,7 @@
 			<td class="tdRight">备注：</td>
 			<td colspan="4"><textarea name="companyRemark" class="longtext" rows="3" cols="90"></textarea></td>
 		</tr>
-		<tr>
+<!-- 		<tr>
 			<td class="tdRight">&nbsp;</td>
 			<td colspan="4">
 				<p><input type="checkbox" value="1" name="ckbCreateAudit" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息</span></p>
@@ -102,7 +102,7 @@
 				</script>
 				<p>带" <span style="color:red;">*</span> "项为必填项, 请认真填写.</p>
 			</td>
-		</tr>
+		</tr> -->
 
 		<tr>
 			<td class="tdRight"></td>

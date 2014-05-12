@@ -82,6 +82,9 @@ public class CalculateModel {
 	}
 
 	public Integer getYiLuRuCanJiRen() {
+		if(this.yiLuRuCanJiRen == null){
+			this.yiLuRuCanJiRen = new Integer(0);
+		}
 		return yiLuRuCanJiRen;
 	}
 

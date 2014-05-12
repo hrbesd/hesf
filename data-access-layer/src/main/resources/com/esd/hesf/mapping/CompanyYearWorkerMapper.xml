@@ -99,7 +99,12 @@
 			now()
 			from 
 			company_year_worker
-		where year = #{lastYear};
+		<where>
+			year = #{lastYear} 
+			<if test="companyId != null and companyId > 0">
+				and company_id = #{companyId,jdbcType=INTEGER}
+			</if>
+		</where>
 	</insert>
 	
 	<!-- delete -->

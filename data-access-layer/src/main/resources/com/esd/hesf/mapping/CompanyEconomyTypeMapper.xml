@@ -113,10 +113,24 @@
 				<if test="companyEconomyType.userId != null and companyEconomyType.userId > 0">
 					and user_id = #{companyType.userId}
 				</if>
-				<if test="companyEconomyType.isActive != null">
-					and is_active = #{companyType.isActive}
-				</if>
+				<choose>
+					<when test="companyEconomyType.isActive != null">
+						and is_active = #{companyEconomyType.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="companyEconomyType != null">
+					<if test="companyEconomyType.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by id
 		limit #{start}, #{size}
@@ -134,10 +148,25 @@
 				<if test="companyEconomyType.userId != null and companyEconomyType.userId > 0">
 					and user_id = #{companyEconomyType.userId}
 				</if>
-				<if test="companyEconomyType.isActive != null">
-					and is_active = #{companyEconomyType.isActive}
-				</if>
+				<choose>
+					<when test="companyEconomyType.isActive != null">
+						and is_active = #{companyEconomyType.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="companyEconomyType != null">
+					<if test="companyEconomyType.isActive != null">
+						and is_active = #{companyEconomyType.isActive,jdbcType=BIT}
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		limit #{start}, #{size}
 	</select>

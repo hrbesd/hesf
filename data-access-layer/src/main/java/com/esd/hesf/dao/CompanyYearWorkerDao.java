@@ -15,7 +15,7 @@ public interface CompanyYearWorkerDao extends BaseDao<CompanyYearWorker> {
 	/**
 	 * 复制上一年的公司-员工对应信息
 	 * 
-	 * @param map
+	 * @param map : currentYear -- 今年,必填;lastYear -- 去年,必填; userId -- 操作人ID,选填;companyId--公司id, 选填
 	 * @return
 	 */
 	int insertLastYearData(Map<String, Object> map);

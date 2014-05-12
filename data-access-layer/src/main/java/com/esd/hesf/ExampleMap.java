@@ -43,7 +43,7 @@ public class ExampleMap {
 		map.put("year", "2001"); // 年度
 		map.put("companyId", 1366);
 		map.put("getOverproof", true);	//是否获得全部达到退休年龄的员工
-		// map.put("companyCode", "1390293306601");// 公司id //已被删除
+		// map.put("companyCode", "1390293306601");// 公司档案code //已被删除
 
 		/**********************************************************/
 		/************ 以上字段为查询公司里的残疾人用 ******************/
@@ -59,6 +59,7 @@ public class ExampleMap {
 		map.put("phone", "13812345678");
 		map.put("workerHandicapType", "34234234234234"); // 残疾类别 对应的id
 		map.put("workerHandicapLevel", "34asasd123"); // 残疾等级 对应的id
+		map.put("isRetired", true);	//是否是内退的
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
 		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的

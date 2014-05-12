@@ -29,7 +29,10 @@
 			<c:if test="${process==2}">
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
-			<c:if test="${process==3}">
+			<c:if test="${process==8}">
+				<jsp:include page="audit_final.jsp" />
+			</c:if>
+			<c:if test="${process==10}">
 				<jsp:include page="audit_view.jsp" />
 			</c:if>
 		</div>
@@ -44,6 +47,13 @@
 			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
 		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
+		<!-- 终审用户打印信息页面 -->
+		<!-- 只有在终审这里才会显示打印 -->
+		<c:if test="${process == 8 || process == 10}">
+	 		<div title="打印信息页面">
+				<jsp:include page="audit_final_print.jsp" />
+			</div>
+		</c:if>
 	</div>
 </div>
 

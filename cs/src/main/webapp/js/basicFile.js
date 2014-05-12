@@ -52,6 +52,9 @@ basicFile.loadData = function(params) {
 		title : '档案编码',
 		width : 230
 	}, {
+		field : 'userGroupId',
+		hidden : true
+	},{
 		field : 'companyTaxCode',
 		title : '税务编码',
 		width : 230
@@ -69,10 +72,11 @@ basicFile.loadData = function(params) {
 		width : 250,
 		align : 'center',
 		formatter : function(value, row, index) {
-			var e = '<a  href="#" onclick="basicFile.openEditCompany(\'' + row.id + '\')">编辑</a> ';
-			var d = '<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">删除</a> ';
-		
-			return e + d;
+			if(row.userGroupId == 1 || row.userGroupId == 2 || row.userGroupId == 3 || row.userGroupId == 6){
+				return  '<a  href="#" onclick="basicFile.openEditCompany(\'' + row.id + '\')">编辑</a> '+
+					'<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">删除</a> ';
+			}
+			return '<a href="#" onclick="basicFile.openViewCompany(\'' + row.id + '\')">查看</a>';
 		}
 	} ] ], params);
 

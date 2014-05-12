@@ -310,6 +310,10 @@
 			<td class="">现任岗位:</td>
 			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
 			</td>
+			<td class="">是否内退:</td>
+			<td>
+				<input type="checkbox" name="isRetired"/>
+			</td>
 		</tr>
 		<tr>
 			<td class="">备注:</td>

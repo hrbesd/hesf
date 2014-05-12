@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.cs.Constants;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
@@ -53,6 +54,9 @@ public class CompayController {
 			@PathVariable(value = "property") String property,
 			HttpServletRequest request) {
 		logger.debug("companyProperty{}", property);
+		if(Constants.LURU.equals(property)){
+			return new ModelAndView("audit/audit_create_list");
+		}
 		request.setAttribute("companyProperty", property);
 		return new ModelAndView("basicInfo/company_list");
 	}
@@ -64,7 +68,9 @@ public class CompayController {
 	 * @return
 	 */
 	@RequestMapping(value = "/add/{companyProperty}", method = RequestMethod.GET)
-	public ModelAndView addCompany(@PathVariable("companyProperty") Integer companyProperty,HttpServletRequest request) {
+	public ModelAndView addCompany(
+			@PathVariable("companyProperty") Integer companyProperty,
+			HttpServletRequest request) {
 		logger.debug("gotoaddCompany");
 		request.setAttribute("companyProperty", companyProperty);
 		return new ModelAndView("basicInfo/add_company");
@@ -127,7 +133,55 @@ public class CompayController {
 	}
 
 	/**
-	 * 增加企业信息
+	 * 根据公司档案code获取单位对象
+	 * 
+	 * @param companyCode
+	 * @return
+	 */
+	@RequestMapping(value = "/getCompanyByCode", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getCompanyByCode(HttpServletRequest request) {
+		Map<String, Object> entity = new HashMap<String, Object>();
+		try {
+			String companyCode = request.getParameter("companyCode");
+			logger.debug("companyCode:{}", companyCode);
+			Company company = companyService.getByCompanyCode(companyCode);
+			logger.debug(" getcompany{}", company);
+			entity.put("entity", company);
+			return entity;
+		} catch (Exception e) {
+			logger.error("获取企业对象发生错误");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 根据公司组织机构代码获取单位对象
+	 * 
+	 * @param companyCode
+	 * @return
+	 */
+	@RequestMapping(value = "/getCompanyByOrganizationCode", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getCompanyByOrganizationCode(HttpServletRequest request) {
+		Map<String, Object> entity = new HashMap<String, Object>();
+		try {
+			String companyOrganizationCode = request.getParameter("companyOrganizationCode");
+			logger.debug("companyOrganizationCode:{}", companyOrganizationCode);
+			Company company = companyService.getByCompanyOrganizationCode(companyOrganizationCode);
+			logger.debug(" getcompany{}", company);
+			entity.put("entity", company);
+			return entity;
+		} catch (Exception e) {
+			logger.error("获取企业对象发生错误");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 增加企业信息方法1
 	 * 
 	 * @param company
 	 * @param request
@@ -145,7 +199,24 @@ public class CompayController {
 				return false;
 			}
 			String nowYear = (String) session.getAttribute(Constants.YEAR);
-			boolean b = companyService.save(company);
+			// 检查该公司是否存在, 不存在则保存, 存在则更新
+			boolean b;
+			Company tempCompany = companyService.getByCompanyCode(company
+					.getCompanyCode());
+			if (tempCompany == null) {
+				b = companyService.save(company);
+			} else {
+				company.setId(tempCompany.getId());
+				b = companyService.update(company);
+				// 同时检查下是否有员工, 有的话则将关系复制一份
+				Integer workerCount = companyService.getWorkerHandicapTotal(
+						company.getId(), CalendarUtil.getBeforeYear());
+				if (workerCount > 0) {
+					companyService.copyLastYearWorker(
+							CalendarUtil.getNowYear(),
+							CalendarUtil.getBeforeYear(), company.getId());
+				}
+			}
 			// 如果选中创建当年审核数据
 			String createAudit = request.getParameter("createAudit");
 			if (createAudit != null && "1".equals(createAudit)) {
@@ -154,6 +225,7 @@ public class CompayController {
 				audit.setYear(nowYear);
 				auditService.save(audit);
 			}
+			// 检查一下,
 			logger.debug("addCompanyResult:{}", b);
 			return b;
 		} catch (Exception e) {
@@ -163,6 +235,73 @@ public class CompayController {
 		return false;
 	}
 
+	/**
+	 * 增加企业信息方法2
+	 * 
+	 * @param company
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/addCompany", method = RequestMethod.POST)
+	@ResponseBody
+	public Integer add_company2(Company company, HttpServletRequest request,
+			HttpSession session) {
+		System.out.println("///////////////**************************");
+		logger.debug("addCompany:{}", company);
+		try {
+			if (company == null) {
+				logger.error("addCompany:{}", "paramserror");
+				return -1;
+			}
+			String nowYear = (String) session.getAttribute(Constants.YEAR);
+			// 检查该公司是否存在, 不存在则保存, 存在则更新
+			boolean b;
+			Company tempCompany = companyService.getByCompanyCode(company
+					.getCompanyCode());
+			if (tempCompany == null) {
+				b = companyService.save(company);
+			} else {
+				company.setId(tempCompany.getId());
+				company.setVersion(tempCompany.getVersion());
+				b = companyService.update(company);
+				// 同时检查下是否有员工, 有的话则将关系复制一份
+				Integer workerCount = companyService.getWorkerHandicapTotal(
+						company.getId(), CalendarUtil.getBeforeYear());
+				if (workerCount > 0) {
+					companyService.copyLastYearWorker(
+							CalendarUtil.getNowYear(),
+							CalendarUtil.getBeforeYear(), company.getId());
+				}
+			}
+			
+			//检查是否存在当年的审核数据, 如不存在则创建
+			Audit audit = auditService.getByPrimaryKey(nowYear, company.getId());
+			if(audit==null){
+				audit = new Audit();
+				audit.setCompany(company);
+				audit.setYear(nowYear);
+				auditService.save(audit);
+			}
+//			// 如果选中创建当年审核数据
+//			String createAudit = request.getParameter("createAudit");
+//			if (createAudit != null && "1".equals(createAudit)) {
+//				Audit audit = new Audit();
+//				audit.setCompany(company);
+//				audit.setYear(nowYear);
+//				auditService.save(audit);
+//			}
+			// 检查一下,
+			logger.debug("addCompanyResult:{}", b);
+			//返回创建/更新的公司id
+			return company.getId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("addCompany:{}", "adderror");
+		}
+		return -1;
+	}
+	
 	/**
 	 * 编辑企业信息
 	 * 
@@ -217,7 +356,7 @@ public class CompayController {
 	public Boolean validate_companyOrganizationCode(
 			@RequestParam(value = "param") String param,
 			HttpServletRequest request) {
-		Company c = companyService.getCompanyByOrganizationCode(param);
+		Company c = companyService.getByCompanyOrganizationCode(param);
 		if (c == null) {
 			logger.debug("validateCompanyOrganizationCode{} Result{}", param,
 					"true");
@@ -293,6 +432,20 @@ public class CompayController {
 			logger.debug("validate_companyCode:{},Result{}", param, "fasle");
 			return false;
 		}
+	}
+
+	/**
+	 * 返回一个自动递增的companyCode
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/getRandomCode")
+	@ResponseBody
+	public Map<String, Object> getNextCompanyCode() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String randomCode = companyService.getNextCompanyCode();
+		map.put("randomCode", randomCode);
+		return map;
 	}
 
 }

@@ -48,6 +48,7 @@
 }
 </style>
 <script type="text/javascript">
+	
 	//组件解析完成
 	$.parser.onComplete = function() {
 		//加载单位档案数据
@@ -59,8 +60,11 @@
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100">档案号码:</td>
-				<td width="290" colspan="3"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
-					value="${entity.company.id}" /> <input type="hidden" name="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" />
+				<td width="290" colspan="3">
+					<input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> 
+					<input type="hidden" id="companyId" name="company.id" value="${entity.company.id}" /> 
+					<input type="hidden" name="year" value="${entity.year}" /> 
+					<input type="hidden" name="company.version" value="${entity.company.version}" />
 				</td>
 				<td>年审年度:</td>
 				<td colspan="2"><input name="year" class="readonly" type="text" value="${entity.year}" />
@@ -254,7 +258,11 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> <a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
+		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> 
+		<!-- 终审用户可以执行打印操作 -->
+		<c:if test="${userGroupId == 1 || userGroupId == 6 }">
+			<a href="javascript:esd.common.printFinalAuditWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
+		</c:if>
 	</div>
 
 </form>

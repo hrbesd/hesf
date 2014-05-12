@@ -31,8 +31,8 @@ public interface CompanyService extends BaseService<Company> {
 	// 按ID数组删除多个企业
 	boolean deleteMultiById(int[] arr);
 
-	// 自动生成最新档案号
-	String getDocumentCode();
+//	// 自动生成最新档案号
+//	String getDocumentCode();
 
 	/**
 	 * 根据公司档案号code 得到一个公司对象,如不存在则返回null
@@ -56,7 +56,7 @@ public interface CompanyService extends BaseService<Company> {
 	 * @param companyOrganizationCode
 	 * @return
 	 */
-	Company getCompanyByOrganizationCode(String companyOrganizationCode);
+	Company getByCompanyOrganizationCode(String companyOrganizationCode);
 
 	// /**
 	// * 复制上一年的信息
@@ -101,8 +101,15 @@ public interface CompanyService extends BaseService<Company> {
 	 * @param year
 	 * @return
 	 */
-	int getWorkerHandicapTotal(Integer companyId, String year);
+	Integer getWorkerHandicapTotal(Integer companyId, String year);
 
+	/**
+	 * 将上一年度的员工关系复制到今年
+	 * @param companyId
+	 * @param lastYear
+	 * @return
+	 */
+	Integer copyLastYearWorker(String currentYear, String lastYear, Integer companyId);
 	/**
 	 * 获得该企业年龄达到退休标准的残疾职工列表
 	 * 
@@ -155,4 +162,11 @@ public interface CompanyService extends BaseService<Company> {
 	 */
 	List<Audit> getUnauditByCompany(String companyCode, String year,
 			Integer auditProcessStatus);
+	
+	/**
+	 * 获得自动生成的下一个companyCode
+	 * @return
+	 */
+	String getNextCompanyCode();
+	
 }

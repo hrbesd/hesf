@@ -119,7 +119,7 @@ public class MenuServiceImpl implements MenuService {
 				lv1.add(m);
 			}
 		}
-		log.debug("lv1 : " + lv1.size());
+	//	log.debug("lv1 : " + lv1.size());
 		// 找出所有二级菜单
 		List<Menu> lv2 = new ArrayList<Menu>();
 		for (Menu m : list) {
@@ -128,7 +128,7 @@ public class MenuServiceImpl implements MenuService {
 				lv2.add(m);
 			}
 		}
-		log.debug("lv2 : " + lv2.size());
+	//	log.debug("lv2 : " + lv2.size());
 		// 找出所有三级菜单
 		List<Menu> lv3 = new ArrayList<Menu>();
 		for (Menu m : list) {
@@ -138,12 +138,12 @@ public class MenuServiceImpl implements MenuService {
 				lv3.add(m);
 			}
 		}
-		log.debug("lv3 : " + lv3.size());
+	//	log.debug("lv3 : " + lv3.size());
 		// 将所有三级菜单归纳到对应的二级菜单里
 		for (Menu m2 : lv2) {
 			for (Menu m3 : lv3) {
 				if (m3.getId().substring(2, 6).equals(m2.getId().substring(2, 6))) {
-					log.debug("lv3 m3 :" + m3);
+				//	log.debug("lv3 m3 :" + m3);
 					m2.add(m3);
 				}
 			}

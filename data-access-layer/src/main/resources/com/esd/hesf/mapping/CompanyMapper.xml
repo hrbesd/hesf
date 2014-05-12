@@ -448,6 +448,15 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="company != null">
+					<if test="company.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and c.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by c.company_code
 		limit #{start},#{size}
@@ -510,6 +519,16 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="company != null">
+					<if test="company.isActive != null">
+						and c.is_active = #{company.isActive,jdbcType=BIT}
+					</if>
+				</when>
+				<otherwise>
+					and c.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 
@@ -522,11 +541,17 @@
 		where
 		<include refid="Where_condition_list" />
 		and c.company_organization_code = #{companyOrganizationCode,jdbcType=INTEGER}
-		order by c.company_code
 	</select>
 
 	<!-- check exists of the companyCode -->
 	<select id="retrieveCountByCompanyCode" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(*) from company where company_code = #{companyCode,jdbcType=VARCHAR}
 	</select>
+	
+	<!-- get next companyCode -->
+	<select id="retrieveNextCompanyCode" parameterType="java.lang.String" resultType="java.lang.String">
+		select (company_code + 1) from company order by company_code desc limit 1;
+	</select>
+	
+	
 </mapper>

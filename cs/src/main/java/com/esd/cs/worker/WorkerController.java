@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.cs.Constants;
 import com.esd.cs.common.CommonUtil;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.AuditParameter;
@@ -109,6 +111,31 @@ public class WorkerController {
 		}
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		return new ModelAndView("basicInfo/worker_list");
+	}
+	
+	/**
+	 * 转到残疾职工列表页面 提供给企业用户自己创建和导入残疾职工信息时使用
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/list/auditCreate")
+	public ModelAndView audit_create_worker_list(HttpServletRequest request,HttpSession session) {
+		String year = session.getAttribute(Constants.YEAR).toString();
+		logger.debug("goToWorkerList year:{}", year);
+		request.setAttribute("year", year);
+		// 获取年审参数
+		AuditParameter param = auditParameterService.getByYear(year);
+		if (param != null) {
+			// 男职工退休年龄
+			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
+			// 女职工退休年龄
+			request.setAttribute("femaleRetirementAge", param.getRetireAgeFemale());
+		} else {
+			logger.error("getAuditParameterError");
+		}
+		logger.debug("goToPage:{}", "转到残疾职工列表页面");
+		return new ModelAndView("audit/audit_create_worker_list");
 	}
 
 	/**

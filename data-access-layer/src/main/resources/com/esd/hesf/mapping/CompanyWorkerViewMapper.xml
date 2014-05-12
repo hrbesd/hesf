@@ -41,6 +41,7 @@
 		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
+		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -72,6 +73,7 @@
 		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
+		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -124,7 +126,7 @@
 	<sql id="Column_List_worker">
 		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_birth_year, w_worker_id_card, 
 		w_career_card, w_phone, w_current_job, w_worker_address,
-		w_worker_handicap_code, w_is_college, w_remark, w_create_time, w_update_time,
+		w_worker_handicap_code, w_is_college, w_is_retired, w_remark, w_create_time, w_update_time,
 		w_user_id, w_is_active, w_version
 		<!-- handicap type -->
 		t_id, t_handicap_type,
@@ -237,7 +239,7 @@
 		w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
-		w.is_college as w_is_college, 
+		w.is_college as w_is_college, w.is_retired as w_is_retired, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -298,6 +300,9 @@
 			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
 				and l.id = #{workerHandicapLevel}
 			</if>
+			<if test="isRetired != null">
+				and w.is_retired = #{isRetired, jdbcType=BIT} 
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and w.is_active = #{isActive,jdbcType=BIT}
@@ -348,6 +353,9 @@
 			</if>
 			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
 				and l.id = #{workerHandicapLevel}
+			</if>
+			<if test="isRetired != null">
+				and w.is_retired = #{isRetired, jdbcType=BIT} 
 			</if>
 			<choose>
 				<when test="isActive != null">
@@ -414,8 +422,8 @@
 				w_worker_gender, w.worker_birth as w_worker_birth, w.worker_birth_year as w_worker_birth_year, w.worker_id_card as
 				w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 				w.current_job as w_current_job, w.worker_address as w_worker_address,
-				w.worker_handicap_code as w_worker_handicap_code, w.is_college as w_is_college, w.remark as w_remark,
-				w.create_time as w_create_time, w.update_time as w_update_time,
+				w.worker_handicap_code as w_worker_handicap_code, w.is_college as w_is_college, w.is_retired as w_is_retired,
+				w.remark as w_remark, w.create_time as w_create_time, w.update_time as w_update_time,
 				w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		t.id as t_id, t.handicap_type as t_handicap_type,
 		l.id as l_id, l.handicap_level as l_handicap_level,

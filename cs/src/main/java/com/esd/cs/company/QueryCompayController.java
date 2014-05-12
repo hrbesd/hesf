@@ -50,8 +50,8 @@ public class QueryCompayController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> companyPost(CompanyParamModel params, HttpServletRequest request) {
-
+	public Map<String, Object> companyPost(CompanyParamModel params, HttpServletRequest request,HttpSession session) {
+		Integer userGroupId = Integer.parseInt(session.getAttribute(Constants.USER_GROUP_ID).toString());
 		logger.debug("queryCompanyParams{}", params);
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
@@ -87,6 +87,7 @@ public class QueryCompayController {
 			Company it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", it.getId());// id
+			map.put(Constants.USER_GROUP_ID, userGroupId);
 			map.put("companyArea", it.getArea().getName());// 地区
 			map.put("companyCode", it.getCompanyCode());// 档案编码
 			map.put("companyTaxCode", it.getCompanyTaxCode());// 税务编码

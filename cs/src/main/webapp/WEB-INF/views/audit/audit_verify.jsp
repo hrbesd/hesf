@@ -409,8 +409,14 @@
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复审日期:</td>
-				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-					value="${verifyAuditDate}" /></td>
+				<td>
+					<c:if test="${entity.verifyAuditDate == null }">
+						<fmt:formatDate value="${now }" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate"/>
+					</c:if>
+					<c:if test="${entity.verifyAuditDate != null }">
+						<fmt:formatDate value="${entity.verifyAuditDate }" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					</c:if>
+					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>
 				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
 			</tr>
@@ -423,7 +429,8 @@
 			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
 			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a>
 		</c:if>
-		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a><a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
+		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a>
+	<!-- 	<a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>	 -->
 	</div>
 </form>
 

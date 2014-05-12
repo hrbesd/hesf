@@ -113,7 +113,7 @@ public class IndexController {
 				session.setAttribute(Constants.USER_ID, user.getId());
 				session.setAttribute(Constants.USER_NAME, user.getUserName());
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());
-
+				session.setAttribute(Constants.USER_GROUP_ID, user.getUserGroup().getId());
 				// 登录成功获得审核年度
 				String year = auditParameterService.getLastestYear();
 				session.setAttribute(Constants.YEAR, year);

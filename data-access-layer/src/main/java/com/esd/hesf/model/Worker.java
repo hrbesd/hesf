@@ -22,6 +22,7 @@ public class Worker extends PrimaryKey_Int {
 	private WorkerHandicapType workerHandicapType;// 残疾类型
 	private WorkerHandicapLevel workerHandicapLevel;// 残疾等级
 	private Boolean isCollege; // 是否是大学生
+	private Boolean isRetired; // 是否内退
 	private String remark;// 备注
 
 	public Worker() {
@@ -33,9 +34,16 @@ public class Worker extends PrimaryKey_Int {
 
 	@Override
 	public String toString() {
-		return "Worker [workerName=" + workerName + ", workerGender=" + workerGender + ", workerBirth=" + workerBirth + ", workerIdCard=" + workerIdCard + ", careerCard=" + careerCard + ", phone="
-				+ phone + ", currentJob=" + currentJob + ", workerAddress=" + workerAddress + ", area=" + area + ", workerHandicapCode=" + workerHandicapCode + ", workerHandicapType="
-				+ workerHandicapType + ", workerHandicapLevel=" + workerHandicapLevel + ", isCollege=" + isCollege + ", remark=" + remark + ", getId()=" + getId() + ", getIsActive()=" + getIsActive()
+		return "Worker [workerName=" + workerName + ", workerGender="
+				+ workerGender + ", workerBirth=" + workerBirth
+				+ ", workerIdCard=" + workerIdCard + ", careerCard="
+				+ careerCard + ", phone=" + phone + ", currentJob="
+				+ currentJob + ", workerAddress=" + workerAddress + ", area="
+				+ area + ", workerHandicapCode=" + workerHandicapCode
+				+ ", workerHandicapType=" + workerHandicapType
+				+ ", workerHandicapLevel=" + workerHandicapLevel
+				+ ", isCollege=" + isCollege + ", remark=" + remark
+				+ ", getId()=" + getId() + ", getIsActive()=" + getIsActive()
 				+ ", getVersion()=" + getVersion() + "]";
 	}
 
@@ -157,6 +165,14 @@ public class Worker extends PrimaryKey_Int {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Boolean getIsRetired() {
+		return isRetired;
+	}
+
+	public void setIsRetired(Boolean isRetired) {
+		this.isRetired = isRetired;
 	}
 
 }
