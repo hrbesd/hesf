@@ -35,6 +35,7 @@ import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
+import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AreaService;
 import com.esd.hesf.service.AuditParameterService;
@@ -53,6 +54,7 @@ import com.esd.hesf.service.UserService;
 import com.esd.hesf.service.WorkerHandicapLevelService;
 import com.esd.hesf.service.WorkerHandicapTypeService;
 import com.esd.hesf.service.WorkerService;
+import com.esd.hesf.service.WorkerTempService;
 import com.esd.hesf.viewmodels.ReportViewModel;
 import com.esd.hesf.viewmodels.WorkerViewModel;
 
@@ -125,6 +127,9 @@ public class TestController {
 
 	@Autowired
 	private AccountsService acService;
+
+	@Autowired
+	private WorkerTempService wtService;
 
 	// 菜单
 	@RequestMapping("/1")
@@ -989,4 +994,22 @@ public class TestController {
 	// map.put("entity", entity);
 	// return map;
 	// }
+
+	@RequestMapping("/76")
+	@ResponseBody
+	public Map<String, Object> test76() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<WorkerTemp> list = wtService.getByCheck(false,null,null);
+		map.put("entity", list);
+		return map;
+	}
+
+	@RequestMapping("/77")
+	@ResponseBody
+	public Map<String, Object> test77() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<CompanyEconomyType> list = cetService.getAll();
+		map.put("entity", list);
+		return map;
+	}
 }

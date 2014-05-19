@@ -7,8 +7,42 @@
 </style>
 <script type="text/javascript">
 	$(function() {
+		
+		
 	});
+	
+	
 	var importWorkerFile = {};
+
+	//预定义定时器的返回值
+	importWorkerFile.intervalValue;
+	//进度条数值刷新函数
+	importWorkerFile.freshProgressBar = function(){
+		//异步取得进度数值
+		$.ajax({
+			url:'${contextPath}/security/worker/getDealedProgress',
+			type:'GET',
+			success:function(data){
+				var value = $('#workerImportProgress').progressbar('getValue');
+			//	if (value < 100){ 
+				//	value += 1;
+				$('#workerImportProgress').progressbar('setValue', data);
+			//	}else{
+				if(value == 100){
+					clearInterval(importWorkerFile.intervalValue);
+					$('#workerImportProgress').progressbar('setValue',0);
+				}
+			//	}
+			}
+			
+		});
+		
+	};
+	
+	//停止刷新器方法
+	importWorkerFile.stopFreshProgressBar = function(){
+		clearInterval(importWorkerFile.intervalValue);
+	};
 	
 	/**关闭
 	**/
@@ -17,22 +51,22 @@
 	$('#importWorkerWindow').window("close");
 	};
 	importWorkerFile.submit = function() {
-
 		var str = $("#uploadWorkerFile").val();
 		var pos = str.lastIndexOf(".");
 		var lastname = str.substring(pos, str.length);
 
 		if (lastname.toLowerCase() == ".xls" || lastname.toLowerCase() == ".xlsx") {
+			//定时刷新器, 每0.5秒刷新一次
+			importWorkerFile.intervalValue = setInterval('importWorkerFile.freshProgressBar()',1000);
 			return true;
-
 		}
+		
 		if ($("#uploadWorkerFile").val() == '') {
 
 			$.messager.alert('消息', '请选择文件。', 'info');
 			return false;
 		}
 		$.messager.alert('消息', '文件格式不支持。', 'info');
-
 		return false;
 	};
 	function f() {
@@ -50,11 +84,7 @@
 </script>
 
 <div class="importWorker" id="importWorkerPan">
-	
-<!-- 	<div id="upload_progress" class="easyui-progressbar" data-options="value:60" style="width:400px">
-	
-	</div>  -->
-	
+
 	<form class="importWorkerForm" id="importWorkerForm" action="worker/importworker" method="post" enctype="multipart/form-data" target="importWorkerIframe" onsubmit="return importWorkerFile.submit()">
 	<div class="importWorkerTitle"  id="importWorkerTitle"  >导入残疾职工</div>
 		<table>
@@ -79,8 +109,11 @@
 			</p>
 		</div>
 	</form>
+		<!-- 导入进入条 -->
+		<div id="workerImportProgress" class="easyui-progressbar" data-options="value:0" style="width:450px;margin:15px auto;"></div>
 		<div style="margin: 65px auto 20px;text-align: center;">
 			 <a href="javascript:importWorkerFile.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
+			 <a href="javascript:importWorkerFile.stopFreshProgressBar()" class="easyui-linkbutton" iconCls="icon-undo">停止</a>
 		</div>
 </div>
 <iframe name="importWorkerIframe" id="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>

@@ -21,13 +21,16 @@
 	
 	var importWorkerManager={};
 	importWorkerManager.close=function(){
-	$('#importWorkerPan', window.parent.document).fadeIn("slow"); 
+		$('#importWorkerPan', window.parent.document).fadeIn("slow"); 
 	 		$('#importWorkerIframe', window.parent.document).height(150);
-			$("#importInfoPan").empty();
+			$("#importInfoPan").close();
 	};
 	importWorkerManager.import=function(){
 
-			var selection=$("#confirmTab").datagrid("getChecked");
+		//	var selection=$("#confirmTab").datagrid("getChecked");
+			var selection = '${workerCorrectList}';
+			alert(selection);
+			return false;
 			if(selection.length<=0){
 					$.messager.alert('消息', '未选择任何数据。', 'error');
 					return ;
@@ -121,13 +124,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${workerCorrectList}" var="worker" varStatus="vstatus">
+				<!-- 	<c:forEach items="${workerCorrectList}" var="worker" varStatus="vstatus">
 						<tr>
-<td ></td>
+							<td ></td>
 							<td >${worker.workerName}</td>
 							<td >${worker.workerHandicapCode}</td>
 						</tr>
-					</c:forEach>
+					</c:forEach>	 -->
 				</tbody>
 			</table>
 					<div style="text-align: center;margin-top: 10px;">

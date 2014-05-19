@@ -40,6 +40,13 @@ public class HesfException extends Exception {
 		this.msg = variableName + type;
 	}
 
+	public HesfException(Integer variableName, String type) {
+		if (type == null || "".equals(type)) {
+			new HesfException("type", HesfException.type_null).printStackTrace();
+		}
+		this.msg = variableName + type;
+	}
+	
 	@Override
 	public String toString() {
 		return "HesfException: " + msg;

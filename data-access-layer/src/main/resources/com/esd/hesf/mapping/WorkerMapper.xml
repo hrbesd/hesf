@@ -99,9 +99,9 @@
 		#{phone,jdbcType=VARCHAR}, #{currentJob,jdbcType=VARCHAR},
 		#{workerAddress,jdbcType=VARCHAR},
 		#{area.code,jdbcType=VARCHAR},
-		#{workerHandicapCode.id,jdbcType=VARCHAR},
+		#{workerHandicapCode,jdbcType=VARCHAR},
 		#{workerHandicapType.id,jdbcType=INTEGER},
-		#{workerHandicapLevel,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
+		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
 		#{remark,jdbcType=VARCHAR},
 		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
