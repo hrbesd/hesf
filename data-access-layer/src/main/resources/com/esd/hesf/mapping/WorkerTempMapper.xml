@@ -11,12 +11,13 @@
 		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
 		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
-		<result column="w_worker_handicap_type" jdbcType="INTEGER" property="remark" />
-		<result column="w_worker_handicap_level" jdbcType="INTEGER" property="createTime" />
+		<result column="w_worker_handicap_type" jdbcType="INTEGER" property="workerHandicapType" />
+		<result column="w_worker_handicap_level" jdbcType="INTEGER" property="workerHandicapLevel" />
 		<result column="w_is_ok" jdbcType="BIT" property="isOk" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
 		<result column="w_check_code" jdbcType="VARCHAR" property="checkCode" />
+		<result column="w_pre_id" jdbcType="INTEGER" property="preId" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -29,7 +30,7 @@
 		w.worker_handicap_type as w_worker_handicap_type,
 		w.worker_handicap_level as w_worker_handicap_level,
 		w.is_ok as w_is_ok, w.remark as w_remark, w.user_id as w_user_id,
-		w.check_code as w_check_code
+		w.check_code as w_check_code, w.pre_id as w_pre_id 
 	</sql>
 
 	<!-- insert -->
@@ -88,7 +89,10 @@
 				user_id,
 			</if>
 			<if test="checkCode != null">
-				check_code
+				check_code,
+			</if>
+			<if test="preId != null">
+				pre_id
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -126,7 +130,10 @@
 				#{userId, jdbcType=INTEGER},
 			</if>
 			<if test="checkCode != null">
-				#{checkCode, jdbcType=VARCHAR}
+				#{checkCode, jdbcType=VARCHAR},
+			</if>
+			<if test="preId != null">
+				#{preId, jdbcType=INTEGER}
 			</if>
 		</trim>
 	</insert>
@@ -136,6 +143,11 @@
 		delete from worker_temp 
 		where id
 		= #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from worker_temp 
+		where user_id = #{user_id,jdbcType=INTEGER}
 	</delete>
 	
 	<delete id="deleteAllData">
@@ -180,7 +192,10 @@
 				#{userId, jdbcType=INTEGER},
 			</if>
 			<if test="checkCode != null">
-				#{checkCode, jdbcType=VARCHAR}
+				#{checkCode, jdbcType=VARCHAR},
+			</if>
+			<if test="preId != null">
+				#{preId, jdbcType=INTEGER}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -205,10 +220,10 @@
 					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
 				</if>
 				<if test="workerTemp.userId != null">
-					w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
 				</if>
 			</if>
 		</where>
@@ -224,14 +239,52 @@
 					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
 				</if>
 				<if test="workerTemp.userId != null">
-					w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
 				</if>
 			</if>
 		</where>
 	</select>
 
+	<select id="retrieveByPage" parameterType="map" resultMap="ResultWorker">
+		select
+		<include refid="Base_Column_List" />
+		from worker_temp as w 
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+		order by w.id
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" parameterType="map" resultType="int">
+		select count(*)
+		from worker_temp as w 
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+	</select>
 	
 </mapper>

@@ -7,8 +7,6 @@
 </style>
 <script type="text/javascript">
 	$(function() {
-		
-		
 	});
 	
 	
@@ -28,10 +26,10 @@
 				//	value += 1;
 				$('#workerImportProgress').progressbar('setValue', data);
 			//	}else{
-				if(value == 100){
-					clearInterval(importWorkerFile.intervalValue);
-					$('#workerImportProgress').progressbar('setValue',0);
-				}
+			//	if(value == 100){
+			//		clearInterval(importWorkerFile.intervalValue);
+				//	$('#workerImportProgress').progressbar('setValue',0);
+			//	}
 			//	}
 			}
 			
@@ -39,7 +37,7 @@
 		
 	};
 	
-	//停止刷新器方法
+	//停止进度条刷新器
 	importWorkerFile.stopFreshProgressBar = function(){
 		clearInterval(importWorkerFile.intervalValue);
 	};
@@ -47,8 +45,9 @@
 	/**关闭
 	**/
 	importWorkerFile.close = function() {
-	
-	$('#importWorkerWindow').window("close");
+		//停止进度条刷新器
+		clearInterval(importWorkerFile.intervalValue);
+		$('#importWorkerWindow').window("close");
 	};
 	importWorkerFile.submit = function() {
 		var str = $("#uploadWorkerFile").val();
@@ -62,17 +61,12 @@
 		}
 		
 		if ($("#uploadWorkerFile").val() == '') {
-
 			$.messager.alert('消息', '请选择文件。', 'info');
 			return false;
 		}
 		$.messager.alert('消息', '文件格式不支持。', 'info');
 		return false;
 	};
-	function f() {
-		
-	}
-	
 	
 	$("#importWorkerTitle").toggle(function() {
 
@@ -99,7 +93,7 @@
 		<input type="hidden" name="year" id="currentyear" value="${year}" />
 		<div>
 			<p>
-				<span class="red_notice">*</span>导入数据条数(残疾员工数)不超过3000条。
+				<span class="red_notice">*</span>导入数据条数(残疾员工数)不超过7000条。
 			</p>
 			<p>
 				<span class="red_notice">*</span> 文件必须是：xls, xlsx类型, 格式如下图.
@@ -109,11 +103,10 @@
 			</p>
 		</div>
 	</form>
-		<!-- 导入进入条 -->
+		<!-- 导入进度条 -->
 		<div id="workerImportProgress" class="easyui-progressbar" data-options="value:0" style="width:450px;margin:15px auto;"></div>
 		<div style="margin: 65px auto 20px;text-align: center;">
 			 <a href="javascript:importWorkerFile.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
-			 <a href="javascript:importWorkerFile.stopFreshProgressBar()" class="easyui-linkbutton" iconCls="icon-undo">停止</a>
 		</div>
 </div>
 <iframe name="importWorkerIframe" id="importWorkerIframe" class="importWorkerIframe" frameborder="0"> </iframe>

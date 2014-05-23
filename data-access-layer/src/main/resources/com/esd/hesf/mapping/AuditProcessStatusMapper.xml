@@ -106,7 +106,7 @@
 				</otherwise>
 			</choose>
 		</where>
-		order by priority 
+		order by shunxu 
 		limit #{start},#{size}
 	</select>
 	

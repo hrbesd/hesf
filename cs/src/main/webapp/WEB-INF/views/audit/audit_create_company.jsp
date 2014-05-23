@@ -209,7 +209,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">地区</td>
-			<td><input id="comboboxAreaCode" name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="10230000" />
+			<td><input id="comboboxAreaCode" name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="n001"/>
 			</td>
 			<td class="tdRight">邮政编码:</td>
 			<td class="bj_belu"><input id="txtCompanyZipCode" name="companyZipCode" class="inNormal easyui-validatebox" type="text" data-options="validType:['_length[6]','_number']" /></td>

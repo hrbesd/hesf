@@ -18,6 +18,13 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 * @return
 	 */
 	Boolean deleteAllData();
+	
+	/**
+	 * 根据插入数据的用户id, 输出数据
+	 * 
+	 * @return
+	 */
+	Boolean deleteByUserId(Integer userId);
 
 	/**
 	 * 根据是否通过校验来查询,如果参数为空则查询所有
@@ -29,8 +36,7 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 *            区分标识符
 	 * @return
 	 */
-	public List<WorkerTemp> getByCheck(Boolean isOk, Integer userId,
-			String checkCode);
+	public List<WorkerTemp> getByCheck(Boolean isOk, Integer userId);
 
 	/**
 	 * 根据是否通过校验来查询总条数,如果参数为空则查询所有
@@ -42,6 +48,5 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 *            区分标识符
 	 * @return
 	 */
-	public Integer getCountByCheck(Boolean isOk, Integer userId,
-			String checkCode);
+	public Integer getCountByCheck(Boolean isOk, Integer userId);
 }

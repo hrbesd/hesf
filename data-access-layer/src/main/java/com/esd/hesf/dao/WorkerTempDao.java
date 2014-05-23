@@ -36,4 +36,10 @@ public interface WorkerTempDao extends BaseDao<WorkerTemp> {
 	 */
 	public Integer retrieveCountByCheck(Map<String, Object> map);
 
+	/**
+	 * 根据userId删除数据
+	 * @param userId
+	 * @return
+	 */
+	int deleteByUserId(Integer userId);
 }

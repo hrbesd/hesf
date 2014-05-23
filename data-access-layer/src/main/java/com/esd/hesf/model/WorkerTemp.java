@@ -21,6 +21,7 @@ public class WorkerTemp {
 	private String remark; // 备注
 	private Integer userId; // 操作用户id
 	private String checkCode; // 检查码, 防止数据冲突
+	private Integer preId; // 校验时检出为已经存在的数据, 此字段保存该员工在员工表worker中的真实id
 
 	@Override
 	public String toString() {
@@ -135,6 +136,14 @@ public class WorkerTemp {
 
 	public void setCheckCode(String checkCode) {
 		this.checkCode = checkCode;
+	}
+
+	public Integer getPreId() {
+		return preId;
+	}
+
+	public void setPreId(Integer preId) {
+		this.preId = preId;
 	}
 
 }

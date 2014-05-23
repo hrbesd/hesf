@@ -3,6 +3,10 @@ package com.esd.cs;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -999,7 +1003,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test76() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<WorkerTemp> list = wtService.getByCheck(false,null,null);
+		List<WorkerTemp> list = wtService.getByCheck(false, null);
 		map.put("entity", list);
 		return map;
 	}
@@ -1012,4 +1016,71 @@ public class TestController {
 		map.put("entity", list);
 		return map;
 	}
+
+	@RequestMapping("/78")
+	@ResponseBody
+	public Map<String, Object> test78() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// List<CompanyEconomyType> list = cetService.getAll();
+		for (int i = 0; i < 100000; i++) {
+			String workerHandicapCode = "skdjflsd";
+			Worker w = wService.getByWorkerHandicapCode(workerHandicapCode);
+			System.out.println("*------ " + (i + 1) + " ------*");
+			System.out.println(w);
+		}
+		map.put("entity", 123);
+		return map;
+	}
+
+	@RequestMapping("/79")
+	@ResponseBody
+	public Map<String, Object> test79() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// List<CompanyEconomyType> list = cetService.getAll();
+		for (int i = 0; i < 100000; i++) {
+			System.out.println("*------ " + (i + 1) + " ------*");
+			Area a = new Area();
+			a.setCode("q" + i);
+			a.setName("test地方");
+			boolean w = aService.save(a);
+			System.out.println(w);
+		}
+		map.put("entity", 123);
+		return map;
+	}
+
+	public static void main(String[] args) throws ClassNotFoundException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		// 首先要获取连接，即连接到数据库
+		for (int i = 0; i < 100000; i++) {
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection(
+						"jdbc:mysql://192.168.170.85:3306/hesf", "root",
+						"esd123");
+				String sql = "INSERT INTO area(code,name)"
+						+ " VALUES ('q"+i+"', 'text')"; // 插入数据的sql语句
+				ps = conn.prepareStatement(sql);
+				int count = ps.executeUpdate(sql); // 执行插入操作的sql语句，并返回插入数据的个数
+				System.out.println("向staff表中插入 " + count + " 条数据: "+(i+1)); // 输出插入操作的处理结果
+			} catch (SQLException e) {
+				System.out.println("插入数据失败" + e.getMessage());
+			} finally {
+				try {
+					if (ps != null) {
+						ps.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 }

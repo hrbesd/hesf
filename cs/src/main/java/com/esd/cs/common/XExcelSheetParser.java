@@ -57,7 +57,7 @@ public class XExcelSheetParser {
 			return result;
 		}
 		// 遍历行row
-		for (int rowIndex = 0; rowIndex <= rowCount; rowIndex++) {
+		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
 			// 获得行对象
 			XSSFRow row = sheet.getRow(rowIndex);
 			if (null != row) {

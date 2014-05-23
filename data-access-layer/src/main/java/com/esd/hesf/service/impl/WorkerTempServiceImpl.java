@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.WorkerTempDao;
 import com.esd.hesf.model.WorkerTemp;
+import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.HesfException;
 import com.esd.hesf.service.WorkerTempService;
 
@@ -33,8 +34,8 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 		}
 		int k = dao.insertSelective(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail)
-					.printStackTrace();
+			new HesfException(t.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 		}
 		return true;
 	}
@@ -78,8 +79,21 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	@Override
 	public PaginationRecordsAndNumber<WorkerTemp, Number> getPaginationRecords(
 			WorkerTemp t, Integer page, Integer pageSize) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("workerTemp", t);
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<WorkerTemp> list = dao.retrieveByPage(map);
+		// 数据条数
+		int count = dao.retrieveCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<WorkerTemp, Number> prn = new PaginationRecordsAndNumber<WorkerTemp, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
 	}
 
 	@Override
@@ -88,22 +102,28 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	}
 
 	@Override
-	public List<WorkerTemp> getByCheck(Boolean isOk,Integer userId,String checkCode) {
+	public Boolean deleteByUserId(Integer userId) {
+		return (dao.deleteByUserId(userId) > 0) ? true : false;
+	}
+
+	@Override
+	public List<WorkerTemp> getByCheck(Boolean isOk, Integer userId) {
 		WorkerTemp wt = new WorkerTemp();
 		wt.setIsOk(isOk);
 		wt.setUserId(userId);
-		wt.setCheckCode(checkCode);
-		Map<String,Object> map = new HashMap<String,Object>();
+		// wt.setCheckCode(checkCode);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("workerTemp", wt);
 		return dao.retrieveByCheck(map);
 	}
 
 	@Override
-	public Integer getCountByCheck(Boolean isOk,Integer userId,String checkCode) {
+	public Integer getCountByCheck(Boolean isOk, Integer userId) {
 		WorkerTemp wt = new WorkerTemp();
 		wt.setIsOk(isOk);
 		wt.setUserId(userId);
-		wt.setCheckCode(checkCode);
-		Map<String,Object> map = new HashMap<String,Object>();
+		// wt.setCheckCode(checkCode);
+		Map<String, Object> map = new HashMap<String, Object>();
 		return dao.retrieveCountByCheck(map);
 	}
 

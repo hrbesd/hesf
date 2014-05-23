@@ -49,8 +49,8 @@
 </style>
 
 <script type="text/javascript">
-	initAudit = {};
-	initAudit.show = function(w, q, b) {
+	finalAudit = {};
+	finalAudit.show = function(w, q, b) {
 		var t = "<table border='1' width='500' >";
 		var s = "";
 		if (w.length > 0) {
@@ -89,7 +89,7 @@
 	};
 
 	//输入金钱校验
-	initAudit.checkMoney = function(e) {
+	finalAudit.checkMoney = function(e) {
 		if (e.value == e.value2)
 			return;
 		if (e.value.search(/^\d*(?:\.\d{0,2})?$/) == -1)
@@ -98,8 +98,8 @@
 			e.value2 = e.value;
 	};
 
-	initAudit.checkJianJiao = function(j) {
-		var s = initAudit.shiJiaoZongJinE;
+	finalAudit.checkJianJiao = function(j) {
+		var s = finalAudit.shiJiaoZongJinE;
 		s = s.replace(".", "");
 		j = j.replace(".", "");
 		if ((s - j) < 0) {
@@ -108,7 +108,7 @@
 		}
 		return true;
 	};
-	initAudit.jisuan = function() {
+	finalAudit.jisuan = function() {
 		var param = {};
 		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
 		param.yingAnPaiCanJiRen = $('#yingAnPaiCanJiRen').val();
@@ -129,7 +129,7 @@
 		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
 		//校验
-		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
+		if (finalAudit.checkJianJiao(param.jianJiaoJinE) == false) {
 			return;
 		}
 
@@ -150,7 +150,7 @@
 				if (wl != 0 || ql != 0 || wj != 0) {
 					$('#message').css("display", "block");
 					$('#message').bind("click", function() {
-						initAudit.show(data.weiShenMingXi, data.qianJiaoMingXi,data.weiJiaoMingXi);
+						finalAudit.show(data.weiShenMingXi, data.qianJiaoMingXi,data.weiJiaoMingXi);
 					});
 				}
 				
@@ -173,7 +173,7 @@
 	};
 
 	//拒绝
-	initAudit.refusal = function() {
+	finalAudit.refusal = function() {
 		var comment = $('textarea[name=finalAuditComment]').val();
 		if (comment == "" || comment == null || comment == undefined) {
 			$.messager.alert('提示', '拒绝必须填写 “终审意见”', 'info');
@@ -183,7 +183,7 @@
 			if (data == true) {
 				$.messager.alert('消息', '拒绝成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
-					$("#initAuditList_datagrid").datagrid('reload');
+					$("#finalAuditList_datagrid").datagrid('reload');
 				});
 			} else {
 				$.messager.alert('消息', '拒绝失败', 'info');
@@ -192,15 +192,15 @@
 	};
 
 	//终审审确认
-	initAudit.finalAudit = function() {
+	finalAudit.finalAudit = function() {
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/finalAudit", function(data) {
 			if (data == true) {
 				//弹出没有关闭按钮的提示框
 				esd.common.noCloseButtonDialog('消息','审批成功');
 				//打印
-				initAudit.printFinalAuditWindow();
+				finalAudit.printFinalAuditWindow();
 				//重新装载数据
-				$("#initAuditList_datagrid").datagrid('reload');
+				$("#finalAuditList_datagrid").datagrid('reload');
 			} else {
 				$.messager.alert('消息', '终审审确认失败', 'info');
 			}
@@ -208,14 +208,14 @@
 	};
 	
 	//跳转到打印确认页面
-	initAudit.printFinalAuditWindow = function(){
+	finalAudit.printFinalAuditWindow = function(){
 		esd.common.printFinalAuditWindow();
 	};
 	//返回
-	initAudit.back = function() {
+	finalAudit.back = function() {
 		esd.common.defaultOpenWindowClose();
 	};
-	initAudit.reasons = function(t){
+	finalAudit.reasons = function(t){
 		var title = $('#reasons').find('option:selected').attr("title");
 	//	$('#fsyj').html('');
 		$('#fsyj').val('');
@@ -224,7 +224,7 @@
 	};
 	
 	
-	initAudit.shiJiaoZongJinE = 0;
+	finalAudit.shiJiaoZongJinE = 0;
 	$(function() {
 		$(".readonly").each(function() {
 			$(this).attr("readonly", "readonly");
@@ -232,13 +232,13 @@
 		});
 		//初始化easyUi完成
 		$.parser.onComplete = function() {
-			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-			initAudit.jisuan();
+			finalAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
+			finalAudit.jisuan();
 		};
 	});
 /*	$('#auditTabs').tabs({
 		onSelect : function(title,index) {
-			initAudit.jisuan();
+			finalAudit.jisuan();
 		}
 	});	*/
 </script>
@@ -326,7 +326,7 @@
 			</tr>
 			<tr>
 				<td rowspan="2" style="vertical-align: bottom"><input name="companyEmpTotal" title="在职员工总数" id="zaiZhiYuanGongZongShu" type="text" value="${entity.companyEmpTotal }"
-					class="easyui-numberbox readonly" style="border-top: #95B8E7 2px solid;" onblur="initAudit.jisuan()" data-options="min:0" /></td>
+					class="easyui-numberbox readonly" style="border-top: #95B8E7 2px solid;" onblur="finalAudit.jisuan();" data-options="min:0" /></td>
 				<td width="97">应按排数:</td>
 				<td width="100">已安排数:</td>
 				<td width="100">已录入数</td>
@@ -343,7 +343,7 @@
 				<td><input type="text" class="text_short readonly" value="${entity.companyShouldTotal}" name="companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" /></td>
 				<td><input type="text" class="text_short readonly" value="${entity.companyAlreadyTotal}" name="companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" /></td>
 				<td><input id="yiLuRuCanJiRen" name="companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.companyHandicapTotal }" /></td>
-				<td><input id="yuDingCanJiRen" name="companyPredictTotal" value="${entity.companyPredictTotal }" title="预定残疾职工人数" class="easyui-numberbox readonly"  onblur="initAudit.jisuan()"
+				<td><input id="yuDingCanJiRen" name="companyPredictTotal" value="${entity.companyPredictTotal }" title="预定残疾职工人数" class="easyui-numberbox readonly"  onblur="finalAudit.jisuan();"
 					data-options="min:0" /></td>
 				<td><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="补缴金额" class="readonly" value="${entity.remainAmount}" /></td>
 			</tr>
@@ -354,15 +354,15 @@
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
-				<td width="100"><input id="jianJiaoJinE" type="text" class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+				<td width="100"><input id="jianJiaoJinE" type="text" class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="finalAudit.jisuan();" /></td>
 				<td width="99">免滞纳金:</td>
-				<td><select id="mianZhiNaJin" style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="initAudit.jisuan();">
+				<td><select id="mianZhiNaJin" style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="finalAudit.jisuan();">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
 
 				<td width="91">是否免交:</td>
-				<td><select id="mianJiao" style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="initAudit.jisuan();"  >
+				<td><select id="mianJiao" style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="finalAudit.jisuan();"  >
 						<option value="true" title="是" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" title="否" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
@@ -394,7 +394,7 @@
 				<td colspan="3" rowspan="2"><textarea class="warn"  name="finalAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.finalAuditComment}</textarea></td>
 			</tr>
 			<tr>
-				<td><select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
+				<td><select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="finalAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<c:forEach items="${reasons}" var="item">
 							<option value="${item.id}" title="${item.content }" <c:if test="${1 eq item.id}">selected="selected"</c:if>>${item.title }</option>
 						</c:forEach>
@@ -433,14 +433,14 @@
 		<c:if test="${entity.auditProcessStatus.id==8}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
-			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
-			<a href="javascript:initAudit.finalAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认终审并打印</a>
+			<a href="javascript:finalAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
+			<a href="javascript:finalAudit.finalAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认终审并打印</a>
 		</c:if>
-		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a>
+		<a href="javascript:finalAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a>
 	 <!-- 	<a href="javascript:esd.common.printFinalAuditWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>	 -->
 	 	<!-- 终审用户可以执行打印操作 -->
 		<c:if test="${userGroupId == 1 || userGroupId == 6 }">
-	 		<a href="javascript:initAudit.printFinalAuditWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
+	 		<a href="javascript:finalAudit.printFinalAuditWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	 	</c:if>	
 	</div>
 </form>

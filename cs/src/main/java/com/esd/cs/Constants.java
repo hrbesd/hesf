@@ -39,5 +39,6 @@ public class Constants {
 	public static final String NOTICE = "notice";	//提示标识/文字
 	
 	public static final String LURU = "luru";	//录入标示符
+	public static final String NOTYET = "暂未录入";
 
 }

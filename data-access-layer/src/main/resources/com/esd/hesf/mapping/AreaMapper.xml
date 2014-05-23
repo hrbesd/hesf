@@ -8,19 +8,20 @@
 		<result column="pyname" property="pyname" jdbcType="VARCHAR" />
 		<result column="abbr" property="abbr" jdbcType="VARCHAR" />
 		<result column="mark" property="mark" jdbcType="VARCHAR" />
+		<result column="is_active" property="isActive" jdbcType="BIT" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		code, name, pyname, abbr, mark
+		code, name, pyname, abbr, mark, is_active
 	</sql>
 
 	<!-- insert -->
 	<insert id="insert" parameterType="com.esd.hesf.model.Area">
 		insert into area (code, name, pyname,
-		abbr, mark)
+		abbr, mark,is_active)
 		values (#{code,jdbcType=CHAR}, #{name,jdbcType=VARCHAR},
-		#{pyname,jdbcType=VARCHAR},
-		#{abbr,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR})
+		#{pyName,jdbcType=VARCHAR},
+		#{abbr,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR},default)
 	</insert>
 
 	<insert id="insertSelective" parameterType="com.esd.hesf.model.Area">
@@ -32,7 +33,7 @@
 			<if test="name != null">
 				name,
 			</if>
-			<if test="pyname != null">
+			<if test="pyName != null">
 				pyname,
 			</if>
 			<if test="abbr != null">
@@ -40,6 +41,9 @@
 			</if>
 			<if test="mark != null">
 				mark,
+			</if>
+			<if test="isActive != null">
+				is_active
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -49,14 +53,17 @@
 			<if test="name != null">
 				#{name,jdbcType=VARCHAR},
 			</if>
-			<if test="pyname != null">
-				#{pyname,jdbcType=VARCHAR},
+			<if test="pyName != null">
+				#{pyName,jdbcType=VARCHAR},
 			</if>
 			<if test="abbr != null">
 				#{abbr,jdbcType=VARCHAR},
 			</if>
 			<if test="mark != null">
 				#{mark,jdbcType=VARCHAR},
+			</if>
+			<if test="isActive != null">
+				#{isActive, jdbcType=BIT}
 			</if>
 		</trim>
 	</insert>
@@ -84,6 +91,9 @@
 			<if test="mark != null">
 				mark = #{mark,jdbcType=VARCHAR},
 			</if>
+			<if test="isActive != null">
+				is_active = #{isActive, jdbcType=BIT}
+			</if>
 		</set>
 		where code = #{code,jdbcType=CHAR}
 	</update>
@@ -99,7 +109,7 @@
 	<select id="retrieveByPage" resultType="com.esd.hesf.model.Area" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from area_back
+		from area
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="area != null">
 				<if test="area.code != null and area.code != ''">
@@ -115,6 +125,16 @@
 					and abbr like concat('%',#{area.abbr},'%')
 				</if>
 			</if>
+			<if test="area != null">
+				<choose>
+					<when test="area.isActive != null">
+						is_active = #{area.isActive, jdbcType=BIT}
+					</when>
+					<otherwise>
+						is_active = 0 
+					</otherwise>
+				</choose>
+			</if>
 		</trim>
 		order by code
 		limit #{start}, #{size}
@@ -122,7 +142,7 @@
 
 	<select id="retrieveCount" resultType="int" parameterType="map">
 		select count(*) 
-		from area_back
+		from area
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="area != null">
 				<if test="area.code != null and area.code != ''">
@@ -137,6 +157,16 @@
 				<if test="area.abbr != null and area.abbr != ''">
 					and abbr like concat('%',#{area.abbr},'%')
 				</if>
+			</if>
+			<if test="area != null">
+				<choose>
+					<when test="area.isActive != null">
+						is_active = #{area.isActive, jdbcType=BIT}
+					</when>
+					<otherwise>
+						is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
 		</trim>
 		limit #{start}, #{size}
@@ -155,7 +185,7 @@
 		select 
 		<include refid="Base_Column_List" />
 		from area
-		where code like '10230000' or code like '2023____'
+		where is_active = 0
 		order by code
 	</select>
 

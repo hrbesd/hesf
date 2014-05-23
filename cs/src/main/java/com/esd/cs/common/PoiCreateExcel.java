@@ -23,6 +23,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import com.esd.cs.statistics.ReportModel;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
+import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.viewmodels.ReportViewModel;
 
 public class PoiCreateExcel {
@@ -34,7 +35,7 @@ public class PoiCreateExcel {
 	 * @param workerList
 	 * @return
 	 */
-	public static boolean createExcel(String FilePath, List<Worker> workerList) {
+	public static boolean createExcel(String FilePath, List<WorkerTemp> workerList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -57,7 +58,7 @@ public class PoiCreateExcel {
 		sheet.setColumnWidth(2, 13000);
 
 		for (int i = 1; i <= workerList.size(); i++) {
-			Worker worker = workerList.get(i - 1);
+			WorkerTemp worker = workerList.get(i - 1);
 			// 创建一个Excel的单元格
 			HSSFRow row = sheet.createRow(i);
 			HSSFCell cell = row.createCell(0);
@@ -82,6 +83,7 @@ public class PoiCreateExcel {
 		return true;
 	}
 
+	
 	/**
 	 * 导出单位信息
 	 * 
