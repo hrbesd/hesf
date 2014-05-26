@@ -9,7 +9,6 @@
 	$(function() {
 	});
 	
-	
 	var importWorkerFile = {};
 
 	//预定义定时器的返回值
@@ -69,7 +68,6 @@
 	};
 	
 	$("#importWorkerTitle").toggle(function() {
-
 		$("#importWorkerForm").hide();
 	}, function() {
 
@@ -105,7 +103,7 @@
 	</form>
 		<!-- 导入进度条 -->
 		<div id="workerImportProgress" class="easyui-progressbar" data-options="value:0" style="width:450px;margin:15px auto;"></div>
-		<div style="margin: 65px auto 20px;text-align: center;">
+		<div style="text-align: center;">
 			 <a href="javascript:importWorkerFile.close()" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
 		</div>
 </div>

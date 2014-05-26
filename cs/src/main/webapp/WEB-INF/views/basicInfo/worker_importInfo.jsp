@@ -26,8 +26,8 @@
 	var importWorkerManager = {};
 	importWorkerManager.close = function() {
 		$('#importWorkerPan', window.parent.document).fadeIn("slow");
-		$('#importWorkerIframe', window.parent.document).height(150);
-		$("#importInfoPan").close();
+		$('#importWorkerIframe', window.parent.document).height(0);
+		$("#importInfoPan").empty();
 	};
 	importWorkerManager.import = function() {
 	$('#divButtons').hide();

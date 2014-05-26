@@ -221,6 +221,7 @@ text-align: right;
 .importWorkerIframe {
 	width: 100%;
 	margin-top: 0px;
+	height:30px;
 }
 
 .importWorkerTitle {
