@@ -6,7 +6,7 @@ package com.esd.hesf.model;
  * @author Administrator
  * 
  */
-public class Area {
+public class Area extends CommonKey{
 
 	private String code; // 地区代码 - 主键
 	private String name; // 地名

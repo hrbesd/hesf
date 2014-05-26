@@ -94,7 +94,19 @@
 		select
 		<include refid="Base_Column_List" />
 		from audit_process_status 
-		order by priority 
+		<where>
+			<choose>
+				<when test="auditProcessStatus != null">
+					<if test="auditProcessStatus.isActive != null">
+						is_active = #{auditProcessStatus.isActive,jdbcType=BIT}
+					</if>
+				</when>
+				<otherwise>
+					is_active = 0
+				</otherwise>
+			</choose>
+		</where>
+		order by shunxu 
 		limit #{start},#{size}
 	</select>
 	

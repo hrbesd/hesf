@@ -195,15 +195,29 @@
 				<if test="menu.userId != null and menu.userId > 0">
 					and m.user_id = #{menu.userId}
 				</if>
-				<if test="menu.isActive != null">
-					and m.is_active = #{menu.isActive}
-				</if>
 				<if test="menu.permissionType != null">
 					<if test="menu.permissionType.id != null and menu.permissionType.id > 0">
 						and m.permission_type_id = #{menu.permissionType.id}
 					</if>
 				</if>
+				<choose>
+					<when test="menu.isActive != null">
+						and m.is_active = #{menu.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and m.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="menu != null">
+					<if test="menu.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and m.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by m.id
 		limit #{start}, #{size}

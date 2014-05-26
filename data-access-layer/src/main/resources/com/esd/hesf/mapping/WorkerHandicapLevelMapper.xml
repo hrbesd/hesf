@@ -105,10 +105,24 @@
 				<if test="workerHandicapLevel.userId != null and workerHandicapLevel.userId > 0">
 					user_id = #{workerHandicapLevel.userId}
 				</if>
-				<if test="workerHandicapLevel.isActive != null">
-					is_active = #{workerHandicapLevel.isActive}
-				</if>
+				<choose>
+				<when test="workerHandicapLevel.isActive != null">
+					and is_active = #{workerHandicapLevel.isActive, jdbcType=BIT}
+				</when>
+				<otherwise>
+					and is_active = 0 
+				</otherwise>
+			</choose>
 			</if>
+			<choose>
+				<when test="workerHandicapLevel != null">
+					<if test="workerHandicapLevel.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0 
+				</otherwise>
+			</choose>
 		</trim>
 		limit #{start},#{size}
 	</select>

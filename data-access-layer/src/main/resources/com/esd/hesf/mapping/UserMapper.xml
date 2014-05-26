@@ -232,6 +232,15 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="user != null">
+					<if test="user.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and u.is_active = 0 
+				</otherwise>
+			</choose>
 		</trim>
 		order by u.create_time desc 
 		limit #{start}, #{size}
@@ -271,10 +280,19 @@
 						and u.is_active = #{user.isActive, jdbcType=BIT} 
 					</when>
 					<otherwise>
-						and u.is_active = 0  
+						and u.is_active = 0 
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="user != null">
+					<if test="user.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and u.is_active = 0 
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

@@ -42,7 +42,11 @@ public class Audit extends PrimaryKey_Int {
 	private User verifyAuditUser;// 复审人用户ID
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date verifyAuditDate;// 复审日期
-	private String verifyAuditComment; // 初审人意见
+	private String verifyAuditComment; // 复审人意见
+	private User finalAuditUser;// 终审人id
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date finalAuditDate;// 终审日期
+	private String finalAuditComment; // 终审人意见
 	private String remark;// 备注
 	private Boolean isExempt; // 是否免缴 false--免除, true--不免除
 	private Integer reductionType; // 减免缓类型
@@ -394,6 +398,30 @@ public class Audit extends PrimaryKey_Int {
 
 	public void setRefuseTimes(Integer refuseTimes) {
 		this.refuseTimes = refuseTimes;
+	}
+
+	public User getFinalAuditUser() {
+		return finalAuditUser;
+	}
+
+	public void setFinalAuditUser(User finalAuditUser) {
+		this.finalAuditUser = finalAuditUser;
+	}
+
+	public Date getFinalAuditDate() {
+		return finalAuditDate;
+	}
+
+	public void setFinalAuditDate(Date finalAuditDate) {
+		this.finalAuditDate = finalAuditDate;
+	}
+
+	public String getFinalAuditComment() {
+		return finalAuditComment;
+	}
+
+	public void setFinalAuditComment(String finalAuditComment) {
+		this.finalAuditComment = finalAuditComment;
 	}
 
 }

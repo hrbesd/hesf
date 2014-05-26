@@ -33,7 +33,7 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @param companyOrganizationCode
 	 * @return
 	 */
-	public List<Company> retrieveByOrganizationCode(String companyOrganizationCode);
+	public Company retrieveByOrganizationCode(String companyOrganizationCode);
 
 	/**
 	 * 根据公司code查询存在几条数据
@@ -42,4 +42,10 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @return
 	 */
 	Integer retrieveCountByCompanyCode(String companyCode);
+	
+	/**
+	 * 获得自动生成的下一个companyCode
+	 * @return
+	 */
+	String retrieveNextCompanyCode();
 }

@@ -246,17 +246,17 @@ public class CompanyServiceImpl implements CompanyService {
 		return check;
 	}
 
-	// 自动生成最新档案号
-	public String getDocumentCode() {
-		String oldCode = dao.getLatestDocumentCode();
-		logger.debug("oldCode :" + oldCode);
-		if (StringUtils.isBlank(oldCode)) {
-			return null;
-		}
-		// 方法①
-		int code = Integer.parseInt(oldCode);
-		code++;
-		return String.valueOf(code);
+//	// 自动生成最新档案号
+//	public String getDocumentCode() {
+//		String oldCode = dao.getLatestDocumentCode();
+//		logger.debug("oldCode :" + oldCode);
+//		if (StringUtils.isBlank(oldCode)) {
+//			return null;
+//		}
+//		// 方法①
+//		int code = Integer.parseInt(oldCode);
+//		code++;
+//		return String.valueOf(code);
 
 		// 方法②
 		// String sub = oldCode.substring(3);
@@ -278,19 +278,13 @@ public class CompanyServiceImpl implements CompanyService {
 		// }
 		// logger.debug("code :"+code);
 		// return code;
-	}
+//	}
 
 	@Override
-	public Company getCompanyByOrganizationCode(String companyOrganizationCode) {
-		List<Company> list = dao
+	public Company getByCompanyOrganizationCode(String companyOrganizationCode) {
+		Company company = dao
 				.retrieveByOrganizationCode(companyOrganizationCode);
-		if (list == null) {
-			return null;
-		}
-		if (list.size() < 1) {
-			return null;
-		}
-		return list.get(0);
+		return company;
 	}
 
 	// @Override
@@ -404,7 +398,7 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public int getWorkerHandicapTotal(Integer companyId, String year) {
+	public Integer getWorkerHandicapTotal(Integer companyId, String year) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null)
 					.printStackTrace();
@@ -421,6 +415,30 @@ public class CompanyServiceImpl implements CompanyService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyYearWorker", cyw);
 		return cywDao.retrieveCount(map);
+	}
+	
+	@Override
+	public Integer copyLastYearWorker(String currentYear, String lastYear, Integer companyId) {
+		if (currentYear == null || "".equals(currentYear)) {
+			new HesfException("currentYear", HesfException.type_null)
+					.printStackTrace();
+			return -1;
+		}
+		if (lastYear == null || "".equals(lastYear)) {
+			new HesfException("lastYear", HesfException.type_null)
+					.printStackTrace();
+			return -1;
+		}
+		if (companyId == null || companyId <= 0) {
+			new HesfException("companyId", HesfException.type_null)
+					.printStackTrace();
+			return -1;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("currentYear", currentYear);
+		map.put("lastYear", lastYear);
+		map.put("companyId", companyId);
+		return cywDao.insertLastYearData(map);
 	}
 
 	@Override
@@ -511,5 +529,16 @@ public class CompanyServiceImpl implements CompanyService {
 		audit.setAuditProcessStatus(new AuditProcessStatus(auditProcessStatus));
 		return auDao.retireveUnauditByCompany(audit);
 	}
+
+	@Override
+	public String getNextCompanyCode() {
+		String nextCompanyCode = dao.retrieveNextCompanyCode();
+		if(nextCompanyCode == null || "".equals(nextCompanyCode)){
+			nextCompanyCode = "100000";
+		}
+		return nextCompanyCode;
+	}
+	
+	
 
 }

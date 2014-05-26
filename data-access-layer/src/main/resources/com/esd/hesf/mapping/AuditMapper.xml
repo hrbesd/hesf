@@ -25,6 +25,9 @@
 		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
+		<result column="au_final_audit_user_id" jdbcType="INTEGER" property="finalAuditUser.id" />
+		<result column="au_final_audit_date" jdbcType="TIMESTAMP" property="finalAuditDate" />
+		<result column="au_final_audit_comment" jdbcType="VARCHAR" property="finalAuditComment" />
 		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="au_is_exempt" jdbcType="BIT" property="isExempt" />
 		<result column="au_reduction_type" jdbcType="INTEGER" property="reductionType" />
@@ -120,7 +123,10 @@
 		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
 		au.verify_audit_user_id as
 		au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
-		au.verify_audit_comment as au_verify_audit_comment, au.remark as au_remark, au.is_exempt as au_is_exempt,
+		au.verify_audit_comment as au_verify_audit_comment, 
+		au.final_audit_user_id as au_final_audit_user_id, au.final_audit_date as au_final_audit_date ,
+		au.final_audit_comment as au_final_audit_comment, 
+		au.remark as au_remark, au.is_exempt as au_is_exempt,
 		au.reduction_type as
 		au_reduction_type, au.reducion_apply_user as au_reducion_apply_user,
 		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
@@ -175,9 +181,10 @@
 		reduction_amount,
 		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount,
 		is_delay_pay,
-		init_audit_user_id, init_audit_date, init_audit_comment,verify_audit_user_id,
-		verify_audit_date, verify_audit_comment, remark, is_exempt,reduction_type,reducion_apply_user,
-		reduction_date,
+		init_audit_user_id, init_audit_date, init_audit_comment,
+		verify_audit_user_id, verify_audit_date, verify_audit_comment, 
+		final_audit_user_id, final_audit_date, final_audit_comment, 
+		remark, is_exempt,reduction_type,reducion_apply_user, reduction_date,
 		reduction_reason, reduction_answer_user,
 		reduction_answer_date, reduction_answer_option,
 		reduction_remark, unaudit_years,supplement_year,delay_days, refuse_times,
@@ -192,9 +199,9 @@
 		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
 		#{isDelayPay,jdbcType=BIT},
-		#{initAuditUser.id,jdbcType=INTEGER},
-		#{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
+		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
 		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
+		#{finalAuditUser.id,jdbcType=INTEGER}, #{finalAuditDate,jdbcType=TIMESTAMP}, #{finalAuditComment,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
 		#{reductionType,jdbcType=INTEGER},#{reducionApplyUser,jdbcType=VARCHAR},
 		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR},
@@ -292,6 +299,17 @@
 			</if>
 			<if test="verifyAuditComment != null ">
 				verify_audit_comment,
+			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					final_audit_user_id,
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				final_audit_date,
+			</if>
+			<if test="finalAuditComment != null ">
+				final_audit_comment,
 			</if>
 			<if test="remark != null">
 				remark,
@@ -423,6 +441,17 @@
 			</if>
 			<if test="verifyAuditComment != null and verifyAuditComment != ''">
 				#{verifyAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					#{finalAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				#{finalAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finalAuditComment != null and finalAuditComment != ''">
+				#{finalAuditComment,jdbcType=VARCHAR},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -577,6 +606,17 @@
 			<if test="verifyAuditComment != null">
 				verify_audit_comment = #{verifyAuditComment,jdbcType=VARCHAR},
 			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					final_audit_user_id = #{finalAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				final_audit_date = #{finalAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finalAuditComment != null">
+				final_audit_comment = #{finalAuditComment,jdbcType=VARCHAR},
+			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
 			</if>
@@ -693,6 +733,15 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="audit != null">
+					<if test="audit.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and au.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by c.company_code
 		limit #{start},#{size}
@@ -730,6 +779,16 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="audit != null">
+					<if test="audit.isActive != null">
+						and au.is_active = #{audit.isActive,jdbcType=BIT}
+					</if>
+				</when>
+				<otherwise>
+					and au.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

@@ -78,6 +78,7 @@ public class WorkerServiceImpl implements WorkerService {
 		return false;
 	}
 
+	
 	@Override
 	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);

@@ -16,6 +16,7 @@
 		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
+		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -57,7 +58,7 @@
 		w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
-		w.is_college as w_is_college, 
+		w.is_college as w_is_college, w.is_retired as w_is_retired, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -88,7 +89,7 @@
 		worker_id_card, career_card,
 		phone, current_job, worker_address,
 		area_code, worker_handicap_code, worker_handicap_type,
-		worker_handicap_level, is_college, remark, create_time,
+		worker_handicap_level, is_college, is_retired, remark, create_time,
 		update_time, user_id, is_active,
 		version)
 		values (#{workerName,jdbcType=VARCHAR},
@@ -98,9 +99,9 @@
 		#{phone,jdbcType=VARCHAR}, #{currentJob,jdbcType=VARCHAR},
 		#{workerAddress,jdbcType=VARCHAR},
 		#{area.code,jdbcType=VARCHAR},
-		#{workerHandicapCode.id,jdbcType=VARCHAR},
+		#{workerHandicapCode,jdbcType=VARCHAR},
 		#{workerHandicapType.id,jdbcType=INTEGER},
-		#{workerHandicapLevel,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}
+		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
 		#{remark,jdbcType=VARCHAR},
 		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
@@ -158,6 +159,9 @@
 			</if>
 			<if test="isCollege != null">
 				is_college, 
+			</if>
+			<if test="isRetired != null">
+				is_retired,
 			</if>
 			<if test="remark != null">
 				remark,
@@ -220,6 +224,9 @@
 			</if>
 			<if test="isCollege != null">
 				#{isCollege,jdbcType=BIT},
+			</if>
+			<if test="isRetired != null">
+				#{isRetired, jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -300,6 +307,9 @@
 			<if test="isCollege != null">
 				is_college = #{isCollege,jdbcType=BIT}, 
 			</if>
+			<if test="isRetired != null">
+				is_retired = #{isRetired, jdbcType=BIT},
+			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
 			</if>
@@ -377,13 +387,30 @@
 				<if test="worker.isCollege != null">
 					and w.is_college =  #{worker.isCollege,jdbcType=BIT} 
 				</if>
+				<if test="worker.isRetired != null">
+					and w.is_retired  = #{worker.isRetired,jdbcType=BIT} 
+				</if>
 				<if test="worker.userId != null and worker.userId > 0">
 					and w.user_id = #{worker.userId,jdbcType=INTEGER} 
 				</if>
-				<if test="isActive != null">
-					and w.is_active = #{worker.isActive,jdbcType=BIT} 
-				</if>
+				<choose>
+					<when test="worker.isActive != null">
+							and w.is_active = #{worker.isActive,jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and w.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="worker != null">
+					<if test="worker.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and w.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by w.id desc
 		limit #{start}, #{size}
@@ -440,13 +467,30 @@
 				<if test="worker.isCollege != null">
 					and w.is_college =  #{worker.isCollege,jdbcType=BIT} 
 				</if>
+				<if test="worker.isRetired != null">
+					and w.is_retired  = #{worker.isRetired,jdbcType=BIT} 
+				</if>
 				<if test="worker.userId != null and worker.userId > 0">
 					and w.user_id = #{worker.userId,jdbcType=INTEGER} 
 				</if>
-				<if test="isActive != null">
-					and w.is_active = #{worker.isActive,jdbcType=BIT} 
-				</if>
+				<choose>
+					<when test="worker.isActive != null">
+							and w.is_active = #{worker.isActive,jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and w.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="worker != null">
+					<if test="worker.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and w.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

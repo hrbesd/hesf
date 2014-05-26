@@ -132,15 +132,29 @@
 				<if test="userGroup.userGroupName != null and userGroup.userGroupName != ''">
 					and ug.user_group_name like concat('%',#{userGroup.userGroupName},'%')
 				</if>
-				<if test="userGroup.isActive != null">
-					and ug.is_active = #{userGroup.isActive}
-				</if>
 				<if test="userGroup.permissionType != null">
 					<if test="userGroup.permissionType.id != null and userGroup.permissionType.id > 0">
 						and p.id = #{userGroup.permissionType.id}
 					</if>
 				</if>
+				<choose>
+					<when test="userGroup.isActive != null">
+						and ug.is_active = #{userGroup.isActive, jdbcType=BIT}
+					</when>
+					<otherwise>
+						and ug.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="userGroup != null">
+					<if test="userGroup.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and ug.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by ug.update_time asc 
 		limit #{start}, #{size}
@@ -155,15 +169,29 @@
 				<if test="userGroup.userGroupName != null and userGroup.userGroupName != ''">
 					and ug.user_group_name like concat('%',#{userGroup.userGroupName},'%')
 				</if>
-				<if test="userGroup.isActive != null">
-					and ug.is_active = #{userGroup.isActive}
-				</if>
 				<if test="userGroup.permissionType != null">
 					<if test="userGroup.permissionType.id != null and userGroup.permissionType.id > 0">
 						and p.id = #{userGroup.permissionType.id}
 					</if>
 				</if>
+				<choose>
+					<when test="userGroup.isActive != null">
+						and ug.is_active = #{userGroup.isActive, jdbcType=BIT}
+					</when>
+					<otherwise>
+						and ug.is_active = 0
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="userGroup != null">
+					<if test="userGroup.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and ug.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 	
