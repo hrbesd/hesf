@@ -19,6 +19,7 @@
 		$('#importWorkerPan', window.parent.document).hide(0, function() {
 			$('#importWorkerIframe', window.parent.document).height(500);
 		});
+		
 	};
 	$(function() {
 	});
