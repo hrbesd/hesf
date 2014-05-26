@@ -1567,7 +1567,7 @@ a:hover.l-btn-disabled {
   color: #000000;
 }
 .progressbar-value .progressbar-text {
-  background-color: #FBEC88;
+  background-color: rgb(101, 146, 101);
   color: #000000;
 }
 .searchbox {
