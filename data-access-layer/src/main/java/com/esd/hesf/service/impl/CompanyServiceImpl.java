@@ -532,7 +532,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public String getNextCompanyCode() {
-		return dao.retrieveNextCompanyCode();
+		String nextCompanyCode = dao.retrieveNextCompanyCode();
+		if(nextCompanyCode == null || "".equals(nextCompanyCode)){
+			nextCompanyCode = "100000";
+		}
+		return nextCompanyCode;
 	}
 	
 	
