@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.WorkerTempDao">
+
+	<!-- result of worker -->
+	<resultMap id="ResultWorker" type="com.esd.hesf.model.WorkerTemp">
+		<id column="w_id" jdbcType="INTEGER" property="id" />
+		<result column="w_worker_name" jdbcType="VARCHAR" property="workerName" />
+		<result column="w_worker_gender" jdbcType="VARCHAR" property="workerGender" />
+		<result column="w_worker_birth" jdbcType="VARCHAR" property="workerBirth" />
+		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
+		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
+		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
+		<result column="w_worker_handicap_type" jdbcType="INTEGER" property="workerHandicapType" />
+		<result column="w_worker_handicap_level" jdbcType="INTEGER" property="workerHandicapLevel" />
+		<result column="w_is_ok" jdbcType="BIT" property="isOk" />
+		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
+		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="w_check_code" jdbcType="VARCHAR" property="checkCode" />
+		<result column="w_pre_id" jdbcType="INTEGER" property="preId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		<!-- worker -->
+		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
+		w_worker_gender, w.worker_birth as w_worker_birth, 
+		w.worker_birth_year as w_worker_birth_year, 
+		w.worker_id_card as w_worker_id_card,
+		w.worker_handicap_code as w_worker_handicap_code,
+		w.worker_handicap_type as w_worker_handicap_type,
+		w.worker_handicap_level as w_worker_handicap_level,
+		w.is_ok as w_is_ok, w.remark as w_remark, w.user_id as w_user_id,
+		w.check_code as w_check_code, w.pre_id as w_pre_id 
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerTemp">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into worker_temp (worker_name,
+		worker_gender, worker_birth, worker_birth_year, 
+		worker_id_card, worker_handicap_code, worker_handicap_type,
+		worker_handicap_level, is_ok,remark)
+		values (#{workerName,jdbcType=VARCHAR}, #{workerGender,jdbcType=VARCHAR},
+		#{workerBirth,jdbcType=VARCHAR}, #{workerBirthYear,jdbcType=CHAR},
+		#{workerIdCard,jdbcType=VARCHAR}, #{workerHandicapCode,jdbcType=VARCHAR},
+		#{workerHandicapType,jdbcType=INTEGER}, #{workerHandicapLevel,jdbcType=INTEGER},
+		#{isOk,jdbcType=BIT},#{remark,jdbcType=VARCHAR )
+	</insert>
+
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerTemp">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into worker_temp
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="workerName != null">
+				worker_name,
+			</if>
+			<if test="workerGender != null">
+				worker_gender,
+			</if>
+			<if test="workerBirth != null">
+				worker_birth,
+			</if>
+			<if test="workerBirthYear != null">
+				worker_birth_year,
+			</if>
+			<if test="workerIdCard != null">
+				worker_id_card,
+			</if>
+			<if test="workerHandicapCode != null">
+				worker_handicap_code,
+			</if>
+			<if test="workerHandicapType != null">
+				worker_handicap_type,
+			</if>
+			<if test="workerHandicapLevel != null">
+				worker_handicap_level,
+			</if>
+			<if test="isOk != null">
+				is_ok,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="checkCode != null">
+				check_code,
+			</if>
+			<if test="preId != null">
+				pre_id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="workerName != null">
+				#{workerName,jdbcType=VARCHAR},
+			</if>
+			<if test="workerGender != null">
+				#{workerGender,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirth != null">
+				#{workerBirth,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirthYear != null">
+				#{workerBirthYear,jdbcType=CHAR},
+			</if>
+			<if test="workerIdCard != null">
+				#{workerIdCard,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapCode != null">
+				#{workerHandicapCode,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapType != null">
+				#{workerHandicapType},
+			</if>
+			<if test="workerHandicapLevel != null">
+				#{workerHandicapLevel},
+			</if>
+			<if test="isOk != null">
+				#{isOk,jdbcType=BIT},
+			</if>
+			<if test="remark != null">
+				#{remark, jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId, jdbcType=INTEGER},
+			</if>
+			<if test="checkCode != null">
+				#{checkCode, jdbcType=VARCHAR},
+			</if>
+			<if test="preId != null">
+				#{preId, jdbcType=INTEGER}
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from worker_temp 
+		where id
+		= #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from worker_temp 
+		where user_id = #{user_id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteAllData">
+		delete from worker_temp;
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.WorkerTemp">
+		update worker_temp
+		<set>
+			<if test="workerName != null">
+				worker_name = #{workerName,jdbcType=VARCHAR},
+			</if>
+			<if test="workerGender != null">
+				worker_gender = #{workerGender,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirth != null">
+				worker_birth = #{workerBirth,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirthYear != null">
+				worker_birth_year = #{workerBirthYear,jdbcType=VARCHAR},
+			</if>
+			<if test="workerIdCard != null">
+				worker_id_card = #{workerIdCard,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapCode != null">
+				worker_handicap_code = #{workerHandicapCode,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapType != null">
+				worker_handicap_type = #{workerHandicapType.id,jdbcType=INTEGER},
+			</if>
+			<if test="workerHandicapLevel != null">
+				worker_handicap_level = #{workerHandicapLevel.id,jdbcType=INTEGER},
+			</if>
+			<if test="isOk != null">
+				is_ok = #{isOk,jdbcType=BIT},
+			</if>
+			<if test="remark != null">
+				remark = #{remark, jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId, jdbcType=INTEGER},
+			</if>
+			<if test="checkCode != null">
+				#{checkCode, jdbcType=VARCHAR},
+			</if>
+			<if test="preId != null">
+				#{preId, jdbcType=INTEGER}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultWorker">
+		select
+		<include refid="Base_Column_List" />
+		from worker_temp as w
+		where w.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="retrieveByCheck" parameterType="map" resultMap="ResultWorker">
+		select
+			<include refid="Base_Column_List" />
+		from worker_temp as w
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+		limit 0,99999999
+	</select>
+
+	<select id="retrieveCountByCheck" parameterType="map" resultType="int">
+		select count(*)
+		from worker_temp as w
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="retrieveByPage" parameterType="map" resultMap="ResultWorker">
+		select
+		<include refid="Base_Column_List" />
+		from worker_temp as w 
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+		order by w.id
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" parameterType="map" resultType="int">
+		select count(*)
+		from worker_temp as w 
+		<where>
+			<if test="workerTemp != null">
+				<if test="workerTemp.isOk != null">
+					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.userId != null">
+					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.checkCode != null">
+					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+			</if>
+		</where>
+	</select>
+	
+</mapper>
