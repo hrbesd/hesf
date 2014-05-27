@@ -332,8 +332,6 @@
 			</if>
 		</where> 
 	</select>
-	
-	
 
 	<select id="retrieveByCompanyGroup" resultMap="ResultAccounts" parameterType="com.esd.hesf.model.Accounts">
 		select

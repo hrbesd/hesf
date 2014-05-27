@@ -128,7 +128,7 @@
 		limit #{start},#{size}
 	</select>
 	
-	<select id="retrieveCount" resultType="java.lang.Integer" parameterType="map">
+	<select id="retrieveCount" resultType="int" parameterType="map">
 		select count(*) 
 		from reply
 		<where>

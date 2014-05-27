@@ -350,14 +350,6 @@
 				<if test="payment.userId != null and payment.userId > 0">
 					pay.user_id = #{payment.userId,jdbcType=INTEGER}
 				</if>
-				<choose>
-					<when test="payment.isActive != null">
-						and pay.is_active = #{payment.isActive}
-					</when>
-					<otherwise>
-						and pay.is_active = 0 
-					</otherwise>
-				</choose>
 				<if test="payment.year != null and payment.year != ''">
 					and pay.year = #{payment.year, jdbcType=CHAR} 
 				</if>
@@ -486,14 +478,6 @@
 				<if test="payment.userId != null and payment.userId > 0">
 					pay.user_id = #{payment.userId,jdbcType=INTEGER}
 				</if>
-				<choose>
-					<when test="payment.isActive != null">
-						and pay.is_active = #{payment.isActive}
-					</when>
-					<otherwise>
-						and pay.is_active = 0 
-					</otherwise>
-				</choose>
 				<if test="payment.year != null and payment.year != ''">
 					and pay.year = #{payment.year, jdbcType=CHAR} 
 				</if>

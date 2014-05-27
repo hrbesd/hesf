@@ -216,6 +216,15 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="companyYearWorker != null">
+					<if test="companyYearWorker.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and cyw.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 		order by cyw.id desc
 		limit #{start},#{size}		
@@ -244,6 +253,15 @@
 					</otherwise>
 				</choose>
 			</if>
+			<choose>
+				<when test="companyYearWorker != null">
+					<if test="companyYearWorker.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and cyw.is_active = 0
+				</otherwise>
+			</choose>
 		</trim>
 	</select>
 

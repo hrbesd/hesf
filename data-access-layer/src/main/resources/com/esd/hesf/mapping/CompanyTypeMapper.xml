@@ -143,11 +143,18 @@
 				<if test="companyType.userId != null and companyType.userId > 0">
 					and user_id = #{companyType.userId}
 				</if>
+				<choose>
+					<when test="companyType.isActive != null">
+							and is_active = #{companyType.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
 			</if>
 			<choose>
 				<when test="companyType != null">
 					<if test="companyType.isActive != null">
-						and is_active = #{companyType.isActive,jdbcType=BIT}
 					</if>
 				</when>
 				<otherwise>

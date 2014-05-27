@@ -106,13 +106,13 @@
 					user_id = #{workerHandicapLevel.userId}
 				</if>
 				<choose>
-				<when test="workerHandicapLevel.isActive != null">
-					and is_active = #{workerHandicapLevel.isActive, jdbcType=BIT}
-				</when>
-				<otherwise>
-					and is_active = 0 
-				</otherwise>
-			</choose>
+					<when test="workerHandicapLevel.isActive != null">
+						and is_active = #{workerHandicapLevel.isActive, jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
 			<choose>
 				<when test="workerHandicapLevel != null">

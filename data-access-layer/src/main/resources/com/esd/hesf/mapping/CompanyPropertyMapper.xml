@@ -132,4 +132,36 @@
 		</trim>
 		limit #{start}, #{size}
 	</select>
+	
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from company_property
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="companyProperty != null">
+				<if test="companyProperty.companyProperty != null and companyProperty.companyProperty != ''">
+					company_property = #{companyProperty.companyProperty}
+				</if>
+				<if test="companyProperty.userId != null and companyProperty.userId > 0">
+					and user_id = #{companyProperty.userId}
+				</if>
+				<choose>
+					<when test="companyProperty.isActive != null">
+						and is_active = #{companyProperty.isActive,jdbcType=BIT}
+					</when>
+					<otherwise>
+						and is_active = 0
+					</otherwise>
+				</choose>
+			</if>
+			<choose>
+				<when test="companyProperty != null">
+					<if test="companyProperty.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and is_active = 0
+				</otherwise>
+			</choose>
+		</trim>
+	</select>
 </mapper>
