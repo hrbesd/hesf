@@ -229,8 +229,8 @@ public class AuditsController {
 				audit.setInitAuditUser(user);
 				// 更改审计状态
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
-						.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
-				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未复审
+						.getByPrimaryKey(Constants.PROCESS_STATIC_WJMH);
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为已初审, 未减免缓
 				auditService.update(audit);
 				return true;
 			}

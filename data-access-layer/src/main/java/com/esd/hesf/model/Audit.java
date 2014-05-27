@@ -39,7 +39,11 @@ public class Audit extends PrimaryKey_Int {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date initAuditDate;// 初审日期
 	private String initAuditComment; // 初审人意见
-	private User verifyAuditUser;// 复审人用户ID
+	private User jianMianAuditUser;// 减免缓操作人
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date jianMianAuditDate;// 减免缓日期
+	private String jianMianAuditComment; // 减免缓意见
+	private User verifyAuditUser;// 复审人用户
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date verifyAuditDate;// 复审日期
 	private String verifyAuditComment; // 复审人意见
@@ -262,6 +266,30 @@ public class Audit extends PrimaryKey_Int {
 
 	public void setInitAuditComment(String initAuditComment) {
 		this.initAuditComment = initAuditComment;
+	}
+	
+	public User getJianMianAuditUser() {
+		return jianMianAuditUser;
+	}
+
+	public void setJianMianAuditUser(User jianMianAuditUser) {
+		this.jianMianAuditUser = jianMianAuditUser;
+	}
+
+	public Date getJianMianAuditDate() {
+		return jianMianAuditDate;
+	}
+
+	public void setJianMianAuditDate(Date jianMianAuditDate) {
+		this.jianMianAuditDate = jianMianAuditDate;
+	}
+
+	public String getJianMianAuditComment() {
+		return jianMianAuditComment;
+	}
+
+	public void setJianMianAuditComment(String jianMianAuditComment) {
+		this.jianMianAuditComment = jianMianAuditComment;
 	}
 
 	public User getVerifyAuditUser() {

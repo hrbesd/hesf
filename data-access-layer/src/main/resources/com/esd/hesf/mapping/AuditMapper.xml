@@ -22,6 +22,9 @@
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
+		<result column="au_jianmian_audit_user_id" jdbcType="INTEGER" property="jianMianAuditUser.id" />
+		<result column="au_jianmian_audit_date" jdbcType="TIMESTAMP" property="jianMianAuditDate" />
+		<result column="au_jianmian_audit_comment" jdbcType="VARCHAR" property="jianMianAuditComment" />
 		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
@@ -121,8 +124,9 @@
 		au.is_delay_pay as au_is_delay_pay,
 		au.init_audit_user_id as au_init_audit_user_id,
 		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
-		au.verify_audit_user_id as
-		au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
+		au.jianmian_audit_user_id as au_jianmian_audit_user_id, au.jianmian_audit_date as au_jianmian_audit_date,
+		au.jianmian_audit_comment as au_jianmian_audit_comment,
+		au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
 		au.verify_audit_comment as au_verify_audit_comment, 
 		au.final_audit_user_id as au_final_audit_user_id, au.final_audit_date as au_final_audit_date ,
 		au.final_audit_comment as au_final_audit_comment, 
@@ -182,6 +186,7 @@
 		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount,
 		is_delay_pay,
 		init_audit_user_id, init_audit_date, init_audit_comment,
+		jianmian_audit_user_id, jianmian_audit_date, jianmian_audit_comment, 
 		verify_audit_user_id, verify_audit_date, verify_audit_comment, 
 		final_audit_user_id, final_audit_date, final_audit_comment, 
 		remark, is_exempt,reduction_type,reducion_apply_user, reduction_date,
@@ -200,6 +205,7 @@
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
 		#{isDelayPay,jdbcType=BIT},
 		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
+		#{jianMianAuditUser.id,jdbcType=INTEGER}, #{jianMianAuditDate,jdbcType=TIMESTAMP}, #{jianMianAuditComment,jdbcType=VARCHAR},
 		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
 		#{finalAuditUser.id,jdbcType=INTEGER}, #{finalAuditDate,jdbcType=TIMESTAMP}, #{finalAuditComment,jdbcType=VARCHAR},
 		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
@@ -288,6 +294,17 @@
 			</if>
 			<if test="initAuditComment != null">
 				init_audit_comment,
+			</if>
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					jianmian_audit_user_id,
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				jianmian_audit_date,
+			</if>
+			<if test="jianMianAuditComment != null">
+				jianmian_audit_comment,
 			</if>
 			<if test="verifyAuditUser != null">
 				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
@@ -430,6 +447,17 @@
 			</if>
 			<if test="initAuditComment != null and initAuditComment != ''">
 				#{initAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					#{jianMianAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				#{jianMianAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jianMianAuditComment != null and jianMianAuditComment != ''">
+				#{jianMianAuditComment,jdbcType=VARCHAR},
 			</if>
 			<if test="verifyAuditUser != null">
 				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
@@ -594,6 +622,18 @@
 			</if>
 			<if test="initAuditComment != null">
 				init_audit_comment = #{initAuditComment,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					jianmian_audit_user_id = #{jianMianAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				jianmian_audit_date = #{jianMianAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jianMianAuditComment != null and jianMianAuditComment != ''">
+				jianmian_audit_comment = #{jianMianAuditComment,jdbcType=VARCHAR},
 			</if>
 			<if test="verifyAuditUser != null">
 				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">

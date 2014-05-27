@@ -59,17 +59,26 @@
 				var r = '';
 				var c = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >初审</a>';
 				var v = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
+				var j = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >减免缓</a>';
 				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
+				// 未初审
 				if (row.auditProcessStatusId == 1) {
 					r = '<c:if test="${process==1}">' + c + '</c:if><c:if test="${process!=1}">' + v + '</c:if>';
 					return r;
 				}
+				// 已复审, 未通过
 				if (row.auditProcessStatusId == 7) {
 					r = '<c:if test="${process==7}">' + c + '</c:if><c:if test="${process!=7}">' + v + '</c:if>';
 					return r;
 				}
+				// 已初审, 未复审
 				if (row.auditProcessStatusId == 2) {
-					r = '<c:if test="${process==2}">' + f + '</c:if><c:if test="${process!=2}">' + c + '</c:if>';
+					r = '<c:if test="${process==2}">' + c + '</c:if><c:if test="${process!=2}">' + f + '</c:if>';
+					return r;
+				}
+				// 已初审, 未减免缓
+				if(row.auditProcessStatusId == 11){
+					r = '<c:if test="${process==11}">' + c + '</c:if><c:if test="${process!=2}">' + j + '</c:if>';
 					return r;
 				}
 				return v;
@@ -81,13 +90,16 @@
 	 */
 	initAuditList.openAudit = function(index) {
 		<c:if test="${process==1}">
-		esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 		<c:if test="${process==7}">
-		esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
+			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
 		</c:if>
 		<c:if test="${process==2}">
-		esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+		</c:if>
+		<c:if test="${process==11}">
+			esd.common.defaultOpenWindowEx("减免缓 ", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 	};
 	initAuditList.viewAudit = function(index) {
@@ -114,10 +126,12 @@
 	<table border="0" width="100%">
 		<tr>
 			<td width="80" style="text-align: right;">年审时间:</td>
-			<td width="150"><input id="year" class="easyui-combobox" value="${nowYear }" data-options="height:30,editable:false" />
+			<td width="150">
+				<input id="year" class="easyui-combobox" value="${nowYear }" data-options="height:30,editable:false" />
 			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
+			<td width="150">
+				<input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
 			<c:if test="${process==1}">
 				<td colspan="3" style="text-align: right;"><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a></td>
