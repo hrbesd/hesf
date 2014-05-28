@@ -59,7 +59,7 @@
 				var r = '';
 				var c = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >初审</a>';
 				var v = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
-				var j = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >减免缓</a>';
+				var j = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >减免</a>';
 				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
 				// 未初审
 				if (row.auditProcessStatusId == 1) {
@@ -71,14 +71,14 @@
 					r = '<c:if test="${process==7}">' + c + '</c:if><c:if test="${process!=7}">' + v + '</c:if>';
 					return r;
 				}
-				// 已初审, 未复审
-				if (row.auditProcessStatusId == 2) {
-					r = '<c:if test="${process==2}">' + c + '</c:if><c:if test="${process!=2}">' + f + '</c:if>';
+				// 已初审, 未减免
+				if(row.auditProcessStatusId == 11){
+					r = '<c:if test="${process == 11}">' + j + '</c:if><c:if test="${process!=11}">' + v + '</c:if>';
 					return r;
 				}
-				// 已初审, 未减免缓
-				if(row.auditProcessStatusId == 11){
-					r = '<c:if test="${process==11}">' + c + '</c:if><c:if test="${process!=2}">' + j + '</c:if>';
+				// 已减免, 未复审
+				if (row.auditProcessStatusId == 12) {
+					r = '<c:if test="${process==12}">' + f + '</c:if><c:if test="${process!=12}">' + v + '</c:if>';
 					return r;
 				}
 				return v;
@@ -95,11 +95,11 @@
 		<c:if test="${process==7}">
 			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
 		</c:if>
-		<c:if test="${process==2}">
+		<c:if test="${process==12}">
 			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 		<c:if test="${process==11}">
-			esd.common.defaultOpenWindowEx("减免缓 ", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+			esd.common.defaultOpenWindowEx("减免 ", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 	};
 	initAuditList.viewAudit = function(index) {

@@ -353,15 +353,17 @@
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
-				<td width="100"><input id="jianJiaoJinE" type="text" class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+				<td width="100"><input id="jianJiaoJinE" type="text" disabled="disabled" class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 				<td width="99">免滞纳金:</td>
-				<td><select id="mianZhiNaJin" style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="initAudit.jisuan();">
+				<td>
+					<select id="mianZhiNaJin" disabled="disabled" style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="initAudit.jisuan();">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
-				</select></td>
+					</select>
+				</td>
 
 				<td width="91">是否免交:</td>
-				<td><select id="mianJiao" style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="initAudit.jisuan();"  >
+				<td><select id="mianJiao" disabled="disabled" style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="initAudit.jisuan();"  >
 						<option value="true" title="是" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" title="否" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
@@ -417,7 +419,7 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<c:if test="${entity.auditProcessStatus.id==2}">
+		<c:if test="${entity.auditProcessStatus.id==12}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>

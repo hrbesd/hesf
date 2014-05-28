@@ -102,8 +102,10 @@
 		var s = initAudit.shiJiaoZongJinE;
 		s = s.replace(".", "");
 		j = j.replace(".", "");
+	//	$.messager.alert('info',s+'  '+j);
+	//	return false;
 		if ((s - j) < 0) {
-			$.messager.alert('警告', '"减缴金额"不能大于"实缴总金额"', 'error');
+			$.messager.alert('警告', '"减缴金额"'+j+'不能大于"实缴总金额"'+s, 'error');
 			return false;
 		}
 		return true;
@@ -176,7 +178,7 @@
 	initAudit.refusal = function() {
 		var comment = $('textarea[name=verifyAuditComment]').val();
 		if (comment == "" || comment == null || comment == undefined) {
-			$.messager.alert('提示', '拒绝必须填写 “减免缓意见”', 'info');
+			$.messager.alert('提示', '拒绝必须填写 “减免意见”', 'info');
 			return;
 		}
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
@@ -191,7 +193,7 @@
 		});
 	};
 
-	//减免缓确认
+	//减免确认
 	initAudit.verifyAudit = function() {
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/jianmianAudit", function(data) {
 			if (data == true) {
@@ -200,10 +202,10 @@
 		//		esd.common.defaultOpenWindowClose();
 				$("#initAuditList_datagrid").datagrid('reload');
 		//		$("#initAuditList_datagrid").datagrid('reload');
-		//		$.messager.alert('消息', '减免缓确认成功', 'info', function() {
+		//		$.messager.alert('消息', '减免确认成功', 'info', function() {
 		//		});
 			} else {
-				$.messager.alert('消息', '减免缓确认失败', 'info');
+				$.messager.alert('消息', '减免确认失败', 'info');
 			}
 		});
 	};
@@ -388,7 +390,7 @@
 			<tr>
 				<td width="100" rowspan="2">初审意见:</td>
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
-				<td width="100" rowspan="3">减免缓意见:</td>
+				<td width="100" rowspan="3">减免意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
 				<td colspan="3" rowspan="2"><textarea class="warn"  name="jianMianAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.jianMianAuditComment}</textarea></td>
 			</tr>
@@ -408,10 +410,10 @@
 					</c:if> <input class="readonly" value="${date}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
-				<td class="">减免缓日期:</td>
+				<td class="">减免日期:</td>
 				<td><fmt:formatDate value="${entity.jianMianAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="jianMianAuditDate" /> <input type="text" class="bj_belu4 readonly"
 					value="${jianMianAuditDate}" /></td>
-				<td width="100">减免缓人:</td>
+				<td width="100">减免人:</td>
 				<td><input type="text" class="readonly" value="${entity.jianMianAuditUser.userRealName}" /></td>
 			</tr>
 		</table>
@@ -421,7 +423,7 @@
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
-			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认减免缓</a>
+			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认减免</a>
 		</c:if>
 		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a><a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	</div>

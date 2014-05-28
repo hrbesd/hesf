@@ -39,10 +39,10 @@ public class Audit extends PrimaryKey_Int {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date initAuditDate;// 初审日期
 	private String initAuditComment; // 初审人意见
-	private User jianMianAuditUser;// 减免缓操作人
+	private User jianMianAuditUser;// 减免操作人
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date jianMianAuditDate;// 减免缓日期
-	private String jianMianAuditComment; // 减免缓意见
+	private Date jianMianAuditDate;// 减免日期
+	private String jianMianAuditComment; // 减免意见
 	private User verifyAuditUser;// 复审人用户
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date verifyAuditDate;// 复审日期
@@ -53,14 +53,14 @@ public class Audit extends PrimaryKey_Int {
 	private String finalAuditComment; // 终审人意见
 	private String remark;// 备注
 	private Boolean isExempt; // 是否免缴 false--免除, true--不免除
-	private Integer reductionType; // 减免缓类型
+	private Integer reductionType; // 减免类型
 	private String reducionApplyUser;// 减免申请人
 	private Date reductionDate;// 减免申请时间
 	private String reductionReason;// 减免原因
 	private String reductionAnswerUser;// 减免申请答复人
 	private String reductionAnswerDate;// 答复日期
 	private String reductionAnswerOption;// 答复意见
-	private String reductionRemark;// 减免缓 备注
+	private String reductionRemark;// 减免 备注
 	private Integer unauditYears; // 未审年数
 	private String supplementYear; // 补审年份
 	private Integer delayDays; // 缴纳滞纳金天数

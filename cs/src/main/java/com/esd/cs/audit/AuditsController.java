@@ -199,42 +199,42 @@ public class AuditsController {
 		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
 		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
 
-		AuditProcessStatus auditProcessStatus = null;
-		if (getAudit.getPayAmount().signum() == 0) {
-			auditProcessStatus = auditProcessStatusService
-					.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
-		} else {
-			auditProcessStatus = auditProcessStatusService
-					.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
-		}
-		// 处理未审年度
-		Integer companyId = getAudit.getCompany().getId();
-		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService
-				.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
-		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
-				audit.getYear());
-		if (unAudits != null) {
-			for (String year : unAudits) {
-				Audit a = auditService.getByPrimaryKey(year, companyId);
-				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
-				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
-				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
-				auditService.update(a);
-			}
-		}
-		// 处理未审年度结束
-		getAudit.setAuditProcessStatus(auditProcessStatus);
+//		AuditProcessStatus auditProcessStatus = null;
+//		if (getAudit.getPayAmount().signum() == 0) {
+//			auditProcessStatus = auditProcessStatusService
+//					.getByPrimaryKey(Constants.PROCESS_STATIC_OK);
+//		} else {
+//			auditProcessStatus = auditProcessStatusService
+//					.getByPrimaryKey(Constants.PROCESS_STATIC_WJK);
+//		}
+//		// 处理未审年度
+//		Integer companyId = getAudit.getCompany().getId();
+//		AuditProcessStatus auditProcessStatusOK = auditProcessStatusService
+//				.getByPrimaryKey(Constants.PROCESS_STATIC_OK);// 达标
+//		String[] unAudits = companyService.getUnauditYearByCompany(companyId,
+//				audit.getYear());
+//		if (unAudits != null) {
+//			for (String year : unAudits) {
+//				Audit a = auditService.getByPrimaryKey(year, companyId);
+//				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
+//				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
+//				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
+//				auditService.update(a);
+//			}
+//		}
+		// 审核状态修改为 已减免缓 未复审
+		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_YJMWFS));
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
 
-		// 生成账单
-		Accounts accounts = new Accounts();
-		accounts.setYear(CalendarUtil.getNowYear()); // 账目的出账年份
-		accounts.setAudit(getAudit); // 账目对应的审核审核对象
-		accounts.setCompany(getAudit.getCompany()); // 账单公司
-		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
-		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
-		accountsService.save(accounts);
+//		// 生成账单
+//		Accounts accounts = new Accounts();
+//		accounts.setYear(CalendarUtil.getNowYear()); // 账目的出账年份
+//		accounts.setAudit(getAudit); // 账目对应的审核审核对象
+//		accounts.setCompany(getAudit.getCompany()); // 账单公司
+//		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
+//		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
+//		accountsService.save(accounts);
 		return true;
 	}
 	
@@ -438,7 +438,7 @@ public class AuditsController {
 		}
 		// 获得减缴金额
 		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
-		// 应缴金额=应缴金额-减缴金额
+		// 实缴金额=应缴金额-减缴金额
 		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
 
