@@ -81,8 +81,8 @@
 					</td>
 					<td>批量创建审计记录:</td>
 					<td colspan="3"><select class="easyui-combobox" id="copy" name="copy" data-options="editable:false,panelHeight:47,height:30" style="width:120px">
-							<option value="false">否</option>
 							<option value="true">是</option>
+							<option value="false">否</option>
 					</select><span style="font-size:12px;color:red;"> (*)当前年度审核参数选"是"; 往年审核参数(即补审)选"否"</span></td>
 				</tr>
 				<tr>
