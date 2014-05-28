@@ -134,7 +134,6 @@
 		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
 			return;
 		}
-
 		$.ajax({
 			url : 'audits/calculate',
 			type : 'POST',
