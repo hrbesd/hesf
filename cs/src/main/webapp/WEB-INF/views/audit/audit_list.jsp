@@ -66,6 +66,11 @@
 					r = '<c:if test="${process==1}">' + c + '</c:if><c:if test="${process!=1}">' + v + '</c:if>';
 					return r;
 				}
+				// 已减免, 未通过
+				if (row.auditProcessStatusId == 13) {
+					r = '<c:if test="${process==13}">' + c + '</c:if><c:if test="${process!=13}">' + v + '</c:if>';
+					return r;
+				}
 				// 已复审, 未通过
 				if (row.auditProcessStatusId == 7) {
 					r = '<c:if test="${process==7}">' + c + '</c:if><c:if test="${process!=7}">' + v + '</c:if>';
@@ -89,18 +94,27 @@
 	打开单位初审面板
 	 */
 	initAuditList.openAudit = function(index) {
+		//未初审
 		<c:if test="${process==1}">
 			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
+		// 已减免 未通过
+		<c:if test="${process==13}">
+			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
+		</c:if>
+		//已复审 未通过
 		<c:if test="${process==7}">
 			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
 		</c:if>
-		<c:if test="${process==12}">
-			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
-		</c:if>
+		//已初审 未复审
 		<c:if test="${process==11}">
 			esd.common.defaultOpenWindowEx("减免 ", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
+		// 已减免 未复审
+		<c:if test="${process==12}">
+			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+		</c:if>
+		
 	};
 	initAuditList.viewAudit = function(index) {
 		esd.common.defaultOpenWindowEx("查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/3");

@@ -57,18 +57,21 @@
 				var f = '<a href="javascript:void(0);" >待复审</a>';
 				var d = '<a href="javascript:void(0);" >已达标</a>';
 				var j = '<a href="javascript:payment.open(' + row.companyId + ','+ row.year +','+row.auditProcessStatusId+');" >缴款</a>';
-				if (row.auditProcessStatusId == 1 || row.auditProcessStatusId == 7) {
+				// 已复审 代缴款, 部分缴款  可以进行缴款操作
+				if (row.auditProcessStatusId == 3 || row.auditProcessStatusId == 4) {
+					return j;
+				}
+				//其余执行查看操作
+			/*	if (row.auditProcessStatusId == 1 || row.auditProcessStatusId == 7) {
 					return c;
 				}
 				if (row.auditProcessStatusId == 2) {
 					return f;
 				}
-				if (row.auditProcessStatusId == 3 || row.auditProcessStatusId == 4) {
-					return j;
-				}
+				
 				if (row.auditProcessStatusId == 6) {
 					return d;
-				}
+				}	*/
 				return v;
 			}
 		} ] ], params);
@@ -78,6 +81,9 @@
 	 */
 	payment.open = function(companyId,year,auditProcess) {
 		esd.common.defaultOpenWindow("缴款", "${contextPath}/security/payment/edit/" + auditProcess+"/"+companyId+"/"+year);
+	};
+	payment.view = function(){
+		esd.common.defaultOpenWindowEx("查看", 920, 600, "${contextPath}/security/audits/edit/" + index + "/3");
 	};
 </script>
 <!-- 自定义菜单 -->

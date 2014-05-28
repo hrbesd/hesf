@@ -114,14 +114,37 @@ public class AuditsController {
 	}
 
 	/**
-	 * 拒绝
+	 * 减免用户 拒绝
 	 * 
 	 * @param audit
 	 * @return
 	 */
-	@RequestMapping(value = "/refusal", method = RequestMethod.POST)
+	@RequestMapping(value = "/refusalByJianMian", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean refusal(Audit audit, HttpSession session) {
+	public Boolean refusalByJianMian(Audit audit, HttpSession session) {
+		Integer id = audit.getId();
+		Audit getAudit = auditService.getByPrimaryKey(id);
+		getAudit.setJianMianAuditComment(audit.getJianMianAuditComment());
+		getAudit.setJianMianAuditDate(new Date());// 添加减免用户操作时间
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		getAudit.setJianMianAuditUser(user);// 添加减免用户
+		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_YJMWTG));
+		logger.debug(getAudit.toString());
+		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
+		auditService.update(getAudit);
+		return true;
+	}
+	
+	/**
+	 * 复审用户 拒绝
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/refusalByVerify", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean refusalByVerify(Audit audit, HttpSession session) {
 		Integer id = audit.getId();
 		Audit getAudit = auditService.getByPrimaryKey(id);
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
@@ -132,6 +155,29 @@ public class AuditsController {
 		AuditProcessStatus auditProcessStatus = auditProcessStatusService
 				.getByPrimaryKey(Constants.PROCESS_STATIC_WTG);
 		getAudit.setAuditProcessStatus(auditProcessStatus);
+		logger.debug(getAudit.toString());
+		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
+		auditService.update(getAudit);
+		return true;
+	}
+	
+	/**
+	 * 终审用户 拒绝
+	 * 
+	 * @param audit
+	 * @return
+	 */
+	@RequestMapping(value = "/refusalByFinal", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean refusalByFinal(Audit audit, HttpSession session) {
+		Integer id = audit.getId();
+		Audit getAudit = auditService.getByPrimaryKey(id);
+		getAudit.setFinalAuditComment(audit.getFinalAuditComment());
+		getAudit.setFinalAuditDate(new Date());// 添加终审时间
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		User user = userService.getByPrimaryKey(userId);
+		getAudit.setFinalAuditUser(user);// 添加终审用户
+		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_ZSWTG));
 		logger.debug(getAudit.toString());
 		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
 		auditService.update(getAudit);

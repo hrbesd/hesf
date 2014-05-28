@@ -175,12 +175,12 @@
 
 	//拒绝
 	initAudit.refusal = function() {
-		var comment = $('textarea[name=verifyAuditComment]').val();
+		var comment = $('textarea[name=jianMianAuditComment]').val();
 		if (comment == "" || comment == null || comment == undefined) {
 			$.messager.alert('提示', '拒绝必须填写 “减免意见”', 'info');
 			return;
 		}
-		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
+		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusalByJianMian", function(data) {
 			if (data == true) {
 				$.messager.alert('消息', '拒绝成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
@@ -235,7 +235,8 @@
 			//$('#mianZhiNaJin').combobox({
 				//onChange : initAudit.jisuan
 			//});
-			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
+		//	initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
+			initAudit.shiJiaoZongJinE = '${entity.payAmount}';
 			initAudit.jisuan();
 		};
 	});

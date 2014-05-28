@@ -99,6 +99,10 @@ public class Constants {
 	 * 已减免缓, 未复审
 	 */
 	public static final Integer PROCESS_STATIC_YJMWFS = 12;
+	/**
+	 * 已减免 未通过
+	 */
+	public static final Integer PROCESS_STATIC_YJMWTG = 13;
 
 	/**
 	 * bulabula -- 不知道是什么字段....

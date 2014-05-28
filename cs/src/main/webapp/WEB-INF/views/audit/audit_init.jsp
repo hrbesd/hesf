@@ -379,9 +379,18 @@
 			<tr>
 				<td width="100" rowspan="2">初审意见:</td>
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
-				<td width="100" rowspan="3">复审意见:</td>
-				<td width="100" style="height: 30px;">拒绝意见:</td>
-				<td colspan="3" rowspan="2"><textarea class="readonly" rows="3" cols="45" style="height: 60px;">${entity.verifyAuditComment}</textarea></td>
+				<!-- 审核状态为 " 已减免 未通过 " 时 显示减免 意见 -->
+				<c:if test="${entity.auditProcessStatus.id == 13 }">
+					<td width="100" rowspan="3">减免意见:</td>
+					<td width="100" style="height: 30px;">拒绝意见:</td>
+					<td colspan="3" rowspan="2"><textarea class="readonly" rows="3" cols="45" style="height: 60px;">${entity.jianMianAuditComment}</textarea></td>
+				</c:if>
+				<!-- 审核状态为 "未初审" 或者 "已复审 未通过" 时 显示复审意见 -->
+				<c:if test="${entity.auditProcessStatus.id == 7 || entity.auditProcessStatus.id == 1}">
+					<td width="100" rowspan="3">复审意见:</td>
+					<td width="100" style="height: 30px;">拒绝意见:</td>
+					<td colspan="3" rowspan="2"><textarea class="readonly" rows="3" cols="45" style="height: 60px;">${entity.verifyAuditComment}</textarea></td>
+				</c:if>
 			</tr>
 			<tr>
 				<td><select disabled="disabled" style="font-size: 12px; width: 100px; height: 28px;" >
@@ -399,27 +408,38 @@
 					</c:if> <input class="readonly" value="${date}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
-				<td class="">复审日期:</td>
-				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-					value="${verifyAuditDate}" /></td>
-				<td width="100">复审人:</td>
-				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
+				<!-- 审核状态为 " 已减免 未通过 " 时 显示减免 意见 -->
+				<c:if test="${entity.auditProcessStatus.id == 13 }">
+					<td class="">减免日期:</td>
+					<td><fmt:formatDate value="${entity.jianMianAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="jianMianAuditDate" /> <input type="text" class="bj_belu4 readonly"
+						value="${jianMianAuditDate}" /></td>
+					<td width="100">减免人:</td>
+					<td><input type="text" class="readonly" value="${entity.jianMianAuditUser.userRealName}" /></td>
+				</c:if>
+				<!-- 审核状态为 "未初审" 或者 "已复审 未通过" 时 显示复审意见 -->
+				<c:if test="${entity.auditProcessStatus.id == 7 || entity.auditProcessStatus.id == 1}">
+					<td class="">复审日期:</td>
+					<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
+						value="${verifyAuditDate}" /></td>
+					<td width="100">复审人:</td>
+					<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
+				</c:if>
 			</tr>
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<c:if test="${entity.auditProcessStatus.id==1}">
+		<c:if test="${entity.auditProcessStatus.id==1 || entity.auditProcessStatus.id==7 || entity.auditProcessStatus.id==13}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">保存</a>
 			<a href="javascript:initAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a>
 		</c:if>
-		<c:if test="${entity.auditProcessStatus.id==7}">
+<!-- 		<c:if test="${entity.auditProcessStatus.id==7}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">保存</a>
 			<a href="javascript:initAudit.audit();" class="easyui-linkbutton" iconCls="icon-ok">确认初审</a>
-		</c:if>
+		</c:if>	 -->
 		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> <a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	</div>
 

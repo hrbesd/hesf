@@ -98,16 +98,16 @@
 			e.value2 = e.value;
 	};
 
-	initAudit.checkJianJiao = function(j) {
-		var s = initAudit.shiJiaoZongJinE;
-		s = s.replace(".", "");
-		j = j.replace(".", "");
-		if ((s - j) < 0) {
-			$.messager.alert('警告', '"减缴金额"不能大于"实缴总金额"', 'error');
-			return false;
-		}
-		return true;
-	};
+//	initAudit.checkJianJiao = function(j) {
+//		var s = initAudit.shiJiaoZongJinE;
+//		s = s.replace(".", "");
+//		j = j.replace(".", "");
+//		if ((s - j) < 0) {
+//			$.messager.alert('警告', '"减缴金额"不能大于"实缴总金额"', 'error');
+//			return false;
+//		}
+//		return true;
+//	};
 	initAudit.jisuan = function() {
 		var param = {};
 		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
@@ -129,9 +129,9 @@
 		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
 		//校验
-		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
-			return;
-		}
+//		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
+//			return;
+//		}
 
 		$.ajax({
 			url : 'audits/calculate',
@@ -179,7 +179,7 @@
 			$.messager.alert('提示', '拒绝必须填写 “复审意见”', 'info');
 			return;
 		}
-		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
+		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusalByVerify", function(data) {
 			if (data == true) {
 				$.messager.alert('消息', '拒绝成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
@@ -220,7 +220,7 @@
 	};
 	
 	
-	initAudit.shiJiaoZongJinE = 0;
+//	initAudit.shiJiaoZongJinE = 0;
 	$(function() {
 		$(".readonly").each(function() {
 			$(this).attr("readonly", "readonly");
@@ -234,8 +234,8 @@
 			//$('#mianZhiNaJin').combobox({
 				//onChange : initAudit.jisuan
 			//});
-			initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
-			initAudit.jisuan();
+		//	initAudit.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
+		//	initAudit.jisuan();
 		};
 	});
 /*	$('#auditTabs').tabs({
