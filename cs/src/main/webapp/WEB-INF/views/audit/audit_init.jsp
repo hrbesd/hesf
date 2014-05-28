@@ -237,7 +237,7 @@
 	<div style="border: #95B8E7 1px solid; width: 900px;">
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="100">档案号码123:</td>
+				<td width="100">档案号码:</td>
 				<td width="290" colspan="3"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> 
 					<input type="hidden" id="companyId" name="company.id" value="${entity.company.id}" /> 
 					<input type="hidden" name="year" value="${entity.year}" /> 

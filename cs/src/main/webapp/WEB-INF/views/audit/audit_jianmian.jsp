@@ -176,7 +176,7 @@
 	initAudit.refusal = function() {
 		var comment = $('textarea[name=verifyAuditComment]').val();
 		if (comment == "" || comment == null || comment == undefined) {
-			$.messager.alert('提示', '拒绝必须填写 “复审意见”', 'info');
+			$.messager.alert('提示', '拒绝必须填写 “减免缓意见”', 'info');
 			return;
 		}
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/refusal", function(data) {
@@ -191,19 +191,19 @@
 		});
 	};
 
-	//复审确认
+	//减免缓确认
 	initAudit.verifyAudit = function() {
-		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/verifyAudit", function(data) {
+		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/jianmianAudit", function(data) {
 			if (data == true) {
 				//先关闭弹出窗, 防止反复确认,造成数据重复提交
 				esd.common.noCloseButtonDialog('消息','审批成功');
 		//		esd.common.defaultOpenWindowClose();
 				$("#initAuditList_datagrid").datagrid('reload');
 		//		$("#initAuditList_datagrid").datagrid('reload');
-		//		$.messager.alert('消息', '复审确认成功', 'info', function() {
+		//		$.messager.alert('消息', '减免缓确认成功', 'info', function() {
 		//		});
 			} else {
-				$.messager.alert('消息', '复审确认失败', 'info');
+				$.messager.alert('消息', '减免缓确认失败', 'info');
 			}
 		});
 	};
@@ -388,9 +388,9 @@
 			<tr>
 				<td width="100" rowspan="2">初审意见:</td>
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
-				<td width="100" rowspan="3">复审意见:</td>
+				<td width="100" rowspan="3">减免缓意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
-				<td colspan="3" rowspan="2"><textarea class="warn"  name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
+				<td colspan="3" rowspan="2"><textarea class="warn"  name="jianMianAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.jianMianAuditComment}</textarea></td>
 			</tr>
 			<tr>
 				<td><select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
@@ -408,20 +408,20 @@
 					</c:if> <input class="readonly" value="${date}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
-				<td class="">复审日期:</td>
-				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-					value="${verifyAuditDate}" /></td>
-				<td width="100">复审人:</td>
-				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
+				<td class="">减免缓日期:</td>
+				<td><fmt:formatDate value="${entity.jianMianAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="jianMianAuditDate" /> <input type="text" class="bj_belu4 readonly"
+					value="${jianMianAuditDate}" /></td>
+				<td width="100">减免缓人:</td>
+				<td><input type="text" class="readonly" value="${entity.jianMianAuditUser.userRealName}" /></td>
 			</tr>
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<c:if test="${entity.auditProcessStatus.id==2}">
+		<c:if test="${entity.auditProcessStatus.id==11}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
-			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a>
+			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认减免缓</a>
 		</c:if>
 		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a><a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	</div>

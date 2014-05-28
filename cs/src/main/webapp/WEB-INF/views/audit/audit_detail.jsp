@@ -23,12 +23,19 @@
 	<div id="auditTabs" class="easyui-tabs" data-options="fit:true">
 	<!--startprint-->
 		<div id="startaudit_tabs" title="年审信息" cache="false">
+			<!-- 初审页面 -->
 			<c:if test="${process==1}">
 				<jsp:include page="audit_init.jsp" />
 			</c:if>
-			<c:if test="${process==2}">
+			<!-- 减免缓页面 -->
+			<c:if test="${process==11}">
+				<jsp:include page="audit_jianmian.jsp" />
+			</c:if>
+			<!-- 复审页面 -->
+			<c:if test="${process==12}">
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
+			<!-- 查看页面 -->
 			<c:if test="${process==3}">
 				<jsp:include page="audit_view.jsp" />
 			</c:if>
