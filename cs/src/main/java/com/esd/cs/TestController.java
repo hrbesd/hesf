@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -206,6 +207,19 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	// 审核状态进程
+		@RequestMapping(value="/post9",method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> test9post(HttpServletRequest req) {
+			String name = req.getParameter("name");
+			String password = req.getParameter("password");
+			Map<String, Object> map = new HashMap<String, Object>();
+		//	List<AuditProcessStatus> entity = apsService.getAll();
+			String entity = "name: "+name+", password: "+password;
+			map.put("entity", entity);
+			return map;
+		}
 
 	// 企业 按组织机构代码查
 	@RequestMapping("/10")
