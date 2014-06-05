@@ -124,4 +124,17 @@ public class Constants {
 	 */
 	public static final String NOTYET = "暂未录入";
 
+	/**
+	 * 默认起始页
+	 */
+	public static Integer startPage = 1;
+
+	/**
+	 * 默认每页返回量
+	 */
+	public static Integer pageSize = 50;
+
+	public static void main(String[] args) {
+		System.out.println(Integer.MAX_VALUE);
+	}
 }

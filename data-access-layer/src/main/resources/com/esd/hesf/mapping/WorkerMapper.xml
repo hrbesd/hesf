@@ -337,6 +337,21 @@
 		and w.id = #{id,jdbcType=INTEGER}
 	</select>
 
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKeys" parameterType="map"
+		resultMap="ResultWorker">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where
+		<include refid="Where_condition_list" />
+		and w.id in
+		<foreach collection="array" item="item" open="(" separator="," close=")" >
+			#{item}
+		</foreach>
+	</select>
+
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultWorker">
 		select
 		<include refid="Base_Column_List" />

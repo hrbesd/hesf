@@ -1,6 +1,7 @@
 package com.esd.hesf.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.esd.hesf.model.Company;
 
@@ -11,6 +12,14 @@ import com.esd.hesf.model.Company;
  * 
  */
 public interface CompanyDao extends BaseDao<Company> {
+
+	/**
+	 *  根据多个id查询公司列表, map中放入array数组, 或者list集合等
+	 *  key值必须为: array 
+	 * @param map
+	 * @return
+	 */
+	List<Company> retrieveByPrimaryKeys(Map<String, Object> map);
 
 	/**
 	 * retrieveByPrimaryKey : 根据id, 查询一条数据
@@ -42,9 +51,10 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @return
 	 */
 	Integer retrieveCountByCompanyCode(String companyCode);
-	
+
 	/**
 	 * 获得自动生成的下一个companyCode
+	 * 
 	 * @return
 	 */
 	String retrieveNextCompanyCode();

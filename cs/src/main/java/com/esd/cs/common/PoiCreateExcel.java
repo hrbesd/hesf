@@ -91,7 +91,7 @@ public class PoiCreateExcel {
 	 * @param companyList
 	 * @return
 	 */
-	public static boolean createComapnyExcel(String FilePath, List<Company> companyList) {
+	public static boolean createCompanyExcel(String FilePath, List<Company> companyList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -181,6 +181,106 @@ public class PoiCreateExcel {
 		return true;
 	}
 
+	/**
+	 * 导出残疾人信息
+	 * 
+	 * @param FilePath
+	 * @param companyList
+	 * @return
+	 */
+	public static boolean createWorkerExcel(String FilePath, List<Worker> list) {
+		// 创建Excel的工作书册 Workbook,对应到一个excel文档
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 创建Excel的工作sheet,对应到一个excel文档的tab
+		HSSFSheet sheet = wb.createSheet("sheet1");
+		// 设置excel每列宽度
+		sheet.setColumnWidth(0, 4000);
+		sheet.setColumnWidth(1, 3500);
+
+		// 创建一个头部Excel的单元格
+		HSSFRow headRow = sheet.createRow(0);
+		HSSFCell headell = headRow.createCell(0);
+		// 设置单元格的样式格式
+		headell = headRow.createCell(0);
+		headell.setCellValue("姓名");
+		headell = headRow.createCell(1);
+		headell.setCellValue("性别");
+		headell = headRow.createCell(2);
+		headell.setCellValue("出生日期");
+		//	sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
+
+		headell = headRow.createCell(3);
+		headell.setCellValue("身份证号");
+		headell = headRow.createCell(4);
+		headell.setCellValue("联系电话");
+
+		headell = headRow.createCell(5);
+		headell.setCellValue("联系地址");
+
+		headell = headRow.createCell(6);
+		headell.setCellValue("残疾证号");
+
+		headell = headRow.createCell(7);
+		headell.setCellValue("残疾类别");
+		headell = headRow.createCell(8);
+		headell.setCellValue("残疾等级");
+
+		for (int i = 1; i <= list.size(); i++) {
+			Worker t = list.get(i - 1);
+			// 创建一个Excel的单元格
+			HSSFRow row = sheet.createRow(i);
+			HSSFCell cell = row.createCell(0);
+			// 设置单元格的样式格式
+			// 姓名
+			cell = row.createCell(0);
+			cell.setCellValue(t.getWorkerName());
+			// 性别
+			cell = row.createCell(1);
+			if("0".equals(t.getWorkerGender())){
+				cell.setCellValue("女");
+			}else{
+				cell.setCellValue("男");
+			}
+			// 出生日期
+			cell = row.createCell(2);
+			cell.setCellValue(t.getWorkerBirth());
+			// 身份证
+			cell = row.createCell(3);
+			cell.setCellValue(t.getWorkerIdCard());
+			// 电话
+			cell = row.createCell(4);
+			cell.setCellValue(t.getPhone());
+			// 联系地址
+			cell = row.createCell(5);
+			cell.setCellValue(t.getWorkerAddress());
+			// 残疾证号
+			cell = row.createCell(6);
+			cell.setCellValue(t.getWorkerHandicapCode());
+			// 残疾类别
+			cell = row.createCell(7);
+			cell.setCellValue(t.getWorkerHandicapType().getHandicapType());
+			// 残疾等级
+			cell = row.createCell(8);
+			cell.setCellValue(t.getWorkerHandicapType().getHandicapType());
+		}
+		try {
+			FileOutputStream os = new FileOutputStream(FilePath);
+			wb.write(os);
+			os.flush();
+			os.close();
+			list.clear();
+			list = null;
+			os = null;
+			wb = null;
+			System.gc();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	/**
 	 * 导出报表
 	 * 

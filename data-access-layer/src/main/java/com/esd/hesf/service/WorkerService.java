@@ -100,6 +100,15 @@ public interface WorkerService extends BaseService<Worker> {
 	void deleteAllData();
 
 	/**
+	 * 根据多个id, 获得员工列表
+	 * @param ids
+	 * @return
+	 */
+	List<Worker> getByIds(Integer[] ids);
+	
+	
+	
+	/**
 	 * 测试数据用--暂时勿删
 	 * 
 	 * @param size

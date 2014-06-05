@@ -1,7 +1,9 @@
 package com.esd.hesf.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
 
 /**
@@ -12,13 +14,14 @@ import com.esd.hesf.model.Worker;
  */
 public interface WorkerDao extends BaseDao<Worker> {
 
+	
 	/**
-	 * 根据多个id, 得到对应的员工列表
-	 * 
-	 * @param ids
+	 *  根据多个id查询残疾人列表, map中放入array数组, 或者list集合等
+	 *  key值必须为: array 
+	 * @param map
 	 * @return
 	 */
-	public List<Worker> retrieveByMultiIds(int[] ids);
+	List<Worker> retrieveByPrimaryKeys(Map<String, Object> map);
 	
 	/**
 	 * 根据 身份证号 判断该残疾人在数据库中是否存在

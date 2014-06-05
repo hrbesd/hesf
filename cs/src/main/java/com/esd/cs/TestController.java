@@ -1062,6 +1062,38 @@ public class TestController {
 		map.put("entity", 123);
 		return map;
 	}
+	
+	//常量
+	private static Integer c = 0;
+	@RequestMapping("/80")
+	@ResponseBody
+	public Map<String, Object> test80() {
+		Map<String,Object> map = new HashMap<String,Object>();
+		c++;
+		map.put("entity", c);
+		return map;
+	}
+	
+	//常量
+		private static Integer d = 0;
+	@RequestMapping("/81")
+	@ResponseBody
+	public Map<String, Object> test81() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Reply c = new Reply();
+		c.setContent("测试");
+		c.setTitle("test");
+		boolean bl = rService.save(c);
+		if(bl){
+			d++;
+			map.put("entity", bl);
+			map.put("dbCount", d);
+		}else{
+			map.put("entity", bl);
+			map.put("dbCount", d);
+		}
+		return map;
+	}
 
 	public static void main(String[] args) throws ClassNotFoundException {
 

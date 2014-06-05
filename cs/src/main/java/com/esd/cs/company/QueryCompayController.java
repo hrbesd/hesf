@@ -113,14 +113,22 @@ public class QueryCompayController {
 	@RequestMapping(value = "/exportCompany", method = RequestMethod.POST)
 	@ResponseBody
 	public String exportCompany(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
-		logger.debug("deleteCompany:{}", idArr.toString());
+		logger.debug("deleteCompany:{}", idArr+"");
 		boolean b = true;
-		List<Company> company = new ArrayList<Company>();
-		for (int i = 0; i < idArr.length; i++) {
-			company.add(companyService.getByPrimaryKey(idArr[i]));
+//		List<Company> company = new ArrayList<Company>();
+//		for (int i = 0; i < idArr.length; i++) {
+//			company.add(companyService.getByPrimaryKey(idArr[i]));
+//		}
+		List<Company> companyList = null;
+		if(idArr[0] == Integer.MAX_VALUE){
+			companyList = new ArrayList<Company>();
+			for(Company c:companyService.getPaginationRecords(null, Constants.startPage, Integer.MAX_VALUE).getRecords()){
+				companyList.add(c);
+			}
+		}else{
+			companyList= companyService.getByIds(idArr);
 		}
 		String url = request.getServletContext().getRealPath("/");
-
 		// 创建导出文件夹
 		File uploadPath = new File(url + "upload");
 		// 导出文件夹
@@ -138,7 +146,7 @@ public class QueryCompayController {
 		String exportPath = exportFolder + File.separator + uuid + ".xls";
 		String FileDownloadPath = "null";
 		// 导出文件
-		b = PoiCreateExcel.createComapnyExcel(exportPath, company);
+		b = PoiCreateExcel.createCompanyExcel(exportPath, companyList);
 		if (b) {
 			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/upload/company/" + uuid + ".xls";

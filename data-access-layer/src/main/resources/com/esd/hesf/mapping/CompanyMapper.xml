@@ -380,6 +380,19 @@
 		and c.id = #{id,jdbcType=INTEGER}
 	</select>
 	
+	<select id="retrieveByPrimaryKeys" parameterType="map" resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where
+		<include refid="Where_condition_list" />
+		and c.id in 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
 	<select id="retrieveByCompanyCode" parameterType="java.lang.String" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />

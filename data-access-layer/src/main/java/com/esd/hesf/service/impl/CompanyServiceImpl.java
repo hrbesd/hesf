@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +61,10 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private AuditParameterDao apDao;
 
-//	@Override
-//	public boolean save(Company t) {
-//		return false;
-//	}
+	// @Override
+	// public boolean save(Company t) {
+	// return false;
+	// }
 
 	@Override
 	public boolean save(Company t) {
@@ -246,39 +245,39 @@ public class CompanyServiceImpl implements CompanyService {
 		return check;
 	}
 
-//	// 自动生成最新档案号
-//	public String getDocumentCode() {
-//		String oldCode = dao.getLatestDocumentCode();
-//		logger.debug("oldCode :" + oldCode);
-//		if (StringUtils.isBlank(oldCode)) {
-//			return null;
-//		}
-//		// 方法①
-//		int code = Integer.parseInt(oldCode);
-//		code++;
-//		return String.valueOf(code);
+	// // 自动生成最新档案号
+	// public String getDocumentCode() {
+	// String oldCode = dao.getLatestDocumentCode();
+	// logger.debug("oldCode :" + oldCode);
+	// if (StringUtils.isBlank(oldCode)) {
+	// return null;
+	// }
+	// // 方法①
+	// int code = Integer.parseInt(oldCode);
+	// code++;
+	// return String.valueOf(code);
 
-		// 方法②
-		// String sub = oldCode.substring(3);
-		// int num = Integer.parseInt(sub);
-		// num++;
-		// String code = "301";
-		// if (num < 10) {
-		// code += "00000" + num;
-		// } else if (num < 100 && num > 9) {
-		// code += "0000" + num;
-		// } else if (num < 1000 && num > 99) {
-		// code += "000" + num;
-		// } else if (num < 10000 && num > 999) {
-		// code += "00" + num;
-		// } else if (num < 100000 && num > 9999) {
-		// code += "0" + num;
-		// } else if (num < 1000000 && num > 99999) {
-		// code += num;
-		// }
-		// logger.debug("code :"+code);
-		// return code;
-//	}
+	// 方法②
+	// String sub = oldCode.substring(3);
+	// int num = Integer.parseInt(sub);
+	// num++;
+	// String code = "301";
+	// if (num < 10) {
+	// code += "00000" + num;
+	// } else if (num < 100 && num > 9) {
+	// code += "0000" + num;
+	// } else if (num < 1000 && num > 99) {
+	// code += "000" + num;
+	// } else if (num < 10000 && num > 999) {
+	// code += "00" + num;
+	// } else if (num < 100000 && num > 9999) {
+	// code += "0" + num;
+	// } else if (num < 1000000 && num > 99999) {
+	// code += num;
+	// }
+	// logger.debug("code :"+code);
+	// return code;
+	// }
 
 	@Override
 	public Company getByCompanyOrganizationCode(String companyOrganizationCode) {
@@ -416,9 +415,10 @@ public class CompanyServiceImpl implements CompanyService {
 		map.put("companyYearWorker", cyw);
 		return cywDao.retrieveCount(map);
 	}
-	
+
 	@Override
-	public Integer copyLastYearWorker(String currentYear, String lastYear, Integer companyId) {
+	public Integer copyLastYearWorker(String currentYear, String lastYear,
+			Integer companyId) {
 		if (currentYear == null || "".equals(currentYear)) {
 			new HesfException("currentYear", HesfException.type_null)
 					.printStackTrace();
@@ -434,7 +434,7 @@ public class CompanyServiceImpl implements CompanyService {
 					.printStackTrace();
 			return -1;
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("currentYear", currentYear);
 		map.put("lastYear", lastYear);
 		map.put("companyId", companyId);
@@ -533,12 +533,21 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public String getNextCompanyCode() {
 		String nextCompanyCode = dao.retrieveNextCompanyCode();
-		if(nextCompanyCode == null || "".equals(nextCompanyCode)){
+		if (nextCompanyCode == null || "".equals(nextCompanyCode)) {
 			nextCompanyCode = "100000";
 		}
 		return nextCompanyCode;
 	}
-	
-	
+
+	@Override
+	public List<Company> getByIds(Integer[] ids) {
+		if (ids == null) {
+			return null;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(Constants.ARRAY, ids);
+		List<Company> list = dao.retrieveByPrimaryKeys(map);
+		return list;
+	}
 
 }

@@ -309,11 +309,9 @@
 			</tr>
 		</table>
 		<div class="findBut">
-			<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton"
-				iconCls="icon-search">查询</a> <a href="javascript:queryAudit.init()"
-				class="easyui-linkbutton" iconCls="icon-redo">重置</a> <a
-				href="javascript:queryAudit.download()" class="easyui-linkbutton"
-				iconCls="icon-ok">下载年审缴款记录</a>
+			<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
+			<a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
+			<a href="javascript:queryAudit.download()" class="easyui-linkbutton" iconCls="icon-ok">下载年审缴款记录</a>
 		</div>
 	</div>
 </div>

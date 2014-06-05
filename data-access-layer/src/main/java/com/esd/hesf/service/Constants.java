@@ -9,7 +9,11 @@ package com.esd.hesf.service;
  */
 public class Constants {
 
-	public static final int START = 0;// 起始索引
-	public static final int SIZE = 50;// 返回量
+	public static final Integer START = 0;// 起始索引
+	public static final Integer SIZE = 50;// 返回量
 
+	/**
+	 * 数组, 列 key值
+	 */
+	public static final String ARRAY = "array";
 }

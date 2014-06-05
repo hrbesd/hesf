@@ -135,6 +135,84 @@
 		queryWorker.init();
 		
 	});
+	
+	/**
+	*	导出选中的残疾职工
+	*
+	**/
+	queryWorker.downloadSelected = function() {
+		
+		// 获取所有选中列
+		var selection = $("#queryWorker_grid").datagrid('getChecked');
+	
+		// 判断选择数目是否大于0
+		if (selection.length == 0) {
+			$.messager.alert('消息', '未选择任何数据。', 'error');
+			
+		} else {
+			// 显示确认删除对话框
+			$.messager.confirm('确认', '您确认想要导出' + selection.length + '条残疾职工信息吗？', function(r) {
+				if (r) {
+					// 组装参数
+					var params = new Array();
+					for ( var i = 0; i < selection.length; i++) {
+						params.push(selection[i].id);
+					}
+					//发送导出请求
+					
+					$.ajax({
+						url:'query/worker/export',
+						type:'post',
+						data: {
+								params : params
+							},
+						success:function(data){
+						if(data!="null"){
+				
+							window.location.href=data;
+						}else{
+								$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
+							
+						}
+						},error:function(){
+						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+						
+						}
+					});
+				}
+			});
+		}
+	};
+	
+	/**
+	*
+	* 导出所有数据
+	*/
+	queryWorker.downloadAll = function() {
+		$.messager.confirm('确认', '您确认想要导出所有残疾职工信息吗？', function(r) {
+			if (r) {
+				var params = [2147483647];
+				//发送导出请求
+				$.ajax({
+					url:'query/worker/export',
+					type:'post',
+					data: {
+						params : params
+					},
+					success:function(data){
+						if(data!="null"){
+							window.location.href=data;
+						}else{
+							$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
+						}
+					},error:function(){
+						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+					}
+				});
+			}
+		});
+	};
+	
 </script>
 
 <table id="queryWorker_grid"></table>
@@ -172,9 +250,10 @@
 			</tr>
 		</table>
 		<div class="findBut">
-			 <a href="#" onclick="queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
+			<a href="#" onclick="queryWorker.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
 			<a href="#" onclick="queryWorker.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-
+			<a href="javascript:queryWorker.downloadSelected()" class="easyui-linkbutton" iconCls="icon-ok">下载选中</a>
+			<a href="javascript:queryWorker.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载所有数据</a>
 		</div>
 	</div>
 </div>

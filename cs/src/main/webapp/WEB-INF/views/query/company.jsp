@@ -126,48 +126,77 @@
 	/**
 	导出企业
 	**/
-	queryCompany.openExportCompany = function() {
+	queryCompany.downloadSelected = function() {
 		
 		// 获取所有选中列
-	var selection = $("#queryCompanyGrid").datagrid('getChecked');
-
-	// 判断选择数目是否大于0
-	if (selection.length == 0) {
-		$.messager.alert('消息', '未选择任何数据。', 'error');
-		
-	} else {
-		// 显示确认删除对话框
-		$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
-			if (r) {
-				// 组装参数
-				var params = new Array();
-				for ( var i = 0; i < selection.length; i++) {
-					params.push(selection[i].id);
-				}
-				//发送导出请求
+		var selection = $("#queryCompanyGrid").datagrid('getChecked');
+	
+		// 判断选择数目是否大于0
+		if (selection.length == 0) {
+			$.messager.alert('消息', '未选择任何数据。', 'error');
+			
+		} else {
+			// 显示确认删除对话框
+			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
+				if (r) {
+					// 组装参数
+					var params = new Array();
+					for ( var i = 0; i < selection.length; i++) {
+						params.push(selection[i].id);
+					}
+					//发送导出请求
+					
+					$.ajax({
+						url:'query/company/exportCompany',
+						type:'post',
+						data: {
+								params : params
+							},
+						success:function(data){
+						if(data!="null"){
 				
+							window.location.href=data;
+						}else{
+								$.messager.alert('消息', '单位信息导出错误。', 'error');
+							
+						}
+						},error:function(){
+						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+						
+						}
+					});
+				}
+			});
+		}
+	};
+	
+	/**
+	*
+	* 导出所有数据
+	*/
+	queryCompany.downloadAll = function() {
+		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
+			if (r) {
+				var params = [2147483647];
+				//发送导出请求
 				$.ajax({
 					url:'query/company/exportCompany',
 					type:'post',
 					data: {
-							params : params
-						},
+						params : params
+					},
 					success:function(data){
-					if(data!="null"){
-			
-						window.location.href=data;
-					}else{
+						if(data!="null"){
+							window.location.href=data;
+						}else{
 							$.messager.alert('消息', '单位信息导出错误。', 'error');
-						
-					}
+						}
 					},error:function(){
-					$.messager.alert('消息', 'exportCompanyErrror。', 'error');
-					
+						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
 					}
 				});
 			}
 		});
-	}
 	};
 	//组件解析完成
 	$.parser.onComplete=function(){
@@ -217,26 +246,22 @@
 				<td class="tipsText">企业地址:</td>
 				<td colspan="3"><input class="longInputBox inputElement" type="text" id="companyAddress" />
 				</td>
-
-
 			</tr>
 			<tr>
-
-					<td class="tipsText">地区:</td>
-				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" /></td>
-				
+				<td class="tipsText">地区:</td>
+				<td><input id="area" class="easyui-combobox" data-options="height:30,editable:false" value="10230000" />
+			</td>
 			<td class="tipsText" >组织机构代码:</td>
-				<td><input type="text" id="companyOrganizationCode" class="inputElement" />
+				<td>
+					<input type="text" id="companyOrganizationCode" class="inputElement" />
 				</td>
-				
 			</tr>
-
-
 		</table>
 		<div class="findBut">
-			<a href="javascript:queryCompany.openExportCompany()" class="easyui-linkbutton" iconCls="icon-ok">生成excel</a>
-			<a href="javascript:queryCompany.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
 			<a href="#" onclick="queryCompany.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
+			<a href="javascript:queryCompany.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
+			<a href="javascript:queryCompany.downloadSelected()" class="easyui-linkbutton" iconCls="icon-ok">下载选中</a>
+			<a href="javascript:queryCompany.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载所有数据</a>
 		</div>
 	</div>
 </div>

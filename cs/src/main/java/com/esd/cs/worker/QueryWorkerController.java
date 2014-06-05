@@ -5,11 +5,13 @@
  */
 package com.esd.cs.worker;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,11 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.Constants;
+import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.AuditParameter;
+import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.WorkerService;
@@ -183,4 +189,53 @@ public class QueryWorkerController {
 		return entity;
 
 	}
+
+	/**
+	 * 批量导出残疾员工信息
+	 * 
+	 * @param idArr
+	 * @param request
+	 * @return
+	 */	
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	@ResponseBody
+	public String exportWorker(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
+		logger.debug("idArr:{}", idArr+"");
+		boolean b = true;
+		List<Worker> list = null;
+		if(idArr[0] == Integer.MAX_VALUE){
+			list = new ArrayList<Worker>();
+			for(Worker c:workerService.getPaginationRecords(null, Constants.startPage, Integer.MAX_VALUE).getRecords()){
+				list.add(c);
+			}
+		}else{
+			list= workerService.getByIds(idArr);
+		}
+		String url = request.getServletContext().getRealPath("/");
+		// 创建导出文件夹
+		File uploadPath = new File(url + "upload");
+		// 导出文件夹
+		String exportFolder = uploadPath + File.separator + "worker";
+		File workerPath = new File(exportFolder);
+		if (!(uploadPath.exists())) {
+			uploadPath.mkdir();
+		}
+		if (!(workerPath.exists())) {
+			workerPath.mkdir();
+		}
+
+		// 创建文件唯一名称
+		String uuid = UUID.randomUUID().toString();
+		String exportPath = exportFolder + File.separator + uuid + ".xls";
+		String FileDownloadPath = "null";
+		// 导出文件
+		b = PoiCreateExcel.createWorkerExcel(exportPath, list);
+		if (b) {
+			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			FileDownloadPath = "http://" + destPath + "/upload/worker/" + uuid + ".xls";
+		}
+		logger.debug("ecportWorkerResults:{},paramsId:{}", b, idArr);
+		return FileDownloadPath;
+	}
+
 }

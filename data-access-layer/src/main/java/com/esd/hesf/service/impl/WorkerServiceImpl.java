@@ -43,7 +43,7 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Autowired
 	private AuditParameterDao apDao;
-	
+
 	@Override
 	public boolean save(Worker t) {
 		if (t.getArea() == null) {
@@ -51,7 +51,8 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 		int k = dao.insertSelective(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
 		return true;
@@ -78,12 +79,12 @@ public class WorkerServiceImpl implements WorkerService {
 		return false;
 	}
 
-	
 	@Override
 	public boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 			return false;
 		}
 		return true;
@@ -93,7 +94,8 @@ public class WorkerServiceImpl implements WorkerService {
 	public boolean update(Worker t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
 		return true;
@@ -103,13 +105,15 @@ public class WorkerServiceImpl implements WorkerService {
 	public Worker getByPrimaryKey(Integer id) {
 		Worker t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 		}
 		return t;
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(Worker t, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(
+			Worker t, Integer page, Integer pageSize) {
 		// 处理地区code,转化为适合sql语句的 xxxx 暂时不启用
 		// if (t != null) {
 		// if (t.getArea() != null) {
@@ -148,13 +152,16 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(Map<String, Object> map) {
+	public PaginationRecordsAndNumber<Worker, Number> getPaginationRecords(
+			Map<String, Object> map) {
 		if (map == null) {
-			new HesfException("map参数", HesfException.type_null).printStackTrace();
+			new HesfException("map参数", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
-		if(map.get("year")==null){
-			new HesfException("map--year", HesfException.type_null).printStackTrace();
+		if (map.get("year") == null) {
+			new HesfException("map--year", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
 		int page = 1;
@@ -167,27 +174,32 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 		// 最小年龄转化为对应的出生年月
 		if (map.get("minAge") != null) {
-			map.put("minBirth", KitService.getBirthFromAge(map.get("minAge").toString()));
+			map.put("minBirth",
+					KitService.getBirthFromAge(map.get("minAge").toString()));
 		}
 		// 最大年龄转化为对应的出生年月
 		if (map.get("maxAge") != null) {
-			map.put("maxBirth", KitService.getBirthFromAge(map.get("maxAge").toString()));
+			map.put("maxBirth",
+					KitService.getBirthFromAge(map.get("maxAge").toString()));
 		}
-		//是否获得全部达到退休年龄人员
-		if(map.get("getOverproof")!=null){
-			Boolean bl = Boolean.parseBoolean(map.get("getOverproof").toString());
-			if(bl){
+		// 是否获得全部达到退休年龄人员
+		if (map.get("getOverproof") != null) {
+			Boolean bl = Boolean.parseBoolean(map.get("getOverproof")
+					.toString());
+			if (bl) {
 				String year = map.get("year").toString();
 				// 得到对应年份的参数
 				AuditParameter ap = apDao.retrieveByYear(year);
 				// 计算男女各自的最大出生日期
-				String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale() + "");
-				String maxFemaleBirth = KitService.getBirthFromAge(ap.getRetireAgeFemale() + "");
+				String maxMaleBirth = KitService.getBirthFromAge(ap
+						.getRetireAgeMale() + "");
+				String maxFemaleBirth = KitService.getBirthFromAge(ap
+						.getRetireAgeFemale() + "");
 				map.put("maxMaleBirth", maxMaleBirth);
 				map.put("maxFemaleBirth", maxFemaleBirth);
 			}
 		}
-		
+
 		// 将参数放入到map中
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
@@ -204,7 +216,8 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<WorkerViewModel, Number> getByMultiCondition(Map<String, Object> map) {
+	public PaginationRecordsAndNumber<WorkerViewModel, Number> getByMultiCondition(
+			Map<String, Object> map) {
 		if (map == null) {
 			map = new HashMap<String, Object>();
 		}
@@ -223,11 +236,13 @@ public class WorkerServiceImpl implements WorkerService {
 		// }
 		// 最小年龄转化为对应的出生年月
 		if (map.get("minAge") != null) {
-			map.put("minBirth", KitService.getBirthFromAge(map.get("minAge").toString()));
+			map.put("minBirth",
+					KitService.getBirthFromAge(map.get("minAge").toString()));
 		}
 		// 最大年龄转化为对应的出生年月
 		if (map.get("maxAge") != null) {
-			map.put("maxBirth", KitService.getBirthFromAge(map.get("maxAge").toString()));
+			map.put("maxBirth",
+					KitService.getBirthFromAge(map.get("maxAge").toString()));
 		}
 		// 将参数放入到map中
 		// 起始索引值
@@ -248,11 +263,13 @@ public class WorkerServiceImpl implements WorkerService {
 	@Override
 	public Company retrieveCompanyByWorker(String year, String workerIdCard) {
 		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null).printStackTrace();
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
 		if (workerIdCard == null || "".equals(workerIdCard)) {
-			new HesfException("workerIdCard", HesfException.type_null).printStackTrace();
+			new HesfException("workerIdCard", HesfException.type_null)
+					.printStackTrace();
 			return null;
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -274,17 +291,21 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean changeCompany(Integer workerId, Integer targetCompanyId, String currentYear, String currentJob) {
-		if (workerId == null ||workerId <= 0) {
-			new HesfException("workerId", HesfException.type_number_negative).printStackTrace();
+	public boolean changeCompany(Integer workerId, Integer targetCompanyId,
+			String currentYear, String currentJob) {
+		if (workerId == null || workerId <= 0) {
+			new HesfException("workerId", HesfException.type_number_negative)
+					.printStackTrace();
 			return false;
 		}
-		if (targetCompanyId == null || targetCompanyId<=0) {
-			new HesfException("targetCompanyId", HesfException.type_null).printStackTrace();
+		if (targetCompanyId == null || targetCompanyId <= 0) {
+			new HesfException("targetCompanyId", HesfException.type_null)
+					.printStackTrace();
 			return false;
 		}
 		if (currentYear == null || "".equals(currentYear)) {
-			new HesfException("currentYear", HesfException.type_null).printStackTrace();
+			new HesfException("currentYear", HesfException.type_null)
+					.printStackTrace();
 			return false;
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
@@ -305,6 +326,16 @@ public class WorkerServiceImpl implements WorkerService {
 		cywDao.deleteAllData();
 		// ②删除员工数据
 		dao.deleteAllData();
+	}
+
+	@Override
+	public List<Worker> getByIds(Integer[] ids) {
+		if (ids == null) {
+			return null;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(Constants.ARRAY, ids);
+		return dao.retrieveByPrimaryKeys(map);
 	}
 
 }

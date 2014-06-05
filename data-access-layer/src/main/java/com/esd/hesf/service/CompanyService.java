@@ -16,14 +16,14 @@ import com.esd.hesf.model.Worker;
  */
 public interface CompanyService extends BaseService<Company> {
 
-//	/**
-//	 * 保存一个企业: 保存企业用此方法!
-//	 * 
-//	 * @param company
-//	 * @param year
-//	 * @return
-//	 */
-//	boolean save(Company company, String year);
+	// /**
+	// * 保存一个企业: 保存企业用此方法!
+	// *
+	// * @param company
+	// * @param year
+	// * @return
+	// */
+	// boolean save(Company company, String year);
 
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);
@@ -31,8 +31,8 @@ public interface CompanyService extends BaseService<Company> {
 	// 按ID数组删除多个企业
 	boolean deleteMultiById(int[] arr);
 
-//	// 自动生成最新档案号
-//	String getDocumentCode();
+	// // 自动生成最新档案号
+	// String getDocumentCode();
 
 	/**
 	 * 根据公司档案号code 得到一个公司对象,如不存在则返回null
@@ -105,11 +105,14 @@ public interface CompanyService extends BaseService<Company> {
 
 	/**
 	 * 将上一年度的员工关系复制到今年
+	 * 
 	 * @param companyId
 	 * @param lastYear
 	 * @return
 	 */
-	Integer copyLastYearWorker(String currentYear, String lastYear, Integer companyId);
+	Integer copyLastYearWorker(String currentYear, String lastYear,
+			Integer companyId);
+
 	/**
 	 * 获得该企业年龄达到退休标准的残疾职工列表
 	 * 
@@ -162,11 +165,20 @@ public interface CompanyService extends BaseService<Company> {
 	 */
 	List<Audit> getUnauditByCompany(String companyCode, String year,
 			Integer auditProcessStatus);
-	
+
 	/**
 	 * 获得自动生成的下一个companyCode
+	 * 
 	 * @return
 	 */
 	String getNextCompanyCode();
-	
+
+	/**
+	 * 根据多个id, 查询公司数据列表
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	List<Company> getByIds(Integer[] ids);
+
 }
