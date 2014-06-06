@@ -53,7 +53,7 @@
 		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
 		{
 			field : 'retirementAge',
-			title : '休年龄',
+			title : '退休年龄',
 			hidden : true,
 		}, {
 			field : 'workerName',
@@ -222,7 +222,7 @@
 	};
 
 	/**
-	删除企业
+	删除残疾员工
 	 **/
 	workerList.deleteWorker = function(id, type) {
 		var params = new Array();
@@ -247,7 +247,7 @@
 			}
 		}
 		// 显示确认删除对话框
-		$.messager.confirm('确认', '您确认想要删除' + params.length + '记录吗？', function(r) {
+		$.messager.confirm('确认', '您确认想要删除' + selection.length + '记录吗？', function(r) {
 			if (r) {
 				// 删除请求
 				$.ajax({
@@ -261,8 +261,8 @@
 					success : function(data) {
 						if (data == true) {
 							// 刷新数据列表
+							$("#workerList_dataGrid").datagrid('clearChecked');
 							$('#workerList_dataGrid').datagrid('reload');
-							$("#workerList_dataGrid").datagrid('clearSelections');
 						
 							$.messager.alert('消息', '删除成功。', 'ok');
 						} else {
@@ -280,7 +280,7 @@
 	};
 
 	/**
-	 获取企业信息
+	 	删除残疾员工
 	 **/
 	workerList.getCompany = function() {
 
@@ -289,16 +289,13 @@
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
-
 					$("#company_name").html(data[0].companyName);//企业名字
 					$("#company_EmpTotal").html(data[0].companyEmpTotal);//总人数
 					$("#company_Code").html(data[0].companyCode);// 档案编码
 					$("#worker_HandicapTotal").html(data[0].workerHandicapTotal);// 已录用残疾职工总人数
 					$("#company_TaxCode").html(data[0].companyTaxCode);// 税务编码
 					$("#company_Area").html(data[0].companyArea);// 地区
-
 				} else {
-			
 					$.messager.alert('消息', '未获得到企业信息数据。', 'error');
 				}
 
@@ -373,10 +370,9 @@
 		</div>
 	
 	<div style="text-align: right; margin: 7px;">
-
-		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a href="javascript:workerList.deleteWorker('',1);"
-			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> <a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton"
-			data-options="iconCls:'icon-ok',plain:true">导入文件</a>
+		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> 
+		<a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> 
+		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">导入文件</a>
 	</div>
 	<table style="clear: both;">
 		<tr>
