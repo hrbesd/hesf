@@ -110,7 +110,7 @@
 		});
 	};
 	
-	addWorker.initElement = function(workerHandicapCode){
+	addWorker.initElement=function(workerHandicapCode){
 
 		//校验表单
 		if (esd.common.validatebox("#addWorkerForm") == false) {
