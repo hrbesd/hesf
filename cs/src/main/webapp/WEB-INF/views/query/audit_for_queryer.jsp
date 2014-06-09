@@ -78,9 +78,9 @@
 				//如果为空, 且公司地址的内容为预设值, 则不触发查询事件
 				var companyName = $('#companyName').val();
 				var companyAddress = $('#companyAddress').val();
-				if(companyName == '' && companyAddress == tempCompanyAddress){
+		/*		if(companyName == '' && companyAddress == tempCompanyAddress){
 					return;
-				}
+				}	*/
 				queryAudit.findData();
 			}
 		});
@@ -89,9 +89,9 @@
 				//如果为空, 且公司名称的内容为预设值, 则不触发查询事件
 				var companyName = $('#companyName').val();
 				var companyAddress = $('#companyAddress').val();
-				if(companyAddress == '' && companyName == tempCompanyName){
+		/*		if(companyAddress == '' && companyName == tempCompanyName){
 					return;
-				}
+				}	*/
 				queryAudit.findData();
 			}
 		});
@@ -101,21 +101,20 @@
 	 * 获取企业基本档案函数
 	 */
 	queryAudit.loadData = function(params) {
-		esd.common
-				.datagrid(
+		esd.common.datagrid(
 						"#queryAuditGrid",
 						"${contextPath}/security/query/audit/listforcompany",
 						"#queryAuditBoolbar",
 						[ [
-								{
-									field : 'companyName',
-									title : '企业名称',
-									width : 250
-								},{
-									field : 'companyAddress',
-									title : '地址',
-									width : 300
-								}] ], params);
+							{
+								field : 'companyName',
+								title : '企业名称',
+								width : 250
+							},{
+								field : 'companyAddress',
+								title : '地址',
+								width : 300
+							}] ], params);
 
 	};
 
@@ -145,14 +144,14 @@
 	queryAudit.findData = function() {
 		var companyName = $('#companyName').val();
 		var companyAddress = $('#companyAddress').val();
-		if(companyName == tempCompanyName && companyAddress == tempCompanyAddress){
+	/*	if(companyName == tempCompanyName && companyAddress == tempCompanyAddress){
 			$('#companyName').focus();
 			return;
 		}
 		if(companyName == '' && companyAddress == ''){
 			$('#companyName').focus();
 			return;
-		}
+		}	*/
 		if (esd.common.validatebox("#queryAuditParams")) {
 			//重新根据参数加载数据
 			$('#queryAuditGrid').datagrid('load', queryAudit.getParams());
