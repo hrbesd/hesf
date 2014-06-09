@@ -24,14 +24,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.company.CompanyParamModel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.User;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.UserService;
 
 @Controller
 @RequestMapping(value = "/security/query/audit")
@@ -39,6 +42,9 @@ public class QueryAuditController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(QueryWorkerController.class);
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private AuditService auditService;
 

@@ -23,6 +23,9 @@
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
+		<result column="au_jianmian_audit_user_id" jdbcType="INTEGER" property="jianMianAuditUser.id" />
+		<result column="au_jianmian_audit_date" jdbcType="TIMESTAMP" property="jianMianAuditDate" />
+		<result column="au_jianmian_audit_comment" jdbcType="VARCHAR" property="jianMianAuditComment" />
 		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
@@ -105,8 +108,11 @@
 				au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
 				au.is_delay_pay as au_is_delay_pay, 
 				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
-				au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
-				au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+				au.init_audit_comment as au_init_audit_comment, 
+				au.jianmian_audit_user_id as au_jianmian_audit_user_id,  au.jianmian_audit_date as au_jianmian_audit_date, 
+				au.jianmian_audit_comment as au_jianmian_audit_comment, 
+				au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date, 
+				au.verify_audit_comment as au_verify_audit_comment,
 				au.remark as au_remark, 
 				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
 				au.reducion_apply_user as au_reducion_apply_user, 
@@ -184,6 +190,15 @@
 			<if test="actualAmount != null">
 				and au.actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
+			<if test="initAuditUser != null and initAuditUser > 0">
+				and au.init_audit_user_id = #{initAuditUser, jdbcType=INTEGER}
+			</if>
+			<if test="jianMianAuditUser != null and jianMianAuditUser > 0">
+				and au.jianmian_audit_user_id = #{jianMianAuditUser, jdbcType=INTEGER}
+			</if>
+			<if test="verifyAuditUser != null and verifyAuditUser > 0">
+				and au.verify_audit_user_id = #{verifyAuditUser, jdbcType=INTEGER}
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -260,6 +275,15 @@
 			<if test="actualAmount != null">
 				and au.actual_amount = #{actualAmount,jdbcType=DECIMAL}
 			</if>
+			<if test="initAuditUser != null and initAuditUser > 0">
+				and au.init_audit_user_id = #{initAuditUser, jdbcType=INTEGER}
+			</if>
+			<if test="jianMianAuditUser != null and jianMianAuditUser > 0">
+				and au.jianmian_audit_user_id = #{jianMianAuditUser, jdbcType=INTEGER}
+			</if>
+			<if test="verifyAuditUser != null and verifyAuditUser > 0">
+				and au.verify_audit_user_id = #{verifyAuditUser, jdbcType=INTEGER}
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -283,32 +307,32 @@
 				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
 				c.company_remark as c_company_remark, c.create_time as c_create_time, 
 				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
-				t.id as t_id, t.company_type as t_company_type, 
-				et.id as et_id, et.company_economy_type as et_company_economy_type,
-				p.id as p_id, p.company_property as p_company_property,
-				a.code as a_code, a.name as a_name,
-				au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
-					au.company_handicap_total as au_company_handicap_total, au.company_predict_total as au_company_predict_total,
-					au.company_should_total as au_company_should_total, au.company_already_total as au_company_already_total, 
-					au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
-					au.actual_amount as au_actual_amount,
-					au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
-					au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
-					au.is_delay_pay as au_is_delay_pay, 
-					au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
-					au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
-					au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
-					au.remark as au_remark, 
-					au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
-					au.reducion_apply_user as au_reducion_apply_user, 
-					au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
-					au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
-					au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
-					au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year, 
-					au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
-					au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
-					au.is_active as au_is_active, au.version as au_version,
-				aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
+			t.id as t_id, t.company_type as t_company_type, 
+			et.id as et_id, et.company_economy_type as et_company_economy_type,
+			p.id as p_id, p.company_property as p_company_property,
+			a.code as a_code, a.name as a_name,
+			au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+				au.company_handicap_total as au_company_handicap_total, au.company_predict_total as au_company_predict_total,
+				au.company_should_total as au_company_should_total, au.company_already_total as au_company_already_total, 
+				au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
+				au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
+				au.is_delay_pay as au_is_delay_pay, 
+				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
+				au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
+				au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+				au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year, 
+				au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
 		from audit as au 
 			left join audit_process_status as aup on au.audit_process_status = aup.id 
 			left join company as c on au.company_id = c.id 

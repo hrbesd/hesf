@@ -91,6 +91,9 @@ public class ExampleMap {
 		map.put("overYear", 3); // 超过几年未初审的公司
 		map.put("isExempt", false); // 是否免缴 true免缴, false不免缴
 		map.put("actualAmount", 20000.0); // 实缴金额
+		map.put("initAuditUser", 12);	//初审用户id, 即筛选该初审用户初审的数据
+		map.put("jianMianAuditUser", 13);	//减免用户id, 即筛选该减免用户初审的数据
+		map.put("verifyAuditUser", 14);	//复审用户id, 即筛选该复审用户初审的数据
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
 		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的

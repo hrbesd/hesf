@@ -121,10 +121,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getPayer() {
+	public List<User> getUserByGroup(Integer userGroupId) {
+		if(userGroupId == null || userGroupId <=0){
+			return null;
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		User user = new User();
-		user.setUserGroup(new UserGroup(4));
+		user.setUserGroup(new UserGroup(userGroupId));
 		map.put("user", user);
 		// 起始索引值
 		map.put("start", Constants.START);

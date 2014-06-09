@@ -370,7 +370,7 @@ public class ParameterController {
 	public List<User> getPayer(HttpServletRequest request) {
 		List<User> list = null;
 		try {
-			list = userService.getPayer();
+			list = userService.getUserByGroup(Constants.USER_GROUP_JIAOKUAN);
 			if (list == null) {
 				list = new ArrayList<User>();
 			}
@@ -446,4 +446,53 @@ public class ParameterController {
 		}
 		return null;
 	}
+	
+	/**
+	 * 得到初审用户列表
+	 */
+	@RequestMapping(value = "/getInitAuditUser", method = RequestMethod.POST)
+	@ResponseBody
+	public List<User> getInitAuditUser(HttpServletRequest request) {
+		List<User> list = null;
+		try {
+			list = userService.getUserByGroup(Constants.USER_GROUP_CHUSHEN);
+			if (list == null) {
+				list = new ArrayList<User>();
+			}
+			User pleaseSelect  = new User();
+			pleaseSelect.setId(0);
+			pleaseSelect.setUserRealName("请选择");
+			list.add(0, pleaseSelect);
+			return list;
+
+		} catch (Exception e) {
+			logger.error("error:{}", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * 得到复审用户列表
+	 */
+	@RequestMapping(value = "/getVerifyUser", method = RequestMethod.POST)
+	@ResponseBody
+	public List<User> getVerifyUser(HttpServletRequest request) {
+		List<User> list = null;
+		try {
+			list = userService.getUserByGroup(Constants.USER_GROUP_FUSHEN);
+			if (list == null) {
+				list = new ArrayList<User>();
+			}
+			User pleaseSelect  = new User();
+			pleaseSelect.setId(0);
+			pleaseSelect.setUserRealName("请选择");
+			list.add(0,pleaseSelect);
+			return list;
+
+		} catch (Exception e) {
+			logger.error("error:{}", e);
+		}
+		return null;
+	}
+	
 }

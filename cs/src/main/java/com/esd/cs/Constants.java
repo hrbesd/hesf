@@ -127,14 +127,43 @@ public class Constants {
 	/**
 	 * 默认起始页
 	 */
-	public static Integer startPage = 1;
+	public static final Integer START_PAGE = 1;
 
 	/**
 	 * 默认每页返回量
 	 */
-	public static Integer pageSize = 50;
-
-	public static void main(String[] args) {
-		System.out.println(Integer.MAX_VALUE);
-	}
+	public static final Integer PAGE_SIZE = 50;
+	
+	/**
+	 * 用户组-超级管理员
+	 */
+	public static final Integer USER_GROUP_SA = 1;
+	/**
+	 * 用户组-初审
+	 */
+	public static final Integer USER_GROUP_CHUSHEN = 2;
+	/**
+	 * 用户组-复审
+	 */
+	public static final Integer USER_GROUP_FUSHEN = 3;
+	/**
+	 * 用户组-缴款
+	 */
+	public static final Integer USER_GROUP_JIAOKUAN = 4;
+	/**
+	 * 用户组-查询
+	 */
+	public static final Integer USER_GROUP_CHAXUN = 5;
+	/**
+	 * 用户组-终审
+	 */
+	public static final Integer USER_GROUP_ZHONGSHEN = 6;
+	/**
+	 * 用户组-录入
+	 */
+	public static final Integer USER_GROUP_LURU = 7;
+	/**
+	 * 用户组-减免
+	 */
+	public static final Integer USER_GROUP_JIANMIAN = 8;
 }

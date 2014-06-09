@@ -724,7 +724,9 @@ public class AuditsController {
 		String companyCode = request.getParameter("companyCode");
 		String companyTaxCode = request.getParameter("companyTaxCode");
 		String companyName = request.getParameter("companyName");
-
+		String initAuditUser1 = request.getParameter("initAuditUser");
+		String jianMianAuditUser1 = request.getParameter("jianMianAuditUser");
+		String verifyAuditUser1 = request.getParameter("verifyAuditUser");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("pageSize", pageSize);
@@ -736,7 +738,9 @@ public class AuditsController {
 		if (StringUtils.isNotBlank(money)) {
 			params.put("actualAmount", new BigDecimal(money)); // 实缴金额
 		}
-
+		params.put("initAuditUser", initAuditUser1);
+		params.put("jianMianAuditUser", jianMianAuditUser1);
+		params.put("verifyAuditUser", verifyAuditUser1);
 		logger.debug("years:{},page:{},rows:{},process{}", year, page,
 				pageSize, process);
 		Map<String, Object> entity = new HashMap<>();
@@ -754,6 +758,36 @@ public class AuditsController {
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
+				//初审时间
+				if(it.getInitAuditDate()!=null){
+					map.put("initAuditDate", CalendarUtil.dateFormat(it.getInitAuditDate()));
+				}else{
+					map.put("initAuditDate", "-");
+				}
+				//初审人
+				if(it.getInitAuditUser()!=null){
+					if(it.getInitAuditUser().getId()!=null){
+						User initAuditUser = userService.getByPrimaryKey(it.getInitAuditUser().getId());
+						map.put("initAuditUser", initAuditUser.getUserRealName());
+					}
+				}else{
+					map.put("initAuditUser", "-");
+				}
+				//复审时间
+				if(it.getVerifyAuditDate()!=null){
+					map.put("verifyAuditDate", CalendarUtil.dateFormat(it.getVerifyAuditDate()));
+				}else{
+					map.put("verifyAuditDate", "-");
+				}
+				//复审人
+				if(it.getVerifyAuditUser()!=null){
+					if(it.getVerifyAuditUser().getId()!=null){
+						User verifyAuditUser = userService.getByPrimaryKey(it.getVerifyAuditUser().getId());
+						map.put("verifyAuditUser", verifyAuditUser.getUserRealName());
+					}
+				}else{
+					map.put("verifyAuditUser", "-");
+				}
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 				Integer pId = it.getAuditProcessStatus().getId();
 				map.put("auditProcessStatusId", pId);// 流程状态

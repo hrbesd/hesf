@@ -44,10 +44,10 @@ public interface UserService extends BaseService<User> {
 	List<User> getUserByRealName(String realName);
 
 	/**
-	 * 获得所有缴款用户数据
+	 * 根据用户组类型id, 得到该用户组的所有成员
 	 * 
 	 * @return
 	 */
-	List<User> getPayer();
+	List<User> getUserByGroup(Integer userGroupId);
 
 }

@@ -12,6 +12,8 @@
 		params.companyCode = $('#companyCode').val();
 		params.companyTaxCode = $('#companyTaxCode').val();
 		params.companyName = $('#companyName').val();
+		params.initAuditUser = $('#initAuditUser').combobox('getValue');
+		params.verifyAuditUser = $('#verifyAuditUser').combobox('getValue');	
 		return params;
 	};
 
@@ -27,7 +29,7 @@
 		}, {
 			field : 'companyCode',
 			title : '档案编码',
-			width : 200
+			width : 100
 		}, {
 			field : 'companyTaxCode',
 			title : '税务编码',
@@ -38,22 +40,43 @@
 		}, {
 			field : 'companyName',
 			title : '企业名称',
-			width : 700,
+			width : 400,
 			formatter : function(value, row, index) {
 				var c = '<a href="javascript:void(0);" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;
 			}
 		}, {
+			field : 'initAuditDate',
+			align : 'center',
+			title : '初审时间',
+			width : 120
+		}, {
+			field : 'initAuditUser',
+			align : 'center',
+			title : '初审人',
+			width : 100
+		}, {
+			field : 'verifyAuditDate',
+			align : 'center',
+			title : '复审时间',
+			width : 120
+		}, {
+			field : 'verifyAuditUser',
+			align : 'center',
+			title : '复审人',
+			width : 100
+		},{
 			field : 'auditProcessStatus',
+			align : 'center',
 			title : '流程状态',
-			width : 150
+			width : 120
 		}, {
 			field : 'auditProcessStatusId',
 			hidden : true
 		}, {
 			field : 'action',
 			title : '操作',
-			width : 100,
+			width : 80,
 			align : 'center',
 			formatter : function(value, row, index) {
 				var r = '';
@@ -147,6 +170,14 @@
 			<td width="150">
 				<input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
+			<td width="80" style="text-align: right;">初审人:</td>
+			<td width="150">
+				<input id="initAuditUser" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:120" />
+			</td>
+			<td width="80" style="text-align: right;">复审人:</td>
+			<td width="150">
+				<input id="verifyAuditUser" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:120" />
+			</td>
 			<c:if test="${process==1}">
 				<td colspan="3" style="text-align: right;"><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a></td>
 			</c:if>
@@ -181,6 +212,18 @@
 			valueField : 'id',
 			textField : 'auditProcessStatus',
 			value : '${process}'
+		});
+		$('#initAuditUser').combobox({
+			url : 'parameter/getInitAuditUser',
+			valueField : 'id',
+			textField : 'userRealName',
+			value : '0'
+		});
+		$('#verifyAuditUser').combobox({
+			url : 'parameter/getVerifyUser',
+			valueField : 'id',
+			textField : 'userRealName',
+			value : '0'
 		});
 		initAuditList.loadData();
 	};
