@@ -48,7 +48,8 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td colspan="3"><a href="javascript:user_change_pwd.submit();" class="easyui-linkbutton" iconCls="icon-ok">修改密码</a>
+					<td colspan="3">
+						<a href="javascript:user_change_pwd.submit();" class="easyui-linkbutton" iconCls="icon-ok">修改密码</a>
 					</td>
 				</tr>
 			</table>

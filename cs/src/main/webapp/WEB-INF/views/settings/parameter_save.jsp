@@ -106,7 +106,7 @@
 					<td><input class="easyui-numberbox" name="averageSalary" type="text" required="true" data-options="min:0,precision:2" />
 					</td>
 					<td>支付截至日期:</td>
-					<td><input class="easyui-datebox" id="payCloseDate" name="payCloseDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-12-01" style="width:120px" /></td>
+					<td><input class="easyui-datebox" id="payCloseDate" name="payCloseDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-11-25" style="width:120px" /></td>
 					<td>职工退休年龄(女)：</td>
 					<td><input class="easyui-validatebox" name="retireAgeFemale" type="text" required="true" value="51" style="width:120px;" /></td>
 				</tr>
