@@ -95,7 +95,7 @@
 <table id="parameter_list_grid"></table>
 
 <!-- 自定义菜单 -->
-<div id="parameter_list_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;margin-top: 5px">
+<div id="parameter_list_boolbar" data-options="fit:false,doSize:false" style="white-space: nowrap;">
 	<div>
 		<table border="0" width="100%">
 			<tr>

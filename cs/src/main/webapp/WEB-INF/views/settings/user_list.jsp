@@ -109,7 +109,7 @@
 <table id="user_list_grid"></table>
 
 <!-- 自定义菜单 -->
-<div id="user_list_boolbar" style="white-space: nowrap;margin-top: 5px">
+<div id="user_list_boolbar" style="white-space: nowrap;">
 	<div style="text-align: right;">
 		<a href="javascript:user_list.addWindow();" class="easyui-linkbutton" plain="true" iconCls="icon-add">添加用户</a>
 	</div>

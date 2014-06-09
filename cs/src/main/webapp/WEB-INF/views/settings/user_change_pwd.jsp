@@ -36,11 +36,11 @@
 				</tr>
 
 				<tr>
-					<td>登陆密码:</td>
+					<td>新密码:</td>
 					<td><input class="easyui-validatebox" required="true" name="userPassword" type="password" /></td>
 				</tr>
 				<tr>
-					<td>确认登陆密码:</td>
+					<td>确认密码:</td>
 					<td><input class="easyui-validatebox" name="confirm" type="password" required="true" validType="equals['#userPassword']" /></td>
 				</tr>
 				<tr>
