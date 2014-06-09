@@ -439,7 +439,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test24() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<User> entity = userService.getPayer();
+		List<User> entity = userService.getUserByGroup(Constants.USER_GROUP_JIAOKUAN);
 		map.put("entity", entity);
 		return map;
 	}

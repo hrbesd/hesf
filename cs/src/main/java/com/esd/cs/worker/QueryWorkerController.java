@@ -205,7 +205,7 @@ public class QueryWorkerController {
 		List<Worker> list = null;
 		if(idArr[0] == Integer.MAX_VALUE){
 			list = new ArrayList<Worker>();
-			for(Worker c:workerService.getPaginationRecords(null, Constants.startPage, Integer.MAX_VALUE).getRecords()){
+			for(Worker c:workerService.getPaginationRecords(null, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
 				list.add(c);
 			}
 		}else{
