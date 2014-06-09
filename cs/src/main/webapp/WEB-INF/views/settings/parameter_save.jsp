@@ -129,8 +129,8 @@
 				<tr>
 					<td>视力残疾:</td>
 					<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:47,height:25">
-							<option value="1" <c:if test="${entity.eyeOne eq '1'}">selected="selected"</c:if>>1</option>
-							<option value="2" <c:if test="${entity.eyeOne eq '2'}">selected="selected"</c:if>>2</option>
+							<option value="1" >1</option>
+							<option value="2" selected="selected">2</option>
 					</select>
 					</td>
 					<td><select class="easyui-combobox" name="eyeTwo" data-options="panelHeight:47,height:25">
