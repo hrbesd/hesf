@@ -250,7 +250,7 @@
 </script>
 
 	
-<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm">
+<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm" enctype="multipart/form-data">
 	<!--  女退休年龄 -->
 	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 	<!--  男退休年龄 -->
@@ -309,6 +309,9 @@
 			</td>
 			<td class="">现任岗位:</td>
 			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
+			</td>
+			<td class="">上传照片:</td>
+			<td><input type="file" name="file" id="file" value="tudou" style="height:25px;line-height:25px;border:none;width:200px;" />
 			</td>
 		</tr>
 		<tr>

@@ -18,6 +18,8 @@
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
+ 		<result column="w_pic_title" jdbcType="VARCHAR" property="picTitle" />
+		<result column="w_pic" jdbcType="BLOB" property="pic" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
@@ -32,6 +34,7 @@
 	</resultMap>
 
 	<!-- handicap type -->
+	
 	<resultMap id="ResultHandicapType" type="com.esd.hesf.model.WorkerHandicapType">
 		<id column="t_id" jdbcType="INTEGER" property="id" />
 		<result column="t_handicap_type" jdbcType="VARCHAR" property="handicapType" />
@@ -58,6 +61,7 @@
 		w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
+		w.pic_title as w_pic_title, 
 		w.is_college as w_is_college, w.is_retired as w_is_retired, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
@@ -89,7 +93,7 @@
 		worker_id_card, career_card,
 		phone, current_job, worker_address,
 		area_code, worker_handicap_code, worker_handicap_type,
-		worker_handicap_level, is_college, is_retired, remark, create_time,
+		worker_handicap_level, is_college, is_retired, remark, pic_title, pic, create_time,
 		update_time, user_id, is_active,
 		version)
 		values (#{workerName,jdbcType=VARCHAR},
@@ -102,7 +106,7 @@
 		#{workerHandicapCode,jdbcType=VARCHAR},
 		#{workerHandicapType.id,jdbcType=INTEGER},
 		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
-		#{remark,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB}, 
 		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
 
@@ -165,6 +169,12 @@
 			</if>
 			<if test="remark != null">
 				remark,
+			</if>
+			<if test="picTitle != null">
+				pic_title,
+			</if>
+			<if test="pic != null">
+				pic,
 			</if>
 				create_time,
 				update_time,
@@ -230,6 +240,12 @@
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="picTitle != null">
+				#{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				#{pic, jdbcType=BLOB},
 			</if>
 			now(),now(),
 			<if test="userId != null">
@@ -313,6 +329,12 @@
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
 			</if>
+			<if test="picTitle != null">
+				pic_title = #{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				pic = #{pic, jdbcType=BLOB},
+			</if>
 			update_time = now(),
 			<if test="userId != null">
 				user_id = #{userId,jdbcType=INTEGER},
@@ -337,6 +359,13 @@
 		and w.id = #{id,jdbcType=INTEGER}
 	</select>
 
+	<!-- 根据id, 取到图片文件 -->
+	<select id="retrievePic" parameterType="int" resultType="hashmap">
+		select pic_title,pic
+		from worker
+		where id = #{id, jdbcType=INTEGER}
+	</select>
+	
 	<!-- retrieve -->
 	<select id="retrieveByPrimaryKeys" parameterType="map"
 		resultMap="ResultWorker">

@@ -1,5 +1,6 @@
 package com.esd.hesf.service;
 
+import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +106,13 @@ public interface WorkerService extends BaseService<Worker> {
 	 * @return
 	 */
 	List<Worker> getByIds(Integer[] ids);
+	
+	/**
+	 * 根据员工id, 得到其对应的图片
+	 * @param id
+	 * @return
+	 */
+	Blob getPicByPrimaryKey(Integer id);
 	
 	
 	

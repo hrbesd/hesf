@@ -1,5 +1,6 @@
 package com.esd.hesf.service.impl;
 
+import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -336,6 +337,16 @@ public class WorkerServiceImpl implements WorkerService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(Constants.ARRAY, ids);
 		return dao.retrieveByPrimaryKeys(map);
+	}
+
+	@Override
+	public Blob getPicByPrimaryKey(Integer id) {
+		if (id == null || id <= 0) {
+			return null;
+		}
+		HashMap resultMap =dao.retrievePic(id);
+		Blob blob = (Blob)resultMap.get("pic");
+		return blob; 
 	}
 
 }

@@ -1,9 +1,9 @@
 package com.esd.hesf.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.esd.hesf.model.Company;
 import com.esd.hesf.model.Worker;
 
 /**
@@ -14,6 +14,12 @@ import com.esd.hesf.model.Worker;
  */
 public interface WorkerDao extends BaseDao<Worker> {
 
+	/**
+	 * 根据员工id, 获得他的图片
+	 * @param id
+	 * @return
+	 */
+	HashMap retrievePic(Integer id);
 	
 	/**
 	 *  根据多个id查询残疾人列表, map中放入array数组, 或者list集合等

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
@@ -50,7 +51,6 @@ import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyYearWorkerService;
 import com.esd.hesf.service.WorkerService;
 import com.esd.hesf.service.WorkerTempService;
-import com.esd.hesf.service.impl.WorkerServiceImpl;
 
 /*
  * 残疾职工控制器
@@ -223,16 +223,32 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/add",method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean add_worker(Worker worker, HttpServletRequest request) {
+//		//处理上传的图片, 如果有图片的话
+////		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest)request;
+//		if(!pic.isEmpty()){
+//			byte[] bs;
+//			try {
+//				bs = pic.getBytes();
+//				worker.setPic(bs);
+//				worker.setPicTitle(pic.getName());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		
+		
+//		String u = this.getClass().getResource("/").
+		
 		try {
 			Integer companyId = Integer.valueOf(request
 					.getParameter("companyId"));
 			String year = request.getParameter("year");
 			logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
 					companyId);
-
 			boolean b = workerService.save(worker, companyId, year);
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			return b;
