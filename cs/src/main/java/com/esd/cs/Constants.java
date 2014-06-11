@@ -113,6 +113,14 @@ public class Constants {
 	 * 提示标识/文字
 	 */
 	public static final String NOTICE = "notice";
+	/**
+	 * 提示标识--成功
+	 */
+	public static final String NOTICE_SUCCESS = "success";
+	/**
+	 * 提示标识--成功
+	 */
+	public static final String NOTICE_FAILURE = "failure";
 
 	/**
 	 * 录入标示符

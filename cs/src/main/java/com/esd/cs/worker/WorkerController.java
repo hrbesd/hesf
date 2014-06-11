@@ -27,12 +27,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
@@ -217,33 +222,47 @@ public class WorkerController {
 	}
 
 	/**
+	 * 转到增加残疾职工页面
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public ModelAndView add_get(HttpServletRequest request) {
+		logger.info("goToPage:{}", "添加残疾职工页面");
+		return new ModelAndView("basicInfo/add_worker");
+	}
+	
+	/**
 	 * 增加残疾职工
 	 * 
 	 * @param worker
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/add",method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean add_worker(Worker worker, HttpServletRequest request) {
-//		//处理上传的图片, 如果有图片的话
-////		MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest)request;
-//		if(!pic.isEmpty()){
-//			byte[] bs;
-//			try {
-//				bs = pic.getBytes();
-//				worker.setPic(bs);
-//				worker.setPicTitle(pic.getName());
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-		
-		
-//		String u = this.getClass().getResource("/").
-		
-		try {
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public ModelAndView add_worker(Worker worker, HttpServletRequest request,BindingResult result) {
+		if(result.hasErrors()){
+			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+			new ModelAndView("basicInfo/add_worker");
+		}
+		// //处理上传的图片, 如果有图片的话
+		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
+		if(cmr.isMultipart(request)){
+			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest)request;
+			Iterator<String> it = mhsr.getFileNames();
+			while(it.hasNext()){
+				String fileName = it.next();
+				MultipartFile mf = mhsr.getFile(fileName);
+				
+				try {
+					byte[] b = mf.getBytes();
+					
+					worker.setPic(b);
+					worker.setPicTitle(fileName);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
 			Integer companyId = Integer.valueOf(request
 					.getParameter("companyId"));
 			String year = request.getParameter("year");
@@ -251,14 +270,51 @@ public class WorkerController {
 					companyId);
 			boolean b = workerService.save(worker, companyId, year);
 			logger.debug("addWorker:{},Result:{}", worker, b);
-			return b;
-		} catch (Exception e) {
-			logger.error("addWorkerError:{}", e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
+			if(b){
+				request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+			}else{
+				request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+			}
+			return new ModelAndView("basicInfo/add_worker");
 	}
 
+	
+	@ExceptionHandler(Exception.class)
+	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
+		Map<Object,Object> model = new HashMap<Object,Object>();
+		if(ex instanceof MaxUploadSizeExceededException){
+			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
+		}else{
+			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
+		}
+		return new ModelAndView("test",(Map)model);
+	}
+	
+	
+	private String getFileKB(long byteFile){
+		if(byteFile == 0){
+			return "0KB";
+		}
+		long kb = 1024;
+		return ""+byteFile/kb+"KB";
+	}
+	
+	private String getFileMB(long byteFile){
+		if(byteFile == 0){
+			return "0MB";
+		}
+		long mb = 1024*1024;
+		return ""+byteFile/mb+"MB";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private boolean addWorker(Worker worker, Integer companyId, String year) {
 		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
 				companyId, year);

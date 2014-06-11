@@ -36,20 +36,19 @@
 	 **/
 	addWorker.validate = function() {
 	
-		
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		//根据残疾证号初始化其他组件
 		if(addWorker.initElement(workerHandicapCode)==false){
-			return;
+			return false;
 		}
 		//校验表单
 		if (esd.common.validatebox("#addWorkerForm") == false) {
-			return;
+			return false;
 		}
 		//校验残疾证号是否存在，是否在其他公司
-		$.ajax({
-			url : 'worker/validate_workerHandicapCode',
+	/*	$.ajax({
+			url : '${contextPath}/security/worker/validate_workerHandicapCode',
 			type : 'post',
 			data : {
 				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18),
@@ -71,25 +70,30 @@
 								minimizable : false,
 								maximizable : false
 							});
-					return;
+					alert(4);
+					return false;
 					//第二种情况，员工存在，不再任何公司
 				} else if (data[0].type == "2") {
 					//更改表单路径为编辑路径
 					$("#addWorkerForm").attr('action', "worker/updata");
-					addWorker.save();
-					return;
+					alert(5);
+				//	addWorker.save();
+					return false;
 					//第三种情况，员工不存在
 				} else if (data[0].type == "3") {
 					//更改表单路径为增加路径
 					$("#addWorkerForm").attr('action', "worker/add");
-					addWorker.save();
-					return;
+					alert(6);
+				//	addWorker.save();
+					return true;
 				}
 			},
 			error : function() {
 				alert("增加残疾职工校验时发生错误。");
+				return false;
 			}
-		});
+		});	*/
+		return true;
 	};
 
 	/**
@@ -250,7 +254,7 @@
 </script>
 
 	
-<form id="addWorkerForm" action="security/worker/add" method="post" class="addWorkerForm" enctype="multipart/form-data">
+<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" enctype="multipart/form-data" onsubmit="return addWorker.validate();">
 	<!--  女退休年龄 -->
 	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 	<!--  男退休年龄 -->
@@ -327,7 +331,7 @@
 		</tr>
 	 -->
 		<tr>
-			<td colspan="6" style="text-align: center;"><a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a> <a href="javascript:addWorker.close();" class="easyui-linkbutton"
+			<td colspan="6" style="text-align: center;"><input type="submit" value="保存" /><a href="javascript:addWorker.close();" class="easyui-linkbutton"
 				iconCls="icon-undo">取消</a>
 			</td>
 		</tr>
@@ -335,6 +339,24 @@
 </form>
 
 <div id="win"></div>
+${notice }
+<c:if test="${notice != success}">
+	<script type="text/javascript">
+		alert('${notice}');
+	</script>
+</c:if>
 
+<!-- 
+<c:if test="${notice == 'success'} }">
+	<script type="text/javascript">
+		alert('success!');
+	</script>
+</c:if>
+<c:if test="${notice == 'failure'} }">
+	<script type="text/javascript">
+		alert('failure!');
+	</script>
+</c:if>
+	 -->
 
 
