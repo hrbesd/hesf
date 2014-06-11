@@ -21,7 +21,7 @@
 		$('#workerList_dataGrid').datagrid('reload');
 		$("#workerWindow").window("destroy");
 	};
-
+	
 	/**
 		清空控件数据
 	 **/
@@ -244,7 +244,11 @@
 	};
 	//组件解析完成
 	$.parser.onComplete = function() {
-	
+		$('#isUpload').toggle(function(){
+			$('#file').hide();
+		},function(){
+			$('#file').show();
+		});
 	};
 </script>
 
@@ -312,8 +316,12 @@
 					<td class="">现任岗位:</td>
 					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
 					</td>
+				</tr>
+				<tr>
 					<td class="">上传照片:</td>
-					<td><input type="file" name="file" id="file" value="tudou" style="height:25px;line-height:25px;border:none;width:200px;" />
+					<td colspan="5">
+						<input type="checkbox" id="isUpload" />
+						<input type="file" name="file" id="file" value="tudou" style="height:19px;line-height:19px;border:none;width:200px;" />
 					</td>
 				</tr>
 				<tr>
