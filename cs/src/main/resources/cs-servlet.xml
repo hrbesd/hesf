@@ -60,7 +60,7 @@
 		<property name="maxUploadSize">
 			<value>800000</value>
 		</property>
-		<property name="resolveLazily" value="true" />
+	<!-- 	<property name="resolveLazily" value="true" />	 -->
 		
 	</bean>
 	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 

@@ -2,7 +2,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<style type="text/css">
+	.addWorkerIframe{
+		width: 100%;
+		margin-top: 0px;
+		height: 30px;
+	}
+</style>
 <script type="text/javascript">
 	/*
 		残疾职工页面
@@ -12,6 +18,7 @@
 	关闭增残疾职工信息窗口
 	 **/
 	addWorker.close = function() {
+		$('#workerList_dataGrid').datagrid('reload');
 		$("#workerWindow").window("destroy");
 	};
 
@@ -47,7 +54,7 @@
 			return false;
 		}
 		//校验残疾证号是否存在，是否在其他公司
-	/*	$.ajax({
+		$.ajax({
 			url : '${contextPath}/security/worker/validate_workerHandicapCode',
 			type : 'post',
 			data : {
@@ -70,20 +77,17 @@
 								minimizable : false,
 								maximizable : false
 							});
-					alert(4);
 					return false;
 					//第二种情况，员工存在，不再任何公司
 				} else if (data[0].type == "2") {
 					//更改表单路径为编辑路径
 					$("#addWorkerForm").attr('action', "worker/updata");
-					alert(5);
 				//	addWorker.save();
 					return false;
 					//第三种情况，员工不存在
 				} else if (data[0].type == "3") {
 					//更改表单路径为增加路径
 					$("#addWorkerForm").attr('action', "worker/add");
-					alert(6);
 				//	addWorker.save();
 					return true;
 				}
@@ -92,7 +96,7 @@
 				alert("增加残疾职工校验时发生错误。");
 				return false;
 			}
-		});	*/
+		});	
 		return true;
 	};
 
@@ -100,18 +104,9 @@
 		保存增加残疾职工信息
 	 **/
 	addWorker.save = function() {
-		var workerHandicapCode = $("#workerHandicapCode").val();
-		//数据验证可以通过
-		esd.common.syncPostSubmit("#addWorkerForm", function(data) {
-			if (data == true) {
-		
-				$.messager.alert('消息', '残疾职工信息增加成功', 'ok');
-				addWorker.close();
-				$('#workerList_dataGrid').datagrid("load");
-			} else {
-				$.messager.alert('消息', '残疾职工信息增加失败。', 'error');
-			}
-		});
+		$('#addWorkerForm').submit();
+	//	addWorker.close();
+	//	$('#workerList_dataGrid').datagrid("load");
 	};
 	
 	addWorker.initElement=function(workerHandicapCode){
@@ -253,110 +248,96 @@
 	};
 </script>
 
-	
-<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" enctype="multipart/form-data" onsubmit="return addWorker.validate();">
-	<!--  女退休年龄 -->
-	<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
-	<!--  男退休年龄 -->
-	<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
-	<input type="hidden" value="${year}" id="nowYear" name="year"/>
-	<input type="hidden" value="${companyId}" name="companyId"  />
-	
-	<!-- 数据表格 -->
-	<table id="company_information" align="center">
-		<tr>
-			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
-			</td>
-		</tr>
-		<tr>
-			<td>残疾证号(<label class="red_notice"> *</label>):</td>
-			<td colspan="5">
-
-				<div style="float: left;width: 600px;">
-					<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
-						style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
-						href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
-				</div></td>
-		</tr>
-		<tr>
-			<td class="">姓名(<label class="red_notice"> *</label>):</td>
-			<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
-			</td>
-			<td class="">性别:</td>
-			<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
-					<option value="1">男</option>
-					<option value="0">女</option>
-			</select>
-			</td>
-			<td class="">出生日期:</td>
-			<td><input  readonly ="readonly"  type="text" data-options="disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
-				id="workerBirthYear" name="workerBirthYear" /></td>
-
-
-		</tr>
-		<tr>
-			<td class="">就业证号:</td>
-			<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" />
-			</td>
-			<td class="">残疾类别:</td>
-			<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="1"
-				data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
-			</td>
-			<td class="">残疾等级:</td>
-			<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="1"
-				data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
-			</td>
-		</tr>
-		<tr>
-			<td class="">联系电话:</td>
-			<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" />
-			</td>
-			<td class="">现任岗位:</td>
-			<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
-			</td>
-			<td class="">上传照片:</td>
-			<td><input type="file" name="file" id="file" value="tudou" style="height:25px;line-height:25px;border:none;width:200px;" />
-			</td>
-		</tr>
-		<tr>
-			<td class="">备注:</td>
-			<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea>
-			</td>
-		</tr>
-		<!-- 
-		<tr>
-			<td class="">重复性验证:</td>
-			<td><input class="" type="text" id="verification" data-options="validType:['_number']" class="easyui-validatebox" />
-				<button>验证</button></td>
-		</tr>
-	 -->
-		<tr>
-			<td colspan="6" style="text-align: center;"><input type="submit" value="保存" /><a href="javascript:addWorker.close();" class="easyui-linkbutton"
-				iconCls="icon-undo">取消</a>
-			</td>
-		</tr>
-	</table>
-</form>
-
-<div id="win"></div>
-${notice }
-<c:if test="${notice != success}">
-	<script type="text/javascript">
-		alert('${notice}');
-	</script>
+<!-- 导入成功隐藏 -->
+<c:if test="${notice != 'success' || notice != 'failure'}">
+	<div id="addWorkerDiv">
+		<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" target="addWorkerIframe" enctype="multipart/form-data" onsubmit="return addWorker.validate();">
+			<!--  女退休年龄 -->
+			<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
+			<!--  男退休年龄 -->
+			<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
+			<input type="hidden" value="${year}" id="nowYear" name="year"/>
+			<input type="hidden" value="${companyId}" name="companyId"  />
+			
+			<!-- 数据表格 -->
+			<table id="company_information" align="center">
+				
+				<tr>
+					<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
+					</td>
+				</tr>
+				<tr>
+					<td>残疾证号(<label class="red_notice"> *</label>):</td>
+					<td colspan="5">
+		
+						<div style="float: left;width: 600px;">
+							<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
+								style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
+								href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
+						</div></td>
+				</tr>
+				<tr>
+					<td class="">姓名(<label class="red_notice"> *</label>):</td>
+					<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
+					</td>
+					<td class="">性别:</td>
+					<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
+							<option value="1">男</option>
+							<option value="0">女</option>
+					</select>
+					</td>
+					<td class="">出生日期:</td>
+					<td><input  readonly ="readonly"  type="text" data-options="disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
+						id="workerBirthYear" name="workerBirthYear" /></td>
+		
+		
+				</tr>
+				<tr>
+					<td class="">就业证号:</td>
+					<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" />
+					</td>
+					<td class="">残疾类别:</td>
+					<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="1"
+						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
+					</td>
+					<td class="">残疾等级:</td>
+					<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="1"
+						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
+					</td>
+				</tr>
+				<tr>
+					<td class="">联系电话:</td>
+					<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" />
+					</td>
+					<td class="">现任岗位:</td>
+					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
+					</td>
+					<td class="">上传照片:</td>
+					<td><input type="file" name="file" id="file" value="tudou" style="height:25px;line-height:25px;border:none;width:200px;" />
+					</td>
+				</tr>
+				<tr>
+					<td class="">备注:</td>
+					<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea>
+					</td>
+				</tr>
+				<!-- 
+				<tr>
+					<td class="">重复性验证:</td>
+					<td><input class="" type="text" id="verification" data-options="validType:['_number']" class="easyui-validatebox" />
+						<button>验证</button></td>
+				</tr>
+			 -->
+				<tr>
+					<td colspan="6" style="text-align: center;">
+						<a href="javascript:addWorker.save();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+						<a href="javascript:addWorker.close();" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </c:if>
 
-<!-- 
-<c:if test="${notice == 'success'} }">
-	<script type="text/javascript">
-		alert('success!');
-	</script>
-</c:if>
-<c:if test="${notice == 'failure'} }">
-	<script type="text/javascript">
-		alert('failure!');
-	</script>
-</c:if>
-	 -->
-
-
+<!-- 导入结果显示 -->
+<iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>

@@ -222,15 +222,6 @@ public class WorkerController {
 	}
 
 	/**
-	 * 转到增加残疾职工页面
-	 */
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView add_get(HttpServletRequest request) {
-		logger.info("goToPage:{}", "添加残疾职工页面");
-		return new ModelAndView("basicInfo/add_worker");
-	}
-	
-	/**
 	 * 增加残疾职工
 	 * 
 	 * @param worker
@@ -238,11 +229,7 @@ public class WorkerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView add_worker(Worker worker, HttpServletRequest request,BindingResult result) {
-		if(result.hasErrors()){
-			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
-			new ModelAndView("basicInfo/add_worker");
-		}
+	public ModelAndView add_worker(Worker worker, HttpServletRequest request) {
 		// //处理上传的图片, 如果有图片的话
 		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
 		if(cmr.isMultipart(request)){
@@ -275,20 +262,20 @@ public class WorkerController {
 			}else{
 				request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
 			}
-			return new ModelAndView("basicInfo/add_worker");
+			return new ModelAndView("basicInfo/add_worker_notice");
 	}
 
 	
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
-		Map<Object,Object> model = new HashMap<Object,Object>();
-		if(ex instanceof MaxUploadSizeExceededException){
-			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
-		}else{
-			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
-		}
-		return new ModelAndView("test",(Map)model);
-	}
+//	@ExceptionHandler(Exception.class)
+//	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
+//		Map<Object,Object> model = new HashMap<Object,Object>();
+//		if(ex instanceof MaxUploadSizeExceededException){
+//			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
+//		}else{
+//			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
+//		}
+//		return new ModelAndView("test",(Map)model);
+//	}
 	
 	
 	private String getFileKB(long byteFile){
@@ -306,14 +293,6 @@ public class WorkerController {
 		long mb = 1024*1024;
 		return ""+byteFile/mb+"MB";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	private boolean addWorker(Worker worker, Integer companyId, String year) {
 		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,

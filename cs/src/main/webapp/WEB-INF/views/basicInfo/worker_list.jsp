@@ -226,14 +226,17 @@
 	 **/
 	workerList.deleteWorker = function(id, type) {
 		var params = new Array();
+		var len = 0;
 		//删除单条
 		if (type == 0) {
 			params.push(id);
+			len=1;
 		}
 		//删除多条
 		if (type == 1) {
 			// 获取所有选中列
 			var selection = $("#workerList_dataGrid").datagrid('getChecked');
+			len = selection.length;
 			// 判断选择数目是否大于0
 			if (selection.length == 0) {
 				
@@ -247,7 +250,7 @@
 			}
 		}
 		// 显示确认删除对话框
-		$.messager.confirm('确认', '您确认想要删除' + selection.length + '记录吗？', function(r) {
+		$.messager.confirm('确认', '您确认想要删除' + len + '记录吗？', function(r) {
 			if (r) {
 				// 删除请求
 				$.ajax({
