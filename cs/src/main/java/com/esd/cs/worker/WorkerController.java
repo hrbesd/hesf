@@ -384,12 +384,16 @@ public class WorkerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/updata", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean edit_worker_up(Worker worker, HttpServletRequest request) {
+	public ModelAndView edit_worker_up(Worker worker, HttpServletRequest request) {
 		logger.debug("editUpdata:{}", worker);
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-
-		return editWorkerUp(worker, companyId, worker.getWorkerBirthYear());
+		boolean bl = editWorkerUp(worker, companyId, worker.getWorkerBirthYear());
+		if(bl){
+			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+		}else{
+			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+		}
+		return new ModelAndView("basicInfo/add_worker_notice");
 	}
 
 	/**
@@ -1002,7 +1006,7 @@ public class WorkerController {
 					list.add(paramsMap);
 					return list;
 					// 第三种情况，不存在.
-				} else {
+				} else{
 					logger.debug("validateWorkerHandicapCodeResult:{}",
 							"type:3。职工不存在数据库中");
 					paramsMap.put("type", "3");

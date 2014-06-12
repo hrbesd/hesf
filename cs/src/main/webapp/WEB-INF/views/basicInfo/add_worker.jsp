@@ -63,7 +63,6 @@
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
-				alert('data[0].type : '+data[0].type);
 				if (data[0].type == "1") {
 					$('#win').window(
 							{
@@ -83,15 +82,15 @@
 				} else if (data[0].type == "2") {
 					//更改表单路径为编辑路径
 					$("#addWorkerForm").attr('action', "worker/updata");
-					alert('update');
-				//	addWorker.save();
+					//提交
+					$('#addWorkerForm').submit();
 					return true;
 					//第三种情况，员工不存在
 				} else if (data[0].type == "3") {
 					//更改表单路径为增加路径
 					$("#addWorkerForm").attr('action', "worker/add");
-				//	addWorker.save();
-				alert('add');
+					//提交
+					$('#addWorkerForm').submit();
 					return true;
 				}
 			},
@@ -103,19 +102,6 @@
 		return true;
 	};
 
-	/**
-		保存增加残疾职工信息
-	 **/
-	addWorker.save = function() {
-		//校验
-		addWorker.validate();
-		
-		//提交
-		$('#addWorkerForm').submit();
-	//	addWorker.close();
-	//	$('#workerList_dataGrid').datagrid("load");
-	};
-	
 	addWorker.initElement=function(workerHandicapCode){
 
 		//校验表单
@@ -151,9 +137,9 @@
 		var day = workerHandicapCode.substring(12, 14);//日
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
-		//职工去年年龄
-		var age=$("#nowYear").val()-year;
-
+		//职工去年年龄=审核年份-出生年份+1
+		var age=$("#nowYear").val()-year+1;
+	//	alert('nowYear:'+$('#nowYear').val()+'year:'+year+'age:'+age);
 		//判断年龄
 		if(age<=16){
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
@@ -342,7 +328,7 @@
 			 -->
 				<tr>
 					<td colspan="6" style="text-align: center;">
-						<a href="javascript:addWorker.save();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+						<a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
 						<a href="javascript:addWorker.close();" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 					</td>
 				</tr>
