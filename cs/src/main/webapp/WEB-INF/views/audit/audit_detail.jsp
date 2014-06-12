@@ -27,12 +27,8 @@
 			<c:if test="${process==1}">
 				<jsp:include page="audit_init.jsp" />
 			</c:if>
-			<!-- 减免缓页面 -->
-			<c:if test="${process==11}">
-				<jsp:include page="audit_jianmian.jsp" />
-			</c:if>
 			<!-- 复审页面 -->
-			<c:if test="${process==12}">
+			<c:if test="${process==2}">
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
 			<!-- 查看页面 -->

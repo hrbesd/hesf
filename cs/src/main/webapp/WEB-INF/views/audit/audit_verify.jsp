@@ -207,6 +207,23 @@
 			}
 		});
 	};
+	
+	//减免确认
+	initAudit.jianMianAudit = function() {
+		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/jianmianAudit", function(data) {
+			if (data == true) {
+				//先关闭弹出窗, 防止反复确认,造成数据重复提交
+				esd.common.noCloseButtonDialog('消息','减免操作成功, 复审用户可以操作该条数据了.');
+		//		esd.common.defaultOpenWindowClose();
+				$("#initAuditList_datagrid").datagrid('reload');
+		//		$("#initAuditList_datagrid").datagrid('reload');
+		//		$.messager.alert('消息', '减免确认成功', 'info', function() {
+		//		});
+			} else {
+				$.messager.alert('消息', '减免确认失败', 'info');
+			}
+		});
+	};
 	//返回
 	initAudit.back = function() {
 		esd.common.defaultOpenWindowClose();
@@ -353,17 +370,17 @@
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
-				<td width="100"><input id="jianJiaoJinE" type="text" disabled="disabled" class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
+				<td width="100"><input id="jianJiaoJinE" type="text" <c:if test="${userGroupId == 3}">disabled="disabled"</c:if> class="easyui-numberbox warn" data-options="min:0,precision:2" name="reductionAmount"  value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
 				<td width="99">免滞纳金:</td>
 				<td>
-					<select id="mianZhiNaJin" disabled="disabled" style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="initAudit.jisuan();">
+					<select id="mianZhiNaJin" <c:if test="${userGroupId == 3}">disabled="disabled"</c:if> style="font-size: 12px; width: 100px; height: 28px;"  name="isDelayPay" onchange="initAudit.jisuan();">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
 					</select>
 				</td>
 
 				<td width="91">是否免交:</td>
-				<td><select id="mianJiao" disabled="disabled" style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="initAudit.jisuan();"  >
+				<td><select id="mianJiao" <c:if test="${userGroupId == 3}">disabled="disabled"</c:if> style="font-size: 12px;width: 100px; height: 28px;" name="isExempt" onchange="initAudit.jisuan();"  >
 						<option value="true" title="是" <c:if test="${entity.isExempt eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" title="否" <c:if test="${entity.isExempt eq 'false'}">selected="selected"</c:if>>否</option>
 				</select></td>
@@ -392,14 +409,16 @@
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<td width="100" rowspan="3">复审意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
-				<td colspan="3" rowspan="2"><textarea class="warn"  name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
+				<td colspan="3" rowspan="2"><textarea class="warn" <c:if test="${userGroupId != 3 }">disabled="disabled"</c:if>  name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
 			</tr>
 			<tr>
-				<td><select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
+				<td>
+					<select <c:if test="${userGroupId != 3 }">disabled="disabled"</c:if> style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<c:forEach items="${reasons}" var="item">
 							<option value="${item.id}" title="${item.content }" <c:if test="${1 eq item.id}">selected="selected"</c:if>>${item.title }</option>
 						</c:forEach>
-				</select></td>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="">初审日期:</td>
@@ -419,12 +438,18 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<c:if test="${entity.auditProcessStatus.id==12}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
-			<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
-			<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a>
-		</c:if>
+			<!-- 减免用户操作按钮 -->
+			<c:if test="${userGroupId == 1 || userGroupId == 8 }">
+				<a href="javascript:initAudit.jianMianAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认减免</a>
+			</c:if>
+			
+			<!-- 复审用户操作按钮 -->
+			<c:if test="${userGroupId == 1 || userGroupId == 3 }">
+				<a href="javascript:initAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>
+				<a href="javascript:initAudit.verifyAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认复审</a>
+			</c:if>
 		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a><a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	</div>
 </form>

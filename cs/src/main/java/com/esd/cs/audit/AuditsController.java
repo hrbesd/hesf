@@ -208,8 +208,8 @@ public class AuditsController {
 				audit.setInitAuditUser(user);
 				// 更改审计状态
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
-						.getByPrimaryKey(Constants.PROCESS_STATIC_WJMH);
-				audit.setAuditProcessStatus(auditProcessStatus);// 设置为已初审, 未减免缓
+						.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为已初审, 未复审
 				auditService.update(audit);
 				return true;
 			}
@@ -229,11 +229,11 @@ public class AuditsController {
 		Integer id = audit.getId();
 
 		Audit getAudit = auditService.getByPrimaryKey(id);
-		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
-		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
+		getAudit.setJianMianAuditComment(audit.getJianMianAuditComment());
+		getAudit.setJianMianAuditDate(new Date());// 添加减免缓
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
-		getAudit.setVerifyAuditUser(user);// 添加复审ID
+		getAudit.setJianMianAuditUser(user);// 添加减免缓操作人
 
 		getAudit.setAmountPayable(audit.getAmountPayable());// 应缴金额
 		getAudit.setReductionAmount(audit.getReductionAmount());// 减缴金额
@@ -268,8 +268,8 @@ public class AuditsController {
 //				auditService.update(a);
 //			}
 //		}
-		// 审核状态修改为 已减免缓 未复审
-		getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_YJMWFS));
+		// 审核状态不变
+	//	getAudit.setAuditProcessStatus(new AuditProcessStatus(Constants.PROCESS_STATIC_YJMWFS));
 		logger.debug(getAudit.toString());
 		auditService.update(getAudit);
 
