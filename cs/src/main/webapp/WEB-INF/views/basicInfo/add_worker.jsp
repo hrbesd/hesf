@@ -116,13 +116,12 @@
 			return false;
 		}
 		//非法字符判断
-		var workerVal = workerHandicapCode.substring(0, 20);
-		if(isNaN(workerVal)){
-		   alert("残疾证号前20未有非法字符。");
-		   return false;
+		var reg = /^[0-9]{14}[0-9a-zA-Z]{4}[1-7]{1}[1-4]{1}[B]?[0-9]?/;
+		var checkResult = reg.test(workerHandicapCode);
+		if(!checkResult){
+			$.messager.alert('消息', checkResult, 'error');
+			return false;
 		}
-
-		
 		
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
@@ -285,8 +284,8 @@
 						</div></td>
 				</tr>
 				<tr>
-					<td class="">姓名(<label class="red_notice"> *</label>):</td>
-					<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" data-options="required:true" />
+					<td class="">姓名:</td>
+					<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" />
 					</td>
 					<td class="">性别:</td>
 					<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">

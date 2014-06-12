@@ -266,16 +266,16 @@ public class WorkerController {
 	}
 
 	
-//	@ExceptionHandler(Exception.class)
-//	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
-//		Map<Object,Object> model = new HashMap<Object,Object>();
-//		if(ex instanceof MaxUploadSizeExceededException){
-//			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
-//		}else{
-//			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
-//		}
-//		return new ModelAndView("test",(Map)model);
-//	}
+	@ExceptionHandler(Exception.class)
+	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
+		Map<Object,Object> model = new HashMap<Object,Object>();
+		if(ex instanceof MaxUploadSizeExceededException){
+			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
+		}else{
+			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
+		}
+		return new ModelAndView("basicInfo/add_worker_notice",(Map)model);
+	}
 	
 	
 	private String getFileKB(long byteFile){
