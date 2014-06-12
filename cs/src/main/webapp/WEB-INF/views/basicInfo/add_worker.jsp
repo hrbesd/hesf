@@ -184,7 +184,9 @@
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		//根据残疾证号初始化其他组件
 		var initElement = addWorker.initElement(workerHandicapCode);
-	
+		if(!initElement){
+			return;
+		}
 		//远程校验 校验残疾证号是否存在，是否在其他公司
 		$.ajax({
 			url : 'worker/validate_workerHandicapCode',
