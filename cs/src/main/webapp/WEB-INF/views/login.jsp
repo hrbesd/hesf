@@ -18,11 +18,11 @@
 		$("#loginVerifyCode").attr("src", "${contextPath}/captcha/create?" + timestamp);
 	}
 	function submit() {
-		var code = $('input[name=checkCode]').val();
+	/*	var code = $('input[name=checkCode]').val();
 		if (code == '' || code == undefined) {
 			$('#message').html("验证码不能不空");
 			return;
-		}
+		}	*/
 		$("#loginform").submit();
 	}
 	$(function() {
@@ -57,8 +57,8 @@ padding: 40px 0 0 0;
 <body style="background-color: #E9E9E9;">
 	<h2 class="bbc-name bbc-shop" >残疾人就业保障金管理系统</h2>
 	<h2 style="color: #0074A7; text-align: center;" >Handicapped Employment Security Fund</h2>
-	<div id="main" style=" display: none;">
-		<div id="win" class="easyui-window" title="登录 v1.0-Bate" style="width:450px; height:350px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
+	<div id="main" style=" display: none;">				<!-- 暂时高度定位250, 应为350比较好 -->
+		<div id="win" class="easyui-window" title="登录 v1.0-Bate" style="width:450px; height:250px;" collapsible="false" minimizable="false" maximizable="false" closable="false">
 			<form id="loginform" action="${contextPath}/login" method="post" style="padding-left: 80px; padding-top: 30px;">
 				<div style="text-align: left;">
 					<div style="color: red;" id="message">${message}</div>
@@ -68,17 +68,17 @@ padding: 40px 0 0 0;
 					<p>
 						<span style="display:-moz-inline-block;display:inline-block;width:50px;">密&nbsp;&nbsp;&nbsp;码:</span><input name="password" type="password" style="width: 140px;padding-left: 5px;" value="" />
 					</p>
-					<div>
+				<!-- 	<div>
 						<div style="height: 30px; width: 216px;">
 							<span style="display:-moz-inline-block;display:inline-block;width:50px;">验证码:</span><input name="checkCode" type="text" style="width: 60px;padding-left:5px; " /> 
 							<img id="loginVerifyCode" onclick="getimgcode();" alt="验证码" style="width:90px;height:30px;"/>
 						</div>
-					</div>
+					</div>	 -->
 				</div>
 				<div style="padding-left: 40px;">
-					<p style="line-height:20px;">
-						<a href="javascript:getimgcode();" style="text-decoration:none;font-size:13px;margin-left:10px;">看不清验证码</a>
-					</p>
+				 	<p style="line-height:20px;">
+					<!--	<a href="javascript:getimgcode();" style="text-decoration:none;font-size:13px;margin-left:10px;">看不清验证码</a> -->
+					</p>	
 					<a id="login" href="javascript:submit();" plain="false" class="easyui-linkbutton" icon="icon-ok" style="margin-top:0px;margin-bottom:0px;">登录</a>
 				</div>
 			</form>

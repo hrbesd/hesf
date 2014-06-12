@@ -90,19 +90,19 @@ public class IndexController {
 
 		String userName = request.getParameter("username");
 		String passWord = request.getParameter("password");
-		String checkCode = request.getParameter("checkCode");
+//		String checkCode = request.getParameter("checkCode");
 
-		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
-
-		CaptchaService captchaService = new CaptchaService();
-		Boolean b = captchaService.checkCode(checkCode, request);
-		logger.debug("checkcode status:{}", b);
-		if (b == false) {
-			redirectAttributes.addFlashAttribute("username", userName);
-			redirectAttributes.addFlashAttribute("password", passWord);
-			redirectAttributes.addFlashAttribute("message", "验证码错误");
-			return new ModelAndView("redirect:/login");
-		}
+//		logger.debug("userName:{},passWord:{},checkCode:{}", userName, passWord, checkCode);
+//
+//		CaptchaService captchaService = new CaptchaService();
+//		Boolean b = captchaService.checkCode(checkCode, request);
+//		logger.debug("checkcode status:{}", b);
+//		if (b == false) {
+//			redirectAttributes.addFlashAttribute("username", userName);
+//			redirectAttributes.addFlashAttribute("password", passWord);
+//			redirectAttributes.addFlashAttribute("message", "验证码错误");
+//			return new ModelAndView("redirect:/login");
+//		}
 
 		User user = userService.getUserByUserName(userName);
 		if (user != null && user.getUserName().equals(userName)) {
