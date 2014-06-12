@@ -244,10 +244,14 @@
 	};
 	//组件解析完成
 	$.parser.onComplete = function() {
-		$('#isUpload').toggle(function(){
-			$('#file').hide();
-		},function(){
-			$('#file').show();
+		
+		$('#isUpload').click(function(){
+			var checked = $('#isUpload').attr('checked');
+			if(checked){
+				$('#file').show();
+			}else{
+				$('#file').hide();
+			}
 		});
 	};
 </script>
@@ -320,8 +324,8 @@
 				<tr>
 					<td class="">上传照片:</td>
 					<td colspan="5">
-						<input type="checkbox" id="isUpload" />
-						<input type="file" name="file" id="file" value="tudou" style="height:19px;line-height:19px;border:none;width:200px;" />
+						<input type="checkbox" id="isUpload" style="height:auto;" />
+						<input type="file" name="file" id="file" value="tudou" style="height:19px;line-height:19px;border:none;width:200px;display:none;" />
 					</td>
 				</tr>
 				<tr>
