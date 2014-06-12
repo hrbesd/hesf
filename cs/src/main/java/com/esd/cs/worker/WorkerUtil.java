@@ -29,7 +29,7 @@ public class WorkerUtil {
 	public static Integer DnISABILITYCARDLENGTH = 20;// 身份证位数
 	private static final Logger logger = LoggerFactory.getLogger(WorkerUtil.class);
 
-	// 返回职工年龄
+	// 返回职工当前年龄--不是去年年龄
 	public static Integer conversionAge(String param) {
 		if (param != null) {
 			try {
@@ -192,18 +192,19 @@ public class WorkerUtil {
 		List<String> result = new ArrayList<String>();
 
 		if (param != null) {
-			int age = conversionAge(workerHandicapCode);
+			//计算去年年龄
+			int age = conversionAge(workerHandicapCode)-1;
 			// 性别
 			if (sex % 2 == 0) {
 				result.add("女性");
 				result.add(age + "");
 				// 女性 退休校验
-				if (age > param.getRetireAgeFemale()) {
+				if (age >= param.getRetireAgeFemale()) {
 					result.add("已超过退休年龄");
 					return result;
 				}
 				// 是否达到工作年龄校验
-				if (age < 16) {
+				if (age <= 16) {
 					result.add("年龄未达到工作年龄");
 					return result;
 				}
@@ -212,12 +213,12 @@ public class WorkerUtil {
 				result.add("男性");
 				result.add(age + "");
 				// 男性
-				if (age > param.getRetireAgeMale()) {
+				if (age >= param.getRetireAgeMale()) {
 					result.add("已超过退休年龄");
 					return result;
 				}
 				// 是否达到工作年龄校验
-				if (age < 16) {
+				if (age <= 16) {
 					result.add("年龄未达到工作年龄");
 					return result;
 				}

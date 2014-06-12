@@ -42,6 +42,11 @@ public class UserController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
 
+	
+	public static void main(String[] args) {
+		String a = "abcdefghijklmnopqrstuvwxyz";
+		System.out.println(a.substring(0,1));
+	}
 	@Autowired
 	private UserService userService;
 

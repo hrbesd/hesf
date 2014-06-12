@@ -54,7 +54,7 @@
 		{
 			field : 'retirementAge',
 			title : '退休年龄',
-			hidden : true,
+			hidden : false,
 		}, {
 			field : 'workerName',
 			title : '姓名',
@@ -142,12 +142,12 @@
 	workerList.ageDetection = function(value, row, index) {
 
 		if (row.workerGender == '男') {
-			if (row.workerAge > row.retirementAge) {
+			if (row.workerAge >= row.retirementAge) {
 				return 'background-color:red;font-weight: bold;';
 			}
 		}
 		if (row.workerGender == '女') {
-			if (row.workerAge > row.retirementAge) {
+			if (row.workerAge >= row.retirementAge) {
 				return 'background-color:red;font-weight: bold;';
 			}
 		}

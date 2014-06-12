@@ -241,7 +241,6 @@ public class WorkerController {
 				
 				try {
 					byte[] b = mf.getBytes();
-					
 					worker.setPic(b);
 					worker.setPicTitle(fileName);
 				} catch (IOException e) {
@@ -255,6 +254,7 @@ public class WorkerController {
 			String year = request.getParameter("year");
 			logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
 					companyId);
+			
 			boolean b = workerService.save(worker, companyId, year);
 			logger.debug("addWorker:{},Result:{}", worker, b);
 			if(b){
@@ -732,11 +732,11 @@ public class WorkerController {
 						}
 						// 6.校验20之前是否有其他字符
 						String handicapStr = workerHandicapCode
-								.substring(0, 19);
+								.substring(0, 17);
 						if (!handicapStr.matches("\\d+")) {
-							w.setRemark("残疾证号前20位有非法字符");
+							w.setRemark("残疾证号前17位有非法字符");
 							// workerErrorList.add(w);
-							t.setRemark("残疾证号前20位有非法字符");
+							t.setRemark("残疾证号前17位有非法字符");
 							wtService.save(t);
 							logger.error("impoerWorkerError:{},info:{}", w,
 									TYPEERROR);

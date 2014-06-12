@@ -171,8 +171,8 @@ public class QueryWorkerController {
 					}
 				}
 
-				// 计算年龄 传入残疾证号，参数错误返回-1
-				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode()));
+				// 计算年龄(去年的年龄) 传入残疾证号，参数错误返回-1
+				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode())-1);
 				map.put("phone", it.getPhone());// phone
 				map.put("workerHandicapType", it.getWorkerHandicapType().getHandicapType());// 残疾类别
 				map.put("workerHandicapLevel", it.getWorkerHandicapLevel().getHandicapLevel());// 残疾等级

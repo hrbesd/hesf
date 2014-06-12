@@ -49,10 +49,10 @@
 		if(addWorker.initElement(workerHandicapCode)==false){
 			return false;
 		}
-		//校验表单
-		if (esd.common.validatebox("#addWorkerForm") == false) {
-			return false;
-		}
+	//	//校验表单
+	//	if (esd.common.validatebox("#addWorkerForm") == false) {
+	//		return false;
+	//	}
 		//校验残疾证号是否存在，是否在其他公司
 		$.ajax({
 			url : '${contextPath}/security/worker/validate_workerHandicapCode',
@@ -63,6 +63,7 @@
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
+				alert('data[0].type : '+data[0].type);
 				if (data[0].type == "1") {
 					$('#win').window(
 							{
@@ -82,13 +83,15 @@
 				} else if (data[0].type == "2") {
 					//更改表单路径为编辑路径
 					$("#addWorkerForm").attr('action', "worker/updata");
+					alert('update');
 				//	addWorker.save();
-					return false;
+					return true;
 					//第三种情况，员工不存在
 				} else if (data[0].type == "3") {
 					//更改表单路径为增加路径
 					$("#addWorkerForm").attr('action', "worker/add");
 				//	addWorker.save();
+				alert('add');
 					return true;
 				}
 			},
@@ -104,6 +107,10 @@
 		保存增加残疾职工信息
 	 **/
 	addWorker.save = function() {
+		//校验
+		addWorker.validate();
+		
+		//提交
 		$('#addWorkerForm').submit();
 	//	addWorker.close();
 	//	$('#workerList_dataGrid').datagrid("load");
@@ -126,7 +133,7 @@
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
-		if (workerType == 0 || workerType>7) {
+		if (workerType < 1 || workerType>7) {
 		
 			$.messager.alert('消息', '残疾证号内残疾类型错误。', 'error');
 			return false;
@@ -134,8 +141,7 @@
 		//获取残疾等级
 		var workerLeven = workerHandicapCode.substring(19, 20);
 		$("#workerHandicapLevel").combobox("setValue", workerLeven);
-		if (workerLeven == 0 || workerLeven>4 ) {
-			
+		if (workerLeven < 1 || workerLeven > 4 ) {
 			$.messager.alert('消息', '残疾证号内残疾等级错误。', 'error');
 			return false;
 		}
@@ -145,28 +151,26 @@
 		var day = workerHandicapCode.substring(12, 14);//日
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
-		//职工当前年龄
-		var age=$("#nowYear").val()-year+1;
+		//职工去年年龄
+		var age=$("#nowYear").val()-year;
 
 		//判断年龄
-		if(age<16){
+		if(age<=16){
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
 				return false;
 		}
 		if (sex % 2 === 0) {
 			//偶数 女性职工
 			$("#workerGender").combobox("setValue", "0");
-			if(age > $("#retireAgeFemale").val()){
-				$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。已超过退休年龄', 'error');
-	
+			if(age >= $("#retireAgeFemale").val()){
+				$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
 				return false;
 			}
 		} else {
-			//基数 男性
+			//奇数 男性
 			$("#workerGender").combobox("setValue", "1");
-				if(age > $("#retireAgeMale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。已超过退休年龄', 'error');
-				
+				if(age >= $("#retireAgeMale").val()){
+					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。去年已超过退休年龄', 'error');
 				return false;
 			}
 		}
@@ -177,8 +181,6 @@
 		$("#workerIdCard").val(workerIdCard);
 		// 出生年份--供后台查询使用
 		$("#workerBirthYear").val($("#nowYear").val());
-		
-	
 		return true;
 	};
 	/**
@@ -195,10 +197,8 @@
 		//身份证号
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		//根据残疾证号初始化其他组件
-		addWorker.initElement(workerHandicapCode);
+		var initElement = addWorker.initElement(workerHandicapCode);
 	
-	
-
 		//远程校验 校验残疾证号是否存在，是否在其他公司
 		$.ajax({
 			url : 'worker/validate_workerHandicapCode',
@@ -209,7 +209,7 @@
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
-				if (data[0].type == "1") {
+				if (data[0].type == "1" || data[0].type == 1) {
 					$('#win').window(
 							{
 								title : '警告：该员工已被其他公司录用',
@@ -225,7 +225,7 @@
 							});
 					return;
 					//第二种情况，员工存在，不再任何公司
-				} else if(data[0].type == '2') {
+				} else if(data[0].type == '2' || data[0].type == 2) {
 					//将员工相关控件信息补全
 					$("#addWorkerForm #workerName").val(data[0].workerName);//姓名
 					$("#addWorkerForm #careerCard").val(data[0].careerCard);//就业证号
@@ -237,9 +237,10 @@
 			},
 			error : function() {
 				$.messager.alert('消息', '增加残疾职工校验时发生错误。', 'error');
-			
+				return;
 			}
 		});
+		return;
 	};
 	//组件解析完成
 	$.parser.onComplete = function() {
@@ -257,8 +258,8 @@
 
 <!-- 导入成功隐藏 -->
 <c:if test="${notice != 'success' || notice != 'failure'}">
-	<div id="addWorkerDiv">
-		<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" target="addWorkerIframe" enctype="multipart/form-data" onsubmit="return addWorker.validate();">
+	<div id="addWorkerDiv">																								<!--  onsubmit="return addWorker.validate();" -->
+		<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" target="addWorkerIframe" enctype="multipart/form-data">
 			<!--  女退休年龄 -->
 			<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 			<!--  男退休年龄 -->
@@ -349,6 +350,6 @@
 		</form>
 	</div>
 </c:if>
-
+<div id="win"></div>
 <!-- 导入结果显示 -->
 <iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>
