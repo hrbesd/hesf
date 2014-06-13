@@ -69,7 +69,7 @@
 								$("#parameter_list_grid").datagrid('reload');
 							});
 						} else {
-							$.messager.alert('消息', '删除失败', 'info');
+							$.messager.alert('消息', '删除失败, 可能存在该年的审核数据.', 'info');
 						}
 					},
 					dataType : "json",

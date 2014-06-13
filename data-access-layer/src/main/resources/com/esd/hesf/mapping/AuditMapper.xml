@@ -740,6 +740,12 @@
 		and c.id = #{companyId,jdbcType=INTEGER}
 	</select>
 
+	<select id="retrieveCountByYear" parameterType="java.lang.String" resultType="int">
+		select count(*)
+		from audit
+		where year = #{year, jdbcType=CHAR}
+	</select>
+	
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />

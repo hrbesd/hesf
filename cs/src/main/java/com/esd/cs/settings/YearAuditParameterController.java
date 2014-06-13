@@ -216,6 +216,13 @@ public class YearAuditParameterController {
 	public Boolean deletePost(@RequestParam(value = "params[]") int[] ids) {
 		logger.debug(ids.toString());
 		for (int i = 0; i < ids.length; i++) {
+			AuditParameter aup = auditParameterService.getByPrimaryKey(ids[i]);
+			// 检查是否有对应该审核参数年度的审核数据, 有的话, 则不可以删除
+			String auditYear = aup.getYear();
+			Integer count = auditService.getCountByYear(auditYear);
+			if (count > 0) {
+				return false;
+			}
 			if (auditParameterService.delete(ids[i]) == false) {
 				return false;
 			}

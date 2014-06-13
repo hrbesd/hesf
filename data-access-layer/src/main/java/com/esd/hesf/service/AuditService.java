@@ -65,4 +65,11 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	String[] getAuditYears();
+	
+	/**
+	 * 根据审核年份, 查询该审核年份存在多少条审核数据
+	 * @param year
+	 * @return
+	 */
+	Integer getCountByYear(String year);
 }

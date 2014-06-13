@@ -339,4 +339,13 @@ public class AuditServiceImpl implements AuditService {
 		return dao.retrieveAuditYears();
 	}
 
+	@Override
+	public Integer getCountByYear(String year) {
+		if(year == null){
+			return null;
+		}
+		return dao.retrieveCountByYear(year);
+	}
+
+	
 }

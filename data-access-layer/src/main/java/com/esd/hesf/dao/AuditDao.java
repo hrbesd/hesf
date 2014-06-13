@@ -60,4 +60,11 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @return
 	 */
 	String[] retrieveAuditYears();
+	
+	/**
+	 * 根据审核年份, 查询存在多少条该年的审核数据
+	 * @param year
+	 * @return
+	 */
+	Integer retrieveCountByYear(String year);
 }
