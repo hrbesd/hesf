@@ -174,13 +174,13 @@ public class UserController {
 			entity.put(Constants.NOTICE, "用户名已经存在.");
 			return entity;
 		}
-		// 检查手机号
-		User checkUserMobile = userService.getUserByUserMobile(user
-				.getUserMobile());
-		if (checkUserMobile != null) {
-			entity.put(Constants.NOTICE, "手机号码已经存在.");
-			return entity;
-		}
+//		// 检查手机号
+//		User checkUserMobile = userService.getUserByUserMobile(user
+//				.getUserMobile());
+//		if (checkUserMobile != null) {
+//			entity.put(Constants.NOTICE, "手机号码已经存在.");
+//			return entity;
+//		}
 		String passWord = user.getUserPassword();
 		String userName = user.getUserName();
 		UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
@@ -202,15 +202,15 @@ public class UserController {
 	public Map<String, Object> updatePost(User user) {
 		logger.debug(user.toString());
 		Map<String, Object> entity = new HashMap<String, Object>();
-		// 检查手机号
-		User checkUserMobile = userService.getUserByUserMobile(user
-				.getUserMobile());
-		if (checkUserMobile != null
-				&& (user.getUserMobile()
-						.equals(checkUserMobile.getUserMobile()))) {
-			entity.put(Constants.NOTICE, "手机号码已经存在.");
-			return entity;
-		}
+//		// 检查手机号
+//		User checkUserMobile = userService.getUserByUserMobile(user
+//				.getUserMobile());
+//		if (checkUserMobile != null
+//				&& (user.getUserMobile()
+//						.equals(checkUserMobile.getUserMobile()))) {
+//			entity.put(Constants.NOTICE, "手机号码已经存在.");
+//			return entity;
+//		}
 		Boolean bl = userService.update(user);
 		entity.put(Constants.NOTICE, bl);
 		return entity;
