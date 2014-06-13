@@ -55,8 +55,8 @@
 				if(row.userName == 'admin'){
 					d = '';
 				}				
-				/*	var u = '<a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a>';	*/
-				return e + d;
+				var u = '<c:if test="${userGroupId == 1}"><a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a></c:if>';	
+				return e + d + u;
 			}
 		} ] ], params);
 
