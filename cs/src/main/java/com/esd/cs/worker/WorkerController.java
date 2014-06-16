@@ -262,7 +262,7 @@ public class WorkerController {
 			}else{
 				request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
 			}
-			return new ModelAndView("basicInfo/add_worker_notice");
+			return new ModelAndView("documents/add_worker_notice");
 	}
 
 	
@@ -274,7 +274,7 @@ public class WorkerController {
 		}else{
 			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
 		}
-		return new ModelAndView("basicInfo/add_worker_notice",(Map)model);
+		return new ModelAndView("documents/add_worker_notice",(Map)model);
 	}
 	
 	
@@ -393,7 +393,7 @@ public class WorkerController {
 		}else{
 			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
 		}
-		return new ModelAndView("basicInfo/add_worker_notice");
+		return new ModelAndView("documents/add_worker_notice");
 	}
 
 	/**
