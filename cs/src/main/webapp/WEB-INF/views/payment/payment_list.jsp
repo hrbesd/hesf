@@ -102,9 +102,11 @@
 			<td width="80" style="text-align: right;">实缴金额:</td>
 			<td width="150"><input type="text" id="money" />
 			</td>
-			<td width="100%" style="text-align:left;padding-left:20px;font-size:13px;">
-				省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="six" style="height:auto;margin-right:20px;"/>
-				地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="nonSix" style="height:auto" />
+			<td width="170" style="text-align:left;padding-left:20px;font-size:13px;">
+				<div style="border:2px rgb(174, 179, 243) solid;height: 24px;padding-top: 2px;text-align: center;border-radius: 5px;">
+					省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="six" style="height:auto;margin-right:20px;"/>
+					地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="nonSix" style="height:auto" />
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -115,7 +117,7 @@
 			<td><input type="text" style="width: 100%" id="companyTaxCode" />
 			</td>
 			<td style="text-align: right;">企业名称 :</td>
-			<td colspan="3"><input type="text" style="width: 100%" id="companyName" />
+			<td colspan="2"><input type="text" style="width: 100%" id="companyName" />
 			</td>
 			<td>
 				<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="payment.loadData()">查找</a>
