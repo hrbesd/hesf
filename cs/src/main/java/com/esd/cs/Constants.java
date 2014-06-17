@@ -174,4 +174,12 @@ public class Constants {
 	 * 用户组-减免
 	 */
 	public static final Integer USER_GROUP_JIANMIAN = 8;
+	
+	
+	/**
+	 * 账目列表所属类型
+	 */
+	public static final String BELONGS_TYPE = "belongsType";	//所属类型
+	public static final String BELONGS_TYPE_SIX = "six";	//档案号以 6开头的
+	public static final String BELONGS_TYPE_NON_SIX = "nonSix";	//档案号不以 6开头的
 }

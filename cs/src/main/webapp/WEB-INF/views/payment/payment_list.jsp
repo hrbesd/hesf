@@ -13,6 +13,7 @@
 		params.companyCode = $('#companyCode').val();
 		params.companyTaxCode = $('#companyTaxCode').val();
 		params.companyName = $('#companyName').val();
+		params.belongsType = $('input[name="belongsType"]:checked').val();
 		return params;
 	};
 	/**
@@ -95,12 +96,16 @@
 				data-options="height:30,editable:false"/>
 			</td>
 			<td width="80" style="text-align: right;">流程状态:</td>
-			<td width="150"><input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
+			<td width="150">
+				<input id="process" class="easyui-combobox" data-options="height:30,editable:false,panelHeight:240" />
 			</td>
 			<td width="80" style="text-align: right;">实缴金额:</td>
 			<td width="150"><input type="text" id="money" />
 			</td>
-			<td width="100%"></td>
+			<td width="100%" style="text-align:left;padding-left:20px;font-size:13px;">
+				省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="six" style="height:auto;margin-right:20px;"/>
+				地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="nonSix" style="height:auto" />
+			</td>
 		</tr>
 		<tr>
 			<td style="text-align: right;">档案编码:</td>
@@ -112,7 +117,8 @@
 			<td style="text-align: right;">企业名称 :</td>
 			<td colspan="3"><input type="text" style="width: 100%" id="companyName" />
 			</td>
-			<td><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="payment.loadData()">查找</a>
+			<td>
+				<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="payment.loadData()">查找</a>
 			</td>
 		</tr>
 	</table>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.Constants;
 import com.esd.hesf.model.Accounts;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
@@ -50,6 +51,7 @@ public class AccountsController {
 		String companyCode = request.getParameter("companyCode");
 		String companyTaxCode = request.getParameter("companyTaxCode");
 		String companyName = request.getParameter("companyName");
+		String belongsType = request.getParameter("belongsType");
 		// 账目对象
 		Accounts ac = new Accounts();
 		ac.setYear(year);
@@ -61,7 +63,7 @@ public class AccountsController {
 		ac.setAuditProcessStatus(new AuditProcessStatus(process));
 		// 根据公司的相关信息, 查询账目表
 		PaginationRecordsAndNumber<Accounts, Number> query = acService
-				.getPaginationRecordsGroupByCompany(ac, page, pageSize);
+				.getPaginationRecordsGroupByCompany(ac, belongsType,page, pageSize);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for (Iterator<Accounts> iterator = query.getRecords().iterator(); iterator

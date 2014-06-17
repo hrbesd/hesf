@@ -205,11 +205,12 @@ public class AccountsServiceImpl implements AccountsService {
 
 	@Override
 	public PaginationRecordsAndNumber<Accounts, Number> getPaginationRecordsGroupByCompany(
-			Accounts t, Integer page, Integer pageSize) {
+			Accounts t, String belongsType, Integer page, Integer pageSize) {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println(t);
 		map.put("accounts", t);
+		//所属类型--是否以6字开头
+		map.put(Constants.BELONGS_TYPE, belongsType);
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
 		// 返回量

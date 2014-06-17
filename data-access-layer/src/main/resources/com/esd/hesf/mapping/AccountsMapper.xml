@@ -637,6 +637,15 @@
 					</if>
 				</if>
 			</if>
+			<!-- 区分是不是以6开头的企业 -->
+			<if test="belongsType != null and belongsType != ''">
+				<if test="belongsType == 'six'">
+					and c.company_code like '6%' 
+				</if>
+				<if test="belongsType == 'nonSix'">
+					and c.company_code not like '6%' 
+				</if>
+			</if>
 		</trim>
 		group by ac.company_id 
 		order by ac.year, c.company_code
@@ -712,6 +721,15 @@
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
+				</if>
+			</if>
+			<!-- 区分是不是以6开头的企业 -->
+			<if test="belongsType != null and belongsType != ''">
+				<if test="belongsType == 'six'">
+					and c.company_code like '6%' 
+				</if>
+				<if test="belongsType == 'nonSix'">
+					and c.company_code not like '6%' 
 				</if>
 			</if>
 		</trim>

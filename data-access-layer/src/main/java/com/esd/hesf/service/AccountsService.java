@@ -71,12 +71,13 @@ public interface AccountsService extends BaseService<Accounts> {
 	 * 采用了以公司分组的分页查询
 	 * 
 	 * @param t
+	 * @param belongType	所属类型-是否以6字头开始的公司	
 	 * @param page
 	 * @param pageSize
 	 * @return PaginationRecordsAndNumber<Accounts, Number>
 	 */
 	PaginationRecordsAndNumber<Accounts, Number> getPaginationRecordsGroupByCompany(
-			Accounts t, Integer page, Integer pageSize);
+			Accounts t, String belongType,Integer page, Integer pageSize);
 
 	/**
 	 * 根据账目年份和公司id, 得到该公司当前缴款 包含的审核年度
