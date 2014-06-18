@@ -55,12 +55,12 @@
 	</bean>
 
 	<!-- 文件上传解析器 -->
-	<bean id="multipartResolver"
+ 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize">
 			<value>800000</value>
 		</property>
-	<!-- 	<property name="resolveLazily" value="true" />	 -->
+	<!-- 	<property name="resolveLazily" value="true" /> -->
 		
 	</bean>
 	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 

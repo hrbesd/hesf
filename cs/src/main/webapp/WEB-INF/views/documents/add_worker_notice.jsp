@@ -2,17 +2,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" type="text/css"
-	href="${contextPath}/js/lib/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css"
-	href="${contextPath}/js/lib/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/js/lib/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="${contextPath}/css/cs.css" />
-<script type="text/javascript"
-	src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
-<script type="text/javascript"
-	src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
 	

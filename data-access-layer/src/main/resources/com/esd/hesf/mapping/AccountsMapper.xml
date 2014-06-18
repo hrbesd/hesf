@@ -12,6 +12,7 @@
 		<result column="ac_year" property="year" jdbcType="TIMESTAMP" />
 		<result column="ac_total_money" property="totalMoney" jdbcType="DECIMAL" />
 		<result column="ac_is_finished" property="isFinished" jdbcType="BIT" />
+		<result column="ac_is_receipt" property="isReceipt" jdbcType="BIT" />
 		<association property="company" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
 		<association property="audit" javaType="com.esd.hesf.model.Audit" resultMap="ResultAudit" />
 		<association property="auditProcessStatus" javaType="com.esd.hesf.model.AuditProcessStatus" resultMap="ResultAuditProcessStatus" />
@@ -91,7 +92,7 @@
 	<sql id="Base_Column_List">
 		<!-- accounts -->
 		ac.id as ac_id, ac.create_time as ac_create_time, ac.update_time as ac_update_time,ac.user_id as ac_user_id, ac.is_active as ac_is_active, ac.version as ac_version,
-		ac.year as ac_year, ac.total_money as ac_total_money, ac.is_finished as ac_is_finished,
+		ac.year as ac_year, ac.total_money as ac_total_money, ac.is_finished as ac_is_finished, ac.is_receipt as ac_is_receipt, 
 		<!-- company -->
 		c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal, 
 		c.company_contact_person as c_company_contact_person, c.company_organization_code as c_company_organization_code, 
@@ -173,11 +174,11 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into accounts (create_time, update_time, user_id, is_active, version, year, company_id, 
-		audit_id, total_money, is_finished, audit_process_status)
+		audit_id, total_money, is_finished, audit_process_status, is_receipt)
 		values
 		(now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT},default,#{year,jdbcType=CHAR},
 		#{company.id, jdbcType=INTEGER}, #{audit.id, jdbcType=INTEGER}, #{totalMoney,jdbcType=DECIMAL}, #{isFinished,jdbcType=BIT},
-		#{audit_process_status.id,jdbcType=INTEGER})
+		#{audit_process_status.id,jdbcType=INTEGER},#{isReceipt, jdbcType=BIT})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.Accounts">
@@ -211,8 +212,11 @@
 			is_finished,
 			<if test="auditProcessStatus != null">
 				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
-					audit_process_status
+					audit_process_status,
 				</if>
+			</if>
+			<if test="isReceipt != null">
+				is_receipt
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -262,8 +266,11 @@
 			</choose>
 			<if test="auditProcessStatus != null">
 				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
-					#{auditProcessStatus.id, jdbcType=INTEGER}
+					#{auditProcessStatus.id, jdbcType=INTEGER},
 				</if>
+			</if>
+			<if test="isReceipt != null">
+				#{isReceipt, jdbcType=BIT}
 			</if>
 		</trim>
 	</insert>
@@ -306,6 +313,9 @@
 					audit_process_status = #{auditProcessStatus.id, jdbcType=INTEGER},
 				</if>
 			</if>
+			<if test="isReceipt != null">
+				is_receipt = #{isReceipt, jdbcType=BIT},
+			</if>
 			version = version + 1
 		</set>
 		where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
@@ -333,8 +343,6 @@
 		</where> 
 	</select>
 	
-	
-
 	<select id="retrieveByCompanyGroup" resultMap="ResultAccounts" parameterType="com.esd.hesf.model.Accounts">
 		select
 			<include refid="Base_Group_Column_List" />
@@ -408,6 +416,10 @@
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
+				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
 				</if>
 				<choose>
 					<when test="accounts.isActive != null">
@@ -496,6 +508,10 @@
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
 				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
+				</if>
 				<choose>
 					<when test="accounts.isActive != null">
 						ac.is_active = #{accounts.isActive,jdbcType=BIT}
@@ -560,6 +576,10 @@
 				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
 					and ac.audit_process_status = #{auditProcessStatus.id,jdbcType=INTEGER}
 				</if>
+			</if>
+			<!-- is receipt -->
+			<if test="isReceipt != null">
+				and ac.is_receipt = #{isReceipt, jdbcType=BIT}
 			</if>
 		</trim>
 		order by ac.year, c.id
@@ -635,6 +655,10 @@
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
+				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
 				</if>
 			</if>
 			<!-- 区分是不是以6开头的企业 -->
@@ -721,6 +745,10 @@
 					<if test="accounts.auditProcessStatus.id != null and accounts.auditProcessStatus.id > 0">
 						and ac.audit_process_status = #{accounts.auditProcessStatus.id,jdbcType=INTEGER}
 					</if>
+				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
 				</if>
 			</if>
 			<!-- 区分是不是以6开头的企业 -->

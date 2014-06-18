@@ -16,6 +16,7 @@ public class Accounts extends PrimaryKey_Int {
 	private BigDecimal totalMoney; // 总应缴款金额
 	private Boolean isFinished; // 是否缴款完毕
 	private AuditProcessStatus auditProcessStatus; // 审核进程状态 对象
+	private Boolean isReceipt; // 是否已经开票了...
 
 	@Override
 	public String toString() {
@@ -78,6 +79,14 @@ public class Accounts extends PrimaryKey_Int {
 
 	public void setAuditProcessStatus(AuditProcessStatus auditProcessStatus) {
 		this.auditProcessStatus = auditProcessStatus;
+	}
+
+	public Boolean getIsReceipt() {
+		return isReceipt;
+	}
+
+	public void setIsReceipt(Boolean isReceipt) {
+		this.isReceipt = isReceipt;
 	}
 
 }

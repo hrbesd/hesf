@@ -963,7 +963,7 @@ public class TestController {
 		Accounts accounts = new Accounts();
 		accounts.setAuditProcessStatus(new AuditProcessStatus(3));
 		PaginationRecordsAndNumber<Accounts, Number> entity = acService
-				.getPaginationRecordsGroupByCompany(accounts, 1, 100);
+				.getPaginationRecordsGroupByCompany(accounts,null, 1, 100);
 		map.put("entity", entity);
 		return map;
 	}

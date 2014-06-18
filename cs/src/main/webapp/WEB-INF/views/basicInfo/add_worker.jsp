@@ -245,7 +245,6 @@
 </script>
 
 <!-- 导入成功隐藏 -->
-<c:if test="${notice != 'success' || notice != 'failure'}">
 	<div id="addWorkerDiv">																								<!--  onsubmit="return addWorker.validate();" -->
 		<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" target="addWorkerIframe" enctype="multipart/form-data">
 			<!--  女退休年龄 -->
@@ -337,7 +336,6 @@
 			</table>
 		</form>
 	</div>
-</c:if>
 <div id="win"></div>
 <!-- 导入结果显示 -->
 <iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>

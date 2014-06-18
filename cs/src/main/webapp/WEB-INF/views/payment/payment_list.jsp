@@ -14,6 +14,12 @@
 		params.companyTaxCode = $('#companyTaxCode').val();
 		params.companyName = $('#companyName').val();
 		params.belongsType = $('input[name="belongsType"]:checked').val();
+		var tt = $('input[name="isReceipt"]:checked');
+		if(tt.length == 1){
+			$('input[name="isReceipt"]:checked').each(function(){
+				params.isReceipt = $(this).val();
+			});
+		}
 		return params;
 	};
 	/**
@@ -102,11 +108,20 @@
 			<td width="80" style="text-align: right;">实缴金额:</td>
 			<td width="150"><input type="text" id="money" />
 			</td>
-			<td width="170" style="text-align:left;padding-left:20px;font-size:13px;">
-				<div style="border:2px rgb(174, 179, 243) solid;height: 24px;padding-top: 2px;text-align: center;border-radius: 5px;">
+			<td width="170" style="text-align:left;font-size:13px;">
+				<div style="border:2px rgb(174, 179, 243) solid;height: 22px;padding: 2px 5px;text-align: center;border-radius: 5px;">
 					省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="six" style="height:auto;margin-right:20px;"/>
 					地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="nonSix" style="height:auto" />
 				</div>
+			</td>
+			<td>
+				<!-- 
+				<div style="border:2px rgb(174, 179, 243) solid;height: 22px;padding: 2px 5px;text-align: center;border-radius: 5px;width: 70%;">
+					是否已开票：
+						是  <input type="checkbox" onclick="payment.loadData()" name="isReceipt" value="1" style="height:auto;margin-right:20px;"/>
+						否  <input type="checkbox" onclick="payment.loadData()" name="isReceipt" value="0" style="height:auto;margin-right:20px;"/>
+				</div>
+				 -->
 			</td>
 		</tr>
 		<tr>

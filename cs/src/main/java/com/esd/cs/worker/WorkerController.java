@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -231,14 +230,15 @@ public class WorkerController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ModelAndView add_worker(Worker worker, HttpServletRequest request) {
 		// //处理上传的图片, 如果有图片的话
-		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
-		if(cmr.isMultipart(request)){
-			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest)request;
+		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request
+				.getSession().getServletContext());
+		if (cmr.isMultipart(request)) {
+			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
 			Iterator<String> it = mhsr.getFileNames();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				String fileName = it.next();
 				MultipartFile mf = mhsr.getFile(fileName);
-				
+
 				try {
 					byte[] b = mf.getBytes();
 					worker.setPic(b);
@@ -246,54 +246,56 @@ public class WorkerController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		}
-			Integer companyId = Integer.valueOf(request
-					.getParameter("companyId"));
-			String year = request.getParameter("year");
-			logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
-					companyId);
-			
-			boolean b = workerService.save(worker, companyId, year);
-			logger.debug("addWorker:{},Result:{}", worker, b);
-			if(b){
-				request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
-			}else{
-				request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
-			}
-			return new ModelAndView("documents/add_worker_notice");
+		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+		String year = request.getParameter("year");
+		logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
+				companyId);
+
+		boolean b = workerService.save(worker, companyId, year);
+		logger.debug("addWorker:{},Result:{}", worker, b);
+		if (b) {
+			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+		} else {
+			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+		}
+		return new ModelAndView("documents/add_worker_notice");
 	}
 
-	
 	@ExceptionHandler(Exception.class)
-	public ModelAndView handlerException(Exception ex,HttpServletRequest request){
-		Map<Object,Object> model = new HashMap<Object,Object>();
-		if(ex instanceof MaxUploadSizeExceededException){
-			model.put(Constants.NOTICE, "文件不应大于"+getFileKB(((MaxUploadSizeExceededException)ex).getMaxUploadSize()));
-		}else{
-			model.put(Constants.NOTICE, "不知错误"+ex.getMessage());
+	public ModelAndView handlerException(Exception ex,
+			HttpServletRequest request) {
+		Map<Object, Object> model = new HashMap<Object, Object>();
+		if (ex instanceof MaxUploadSizeExceededException) {
+			model.put(
+					Constants.NOTICE,
+					"文件不应大于"
+							+ getFileKB(((MaxUploadSizeExceededException) ex)
+									.getMaxUploadSize()));
+		} else {
+			model.put(Constants.NOTICE, "不知错误" + ex.getMessage());
 		}
-		return new ModelAndView("documents/add_worker_notice",(Map)model);
+		return new ModelAndView("documents/add_worker_notice", (Map) model);
 	}
-	
-	
-	private String getFileKB(long byteFile){
-		if(byteFile == 0){
+
+	private String getFileKB(long byteFile) {
+		if (byteFile == 0) {
 			return "0KB";
 		}
 		long kb = 1024;
-		return ""+byteFile/kb+"KB";
+		return "" + byteFile / kb + "KB";
 	}
-	
-	private String getFileMB(long byteFile){
-		if(byteFile == 0){
+
+	private String getFileMB(long byteFile) {
+		if (byteFile == 0) {
 			return "0MB";
 		}
-		long mb = 1024*1024;
-		return ""+byteFile/mb+"MB";
+		long mb = 1024 * 1024;
+		return "" + byteFile / mb + "MB";
 	}
-	
+
 	private boolean addWorker(Worker worker, Integer companyId, String year) {
 		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
 				companyId, year);
@@ -387,10 +389,11 @@ public class WorkerController {
 	public ModelAndView edit_worker_up(Worker worker, HttpServletRequest request) {
 		logger.debug("editUpdata:{}", worker);
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-		boolean bl = editWorkerUp(worker, companyId, worker.getWorkerBirthYear());
-		if(bl){
+		boolean bl = editWorkerUp(worker, companyId,
+				worker.getWorkerBirthYear());
+		if (bl) {
 			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
-		}else{
+		} else {
 			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
 		}
 		return new ModelAndView("documents/add_worker_notice");
@@ -534,6 +537,9 @@ public class WorkerController {
 					result.put("filePath", file.getPath());
 
 					// form中参数信息
+					result.put("companyId", request.getParameter("companyId")
+							.toString());
+					result.put("year", request.getParameter("year"));
 				} else {
 					// item.getFieldName():获取参数key。item.getString()：获取参数value
 					result.put(item.getFieldName(), item.getString());
@@ -594,6 +600,7 @@ public class WorkerController {
 			HttpServletResponse response, HttpSession session) {
 		Integer userId = Integer.parseInt(session.getAttribute(
 				Constants.USER_ID).toString());
+
 		// 每次进入前都要删除以前可能遗留的workerTemp员工缓存表中的数据
 		wtService.deleteByUserId(userId);
 		logger.debug("importWorker:{}");
@@ -617,8 +624,50 @@ public class WorkerController {
 			tempPath.mkdir();
 		}
 
+		// Map<String, String> paramMap = importfile(upLoadPath, request,
+		// response);
+
+		Map<String, String> paramMap = new HashMap<String, String>();
+
 		// 上传文件
-		Map<String, String> paramMap = importfile(upLoadPath, request, response);
+		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request
+				.getSession().getServletContext());
+		// 如果有文件的话
+		if (cmr.isMultipart(request)) {
+			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
+			Iterator<String> it = mhsr.getFileNames();
+			while (it.hasNext()) {
+				// 原来的文件
+				String orgName = it.next();
+				MultipartFile mf = mhsr.getFile(orgName);
+				String fileName = mf.getOriginalFilename();
+				// 检查文件后缀格式
+				String fileEnd = fileName.substring(
+						fileName.lastIndexOf(".") + 1).toLowerCase();
+				// 创建文件唯一名称
+				String uuid = UUID.randomUUID().toString();
+				// 真实上传路径
+				StringBuffer sbRealPath = new StringBuffer();
+				sbRealPath.append(upLoadPath).append(uuid).append(".")
+						.append(fileEnd);
+				// 写入文件
+				File file = new File(sbRealPath.toString());
+				try {
+					mf.transferTo(file);
+				} catch (IllegalStateException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				logger.info("上传文件成功,filePath：" + file.getPath());
+				// 返回文件路径
+				paramMap.put("filePath", file.getPath());
+
+			}
+		}
+
+		paramMap.put("companyId", request.getParameter("companyId").toString());
+		paramMap.put("year", request.getParameter("year").toString());
 		String fileError = paramMap.get("fileError");// 错误信息
 		if (fileError != null) {
 			// 上传失败，返回错误信息
@@ -626,7 +675,7 @@ public class WorkerController {
 			return new ModelAndView("basicInfo/worker_importInfo");
 		}
 		// 上传文件返回的参数信息
-		String filePath = paramMap.get("filePath");// 文件路径
+		String filePath = paramMap.get("filePath").toString();// 文件路径
 		Integer companyId = Integer.valueOf(paramMap.get("companyId"));// companyID
 		String year = paramMap.get("year");// 年份
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
@@ -1006,7 +1055,7 @@ public class WorkerController {
 					list.add(paramsMap);
 					return list;
 					// 第三种情况，不存在.
-				} else{
+				} else {
 					logger.debug("validateWorkerHandicapCodeResult:{}",
 							"type:3。职工不存在数据库中");
 					paramsMap.put("type", "3");

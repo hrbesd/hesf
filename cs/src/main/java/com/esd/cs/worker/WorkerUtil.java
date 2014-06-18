@@ -61,7 +61,8 @@ public class WorkerUtil {
 	public static Object hasParser(File file) throws FileNotFoundException, IOException {
 		try {
 			// 获取工作薄workbook
-			hWorkbook = new HSSFWorkbook(new FileInputStream(file));
+			FileInputStream fis = new FileInputStream(file);
+			hWorkbook = new HSSFWorkbook(fis);
 			logger.info("excel 97-2003");
 			return hWorkbook;
 		} catch (Exception e) {
@@ -72,6 +73,25 @@ public class WorkerUtil {
 		}
 	}
 
+	public static void main(String[] args) {
+		String fileName = "D:/Program Files/apache-tomcat-7.0.52/webapps/cs/WEB-INF/upload/aa";
+		System.out.println(new File(fileName).length());
+		File file = new File(fileName);
+		try {
+			HSSFWorkbook ww = new HSSFWorkbook(new FileInputStream(file));
+//				XSSFWorkbook ww = new XSSFWorkbook(new FileInputStream(file));;// excel 2007-2012
+			System.out.println(ww);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};// excel 2003之前的版本
+		
+	}
+	
+	
 	/**
 	 * 解析成实体
 	 * 
