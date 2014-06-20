@@ -12,7 +12,7 @@ import java.util.List;
 public class CalculateModel {
 
 	private DecimalFormat df = new DecimalFormat("0.00");
-	private DecimalFormat df4 = new DecimalFormat("0.000");
+//	private DecimalFormat df4 = new DecimalFormat("0.000");
 
 	private Integer zaiZhiYuanGongZongShu;
 	private BigDecimal yingAnPaiCanJiRen;
