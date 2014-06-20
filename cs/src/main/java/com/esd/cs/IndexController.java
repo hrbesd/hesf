@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.esd.common.captcha.CaptchaService;
 import com.esd.common.util.UsernameAndPasswordMd5;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.User;
