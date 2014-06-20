@@ -57,11 +57,15 @@
 	<!-- 文件上传解析器 -->
  	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize">
-			<value>800000</value>
+		<!-- 默认编码 -->
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
 		</property>
-	<!-- 	<property name="resolveLazily" value="true" /> -->
-		
+		<property name="maxUploadSize">
+			<!-- 最大2MB -->
+			<value>2097152</value>
+		</property>
+	 <!--  -->	<property name="resolveLazily" value="true" />
 	</bean>
 	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
 		<property name="exceptionMappings"> <props> <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">errorupload</prop> 

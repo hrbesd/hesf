@@ -87,10 +87,10 @@
 		onComplete : function(file,response){
 			if(response == 'success'){
 				$.messager.alert('提示','保存成功!','info');
-				addWorker.close();
 			}else{
-				$.messager.alert('提示','保存出错!','error');
+				$.messager.alert('提示',response,'error');
 			}
+			addWorker.close();
 			this.enable();
 		}
 	});

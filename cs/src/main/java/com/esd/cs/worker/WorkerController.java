@@ -27,11 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -219,53 +221,6 @@ public class WorkerController {
 		return new ModelAndView("basicInfo/add_worker");
 	}
 
-	// /**
-	// * 增加残疾职工
-	// *
-	// * @param worker
-	// * @param request
-	// * @return
-	// */
-	// @RequestMapping(value = "/add", method = RequestMethod.POST)
-	// public ModelAndView add_worker(Worker worker, HttpServletRequest request)
-	// {
-	// // //处理上传的图片, 如果有图片的话
-	// CommonsMultipartResolver cmr = new CommonsMultipartResolver(request
-	// .getSession().getServletContext());
-	// // 如果是多部分请求的话
-	// if (cmr.isMultipart(request)) {
-	// MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
-	// // 迭代 文件名
-	// Iterator<String> it = mhsr.getFileNames();
-	// while (it.hasNext()) {
-	// String fileName = it.next();
-	// MultipartFile mf = mhsr.getFile(fileName);
-	// try {
-	// // 得到byte字节
-	// byte[] b = mf.getBytes();
-	// worker.setPic(b);
-	// // 将原始文件名设为文件本名
-	// worker.setPicTitle(mf.getOriginalFilename());
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	// Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-	// String year = request.getParameter("year");
-	// logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
-	// companyId);
-	//
-	// boolean b = workerService.save(worker, companyId, year);
-	// logger.debug("addWorker:{},Result:{}", worker, b);
-	// if (b) {
-	// request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
-	// } else {
-	// request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
-	// }
-	// return new ModelAndView("documents/add_worker_notice");
-	// }
-
 	/**
 	 * 异步增加 不 带照片的残疾职工
 	 * 
@@ -297,12 +252,12 @@ public class WorkerController {
 			tempWorker.setPhone(worker.getPhone());
 			tempWorker.setCurrentJob(worker.getCurrentJob());
 			tempWorker.setRemark(worker.getRemark());
-			//关系表对象
+			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
-			//更新并保存关系
+			// 更新并保存关系
 			return workerService.update(tempWorker) && cywService.save(cyw);
 		}
 	}
@@ -321,9 +276,9 @@ public class WorkerController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		String workerHandicapCode = request.getParameter("workerHandicapCode");
-		//根据残疾证号 组装残疾职工对象
+		// 根据残疾证号 组装残疾职工对象
 		Worker worker = WorkerUtil.assembly(workerHandicapCode);
-		//添加上其他信息
+		// 添加上其他信息
 		worker.setWorkerName(request.getParameter("workerName"));
 		worker.setCareerCard(request.getParameter("careerCard"));
 		worker.setPhone(request.getParameter("phone"));
@@ -333,9 +288,7 @@ public class WorkerController {
 		String year = request.getParameter("year");
 		// 公司id
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-		//从request得到相应的worker对象
-	//	Worker worker = getWorkerFromRequest(request);
-		//从CommonsMultipartFile 得到图片和图片名信息
+		// 从CommonsMultipartFile 得到图片和图片名信息
 		worker.setPic(picfile.getBytes());
 		worker.setPicTitle(picfile.getOriginalFilename());
 
@@ -355,83 +308,70 @@ public class WorkerController {
 			tempWorker.setRemark(worker.getRemark());
 			tempWorker.setPic(picfile.getBytes());
 			tempWorker.setPicTitle(picfile.getOriginalFilename());
-			//关系表对象
+			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
-			//更新并保存关系
+			// 更新并保存关系
 			bl = workerService.update(tempWorker) && cywService.save(cyw);
 		}
 		response.setContentType("text/html;chrset=utf-8");
 		PrintWriter writer = response.getWriter();
-		if(bl){
+		if (bl) {
 			writer.write("success");
-		}else{
+		} else {
 			writer.write("failure");
 		}
 	}
 
 	/**
-	 * 从request得到员工的相应数据
+	 * 上传图片超出最大值时, 弹出的异常
+	 * 
+	 * @param ex
 	 * @param request
 	 * @return
+	 * @throws IOException 
 	 */
-	public Worker getWorkerFromRequest(HttpServletRequest request){
-		String workerHandicapCode = request.getParameter("workerHandicapCode");
-		//根据残疾证号 组装残疾职工对象
-		Worker worker = WorkerUtil.assembly(workerHandicapCode);
-		//添加上其他信息
-		worker.setWorkerName(request.getParameter("workerName"));
-		worker.setCareerCard(request.getParameter("careerCard"));
-		worker.setPhone(request.getParameter("phone"));
-		worker.setCurrentJob(request.getParameter("currentJob"));
-		worker.setRemark(request.getParameter("remark"));
-		return worker;
+	@ExceptionHandler(Exception.class)
+	public void handlerException(Exception ex, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf8");
+		String notice = "error";
+		if (ex instanceof MaxUploadSizeExceededException) {
+			notice = "文件不应大于"
+					+ getFileMB(((MaxUploadSizeExceededException) ex)
+							.getMaxUploadSize());
+		} else {
+			notice = "不知错误" + ex.getMessage();
+		}
+		PrintWriter writer = response.getWriter();
+		writer.write(notice);
 	}
-	
-	
-	
-	// @ExceptionHandler(Exception.class)
-	// public ModelAndView handlerException(Exception ex,
-	// HttpServletRequest request) {
-	// Map<Object, Object> model = new HashMap<Object, Object>();
-	// if (ex instanceof MaxUploadSizeExceededException) {
-	// model.put(
-	// Constants.NOTICE,
-	// "文件不应大于"
-	// + getFileKB(((MaxUploadSizeExceededException) ex)
-	// .getMaxUploadSize()));
-	// } else {
-	// model.put(Constants.NOTICE, "不知错误" + ex.getMessage());
-	// }
-	// return new ModelAndView("documents/add_worker_notice", (Map) model);
-	// }
 
-	// private String getFileKB(long byteFile) {
-	// if (byteFile == 0) {
-	// return "0KB";
-	// }
-	// long kb = 1024;
-	// return "" + byteFile / kb + "KB";
-	// }
+//	private String getFileKB(long byteFile) {
+//		if (byteFile == 0) {
+//			return "0KB";
+//		}
+//		long kb = 1024;
+//		return "" + byteFile / kb + "KB";
+//	}
 
-	// private String getFileMB(long byteFile) {
-	// if (byteFile == 0) {
-	// return "0MB";
-	// }
-	// long mb = 1024 * 1024;
-	// return "" + byteFile / mb + "MB";
-	// }
-	//
-	// private boolean addWorker(Worker worker, Integer companyId, String year)
-	// {
-	// logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
-	// companyId, year);
-	// boolean b = workerService.save(worker, companyId, year);
-	// logger.debug("addWorkerResult:{}", b);
-	// return b;
-	// }
+	private String getFileMB(long byteFile) {
+		if (byteFile == 0) {
+			return "0MB";
+		}
+		long mb = 1024 * 1024;
+		return "" + byteFile / mb + "MB";
+	}
+
+	private boolean addWorker(Worker worker, Integer companyId, String year) {
+		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
+				companyId, year);
+		boolean b = workerService.save(worker, companyId, year);
+		logger.debug("addWorkerResult:{}", b);
+		return b;
+	}
 
 	/**
 	 * 转到产看残疾职工页面
