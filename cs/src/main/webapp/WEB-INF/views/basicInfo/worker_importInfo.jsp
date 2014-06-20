@@ -92,7 +92,7 @@
 				 <a href="javascript:importWorkerManager.close()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 		</div>
 		<div id="divProcessing" style="text-align:center;margin-top:10px;display:none;">
-			<img src="${contextPath }/images/processing.gif" style="height:150px;"/><br/>
+			<img src="${contextPath }/images/processing.gif" style="height:50px;"/><br/>
 			<span style="color:rgb(117, 71, 71)">导入中ing...</span>
 		</div>
 	</c:if>

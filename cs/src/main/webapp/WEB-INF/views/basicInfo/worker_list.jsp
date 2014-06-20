@@ -206,7 +206,7 @@
 	打开编辑残疾职工页面
 	 **/
 	workerList.openEditWorker = function(id) {
-		esd.common.openWindow("#workerWindow", "编辑残疾职工", 960, 550, 'worker/edit/' + id);
+		esd.common.openWindow("#workerWindow", "编辑残疾职工", 860, 450, 'worker/edit/' + id);
 	};
 	/**
 	打开导入残疾职工页面
@@ -214,7 +214,7 @@
 	workerList.openImportWorker = function() {
 	
 
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 860, 450, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
