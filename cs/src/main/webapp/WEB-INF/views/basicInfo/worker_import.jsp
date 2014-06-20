@@ -45,7 +45,7 @@
 
 		if (lastname.toLowerCase() == ".xls" || lastname.toLowerCase() == ".xlsx") {
 			//定时刷新器, 每0.5秒刷新一次
-		//	importWorkerFile.intervalValue = setInterval('importWorkerFile.freshProgressBar()',1000);
+			importWorkerFile.intervalValue = setInterval('importWorkerFile.freshProgressBar()',1000);
 			return true;
 		}
 		

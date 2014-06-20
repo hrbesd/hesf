@@ -266,8 +266,8 @@
 							// 刷新数据列表
 							$("#workerList_dataGrid").datagrid('clearChecked');
 							$('#workerList_dataGrid').datagrid('reload');
-						
-							$.messager.alert('消息', '删除成功。', 'ok');
+						// 去掉提示
+						//	$.messager.alert('消息', '删除成功。', 'ok');
 						} else {
 							$.messager.alert('消息', '残疾职工删除失败。', 'error');
 							

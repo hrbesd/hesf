@@ -53,7 +53,7 @@ public interface WorkerService extends BaseService<Worker> {
 			Map<String, Object> map);
 
 	/**
-	 * 根据年份和残疾证号, 判断一个员工是在在一家公司里
+	 * 根据年份和残疾证号, 判断一个员工是在哪家公司
 	 * 
 	 * @param year
 	 * @param workerHandicapCode

@@ -13,38 +13,20 @@
 	
 	$.parser.onComplete = function() {
 		$('#addWorkerForm', window.parent.document).hide(0, function() {
-			$('#addWorkerIframe', window.parent.document).height(300);
+			$('#addWorkerIframe', window.parent.document).height(400);
 		});
 	};
 	var addWorkerNotice = {};
 	
-	addWorkerNotice.empty = function() {
-		$("#addWorkerForm #workerHandicapCode").val("");//残疾证号
-		$("#addWorkerForm #workerName").val("");//姓名
-		$("#addWorkerForm #workerBirth").val("");//出生日期
-		$("#addWorkerForm #careerCard").val("");//就业证号
-		$("#addWorkerForm #phone").val("");//电话
-		$("#addWorkerForm #currentJob").val("");//部门
-		$("#addWorkerForm #remark").val("");//备注
-		$("#addWorkerForm #verification").val("");//验证
-		$("#workerGender").combobox("setValue", "1");//性别
-		$("#workerHandicapType").combobox("setValue", "1");//残疾类别
-		$("#workerHandicapLevel").combobox("setValue", "1");//残疾等级
-	};
-	
 	/**
-	关闭增残疾职工信息窗口
+	关闭增加残疾职工信息窗口
 	 **/
 	 addWorkerNotice.close = function() {
 		$('#addWorkerForm', window.parent.document).fadeIn("slow");
 		$('#addWorkerIframe', window.parent.document).height(0);
-		//清空所填的数据
-		addWorkerNotice.empty();
-		$('#workerWindow').window("close");
-		//刷新数据列表--没起作用
-		$('#workerList_dataGrid').datagrid("load");
 	};
 </script>
+
 <div style="width: 500px;  margin: 50px auto auto;font-size: 18;font-weight: bold;text-align: center;">
 	
 	<span style="font-size: 20px; line-height: 50px;">

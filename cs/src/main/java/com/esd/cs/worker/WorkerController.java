@@ -7,7 +7,7 @@ package com.esd.cs.worker;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,15 +27,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -220,89 +219,219 @@ public class WorkerController {
 		return new ModelAndView("basicInfo/add_worker");
 	}
 
+	// /**
+	// * 增加残疾职工
+	// *
+	// * @param worker
+	// * @param request
+	// * @return
+	// */
+	// @RequestMapping(value = "/add", method = RequestMethod.POST)
+	// public ModelAndView add_worker(Worker worker, HttpServletRequest request)
+	// {
+	// // //处理上传的图片, 如果有图片的话
+	// CommonsMultipartResolver cmr = new CommonsMultipartResolver(request
+	// .getSession().getServletContext());
+	// // 如果是多部分请求的话
+	// if (cmr.isMultipart(request)) {
+	// MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
+	// // 迭代 文件名
+	// Iterator<String> it = mhsr.getFileNames();
+	// while (it.hasNext()) {
+	// String fileName = it.next();
+	// MultipartFile mf = mhsr.getFile(fileName);
+	// try {
+	// // 得到byte字节
+	// byte[] b = mf.getBytes();
+	// worker.setPic(b);
+	// // 将原始文件名设为文件本名
+	// worker.setPicTitle(mf.getOriginalFilename());
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+	// String year = request.getParameter("year");
+	// logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
+	// companyId);
+	//
+	// boolean b = workerService.save(worker, companyId, year);
+	// logger.debug("addWorker:{},Result:{}", worker, b);
+	// if (b) {
+	// request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+	// } else {
+	// request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+	// }
+	// return new ModelAndView("documents/add_worker_notice");
+	// }
+
 	/**
-	 * 增加残疾职工
+	 * 异步增加 不 带照片的残疾职工
 	 * 
 	 * @param worker
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ModelAndView add_worker(Worker worker, HttpServletRequest request) {
-		// //处理上传的图片, 如果有图片的话
-		CommonsMultipartResolver cmr = new CommonsMultipartResolver(request
-				.getSession().getServletContext());
-		if (cmr.isMultipart(request)) {
-			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
-			Iterator<String> it = mhsr.getFileNames();
-			while (it.hasNext()) {
-				String fileName = it.next();
-				MultipartFile mf = mhsr.getFile(fileName);
-
-				try {
-					byte[] b = mf.getBytes();
-					worker.setPic(b);
-					worker.setPicTitle(fileName);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
-		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+	@ResponseBody
+	public Boolean add_worker(Worker worker, HttpServletRequest request) {
+		// 年审年度
 		String year = request.getParameter("year");
+		// 公司id
+		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 		logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
 				companyId);
-
-		boolean b = workerService.save(worker, companyId, year);
-		logger.debug("addWorker:{},Result:{}", worker, b);
-		if (b) {
-			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+		// 组装员工对象
+		worker = WorkerUtil.assembly(worker);
+		// 查看数据库中是否有该身份证号的员工, 没有的话-直接保存; 有的话-更新该条数据,并同时保存和该公司的关系
+		Worker tempWorker = workerService.getByWorkerIdCard(worker
+				.getWorkerIdCard());
+		// ①数据库中没有该员工的话,直接保存
+		if (tempWorker == null) {
+			return workerService.save(worker, companyId, year);
 		} else {
-			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+			// ②数据库中已经存在该员工(但不在任何一家公司)的话, 则更新他的信息, 并同时保存和该公司今年的关系
+			tempWorker.setWorkerName(worker.getWorkerName());
+			tempWorker.setCareerCard(worker.getCareerCard());
+			tempWorker.setPhone(worker.getPhone());
+			tempWorker.setCurrentJob(worker.getCurrentJob());
+			tempWorker.setRemark(worker.getRemark());
+			//关系表对象
+			CompanyYearWorker cyw = new CompanyYearWorker();
+			cyw.setCompanyId(companyId);
+			cyw.setYear(year);
+			cyw.setWorkerId(tempWorker.getId());
+			//更新并保存关系
+			return workerService.update(tempWorker) && cywService.save(cyw);
 		}
-		return new ModelAndView("documents/add_worker_notice");
 	}
 
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handlerException(Exception ex,
-			HttpServletRequest request) {
-		Map<Object, Object> model = new HashMap<Object, Object>();
-		if (ex instanceof MaxUploadSizeExceededException) {
-			model.put(
-					Constants.NOTICE,
-					"文件不应大于"
-							+ getFileKB(((MaxUploadSizeExceededException) ex)
-									.getMaxUploadSize()));
+	/**
+	 * 异步增加带照片的残疾职工
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/addWithPic", method = RequestMethod.POST)
+	public void aadd_worker(
+			@RequestParam("picfile") CommonsMultipartFile picfile,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		String workerHandicapCode = request.getParameter("workerHandicapCode");
+		//根据残疾证号 组装残疾职工对象
+		Worker worker = WorkerUtil.assembly(workerHandicapCode);
+		//添加上其他信息
+		worker.setWorkerName(request.getParameter("workerName"));
+		worker.setCareerCard(request.getParameter("careerCard"));
+		worker.setPhone(request.getParameter("phone"));
+		worker.setCurrentJob(request.getParameter("currentJob"));
+		worker.setRemark(request.getParameter("remark"));
+		// 年审年度
+		String year = request.getParameter("year");
+		// 公司id
+		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+		//从request得到相应的worker对象
+	//	Worker worker = getWorkerFromRequest(request);
+		//从CommonsMultipartFile 得到图片和图片名信息
+		worker.setPic(picfile.getBytes());
+		worker.setPicTitle(picfile.getOriginalFilename());
+
+		// 查看数据库中是否有该身份证号的员工, 没有的话-直接保存; 有的话-更新该条数据,并同时保存和该公司的关系
+		Worker tempWorker = workerService.getByWorkerIdCard(worker
+				.getWorkerIdCard());
+		Boolean bl = false;
+		// ①数据库中没有该员工的话,直接保存
+		if (tempWorker == null) {
+			bl = workerService.save(worker, companyId, year);
 		} else {
-			model.put(Constants.NOTICE, "不知错误" + ex.getMessage());
+			// ②数据库中已经存在该员工(但不在任何一家公司)的话, 则更新他的信息, 并同时保存和该公司今年的关系
+			tempWorker.setWorkerName(worker.getWorkerName());
+			tempWorker.setCareerCard(worker.getCareerCard());
+			tempWorker.setPhone(worker.getPhone());
+			tempWorker.setCurrentJob(worker.getCurrentJob());
+			tempWorker.setRemark(worker.getRemark());
+			tempWorker.setPic(picfile.getBytes());
+			tempWorker.setPicTitle(picfile.getOriginalFilename());
+			//关系表对象
+			CompanyYearWorker cyw = new CompanyYearWorker();
+			cyw.setCompanyId(companyId);
+			cyw.setYear(year);
+			cyw.setWorkerId(tempWorker.getId());
+			//更新并保存关系
+			bl = workerService.update(tempWorker) && cywService.save(cyw);
 		}
-		return new ModelAndView("documents/add_worker_notice", (Map) model);
+		response.setContentType("text/html;chrset=utf-8");
+		PrintWriter writer = response.getWriter();
+		if(bl){
+			writer.write("success");
+		}else{
+			writer.write("failure");
+		}
 	}
 
-	private String getFileKB(long byteFile) {
-		if (byteFile == 0) {
-			return "0KB";
-		}
-		long kb = 1024;
-		return "" + byteFile / kb + "KB";
+	/**
+	 * 从request得到员工的相应数据
+	 * @param request
+	 * @return
+	 */
+	public Worker getWorkerFromRequest(HttpServletRequest request){
+		String workerHandicapCode = request.getParameter("workerHandicapCode");
+		//根据残疾证号 组装残疾职工对象
+		Worker worker = WorkerUtil.assembly(workerHandicapCode);
+		//添加上其他信息
+		worker.setWorkerName(request.getParameter("workerName"));
+		worker.setCareerCard(request.getParameter("careerCard"));
+		worker.setPhone(request.getParameter("phone"));
+		worker.setCurrentJob(request.getParameter("currentJob"));
+		worker.setRemark(request.getParameter("remark"));
+		return worker;
 	}
+	
+	
+	
+	// @ExceptionHandler(Exception.class)
+	// public ModelAndView handlerException(Exception ex,
+	// HttpServletRequest request) {
+	// Map<Object, Object> model = new HashMap<Object, Object>();
+	// if (ex instanceof MaxUploadSizeExceededException) {
+	// model.put(
+	// Constants.NOTICE,
+	// "文件不应大于"
+	// + getFileKB(((MaxUploadSizeExceededException) ex)
+	// .getMaxUploadSize()));
+	// } else {
+	// model.put(Constants.NOTICE, "不知错误" + ex.getMessage());
+	// }
+	// return new ModelAndView("documents/add_worker_notice", (Map) model);
+	// }
 
-	private String getFileMB(long byteFile) {
-		if (byteFile == 0) {
-			return "0MB";
-		}
-		long mb = 1024 * 1024;
-		return "" + byteFile / mb + "MB";
-	}
+	// private String getFileKB(long byteFile) {
+	// if (byteFile == 0) {
+	// return "0KB";
+	// }
+	// long kb = 1024;
+	// return "" + byteFile / kb + "KB";
+	// }
 
-	private boolean addWorker(Worker worker, Integer companyId, String year) {
-		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
-				companyId, year);
-		boolean b = workerService.save(worker, companyId, year);
-		logger.debug("addWorkerResult:{}", b);
-		return b;
-	}
+	// private String getFileMB(long byteFile) {
+	// if (byteFile == 0) {
+	// return "0MB";
+	// }
+	// long mb = 1024 * 1024;
+	// return "" + byteFile / mb + "MB";
+	// }
+	//
+	// private boolean addWorker(Worker worker, Integer companyId, String year)
+	// {
+	// logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
+	// companyId, year);
+	// boolean b = workerService.save(worker, companyId, year);
+	// logger.debug("addWorkerResult:{}", b);
+	// return b;
+	// }
 
 	/**
 	 * 转到产看残疾职工页面
@@ -851,19 +980,19 @@ public class WorkerController {
 						}
 
 						// 11.校验身份证号重复性
-						List<Map<String, String>> validateList = validateOrganizationCode(
+						Map<String, Object> validateResult = validateWorkerIdentityCode(
 								workerHandicapCode.substring(0, 18), year);
-						Map<String, String> validateResult = validateList
-								.get(0);
 						logger.debug("LineNumber:{},validataType:{}", i,
 								validateResult.get("type"));
+						String notice = validateResult.get(Constants.NOTICE)
+								.toString();
 						// 12.第一种情况 存在，并且在其他公司内。
-						if (StringUtils.equals(validateResult.get("type"), "1")) {
+						if (StringUtils.equals(notice, "inCompany")) {
 							// 存储错误信息
 							String errinfo = "职工已被："
-									+ validateList.get(1).get("companyName")
+									+ validateResult.get("companyName")
 									+ " 单位录用，单位档案编码为："
-									+ validateList.get(1).get("companyCode");
+									+ validateResult.get("companyCode");
 							w.setRemark(errinfo);
 							// workerErrorList.add(w);
 							t.setRemark(errinfo);
@@ -873,15 +1002,14 @@ public class WorkerController {
 							continue;
 						}
 						// 正常存储：.第二种情况：存在，并且不再任何公司。 第三种情况： 不存在数据库中，进行存储
-						if (StringUtils.equals(validateResult.get("type"), "2")
-								|| StringUtils.equals(
-										validateResult.get("type"), "3")) {
+						if (StringUtils.equals(notice, "exists")
+								|| StringUtils.equals(notice, "notExists")) {
 							Worker workerUp = new Worker();
 							workerUp.setWorkerName(worker.getWorkerName());
 							workerUp.setWorkerHandicapCode(workerHandicapCode);
 
 							Worker workerCorrect = WorkerUtil
-									.assembly(workerUp);
+									.assembly(workerHandicapCode);
 							// workerCorrectList.add(workerCorrect);
 							// 将正确的残疾职工信息导入到数据 员工缓存表中
 							t.setWorkerName(workerCorrect.getWorkerName());
@@ -898,8 +1026,7 @@ public class WorkerController {
 									.getWorkerHandicapType().getId());
 							t.setWorkerIdCard(workerCorrect.getWorkerIdCard());
 							// 如果该残疾人存在, 但不在任何公司中, 则将其原来的id保存起来
-							if (StringUtils.equals(validateResult.get("type"),
-									"2")) {
+							if (StringUtils.equals(notice, "exists")) {
 								t.setPreId(Integer.parseInt(validateResult.get(
 										"workerId").toString()));
 							}
@@ -996,19 +1123,21 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/validate_workerHandicapCode")
+	@RequestMapping(value = "/validateWorkerIdentityCode")
 	@ResponseBody
-	public List<Map<String, String>> validate_companyOrganizationCode(
+	public Map<String, Object> validateWorkerIdentityCodeForConstroller(
 			@RequestParam(value = "workerIdCard") String workerIdCard,
 			@RequestParam(value = "year") String year,
 			HttpServletRequest request) {
 
-		logger.debug("validate_workerHandicapCodeworkerIdCard:{},year:{}",
+		logger.debug(
+				"validateWorkerIdentityCode --workerIdCard:{},year:{},companyId:{}",
 				workerIdCard, year);
 		// 参数 年份 残疾证号
-		// 1.存在，并且在其他公司内 返回公司对象，前台提示在哪个公司内 2.存在，不在其他公司内。 返回公司id，前台调用更新方法 3.不存在
-		logger.debug("validate_workerIdCardParams:{}", workerIdCard);
-		return validateOrganizationCode(workerIdCard, year);
+		// 1.存在, 并且在其他公司内, 返回所在公司对象基本信息
+		// 2.存在, 不在其他公司内, 返回从数据库中读取到已有的信息, 以便更新用
+		// 3.不存在
+		return validateWorkerIdentityCode(workerIdCard, year);
 	}
 
 	/**
@@ -1017,57 +1146,61 @@ public class WorkerController {
 	 * @param workerIdCard
 	 * @return
 	 */
-	private List<Map<String, String>> validateOrganizationCode(
-			String workerIdCard, String year) {
+	private Map<String, Object> validateWorkerIdentityCode(String workerIdCard,
+			String year) {
 		logger.debug("validateOrganizationCode:{},year:{}", workerIdCard, year);
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-			Map<String, String> paramsMap = new HashMap<String, String>();
 			Company company = workerService.retrieveCompanyByWorker(year,
 					workerIdCard);
 			// 第一种情况 存在，并且在其他公司内。
 			if (company != null) {
-				paramsMap.put("type", "1");
+				result.put(Constants.NOTICE, "inCompany");
 				Map<String, String> companyMap = new HashMap<String, String>();
 				companyMap.put("companyName", company.getCompanyName());
 				companyMap.put("companyCode", company.getCompanyCode());
 				companyMap.put("companyTaxCode", company.getCompanyTaxCode());
-				list.add(paramsMap);
-				list.add(companyMap);
 				logger.debug("validate_workerHandicapCodeResult:{},company:{}",
 						"type:1。职工存在，并且在其他公司内", company.getCompanyName() + "  "
 								+ company.getCompanyCode());
-				return list;
+				result.put("companyId", company.getId());
+				result.put("companyCode", company.getCompanyCode());
+				result.put("companyName", company.getCompanyName());
+				// 同时也将该员工的信息调出来
+				Worker w = workerService.getByWorkerIdCard(workerIdCard);
+				result.put("workerName", w.getWorkerName()); // 姓名
+				result.put("careerCard", w.getCareerCard()); // 就业证号
+				result.put("phone", w.getPhone()); // 联系电话
+				result.put("remark", w.getRemark()); // 备注
+				return result;
 			} else {
-
+				// 根据身份证号判断是否已经存在
 				Worker w = workerService.getByWorkerIdCard(workerIdCard);
 				logger.error("workerIdCard:{},obg:{}" + workerIdCard, w);
-				// 第二种情况：存在，并且不再任何公司。
+				// 第二种情况：存在，但不在任何公司。
 				if (w != null) {
 					logger.debug("validateWorkerHandicapCodeResult:{}",
 							"type:2。职工" + w.getWorkerName() + "存在数据库中，并且不再任何公司");
-					paramsMap.put("type", "2");
-					paramsMap.put("workerId", w.getId().toString());
-					paramsMap.put("workerName", w.getWorkerName()); // 姓名
-					paramsMap.put("careerCard", w.getCareerCard()); // 就业证号
-					paramsMap.put("phone", w.getPhone()); // 联系电话
-					paramsMap.put("remark", w.getRemark()); // 备注
-					list.add(paramsMap);
-					return list;
-					// 第三种情况，不存在.
+					result.put(Constants.NOTICE, "exists");
+					result.put("workerId", w.getId().toString());
+					result.put("workerName", w.getWorkerName()); // 姓名
+					result.put("careerCard", w.getCareerCard()); // 就业证号
+					result.put("phone", w.getPhone()); // 联系电话
+					result.put("remark", w.getRemark()); // 备注
+					return result;
 				} else {
+					// 第三种情况，不存在.
 					logger.debug("validateWorkerHandicapCodeResult:{}",
 							"type:3。职工不存在数据库中");
-					paramsMap.put("type", "3");
-					list.add(paramsMap);
-					return list;
+					result.put(Constants.NOTICE, "notExists");
+					return result;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("校验错误：{}", e.getMessage());
-
-			return null;
+			result.put(Constants.NOTICE, "检验发生异常...");
+			return result;
 		}
 
 	}

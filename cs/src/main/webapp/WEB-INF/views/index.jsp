@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="${contextPath}/js/lib/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${contextPath}/js/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${contextPath}/js/lib/ajaxupload.3.6.js"></script>
 <script type="text/javascript" src="${contextPath}/js/common.js"></script>
 <script type="text/javascript" src="${contextPath}/js/menu.js"></script>
 </head>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
-import com.esd.cs.Constants;
 import com.esd.hesf.model.Accounts;
 import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
@@ -51,10 +50,9 @@ public class AccountsController {
 		String companyCode = request.getParameter("companyCode");
 		String companyTaxCode = request.getParameter("companyTaxCode");
 		String companyName = request.getParameter("companyName");
-		String belongsType = request.getParameter("belongsType");	//所属类型--在省残联缴款或者地税缴款(6字开头)
-		String isReceipt = request.getParameter("isReceipt");	//是否已开发票
-		
-		
+		String belongsType = request.getParameter("belongsType"); // 所属类型--在省残联缴款或者地税缴款(6字开头)
+		String isReceipt = request.getParameter("isReceipt"); // 是否已开发票
+
 		// 账目对象
 		Accounts ac = new Accounts();
 		ac.setYear(year);
@@ -64,24 +62,25 @@ public class AccountsController {
 		company.setCompanyName(companyName);
 		ac.setCompany(company);
 		ac.setAuditProcessStatus(new AuditProcessStatus(process));
-		if(isReceipt !=null && !"".equals(isReceipt)){
-			if("1".equals(isReceipt)){
+		if (isReceipt != null && !"".equals(isReceipt)) {
+			if ("1".equals(isReceipt)) {
 				ac.setIsReceipt(Boolean.TRUE);
 			}
 		}
 		// 根据公司的相关信息, 查询账目表
 		PaginationRecordsAndNumber<Accounts, Number> query = acService
-				.getPaginationRecordsGroupByCompany(ac, belongsType,page, pageSize);
+				.getPaginationRecordsGroupByCompany(ac, belongsType, page,
+						pageSize);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for (Iterator<Accounts> iterator = query.getRecords().iterator(); iterator
 				.hasNext();) {
 			Accounts it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
-			map.put("year", it.getYear());	//出账年份
+			map.put("year", it.getYear()); // 出账年份
 			map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 			map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
-//			map.put("accountsId", it.getId());// 账目id名称
+			// map.put("accountsId", it.getId());// 账目id名称
 			map.put("companyName", it.getCompany().getCompanyName());// 企业名称
 			map.put("companyId", it.getCompany().getId()); // 公司id
 			map.put("auditProcessStatus", it.getAuditProcessStatus()

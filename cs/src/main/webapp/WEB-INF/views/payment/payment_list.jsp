@@ -14,12 +14,12 @@
 		params.companyTaxCode = $('#companyTaxCode').val();
 		params.companyName = $('#companyName').val();
 		params.belongsType = $('input[name="belongsType"]:checked').val();
-		var tt = $('input[name="isReceipt"]:checked');
+	/*	var tt = $('input[name="isReceipt"]:checked');
 		if(tt.length == 1){
 			$('input[name="isReceipt"]:checked').each(function(){
 				params.isReceipt = $(this).val();
 			});
-		}
+		}	*/
 		return params;
 	};
 	/**

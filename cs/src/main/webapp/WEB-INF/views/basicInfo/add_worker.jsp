@@ -13,7 +13,136 @@
 	/*
 		残疾职工页面
 	 */
-	addWorker = {};
+	var addWorker = {};
+	var params = new Object();
+	/*
+	 * 给参数赋值, 以便提交
+	 */
+	addWorker.getParams = function(){
+		params = new Object();
+		//定义需要提交的参数(除照片外)
+		params.workerHandicapCode = $('#workerHandicapCode').val();	//残疾证号
+		if($('#workerName').val() == null || $('#workerName').val() == ''){
+			$.messager.alert('提示','请输入员工姓名','info');
+			return null;
+		}
+		params.workerName = $('#workerName').val();//姓名
+		var careerCard = $('#careerCard').val();
+		if(careerCard == null || careerCard == ''){
+			careerCard = esd.common.unknown();
+		}
+		params.careerCard = careerCard;
+		var phone = $('#phone').val();
+		if(phone == null || phone == ''){
+			phone = esd.common.unknown();
+		}
+		params.phone = phone;
+		var currentJob = $('#currentJob').val();
+		if(currentJob == null || currentJob == ''){
+			currentJob = esd.common.unknown();
+		}
+		params.currentJob = currentJob;
+		var remark = $('#remark').val();
+		if(remark == null || remark == ''){
+			remark = esd.common.unknown();
+		}
+		params.remark = remark;
+		params.companyId = $('#companyId').val(); //所属企业id
+		params.year = $('#year').val();	//年审年份
+		return params;
+	};
+	
+	//定义绑定事件
+	var button = $('#picfile'),interval;
+	
+	/*
+	 * 异步上传带照片的员工的数据
+	 */
+	var ajaxUploadPic = new AjaxUpload(button, {
+		action: '${contextPath}/security/worker/addWithPic',
+		name: 'picfile',//更改上传的文件名
+		autoSubmit:false,
+		type:'POST',
+		data: {},
+		onSubmit : function(file , ext){
+			//验证上传文件格式
+			if(!(ext && /^(bmp|tiff|gif|jpeg|jpg|png)$/.test(ext))){
+				$.messager.alert('提示','您上传的文件格式不对, 或者不是图片文件, 请重新选择','info');
+				$('#picfileTitle').val('');
+				return false;
+			}
+
+			//设置上传参数
+			this.setData({
+				'workerHandicapCode':params.workerHandicapCode, //残疾证号
+				'workerName':params.workerName, //姓名
+				'careerCard':params.careerCard, //就业证号
+				'phone':params.phone, //电话
+				'currentJob':params.currentJob, //部门
+				'remark':params.remark, //备注
+				'companyId':params.companyId,
+				'year':params.year
+			});
+		},
+		onComplete : function(file,response){
+			if(response == 'success'){
+				$.messager.alert('提示','保存成功!','info');
+				addWorker.close();
+			}else{
+				$.messager.alert('提示','保存出错!','error');
+			}
+			this.enable();
+		}
+	});
+	
+	/*
+	 * 调用  异步上传带照片的员工的数据
+	 */
+	var saveWithPic = function(){
+		// 先提取参数
+		params = addWorker.getParams();
+		if( params!= null && params != undefined){
+			ajaxUploadPic.submit();
+		};
+	};
+	
+	/*
+	 * 异步提交    不   带照片的员工信息
+	 */
+	var saveWithOutPic = function(){
+		// 先提取参数
+		params = addWorker.getParams();
+		if(params != null && params != undefined){
+			$.ajax({
+				url : '${contextPath}/security/worker/add',
+				type : 'post',
+				data : {
+					'workerHandicapCode':params.workerHandicapCode, //残疾证号
+					'workerName':params.workerName, //姓名
+					'careerCard':params.careerCard, //就业证号
+					'phone':params.phone, //电话
+					'currentJob':params.currentJob, //部门
+					'remark':params.remark, //备注
+					'companyId':params.companyId,
+					'year':params.year
+				},
+				success : function(data) {
+					if(data == 'true' || data == true){
+						$.messager.alert('提示','保存成功!','info');
+						addWorker.close();
+					}else{
+						$.messager.alert('提示','保存出错!','error');
+					}
+				},
+				error : function() {
+					$.messager.alert('消息', '增加残疾职工时发生错误。', 'error');
+					return;
+				}
+			});
+		}
+	};
+	
+	
 	/**
 	关闭增残疾职工信息窗口
 	 **/
@@ -38,72 +167,84 @@
 		$("#workerHandicapType").combobox("setValue", "1");//残疾类别
 		$("#workerHandicapLevel").combobox("setValue", "1");//残疾等级
 	};
-	/**
-		校验信息  并  保存残疾职工信息
-	 **/
-	addWorker.validate = function() {
 	
+	/*
+	 *	 保存残疾职工信息
+	 */
+	addWorker.save = function() {
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
-		//根据残疾证号初始化其他组件
-		if(addWorker.initElement(workerHandicapCode)==false){
-			return false;
+		//身份证号
+		
+		//根据残疾证号初始化其他组件, 并进行非访问数据库的校验
+		var initElement = addWorker.initElement(workerHandicapCode);
+		if(!initElement){
+			return;
 		}
-	//	//校验表单
-	//	if (esd.common.validatebox("#addWorkerForm") == false) {
-	//		return false;
-	//	}
+		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
+		var companyId = $('#companyId').val();
+
 		//校验残疾证号是否存在，是否在其他公司
 		$.ajax({
-			url : '${contextPath}/security/worker/validate_workerHandicapCode',
+			url : '${contextPath}/security/worker/validateWorkerIdentityCode',
 			type : 'post',
 			data : {
-				'workerIdCard' : ($("#workerHandicapCode").val()).substring(0, 18),
+				'workerIdCard' : workerIdCard,
 				'year':$("#nowYear").val()
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
-				if (data[0].type == "1") {
+				if (data.notice == 'inCompany') {
+					//如果就是在本公司的话, 则不进行提示,只将信息不全
+					if(data.companyId == companyId){
+						//将员工相关控件信息补全
+						$.messager.alert('提示','该员工已经在此公司里了, 请不要重复添加','info');
+						return;
+					}
 					$('#win').window(
-							{
-								title : '警告：该员工已被其他公司录用',
-								height : 180,
-								width : 650,
-								content : "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data[1].companyName + "”录用。</span>\n"
-										+ "\n<table  border='1' > <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
-										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table><div>",
-								modal : true,
-								collapsible : false,
-								minimizable : false,
-								maximizable : false
-							});
-					return false;
-					//第二种情况，员工存在，不再任何公司
-				} else if (data[0].type == "2") {
-					//更改表单路径为编辑路径
-					$("#addWorkerForm").attr('action', "worker/updata");
-					//提交
-					$('#addWorkerForm').submit();
-					return true;
-					//第三种情况，员工不存在
-				} else if (data[0].type == "3") {
-					//更改表单路径为增加路径
-					$("#addWorkerForm").attr('action', "worker/add");
-					//提交
-					$('#addWorkerForm').submit();
-					return true;
+						{
+							title : '警告：该员工已被其他公司录用',
+							height : 180,
+							width : 650,
+							content :  "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data.companyName + "”录用。</span>\n"
+									+ "\n<table  border='1' > <tr><th>档案编码</th><th>企业名称</th></tr><tr><td>" + data.companyCode + "</td>"
+									+ "<td style='width: 450px;'>" + data.companyName + "</td></tr></table><div>",
+							modal : true,
+							collapsible : false,
+							minimizable : false,
+							maximizable : false
+						});
+					return;
+				//第二种情况，员工存在且不在任何公司 或者 员工不存在, 都进行保存操作, 在方法内部有相应的判断
+				} else if(data.notice == 'exists' || data.notice == 'notExists') {
+					//保存分两种,是否选中了上传照片
+					var checked = $('#isUpload').attr('checked');
+					//① 有照片时
+					if(checked){
+						var picfileTitle = $('#picfileTitle').val();
+						if(picfileTitle == null || picfileTitle == '' || picfileTitle == undefined){
+							$.messager.alert('提示','请选择您要上传的照片.','info');
+							return;
+						}
+						saveWithPic();
+					}else{
+					//②没有照片时
+						saveWithOutPic();
+					}
 				}
 			},
 			error : function() {
 				alert("增加残疾职工校验时发生错误。");
-				return false;
+				return;
 			}
 		});	
-		return true;
+		return;
 	};
 
+	/*
+	 * 根据残疾证号, 初始化其他控件
+	 */
 	addWorker.initElement=function(workerHandicapCode){
-
 		//校验表单
 		if (esd.common.validatebox("#addWorkerForm") == false) {
 			return false;
@@ -112,10 +253,9 @@
 		var reg = /^[0-9]{14}[0-9a-zA-Z]{4}[1-7]{1}[1-4]{1}[B]?[0-9]?/;
 		var checkResult = reg.test(workerHandicapCode);
 		if(!checkResult){
-			$.messager.alert('消息', checkResult, 'error');
+			$.messager.alert('消息', '您输入的残疾证号格式有误, 请检查后重新输入.', 'error');
 			return false;
 		}
-		
 		//获取残疾类型 
 		var workerType = workerHandicapCode.substring(18, 19);
 		$("#workerHandicapType").combobox("setValue", workerType);
@@ -139,7 +279,6 @@
 		var sex = workerHandicapCode.substring(16, 17);
 		//职工去年年龄=审核年份-出生年份+1
 		var age=$("#nowYear").val()-year+1;
-	//	alert('nowYear:'+$('#nowYear').val()+'year:'+year+'age:'+age);
 		//判断年龄
 		if(age<=16){
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
@@ -169,57 +308,65 @@
 		$("#workerBirthYear").val($("#nowYear").val());
 		return true;
 	};
+	
 	/**
-		残疾证号校验并校验
+		残疾证号校验
 	 **/
 	addWorker.handicapCodeValidate = function() {
-		//校验表单
-	//	var b = $("#workerHandicapCode").validatebox('isValid');
-	//	if (b == false) {
-	//		return;
-	//	}
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
 		//身份证号
-		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
-		//根据残疾证号初始化其他组件
+		
+		//根据残疾证号初始化其他组件, 并进行非访问数据库的校验
 		var initElement = addWorker.initElement(workerHandicapCode);
 		if(!initElement){
 			return;
 		}
+		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
+		var companyId = $('#companyId').val();
 		//远程校验 校验残疾证号是否存在，是否在其他公司
 		$.ajax({
-			url : 'worker/validate_workerHandicapCode',
+			url : 'worker/validateWorkerIdentityCode',
 			type : 'post',
 			data : {
-				'workerIdCard' : workerIdCard,
-					'year':$("#nowYear").val()
+				'workerIdCard' : workerIdCard,	//身份证号
+				'year':$("#nowYear").val(),	//审核年份
 			},
 			success : function(data) {
 				//第一种情况， 员工存在，并在其他公司内
-				if (data[0].type == "1" || data[0].type == 1) {
+				if (data.notice == 'inCompany') {
+					//如果就是在本公司的话, 则不进行提示,只将信息不全
+					if(data.companyId == companyId){
+						//将员工相关控件信息补全
+						$.messager.alert('提示','该员工已经在此公司里了, 请不要重复添加','info');
+						return;
+					}
+					//如果在其他家公司的话, 则进行提示
 					$('#win').window(
 							{
 								title : '警告：该员工已被其他公司录用',
 								height : 180,
 								width : 650,
-								content :  "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data[1].companyName + "”录用。</span>\n"
-										+ "\n<table  border='1' > <tr><th>档案编码</th><th>税务编码</th><th>企业名称</th></tr><tr><td>" + data[1].companyCode + "</td> <td>"
-										+ data[1].companyTaxCode + "</td><td style='width: 450px;'>" + data[1].companyName + "</td></tr></table><div>",
+								content :  "<div class='addtip'><span >证号：“" + $("#workerIdCard").val() + "”已被：“" + data.companyName + "”录用。</span>\n"
+										+ "\n<table  border='1' > <tr><th>档案编码</th><th>企业名称</th></tr><tr><td>" + data.companyCode + "</td>"
+										+ "<td style='width: 450px;'>" + data.companyName + "</td></tr></table><div>",
 								modal : true,
 								collapsible : false,
 								minimizable : false,
 								maximizable : false
 							});
 					return;
-					//第二种情况，员工存在，不再任何公司
-				} else if(data[0].type == '2' || data[0].type == 2) {
+					//第二种情况，员工存在，不在任何公司
+				} else if(data.notice == 'exists' || data.notice == 'notExists') {
 					//将员工相关控件信息补全
-					$("#addWorkerForm #workerName").val(data[0].workerName);//姓名
-					$("#addWorkerForm #careerCard").val(data[0].careerCard);//就业证号
-					$("#addWorkerForm #phone").val(data[0].phone);//电话
-					$("#addWorkerForm #remark").val(data[0].remark);//备注
-					$.messager.alert('消息', '验证通过，可以注册', 'ok');
+					$("#addWorkerForm #workerName").val(data.workerName);//姓名
+					$("#addWorkerForm #careerCard").val(data.careerCard);//就业证号
+					$("#addWorkerForm #phone").val(data.phone);//电话
+					$("#addWorkerForm #remark").val(data.remark);//备注
+				//	$.messager.alert('消息', '验证通过，可以注册', 'ok');
+					return;
+				}else{
+					$.messager.alert('消息', data.notice, 'info');
 					return;
 				}
 			},
@@ -230,15 +377,23 @@
 		});
 		return;
 	};
+	
+	
 	//组件解析完成
 	$.parser.onComplete = function() {
 		
+		//上传组件初始为隐藏状态
+		$('#picfile').hide();
+		$('#picfileTitle').hide();
+		//是否显示上传组件
 		$('#isUpload').click(function(){
 			var checked = $('#isUpload').attr('checked');
 			if(checked){
-				$('#file').show();
+				$('#picfile').show();
+				$('#picfileTitle').show();
 			}else{
-				$('#file').hide();
+				$('#picfile').hide();
+				$('#picfileTitle').hide();
 			}
 		});
 	};
@@ -246,7 +401,7 @@
 
 <!-- 导入成功隐藏 -->
 	<div id="addWorkerDiv">																								<!--  onsubmit="return addWorker.validate();" -->
-		<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm" target="addWorkerIframe" enctype="multipart/form-data">
+	 	<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm">
 			<!--  女退休年龄 -->
 			<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 			<!--  男退休年龄 -->
@@ -312,7 +467,8 @@
 					<td class="">上传照片:</td>
 					<td colspan="5">
 						<input type="checkbox" id="isUpload" style="height:auto;" />
-						<input type="file" name="file" id="file" value="tudou" style="height:19px;line-height:19px;border:none;width:200px;display:none;" />
+						<input type="button" name="file" value="上传" id="picfile" display="none"/>
+						<input type="text" readonly="readonly" id="picfileTitle" style="border:none;width:400px;" display="none"/>
 					</td>
 				</tr>
 				<tr>
@@ -320,17 +476,10 @@
 					<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea>
 					</td>
 				</tr>
-				<!-- 
-				<tr>
-					<td class="">重复性验证:</td>
-					<td><input class="" type="text" id="verification" data-options="validType:['_number']" class="easyui-validatebox" />
-						<button>验证</button></td>
-				</tr>
-			 -->
 				<tr>
 					<td colspan="6" style="text-align: center;">
-						<a href="javascript:addWorker.validate();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-						<a href="javascript:addWorker.close();" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
+						<a href="javascript:addWorker.save();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+						<a href="javascript:addWorker.close();" class="easyui-linkbutton" iconCls="icon-undo">返回</a>
 					</td>
 				</tr>
 			</table>
@@ -338,4 +487,4 @@
 	</div>
 <div id="win"></div>
 <!-- 导入结果显示 -->
-<iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>
+<!-- <iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>	 -->

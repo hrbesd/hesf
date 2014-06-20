@@ -392,3 +392,10 @@ esd.common.noCloseButtonDialog = function(title,msg){
 		}]
 	});
 };
+
+/**
+ * 预定义字符串
+ **/
+esd.common.unknown = function(){
+	return '未知';
+};
