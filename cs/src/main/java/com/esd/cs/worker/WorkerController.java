@@ -724,7 +724,6 @@ public class WorkerController {
 				try {
 					mf.transferTo(file);
 				} catch (IllegalStateException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -949,7 +948,7 @@ public class WorkerController {
 							workerUp.setWorkerHandicapCode(workerHandicapCode);
 
 							Worker workerCorrect = WorkerUtil
-									.assembly(workerHandicapCode);
+									.assembly(workerUp);
 							// workerCorrectList.add(workerCorrect);
 							// 将正确的残疾职工信息导入到数据 员工缓存表中
 							t.setWorkerName(workerCorrect.getWorkerName());
