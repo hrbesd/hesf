@@ -62,8 +62,8 @@
 			<value>UTF-8</value>
 		</property>
 		<property name="maxUploadSize">
-			<!-- 最大4MB 1024*1024*4-->
-			<value>4194304</value>
+			<!-- 最大1MB 1024*1024-->
+			<value>1048576</value>
 		</property>
 		<!-- 对上传的文件开启懒解析, controller中可以-->
 	 	<property name="resolveLazily" value="true" />
