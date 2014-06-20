@@ -110,8 +110,8 @@
 			</td>
 			<td width="170" style="text-align:left;font-size:13px;">
 				<div style="border:2px rgb(174, 179, 243) solid;height: 22px;padding: 2px 5px;text-align: center;border-radius: 5px;">
-					省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="six" style="height:auto;margin-right:20px;"/>
-					地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="nonSix" style="height:auto" />
+					省残指 : <input type="radio" onclick="payment.loadData()" name="belongsType" checked="checked" value="nonSix" style="height:auto;margin-right:20px;"/>
+					地税 : <input type="radio" onclick="payment.loadData()" name="belongsType" value="six" style="height:auto" />
 				</div>
 			</td>
 			<td>
