@@ -339,11 +339,11 @@ public class WorkerController {
 		response.setContentType("text/html;charset=utf8");
 		String notice = "error";
 		if (ex instanceof MaxUploadSizeExceededException) {
-			notice = "文件不应大于"
+			notice = "文件大小不超过"
 					+ getFileMB(((MaxUploadSizeExceededException) ex)
 							.getMaxUploadSize());
 		} else {
-			notice = "不知错误" + ex.getMessage();
+			notice = "上传文件出现错误,错误信息:" + ex.getMessage();
 		}
 		PrintWriter writer = response.getWriter();
 		writer.write(notice);
@@ -365,13 +365,13 @@ public class WorkerController {
 		return "" + byteFile / mb + "MB";
 	}
 
-	private boolean addWorker(Worker worker, Integer companyId, String year) {
-		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
-				companyId, year);
-		boolean b = workerService.save(worker, companyId, year);
-		logger.debug("addWorkerResult:{}", b);
-		return b;
-	}
+//	private boolean addWorker(Worker worker, Integer companyId, String year) {
+//		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
+//				companyId, year);
+//		boolean b = workerService.save(worker, companyId, year);
+//		logger.debug("addWorkerResult:{}", b);
+//		return b;
+//	}
 
 	/**
 	 * 转到产看残疾职工页面
