@@ -65,7 +65,8 @@
 			<!-- 最大2MB -->
 			<value>2097152</value>
 		</property>
-	 <!--  -->	<property name="resolveLazily" value="true" />
+		<!-- 对上传的文件开启懒解析, controller中可以-->
+	 	<property name="resolveLazily" value="true" />
 	</bean>
 	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
 		<property name="exceptionMappings"> <props> <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">errorupload</prop> 
