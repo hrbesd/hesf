@@ -139,7 +139,7 @@ public class WorkerUtil {
 
 			HExcelSheetParser parser = new HExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
-			for (int i = 1; i < datas.size(); i++) {
+			for (int i = 0; i < datas.size(); i++) {
 				List<Object> row = datas.get(i);
 				list.add(parseRow(row));
 			}
@@ -147,7 +147,7 @@ public class WorkerUtil {
 			logger.debug("excelFileType:{}", " 2003-2010");
 			XExcelSheetParser parser = new XExcelSheetParser(file);
 			List<List<Object>> datas = parser.getDatasInSheet(sheetNumber);
-			for (int i = 1; i < datas.size(); i++) {
+			for (int i = 0; i < datas.size(); i++) {
 				List<Object> row = datas.get(i);
 				list.add(parseRow(row));
 			}

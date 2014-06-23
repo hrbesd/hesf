@@ -145,6 +145,14 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
+	
+	// 菜单--for json
+	@RequestMapping("/1_json")
+	@ResponseBody
+	public List<Menu> test1_json() {
+		return menuService.getTreeMap();
+	}
+		
 
 	// 公司--得到一个
 	@RequestMapping("/2")

@@ -213,12 +213,8 @@
 		esd.common.syncPostSubmitEx("#form", "${contextPath }/security/audits/jianmianAudit", function(data) {
 			if (data == true) {
 				//先关闭弹出窗, 防止反复确认,造成数据重复提交
-				esd.common.noCloseButtonDialog('消息','减免操作成功, 复审用户可以操作该条数据了.');
-		//		esd.common.defaultOpenWindowClose();
+				esd.common.noCloseButtonDialog('消息','操作成功,复审可以操作该数据了.');
 				$("#initAuditList_datagrid").datagrid('reload');
-		//		$("#initAuditList_datagrid").datagrid('reload');
-		//		$.messager.alert('消息', '减免确认成功', 'info', function() {
-		//		});
 			} else {
 				$.messager.alert('消息', '减免确认失败', 'info');
 			}

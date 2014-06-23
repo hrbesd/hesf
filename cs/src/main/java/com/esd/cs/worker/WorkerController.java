@@ -349,14 +349,11 @@ public class WorkerController {
 		writer.write(notice);
 	}
 
-//	private String getFileKB(long byteFile) {
-//		if (byteFile == 0) {
-//			return "0KB";
-//		}
-//		long kb = 1024;
-//		return "" + byteFile / kb + "KB";
-//	}
-
+	/**
+	 * 字节转为MB 方法
+	 * @param byteFile
+	 * @return
+	 */
 	private String getFileMB(long byteFile) {
 		if (byteFile == 0) {
 			return "0MB";
@@ -365,16 +362,8 @@ public class WorkerController {
 		return "" + byteFile / mb + "MB";
 	}
 
-//	private boolean addWorker(Worker worker, Integer companyId, String year) {
-//		logger.debug("addWorkerParams:{},companyId:{},year:{}", worker,
-//				companyId, year);
-//		boolean b = workerService.save(worker, companyId, year);
-//		logger.debug("addWorkerResult:{}", b);
-//		return b;
-//	}
-
 	/**
-	 * 转到产看残疾职工页面
+	 * 转到查看残疾职工页面
 	 * 
 	 * @param id
 	 * @param request
@@ -410,28 +399,6 @@ public class WorkerController {
 	}
 
 	/**
-	 * 转到导入残疾职工页面
-	 * 
-	 * @param worker
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "/importworker/{companyId}/{year}", method = RequestMethod.GET)
-	public ModelAndView importworker(
-			@PathVariable(value = "companyId") Integer companyId,
-			@PathVariable(value = "year") String year,
-			HttpServletRequest request, HttpSession session) {
-		request.setAttribute("companyId", companyId);
-		request.setAttribute("year", year);
-		logger.debug("goToWorker_import,param:{}", companyId);
-		// 每次进入前都要删除以前可能遗留的workerTemp员工缓存表中的数据
-		Integer userId = Integer.parseInt(session.getAttribute(
-				Constants.USER_ID).toString());
-		wtService.deleteByUserId(userId);
-		return new ModelAndView("basicInfo/worker_import");
-	}
-
-	/**
 	 * 编辑残疾职工
 	 * 
 	 * @param worker
@@ -454,19 +421,19 @@ public class WorkerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/updata", method = RequestMethod.POST)
-	public ModelAndView edit_worker_up(Worker worker, HttpServletRequest request) {
-		logger.debug("editUpdata:{}", worker);
-		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
-		boolean bl = editWorkerUp(worker, companyId,
-				worker.getWorkerBirthYear());
-		if (bl) {
-			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
-		} else {
-			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
-		}
-		return new ModelAndView("documents/add_worker_notice");
-	}
+//	@RequestMapping(value = "/updata", method = RequestMethod.POST)
+//	public ModelAndView edit_worker_up(Worker worker, HttpServletRequest request) {
+//		logger.debug("editUpdata:{}", worker);
+//		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+//		boolean bl = editWorkerUp(worker, companyId,
+//				worker.getWorkerBirthYear());
+//		if (bl) {
+//			request.setAttribute(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+//		} else {
+//			request.setAttribute(Constants.NOTICE, Constants.NOTICE_FAILURE);
+//		}
+//		return new ModelAndView("documents/add_worker_notice");
+//	}
 
 	/**
 	 * 更新残疾职工信息和职工与企业之前关联
@@ -476,49 +443,49 @@ public class WorkerController {
 	 * @param year
 	 * @return
 	 */
-	private boolean editWorkerUp(Worker worker, Integer companyId, String year) {
-		boolean workerUpDataStatus = false, companyUpdataStatus = false;
-		logger.debug("upWorker:{},companyId:{}", worker, companyId);
-		try {
-			// 根据残疾证号获取版本号
-			Worker w = workerService.getByWorkerHandicapCode(worker
-					.getWorkerHandicapCode());
-			if (w == null) {
-				logger.error("UpWorkerError:{},info:{}",
-						"notWorkerHandicapCode", worker);
-				return false;
-			}
-			// set版本号
-			worker.setVersion(w.getVersion());
-			// 设置id
-			worker.setId(w.getId());
-			// 更新员工信息
-			workerUpDataStatus = workerService.update(worker);
-			logger.debug("workerUpDataResult:{}", workerUpDataStatus);
-			if (workerUpDataStatus) {
-				// 员工信息更新成功，进行员工和录用企业之间关联更新
-				Company c = companyService.getByPrimaryKey(companyId);
-				if (c != null) {
-					companyUpdataStatus = workerService.changeCompany(
-							worker.getId(), c.getId(), year,
-							worker.getCurrentJob());
-					if (companyUpdataStatus) {
-						logger.debug("workerUpDataGetCompanyResult:{}",
-								companyUpdataStatus);
-					} else {
-						logger.error("workerUpDataGetCompanyResult:{}",
-								companyUpdataStatus);
-					}
-				} else {
-					logger.error("upWorkerError:{}", "noGetCompany");
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("workerUpdataError:{}", e.getMessage());
-		}
-		return workerUpDataStatus && companyUpdataStatus;
-	}
+//	private boolean editWorkerUp(Worker worker, Integer companyId, String year) {
+//		boolean workerUpDataStatus = false, companyUpdataStatus = false;
+//		logger.debug("upWorker:{},companyId:{}", worker, companyId);
+//		try {
+//			// 根据残疾证号获取版本号
+//			Worker w = workerService.getByWorkerHandicapCode(worker
+//					.getWorkerHandicapCode());
+//			if (w == null) {
+//				logger.error("UpWorkerError:{},info:{}",
+//						"notWorkerHandicapCode", worker);
+//				return false;
+//			}
+//			// set版本号
+//			worker.setVersion(w.getVersion());
+//			// 设置id
+//			worker.setId(w.getId());
+//			// 更新员工信息
+//			workerUpDataStatus = workerService.update(worker);
+//			logger.debug("workerUpDataResult:{}", workerUpDataStatus);
+//			if (workerUpDataStatus) {
+//				// 员工信息更新成功，进行员工和录用企业之间关联更新
+//				Company c = companyService.getByPrimaryKey(companyId);
+//				if (c != null) {
+//					companyUpdataStatus = workerService.changeCompany(
+//							worker.getId(), c.getId(), year,
+//							worker.getCurrentJob());
+//					if (companyUpdataStatus) {
+//						logger.debug("workerUpDataGetCompanyResult:{}",
+//								companyUpdataStatus);
+//					} else {
+//						logger.error("workerUpDataGetCompanyResult:{}",
+//								companyUpdataStatus);
+//					}
+//				} else {
+//					logger.error("upWorkerError:{}", "noGetCompany");
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error("workerUpdataError:{}", e.getMessage());
+//		}
+//		return workerUpDataStatus && companyUpdataStatus;
+//	}
 
 	/**
 	 * 删除残疾职工
@@ -554,7 +521,29 @@ public class WorkerController {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * 跳转到  导入残疾职工页面
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/importworker/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView importworker(
+			@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request, HttpSession session) {
+		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
+		logger.debug("goToWorker_import,param:{}", companyId);
+		// 每次进入前都要删除以前可能遗留的workerTemp员工缓存表中的数据
+		Integer userId = Integer.parseInt(session.getAttribute(
+				Constants.USER_ID).toString());
+		wtService.deleteByUserId(userId);
+		return new ModelAndView("basicInfo/worker_import");
+	}
+	
 	/**
 	 * 导入残疾职工文件
 	 * 
@@ -623,25 +612,6 @@ public class WorkerController {
 		}
 		return result;
 	}
-
-	// /**
-	// * 获取已经处理的残疾职工总数
-	// */
-	// @RequestMapping(value = "/getDealedProgress", method = RequestMethod.GET)
-	// @ResponseBody
-	// public Integer getDealProgress(HttpSession session) {
-	// Integer userId
-	// =Integer.parseInt(session.getAttribute(Constants.USER_ID).toString());
-	// int currentCount = wtService.getCountByCheck(null, userId,null);
-	// System.out.println(currentCount);
-	// System.out.println(workerCount);
-	// //被除数不能为零
-	// if (workerCount == null) {
-	// workerCount = Integer.MAX_VALUE;
-	// }
-	// int rate = currentCount * 100 / workerCount;
-	// return rate;
-	// }
 
 	/**
 	 * 获取已经处理的残疾职工比例

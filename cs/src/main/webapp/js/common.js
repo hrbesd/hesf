@@ -363,12 +363,12 @@ esd.common.noCloseButtonDialog = function(title,msg){
 	$('#dd').dialog({
 		title : title,
 		width : 280,
-		height : 120,
+		height : 140,
 		closed : false,
 		closable : false,
 		cache : false,
 		modal : true,
-		content : '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+msg,
+		content : '<p style="text-indent:2em;">'+ msg + '</p>',
 		bodyCls : 'noCloseButtonDialogBody',
 	/*	toolbar : [{
 			text : '添加',
