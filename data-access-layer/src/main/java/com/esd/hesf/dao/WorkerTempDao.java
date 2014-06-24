@@ -26,7 +26,7 @@ public interface WorkerTempDao extends BaseDao<WorkerTemp> {
 	 * @param map中放入workerTemp对象
 	 * @return
 	 */
-	public List<WorkerTemp> retrieveByCheck(Map<String, Object> map);
+	List<WorkerTemp> retrieveByCheck(Map<String, Object> map);
 
 	/**
 	 * 根据是否通过校验来查询总条数,如果参数为空则查询所有
@@ -34,7 +34,7 @@ public interface WorkerTempDao extends BaseDao<WorkerTemp> {
 	 * @param map中放入workerTemp对象
 	 * @return
 	 */
-	public Integer retrieveCountByCheck(Map<String, Object> map);
+	Integer retrieveCountByCheck(Map<String, Object> map);
 
 	/**
 	 * 根据userId删除数据
@@ -42,4 +42,11 @@ public interface WorkerTempDao extends BaseDao<WorkerTemp> {
 	 * @return
 	 */
 	int deleteByUserId(Integer userId);
+	
+	/**
+	 * 根据身份证号来查询 是否已经存在此身份证号
+	 * @param workerIdCard
+	 * @return 返回存在的条数
+	 */
+	Integer retrieveCountByworkerIdCard(String workerIdCard);
 }

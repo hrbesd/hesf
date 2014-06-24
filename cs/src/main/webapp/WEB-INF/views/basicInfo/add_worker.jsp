@@ -2,13 +2,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<style type="text/css">
-	.addWorkerIframe{
-		width: 100%;
-		margin-top: 0px;
-		height: 30px;
-	}
-</style>
 <script type="text/javascript">
 	/*
 		残疾职工页面
@@ -52,7 +45,7 @@
 		return params;
 	};
 	
-	//定义绑定事件
+	//定义绑定上传按钮事件
 	var button = $('#picfile'),interval;
 	
 	/*
@@ -486,5 +479,3 @@
 		</form>
 	</div>
 <div id="win"></div>
-<!-- 导入结果显示 -->
-<!-- <iframe name="addWorkerIframe" id="addWorkerIframe" class="addWorkerIframe" frameborder="0"> 5654564</iframe>	 -->

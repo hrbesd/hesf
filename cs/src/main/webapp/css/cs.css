@@ -128,6 +128,9 @@ textarea {
 .red_notice {
     color: #FF0000;
 }
+.blue_notice {
+    color: blue;
+}
 /*提示文本*/
 .tipText{
 	width: 90px;
@@ -202,16 +205,13 @@ text-align: right;
     margin-bottom: 20px;
     padding: 6px;
 }
-.red_notice {
-    color: #FF0000;
-}
 
 .importWorker {
 	margin: 0px auto;
 }
 
 /*导入残疾职工*/
-.importWorkerForm {
+.importWorkerDiv {
 	border: 1px solid #95B8E7;
 	margin: 20px auto auto;
 	padding: 15px;

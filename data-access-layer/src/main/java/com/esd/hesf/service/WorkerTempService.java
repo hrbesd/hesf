@@ -32,8 +32,6 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 * @param isOk
 	 * @param userId
 	 *            操作用户
-	 * @param checkCode
-	 *            区分标识符
 	 * @return
 	 */
 	public List<WorkerTemp> getByCheck(Boolean isOk, Integer userId);
@@ -44,9 +42,15 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 * @param isOk
 	 * @param userId
 	 *            操作用户
-	 * @param checkCode
-	 *            区分标识符
 	 * @return
 	 */
 	public Integer getCountByCheck(Boolean isOk, Integer userId);
+	
+	/**
+	 * 根据身份证号来查询 是否已经存在此身份证号,
+	 * @param workerIdCard
+	 * @return 返回存在的总条数
+	 */
+	public Integer getCountByworkerIdCard(String workerIdCard);
+	
 }

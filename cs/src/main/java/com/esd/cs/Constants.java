@@ -118,7 +118,7 @@ public class Constants {
 	 */
 	public static final String NOTICE_SUCCESS = "success";
 	/**
-	 * 提示标识--成功
+	 * 提示标识--失败
 	 */
 	public static final String NOTICE_FAILURE = "failure";
 

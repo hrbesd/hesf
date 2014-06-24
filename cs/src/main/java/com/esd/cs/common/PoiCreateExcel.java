@@ -33,9 +33,10 @@ public class PoiCreateExcel {
 	 * 
 	 * @param FilePath
 	 * @param workerList
-	 * @return
+	 * @return 导入成功返回true, 否则返回false
 	 */
-	public static boolean createExcel(String FilePath, List<WorkerTemp> workerList) {
+	public static boolean createExcel(String FilePath,
+			List<WorkerTemp> workerList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -74,16 +75,16 @@ public class PoiCreateExcel {
 			FileOutputStream os = new FileOutputStream(FilePath);
 			wb.write(os);
 			os.close();
-
+			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 
-	
 	/**
 	 * 导出单位信息
 	 * 
@@ -91,7 +92,8 @@ public class PoiCreateExcel {
 	 * @param companyList
 	 * @return
 	 */
-	public static boolean createCompanyExcel(String FilePath, List<Company> companyList) {
+	public static boolean createCompanyExcel(String FilePath,
+			List<Company> companyList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -207,7 +209,7 @@ public class PoiCreateExcel {
 		headell.setCellValue("性别");
 		headell = headRow.createCell(2);
 		headell.setCellValue("出生日期");
-		//	sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
+		// sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
 
 		headell = headRow.createCell(3);
 		headell.setCellValue("身份证号");
@@ -236,9 +238,9 @@ public class PoiCreateExcel {
 			cell.setCellValue(t.getWorkerName());
 			// 性别
 			cell = row.createCell(1);
-			if("0".equals(t.getWorkerGender())){
+			if ("0".equals(t.getWorkerGender())) {
 				cell.setCellValue("女");
-			}else{
+			} else {
 				cell.setCellValue("男");
 			}
 			// 出生日期
@@ -280,7 +282,7 @@ public class PoiCreateExcel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 导出报表
 	 * 
@@ -288,7 +290,8 @@ public class PoiCreateExcel {
 	 * @param companyList
 	 * @return
 	 */
-	public static boolean createRepeaExcel(String FilePath, List<ReportViewModel> companyList, ReportModel model) {
+	public static boolean createRepeaExcel(String FilePath,
+			List<ReportViewModel> companyList, ReportModel model) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -454,7 +457,8 @@ public class PoiCreateExcel {
 		HSSFCell cell = row.createCell(companyList.size() + 3);
 		// 设置单元格的样式格式
 		// 报表依据类型名
-		sheet.addMergedRegion(new CellRangeAddress(companyList.size() + 3, companyList.size() + 3, 0, 13));// 四个参数分别是：起始行，起始列，结束行，结束列
+		sheet.addMergedRegion(new CellRangeAddress(companyList.size() + 3,
+				companyList.size() + 3, 0, 13));// 四个参数分别是：起始行，起始列，结束行，结束列
 		cell = row.createCell(0);
 		// 设置样式
 		HSSFCellStyle styleFoot = wb.createCellStyle();
