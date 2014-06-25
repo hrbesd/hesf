@@ -56,7 +56,7 @@
 	 * 异步 上传excel文件方法函数
 	 */
 	var ajaxUploadPic = new AjaxUpload(button, {
-		action: '${contextPath}/security/worker//importworker',
+		action: '${contextPath}/security/worker/importworker',
 		name: 'excel',//更改上传的文件名
 		autoSubmit:false,
 		type:'POST',
