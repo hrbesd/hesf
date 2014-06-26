@@ -167,13 +167,14 @@
 	addWorker.save = function() {
 		//获取残疾证号
 		var workerHandicapCode = $("#workerHandicapCode").val();
-		//身份证号
 		
 		//根据残疾证号初始化其他组件, 并进行非访问数据库的校验
 		var initElement = addWorker.initElement(workerHandicapCode);
 		if(!initElement){
 			return;
 		}
+		
+		//身份证号
 		var workerIdCard = ($("#workerHandicapCode").val()).substring(0, 18);
 		var companyId = $('#companyId').val();
 
@@ -392,9 +393,9 @@
 	};
 </script>
 
-<!-- 导入成功隐藏 -->
+	<!-- 显示要编辑的基本信息-->
 	<div id="addWorkerDiv">																								<!--  onsubmit="return addWorker.validate();" -->
-	 	<form id="addWorkerForm" action="worker/add" method="post" class="addWorkerForm">
+	 	<form id="addWorkerForm" action="#" method="post" class="addWorkerForm">
 			<!--  女退休年龄 -->
 			<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
 			<!--  男退休年龄 -->

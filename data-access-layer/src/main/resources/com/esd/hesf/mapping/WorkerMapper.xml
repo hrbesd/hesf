@@ -19,7 +19,6 @@
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
  		<result column="w_pic_title" jdbcType="VARCHAR" property="picTitle" />
-		<result column="w_pic" jdbcType="BLOB" property="pic" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="w_user_id" jdbcType="INTEGER" property="userId" />

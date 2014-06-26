@@ -8,6 +8,7 @@ package com.esd.cs.worker;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -376,7 +377,7 @@ public class WorkerController {
 	}
 
 	/**
-	 * 编辑残疾职工
+	 * 异步 更新没有照片的 残疾职工
 	 * 
 	 * @param worker
 	 * @param request
@@ -384,13 +385,39 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean edit_worker(Worker worker, HttpServletRequest request) {
+	public Boolean edit(Worker worker, HttpServletRequest request) {
 		logger.debug("editWorker:{}", worker);
 		boolean b = workerService.update(worker);
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
-
+	
+	/**
+	 * 异步 更新没有照片的 残疾职工
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/editWithPic", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean editWithPic(Worker worker, HttpServletRequest request) {
+		logger.debug("editWorker:{}", worker);
+		boolean b = workerService.update(worker);
+		logger.debug("editWorkerResult:{}", b);
+		return b;
+	}
+	
+	
+	@RequestMapping(value="/getPic/{id}")
+	public void showPic(@PathVariable(value="id") Integer id,HttpServletRequest request,HttpServletResponse response){
+		response.setContentType("image/jpeg");
+		Blob picBlob = workerService.getPicByPrimaryKey(id);
+		System.out.println(picBlob);
+		
+	}
+	
+	
 	/**
 	 * 删除残疾职工
 	 * 
