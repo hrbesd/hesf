@@ -596,6 +596,10 @@
 				<if test="accounts.year != null and accounts.year != ''">
 					ac.year = #{accounts.year,jdbcType=CHAR}
 				</if>
+				<!-- total money -->
+				<if test="accounts.totalMoney != null and accounts.totalMoney > 0">
+					and ac.total_money = #{accounts.totalMoney,jdbcType=DECIMAL}
+				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
 					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
@@ -685,6 +689,10 @@
 			<if test="accounts != null">
 				<if test="accounts.year != null and accounts.year != ''">
 					ac.year = #{accounts.year,jdbcType=CHAR}
+				</if>
+				<!-- total money -->
+				<if test="accounts.totalMoney != null and accounts.totalMoney > 0">
+					and ac.total_money = #{accounts.totalMoney,jdbcType=DECIMAL}
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">

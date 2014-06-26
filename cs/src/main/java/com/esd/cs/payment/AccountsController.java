@@ -1,5 +1,7 @@
 package com.esd.cs.payment;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +35,8 @@ public class AccountsController {
 	@Autowired
 	AccountsService acService;
 
+	private DecimalFormat df = new DecimalFormat("0.00");
+	
 	/**
 	 * 根据查询条件获得账目列表(缴款列表)
 	 * 
@@ -46,7 +50,7 @@ public class AccountsController {
 		Integer page = Integer.valueOf(request.getParameter("page"));
 		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
 		Integer process = Integer.valueOf(request.getParameter("process"));
-		// String money = request.getParameter("money");
+		String money = request.getParameter("money");
 		String companyCode = request.getParameter("companyCode");
 		String companyTaxCode = request.getParameter("companyTaxCode");
 		String companyName = request.getParameter("companyName");
@@ -62,6 +66,9 @@ public class AccountsController {
 		company.setCompanyName(companyName);
 		ac.setCompany(company);
 		ac.setAuditProcessStatus(new AuditProcessStatus(process));
+		if(money != null && !"".equals(money)){
+			ac.setTotalMoney(new BigDecimal(money));
+		}
 		if (isReceipt != null && !"".equals(isReceipt)) {
 			if ("1".equals(isReceipt)) {
 				ac.setIsReceipt(Boolean.TRUE);
