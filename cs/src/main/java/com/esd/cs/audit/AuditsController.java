@@ -137,8 +137,8 @@ public class AuditsController {
 				audit.setInitAuditUser(user);
 				// 更改审计状态
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
-						.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
-				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未复审
+						.getByPrimaryKey(Constants.PROCESS_STATIC_YCSWZS);
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为 已初审 未终审
 				auditService.update(audit);
 				return true;
 			}
@@ -771,7 +771,7 @@ public class AuditsController {
 			audit.setVerifyAuditUser(user);
 		}
 		//添加终审人
-		if (audit.getFinalAuditUser() == null && process == 8) {
+		if (audit.getFinalAuditUser() == null && process == 14) {
 			Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 			User user = userService.getByPrimaryKey(userId);
 			audit.setFinalAuditUser(user);
@@ -893,14 +893,17 @@ public class AuditsController {
 	}
 
 	/**
-	 * 保存初审信息
+	 * 新增加企业 保存的初审信息
 	 */
 	@RequestMapping(value = "/saveAudit", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean saveAudit(Audit audit) {
 		logger.debug(audit.toString());
 		audit.setAuditProcessStatus(new AuditProcessStatus(
-				Constants.PROCESS_STATIC_WCS));
+				Constants.PROCESS_STATIC_YCSWZS));
+		//初审信息备注前面添加内容： 新增公司
+		String add = audit.getYear()+"年度审核新增公司.";
+		audit.setRemark(add+audit.getRemark());
 		return auditService.update(audit);
 	}
 }

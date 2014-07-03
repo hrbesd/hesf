@@ -176,11 +176,7 @@
 	  		params.isExceed=true;
 	  	}else{
 	  		params.isExceed=false;
-	  		
 	  	}
-
-	  	
-	  	
 		return params;
 	};
 

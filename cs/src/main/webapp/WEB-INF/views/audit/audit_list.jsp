@@ -59,26 +59,21 @@
 				var r = '';
 				var c = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >初审</a>';
 				var v = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
-				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
+		//		var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
 				var ff = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >终审</a>';
+				//未初审
 				if (row.auditProcessStatusId == 1) {
 					r = '<c:if test="${process==1}">' + c + '</c:if><c:if test="${process!=1}">' + v + '</c:if>';
 					return r;
 				}
-				if (row.auditProcessStatusId == 2) {
-					r = '<c:if test="${process==2}">' + f + '</c:if><c:if test="${process!=2}">' + v + '</c:if>';
-					return r;
-				}
-				if (row.auditProcessStatusId == 7) {
-					r = '<c:if test="${process==7}">' + c + '</c:if><c:if test="${process!=7}">' + v + '</c:if>';
-					return r;
-				}
-				if (row.auditProcessStatusId == 8) {
-					r = '<c:if test="${process==8}">' + ff + '</c:if><c:if test="${process!=8}">' + v + '</c:if>';
-					return r;
-				}
+				//已终审 未通过
 				if (row.auditProcessStatusId == 9) {
-					r = '<c:if test="${process == 9}">' + c + '</c:if><c:if test="${process!=9}">' + v + '</c:if>';
+					r = '<c:if test="${process==9}">' + c + '</c:if><c:if test="${process!=9}">' + v + '</c:if>';
+					return r;
+				}
+				//已初审 未复审
+				if (row.auditProcessStatusId == 14) {
+					r = '<c:if test="${process==14}">' + ff + '</c:if><c:if test="${process!=14}">' + v + '</c:if>';
 					return r;
 				}
 				return v;
@@ -89,19 +84,19 @@
 	打开单位初审面板
 	 */
 	initAuditList.openAudit = function(index) {
-		<c:if test="${process==1}">
-			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
-		</c:if>
-		<c:if test="${process==7}">
+		<c:if test="${process==1 || process == 9}">
 			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
 		</c:if>
+	/*	<c:if test="${process==7}">
+			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
+		</c:if>	
 		<c:if test="${process==9}">
 			esd.common.defaultOpenWindowEx("初审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/1");
 		</c:if>
 		<c:if test="${process==2}">
 			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
-		</c:if>
-		<c:if test="${process==8}">
+		</c:if>	*/
+		<c:if test="${process==14}">
 			esd.common.defaultOpenWindowEx("终审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 	};
@@ -113,7 +108,9 @@
 	 * 新建审计记录
 	 **/
 	initAuditList.createAudit = function() {
-		esd.common.defaultOpenWindowEx("新建审计记录", 600, 200, "${contextPath}/security/audits/create");
+	//	esd.common.defaultOpenWindowEx("新建审计记录", 600, 200, "${contextPath}/security/audits/create");
+		//农垦用的创空
+		esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 600, "${contextPath}/security/audits/createCompany");
 	};
 
 	/**
@@ -137,7 +134,7 @@
 			</td>
 			<c:if test="${process==1}">
 				<td colspan="3" style="text-align: right;">
-					<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加年审记录</a>
+					<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="initAuditList.createAudit();">添加企业年审信息</a>
 				</td>
 			</c:if>
 		</tr>

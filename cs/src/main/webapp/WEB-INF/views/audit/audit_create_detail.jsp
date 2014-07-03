@@ -36,8 +36,18 @@
 					}
 				});
 			}
+			//残疾职工信息选项卡
+			if(index  == 1 ){
+				//初始化残疾职工信息选项卡内的参数
+				workerList.init();
+				var companyId = $('#companyId').val();
+				if(companyId != '' && companyId != null){
+					//装载残疾职工数据
+					workerList.loadData(workerList.getParams());
+				}
+			}
 			//年审信息 -- 选项卡
-			if(index == 1){
+			if(index == 2){
 				//根据公司id, 得到该公司当年的基本审核信息, 显示在下方--关于公司基本信息的.
 				var companyId = $('#companyId').val();
 				var bl = initAudit.getAuditInfo(companyId);
@@ -50,16 +60,6 @@
 				}
 			}
 			
-			//残疾职工信息选项卡
-			if(index  == 2 ){
-				//初始化残疾职工信息选项卡内的参数
-				workerList.init();
-				var companyId = $('#companyId').val();
-				if(companyId != '' && companyId != null){
-					//装载残疾职工数据
-					workerList.loadData(workerList.getParams());
-				}
-			}
 			
 		}
 	});
@@ -74,15 +74,15 @@
 		<div title="公司信息">
 			<jsp:include page="audit_create_company.jsp" />
 		</div>
-		<div id="startaudit_tabs" title="年审信息" cache="false">
-			<jsp:include page="audit_create_init.jsp" />
-		</div>
 		<!--endprint-->
 	<!-- 	<div title="残疾职工信息" data-options="href:'worker/list/auditCreate/${year}'"></div>	 -->
 		<div title="残疾职工信息" cache="false">
 			<jsp:include page="audit_create_worker_list.jsp" />
 		</div>
-		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
+		<div id="startaudit_tabs" title="年审信息" cache="false">
+			<jsp:include page="audit_create_init.jsp" />
+		</div>
+		<div title="年审参数浏览"><jsp:include page="audit_params.jsp" /></div>
 	</div>
 </div>
 

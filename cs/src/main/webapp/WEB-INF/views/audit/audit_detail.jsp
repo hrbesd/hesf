@@ -29,7 +29,8 @@
 			<c:if test="${process==2}">
 				<jsp:include page="audit_verify.jsp" />
 			</c:if>
-			<c:if test="${process==8}">
+			<!-- 已初审 未终审 -->
+			<c:if test="${process==14}">
 				<jsp:include page="audit_final.jsp" />
 			</c:if>
 			<c:if test="${process==10}">
@@ -49,7 +50,7 @@
 		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
 		<!-- 终审用户打印信息页面 -->
 		<!-- 只有在终审这里才会显示打印 -->
-		<c:if test="${process == 8 || process == 10}">
+		<c:if test="${process == 14 || process == 10}">
 	 		<div title="打印信息页面">
 				<jsp:include page="audit_final_print.jsp" />
 			</div>

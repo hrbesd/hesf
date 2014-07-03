@@ -18,10 +18,10 @@
 	};	
 	auditCreateCompany.add = function(){
 		esd.common.syncPostSubmit("#addCompanyForm", function(data) {
-			if (data > 0 ) {
-				$.messager.alert('消息', '单位信息添加成功,请继续添加审核信息!', 'info');
-				$('#companyId').val(data);
-				$('#company_grid').datagrid("reload");
+			if (data.notice == 'success') {
+				$.messager.alert('消息', '单位信息添加成功,请继续添加“残疾职工信息”,如没有残疾职工则直接填写“年审信息”!', 'info');
+				$('#companyId').val(data.companyId);
+			//	$('#company_grid').datagrid("reload");
 			} else {
 				$.messager.alert('消息', '单位信息增加失败!', 'error');
 			}
@@ -117,7 +117,7 @@
 		$('#txtCompanyMobile').val('');
 		$('#txtCompanyBank').val('');
 		$('#txtCompanyBankAccount').val('');
-		$('#comboboxAreaCode').combobox('setValue','1023000');
+		$('#comboboxAreaCode').combobox('setValue','n001');
 		$('#txtCompanyZipCode').val('');
 		$('#txtCompanyAddress').val('');
 		$('#txtCompanyRemark').val('');
@@ -147,7 +147,6 @@
 				<!-- 版本号 , 默认为1-->
 		<!-- 		<input type="hidden" name="version" id="txtVersion" value="1"/>	 -->
 				<!-- 公司id -->
-				<!-- 测试, 暂时写死为: 1 -->
 				<input type="hidden" id="companyId" value=""/>
 			</td>
 			<td colspan="2">
@@ -171,23 +170,15 @@
 			<td class="tdRight">企业性质:</td>
 			<td><input id="comboboxCompanyProperty" name="companyProperty.id" class="easyui-combobox" value="4"
 				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
-			</td>
-			<td class="tdRight">经济类型:</td>
-			<td class="bj_belu"><input id="comboboxCompanyEconomyType" name="companyEconomyType.id" class="easyui-combobox" value="1"
-				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyEconomyType',url:'parameter/economytypeEx'" />
-			</td>
-		</tr>
-		<tr>
-			<td class="tdRight">单位类型:</td>
-			<td class="bj_belu"><input id="comboxCompanyType" name="companyType.id" class="easyui-combobox" value="1"
-				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
+				<!-- 经济类型，单位类型由于数据库限制不能为空，都写死为 1 -->
+				<input type="hidden" name="companyEconomyType.id" value="1" />
+				<input type="hidden" name="companyType.id" value="1" />
 			</td>
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu">
-			<input name="companyManagement" id="txtCompanyManagement"  />
+				<input name="companyManagement" id="txtCompanyManagement"  />
 			</td>
 		</tr>
-		
 		<tr>
 			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
 			<td><input id="txtCompanyLegal" name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>

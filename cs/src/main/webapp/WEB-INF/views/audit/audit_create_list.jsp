@@ -10,7 +10,7 @@
 <!-- 自定义菜单 -->
 <div id="company_boolbar">
 	<div style="text-align: right;">
-	<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="auditCreate.openAddCompany();">添加公司年审信息</a>
+	<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="auditCreate.openAddCompany();">添加企业年审信息</a>
 	</div>
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
@@ -30,7 +30,7 @@
 		打开添加公司信息和相关审核信息的页面
 		**/
 		auditCreate.openAddCompany = function(){
-			esd.common.defaultOpenWindowEx("添加公司信息", 920, 600, "${contextPath}/security/audits/createCompany");
+			esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 600, "${contextPath}/security/audits/createCompany");
 		};
 
 

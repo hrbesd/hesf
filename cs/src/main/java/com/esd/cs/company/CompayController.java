@@ -245,14 +245,15 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/addCompany", method = RequestMethod.POST)
 	@ResponseBody
-	public Integer add_company2(Company company, HttpServletRequest request,
+	public Map<String,Object> add_company2(Company company, HttpServletRequest request,
 			HttpSession session) {
-		System.out.println("///////////////**************************");
 		logger.debug("addCompany:{}", company);
+		Map<String,Object> result = new HashMap<String,Object>();
 		try {
 			if (company == null) {
 				logger.error("addCompany:{}", "paramserror");
-				return -1;
+				result.put(Constants.NOTICE, "提交参数有误!");
+				return result;
 			}
 			String nowYear = (String) session.getAttribute(Constants.YEAR);
 			// 检查该公司是否存在, 不存在则保存, 存在则更新
@@ -283,23 +284,19 @@ public class CompayController {
 				audit.setYear(nowYear);
 				auditService.save(audit);
 			}
-//			// 如果选中创建当年审核数据
-//			String createAudit = request.getParameter("createAudit");
-//			if (createAudit != null && "1".equals(createAudit)) {
-//				Audit audit = new Audit();
-//				audit.setCompany(company);
-//				audit.setYear(nowYear);
-//				auditService.save(audit);
-//			}
 			// 检查一下,
 			logger.debug("addCompanyResult:{}", b);
 			//返回创建/更新的公司id
-			return company.getId();
+			result.put(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+			result.put("companyId", company.getId());
+			result.put("auditId", audit.getId());
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("addCompany:{}", "adderror");
+			result.put(Constants.NOTICE, "保存数据时发生错误, 请联系管理员");
+			return result;
 		}
-		return -1;
 	}
 	
 	/**

@@ -387,8 +387,8 @@
 			</tr>
 			<!-- 年审企业表格  第六部分(意见栏) -->
 			<tr>
-				<td width="100" rowspan="2">复审意见:</td>
-				<td colspan="3" rowspan="2"><textarea name="verifyAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.verifyAuditComment}</textarea></td>
+				<td width="100" rowspan="2">初审意见:</td>
+				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<td width="100" rowspan="3">终审意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
 				<td colspan="3" rowspan="2"><textarea class="warn"  name="finalAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.finalAuditComment}</textarea></td>
@@ -401,18 +401,18 @@
 				</select></td>
 			</tr>
 			<tr>
-				<td class="">复审日期:</td>
+				<td class="">初审日期:</td>
 				<td>
-					<c:if test="${entity.verifyAuditDate==null}">
-						<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					<c:if test="${entity.initAuditDate==null}">
+						<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initAuditDate" />
 					</c:if> 
-					<c:if test="${entity.verifyAuditDate!=null}">
-						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					<c:if test="${entity.initAuditDate!=null}">
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initAuditDate" />
 					</c:if> 
-					<input class="readonly" value="${verifyAuditDate}" />
+					<input class="readonly" value="${initAuditDate}" />
 				</td>
-				<td width="100">复审人:</td>
-				<td><input type="text" class="readonly" value="${entity.finalAuditUser.userRealName}" /></td>
+				<td width="100">初审人:</td>
+				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">终审日期:</td>
 				<td>
 					<c:if test="${entity.finalAuditDate == null }">
@@ -421,7 +421,6 @@
 					<c:if test="${entity.finalAuditDate != null }">
 						<fmt:formatDate value="${entity.finalAuditDate }" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="finalAuditDate" />
 					</c:if>
-					<fmt:formatDate value="${entity.finalAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> 
 					<input type="text" class="bj_belu4 readonly" value="${finalAuditDate}" />
 				</td>
 				<td width="100">终审人:</td>
@@ -430,7 +429,7 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<c:if test="${entity.auditProcessStatus.id==8}">
+		<c:if test="${entity.auditProcessStatus.id==14}">
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<a href="javascript:finalAudit.refusal();" class="easyui-linkbutton" iconCls="icon-cancel">拒绝</a>

@@ -182,7 +182,12 @@
 	initAudit.save = function() {
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
-				$.messager.alert('消息','审核信息添加成功,请继续添加残疾职工信息!');
+				$.messager.alert('消息','年审信息添加成功!','info',function(){
+					//关闭当前框
+					esd.common.defaultOpenWindowClose();
+					//刷新列表
+					$("#initAuditList_datagrid").datagrid('reload');
+				});
 			} else {
 				esd.common.noCloseButtonDialog('消息','保存失败');
 			}
@@ -426,11 +431,10 @@
 				<td>实缴总金额:</td>
 				<td colspan="1"><input id="shiJiaoZongJinE" type="text" class="readonly" name="payAmount" value="" />
 				</td>
-
 			</tr>
 			<tr>
 				<td width="100">备注:</td>
-				<td colspan="10"><textarea id="auditRemark" name="remark" rows="2" style="height: 60px;" readonly="readonly"></textarea></td>
+				<td colspan="10"><textarea id="auditRemark" name="remark" rows="2" style="height: 60px;"></textarea></td>
 			</tr>
 		</table>
 	</div>
@@ -438,7 +442,7 @@
 			<input id="auditCompanyId" name="company.id"type="hidden" value="" />
 			<input id="auditId" name="id" type="hidden" value="" />
 			<input id="auditVersion" name="version" type="hidden" value="" />
-			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">保存</a>
+			<a href="javascript:initAudit.save();" class="easyui-linkbutton" iconCls="icon-save">提交初审信息</a>
 			<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> 
 	<!-- 		<a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>	 -->
 	</div>
