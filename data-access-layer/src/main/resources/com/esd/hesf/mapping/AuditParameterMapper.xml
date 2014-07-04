@@ -12,6 +12,7 @@
 		<result column="ap_year" property="year" jdbcType="CHAR" />
 		<result column="ap_put_scale" property="putScale" jdbcType="DECIMAL" />
 		<result column="ap_average_salary" property="averageSalary" jdbcType="DECIMAL" />
+		<result column="ap_average_salary_pi" property="averageSalaryPi" jdbcType="DECIMAL" />
 		<result column="ap_audit_start_date" property="auditStartDate" jdbcType="TIMESTAMP" />
 		<result column="ap_audit_close_date" property="auditCloseDate" jdbcType="TIMESTAMP" />
 		<result column="ap_audit_delay_date" property="auditDelayDate" jdbcType="TIMESTAMP" />
@@ -65,7 +66,9 @@
 		ap.id as ap_id, ap.create_time as ap_create_time, ap.update_time as ap_update_time, ap.user_id as ap_user_id, 
 		ap.is_active as ap_is_active, ap.version as ap_version,
 		ap.year as ap_year, ap.put_scale as ap_put_scale,
-		ap.average_salary as ap_average_salary, ap.audit_start_date as ap_audit_start_date,
+		ap.average_salary as ap_average_salary, 
+		ap.average_salary_pi as ap_average_salary_pi,
+		ap.audit_start_date as ap_audit_start_date,
 		ap.audit_close_date as ap_audit_close_date,ap.audit_delay_date as ap_audit_delay_date,
 		ap.audit_delay_rate as ap_audit_delay_rate, ap.pay_close_date as ap_pay_close_date,
 		ap.pay_limit_days as ap_pay_limit_days, ap.decimal_count as ap_decimal_count,
@@ -101,6 +104,7 @@
 		version,
 		year, area_code, put_scale,
 		average_salary,
+		average_salary_pi,
 		audit_start_date,
 		audit_close_date,
 		audit_delay_date,
@@ -138,6 +142,7 @@
 		#{area.code,jdbcType=CHAR},
 		#{putScale,jdbcType=DECIMAL},
 		#{averageSalary,jdbcType=DECIMAL},
+		#{averageSalaryPi,jdbcType=DECIMAL},
 		#{auditStartDate,jdbcType=TIMESTAMP},
 		#{auditCloseDate,jdbcType=TIMESTAMP},
 		#{auditDelayDate,jdbcType=TIMESTAMP},
@@ -201,6 +206,9 @@
 			</if>
 			<if test="averageSalary != null">
 				average_salary,
+			</if>
+			<if test="averageSalaryPi != null">
+				average_salary_pi,
 			</if>
 			<if test="auditStartDate != null">
 				audit_start_date,
@@ -336,6 +344,9 @@
 			</if>
 			<if test="averageSalary != null">
 				#{averageSalary,jdbcType=DECIMAL},
+			</if>
+			<if test="averageSalaryPi != null">
+				#{averageSalaryPi,jdbcType=DECIMAL},
 			</if>
 			<if test="auditStartDate != null">
 				#{auditStartDate,jdbcType=TIMESTAMP},
@@ -483,6 +494,9 @@
 			</if>
 			<if test="averageSalary != null">
 				average_salary = #{averageSalary,jdbcType=DECIMAL},
+			</if>
+			<if test="averageSalaryPi != null">
+				average_salary_pi = #{averageSalaryPi,jdbcType=DECIMAL},
 			</if>
 			<if test="auditStartDate != null">
 				audit_start_date = #{auditStartDate,jdbcType=TIMESTAMP},

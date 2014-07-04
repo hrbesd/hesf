@@ -91,7 +91,8 @@ public class YearAuditParameterController {
 				map.put("id", it.getId());// id
 				map.put("year", it.getYear());// 年度
 				map.put("areaCode", it.getArea().getName());// 地区
-				map.put("averageSalary", it.getAverageSalary());// 计算基数
+				map.put("averageSalary", it.getAverageSalary());// 计算基数--企业单位
+				map.put("averageSalaryPi", it.getAverageSalaryPi());// 计算基数--事业单位
 				map.put("putScale", it.getPutScale());// 安置比例
 				String payCloseDate = CalendarUtil.dateFormat(it
 						.getPayCloseDate());

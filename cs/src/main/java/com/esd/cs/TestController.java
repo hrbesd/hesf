@@ -361,7 +361,7 @@ public class TestController {
 	public ModelAndView test21() {
 		ModelAndView mav = new ModelAndView("/test");
 		// Map<String, Object> map = new HashMap<String, Object>();
-		AuditParameter entity = apService.getByPrimaryKey(24);
+		AuditParameter entity = apService.getByPrimaryKey(9);
 		mav.addObject("entity", entity);
 		// map.put("entity", entity);
 		return mav;

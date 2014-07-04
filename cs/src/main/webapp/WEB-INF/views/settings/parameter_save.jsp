@@ -78,23 +78,25 @@
 					<td>年度:</td>
 					<td><input class="easyui-validatebox" required="true" name="year" id="jinnian" type="text" value="" onfocus="parameter_save.change(this.value)" onchange="parameter_save.change(this.value)" />
 						<input name="version" type="hidden" value="1" />
+						<!-- 地区默认为宝泉岭 -->
+						<input type="hidden" name="area.code" value="n001" />
 					</td>
 					<td>批量创建审计记录:</td>
-					<td colspan="3"><select class="easyui-combobox" id="copy" name="copy" data-options="editable:false,panelHeight:47,height:30" style="width:120px">
-							<option value="false">否</option>
+					<td colspan="3"><select class="easyui-combobox" id="copy" name="copy" data-options="editable:false,panelHeight:55,height:30" style="width:120px">
 							<option value="true">是</option>
+							<option value="false">否</option>
 					</select><span style="font-size:12px;color:red;"> (*)当前年度审核参数选"是"; 往年审核参数(即补审)选"否"</span></td>
 				</tr>
 				<tr>
-					<td>所属地区:</td>
-					<td><input name="area.code" class="easyui-combobox" value="10230000" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
+					<td>安置比例(%):</td>
+					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="0.015" />
 					</td>
 					<td>滞纳金开始日期:</td>
 					<td><input class="easyui-datebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-9-01" style="width:120px" /></td>
 				</tr>
 				<tr>
-					<td>安置比例(%):</td>
-					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="0.015" />
+					<td>计算基数(企业):</td>
+					<td><input class="easyui-numberbox" name="averageSalary" type="text" required="true" data-options="min:0,precision:2" />
 					</td>
 					<td>滞纳金征收比率(%):</td>
 					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="0.005" style="width:118px;"/></td>
@@ -102,8 +104,8 @@
 					<td><input class="easyui-validatebox" name="retireAgeMale" type="text" required="true" value="61" style="width:120px;"/></td>
 				</tr>
 				<tr>
-					<td>计算基数:</td>
-					<td><input class="easyui-numberbox" name="averageSalary" type="text" required="true" data-options="min:0,precision:2" />
+					<td>计算基数(事业):</td>
+					<td><input class="easyui-numberbox" name="averageSalaryPi" type="text" required="true" data-options="min:0,precision:2" />
 					</td>
 					<td>支付截至日期:</td>
 					<td><input class="easyui-datebox" id="payCloseDate" name="payCloseDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-12-01" style="width:120px" /></td>
@@ -129,8 +131,8 @@
 				<tr>
 					<td>视力残疾:</td>
 					<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:47,height:25">
-							<option value="1" <c:if test="${entity.eyeOne eq '1'}">selected="selected"</c:if>>1</option>
-							<option value="2" <c:if test="${entity.eyeOne eq '2'}">selected="selected"</c:if>>2</option>
+							<option value="1">1</option>
+							<option value="2"selected="selected" >2</option>
 					</select>
 					</td>
 					<td><select class="easyui-combobox" name="eyeTwo" data-options="panelHeight:47,height:25">

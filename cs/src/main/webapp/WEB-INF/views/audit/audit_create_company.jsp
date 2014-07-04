@@ -21,6 +21,7 @@
 			if (data.notice == 'success') {
 				$.messager.alert('消息', '单位信息添加成功,请继续添加“残疾职工信息”,如没有残疾职工则直接填写“年审信息”!', 'info');
 				$('#companyId').val(data.companyId);
+				$('#tempCompanyCode').val($('#txtCompanyCode').combobox('getValue'));
 			//	$('#company_grid').datagrid("reload");
 			} else {
 				$.messager.alert('消息', '单位信息增加失败!', 'error');
@@ -142,6 +143,8 @@
 			</td>
 			<td>
 				<input type="text" id="txtCompanyCode" name="companyCode" value="" class="easyui-combobox" data-options="width:400,height:30,editable:true,panelHeight:240" />
+				<!-- 保存 上次提交的companyCode  未使用-->
+				<input type="hidden" id="tempCompanyCode" />
 				<!-- 自动创建审核信息标示符 -->
 				<input type="hidden" name="createAudit" id="createAudit" value="1"/>
 				<!-- 版本号 , 默认为1-->

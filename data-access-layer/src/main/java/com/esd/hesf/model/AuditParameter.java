@@ -15,7 +15,8 @@ public class AuditParameter extends PrimaryKey_Int {
 	private String year;
 	private Area area; // 地区
 	private BigDecimal putScale;// 安置比例
-	private BigDecimal averageSalary;// 当年平均工资
+	private BigDecimal averageSalary;// 当年平均工资--企业
+	private BigDecimal averageSalaryPi;// 当年平均工资--事业
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date auditStartDate; // 审核开始日期
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -60,13 +61,26 @@ public class AuditParameter extends PrimaryKey_Int {
 
 	@Override
 	public String toString() {
-		return "AuditParameter [year=" + year + ", area=" + area + ", putScale=" + putScale + ", averageSalary=" + averageSalary + ", auditCloseDate=" + auditCloseDate + ", payCloseDate="
-				+ payCloseDate + ", payLimitDays=" + payLimitDays + ", decimalCount=" + decimalCount + ", eyeOne=" + eyeOne + ", eyeTwo=" + eyeTwo + ", eyeThree=" + eyeThree + ", eyeFour=" + eyeFour
-				+ ", hearingOne=" + hearingOne + ", hearingTwo=" + hearingTwo + ", hearingThree=" + hearingThree + ", hearingFour=" + hearingFour + ", bodyOne=" + bodyOne + ", bodyTwo=" + bodyTwo
-				+ ", bodyThree=" + bodyThree + ", bodyFour=" + bodyFour + ", speakOne=" + speakOne + ", speakTwo=" + speakTwo + ", speakThree=" + speakThree + ", speakFour=" + speakFour
-				+ ", intelligenceOne=" + intelligenceOne + ", intelligenceTwo=" + intelligenceTwo + ", intelligenceThree=" + intelligenceThree + ", intelligenceFour=" + intelligenceFour
-				+ ", mentalOne=" + mentalOne + ", mentalTwo=" + mentalTwo + ", mentalThree=" + mentalThree + ", mentalFour=" + mentalFour + ", multiOne=" + multiOne + ", multiTwo=" + multiTwo
-				+ ", multiThree=" + multiThree + ", multiFour=" + multiFour + "]";
+		return "AuditParameter [year=" + year + ", area=" + area
+				+ ", putScale=" + putScale + ", averageSalary=" + averageSalary
+				+ ", auditCloseDate=" + auditCloseDate + ", payCloseDate="
+				+ payCloseDate + ", payLimitDays=" + payLimitDays
+				+ ", decimalCount=" + decimalCount + ", eyeOne=" + eyeOne
+				+ ", eyeTwo=" + eyeTwo + ", eyeThree=" + eyeThree
+				+ ", eyeFour=" + eyeFour + ", hearingOne=" + hearingOne
+				+ ", hearingTwo=" + hearingTwo + ", hearingThree="
+				+ hearingThree + ", hearingFour=" + hearingFour + ", bodyOne="
+				+ bodyOne + ", bodyTwo=" + bodyTwo + ", bodyThree=" + bodyThree
+				+ ", bodyFour=" + bodyFour + ", speakOne=" + speakOne
+				+ ", speakTwo=" + speakTwo + ", speakThree=" + speakThree
+				+ ", speakFour=" + speakFour + ", intelligenceOne="
+				+ intelligenceOne + ", intelligenceTwo=" + intelligenceTwo
+				+ ", intelligenceThree=" + intelligenceThree
+				+ ", intelligenceFour=" + intelligenceFour + ", mentalOne="
+				+ mentalOne + ", mentalTwo=" + mentalTwo + ", mentalThree="
+				+ mentalThree + ", mentalFour=" + mentalFour + ", multiOne="
+				+ multiOne + ", multiTwo=" + multiTwo + ", multiThree="
+				+ multiThree + ", multiFour=" + multiFour + "]";
 	}
 
 	public String getYear() {
@@ -99,6 +113,14 @@ public class AuditParameter extends PrimaryKey_Int {
 
 	public void setAverageSalary(BigDecimal averageSalary) {
 		this.averageSalary = averageSalary;
+	}
+
+	public BigDecimal getAverageSalaryPi() {
+		return averageSalaryPi;
+	}
+
+	public void setAverageSalaryPi(BigDecimal averageSalaryPi) {
+		this.averageSalaryPi = averageSalaryPi;
 	}
 
 	public Date getAuditStartDate() {

@@ -145,8 +145,16 @@ public class PaymentController {
 		entity.put("remark", audit.getRemark());
 		entity.put("companyEmpTotal",
 				String.valueOf(audit.getCompanyEmpTotal()));
-		entity.put("averageSalary",
-				df.format(auditParameter.getAverageSalary()));
+		Company company = companyService.getByPrimaryKey(companyId);
+		//如果为企业单位, 则使用企业平均工资计算
+		if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
+			entity.put("averageSalary",
+					df.format(auditParameter.getAverageSalary()));
+		}else{
+			//如果为事业单位, 则使用事业单位平均工资计算
+			entity.put("averageSalary",
+					df.format(auditParameter.getAverageSalaryPi()));
+		}
 		entity.put("companyShouldTotal",
 				String.valueOf(audit.getCompanyShouldTotal()));
 		entity.put("companyAlreadyTotal",
@@ -703,7 +711,16 @@ public class PaymentController {
 			
 			// 年审参数
 			AuditParameter ap = auditParameterService.getByYear(auditYear);
-			entity.put("averageSalary", ap.getAverageSalary());
+			Company company = companyService.getByPrimaryKey(companyId);
+			//如果为企业单位, 则使用企业平均工资计算
+			if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
+				entity.put("averageSalary",
+						df.format(ap.getAverageSalary()));
+			}else{
+				//如果为事业单位, 则使用事业单位平均工资计算
+				entity.put("averageSalary",
+						df.format(ap.getAverageSalaryPi()));
+			}
 		}
 		return entity;
 	}

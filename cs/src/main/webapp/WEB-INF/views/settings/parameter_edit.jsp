@@ -40,15 +40,19 @@
 			<table class="parameterTab">
 				<tr>
 					<td>年度:</td>
-					<td><input class="easyui-validatebox" required="true" name="year" type="text" readonly="readonly" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
-						value="${entity.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
+					<td>
+						<input class="easyui-validatebox" required="true" name="year" type="text" readonly="readonly" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> 
+						<input class="easyui-validatebox" name="version" type="hidden" value="${entity.version}" /> 
+						<input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
+						<input type="hidden" name="area.code" value="${entity.area.code }" />
 					</td>
 					<td colspan="2">&nbsp;</td>
 					<!-- <span style="color: red; font-size: 12px;">提示：默认设置为当前年度减一年</span> -->
 				</tr>
 				<tr>
-					<td>所属地区:</td>
-					<td><input name="area.code" class="easyui-combobox" data-options="value:${entity.area.code},height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" />
+					<td>安置比例(%):</td>
+					<td>
+						<input class="easyui-validatebox" name="putScale" type="text" required="true" value="${entity.putScale}" />
 					</td>
 					<td>滞纳金开始日期:</td>
 					<td>
@@ -56,8 +60,9 @@
 					<input class="easyui-datebox easyui-validatebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" /></td>
 				</tr>
 				<tr>
-					<td>安置比例(%):</td>
-					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="${entity.putScale}" />
+					<td>计算基数(企业):</td>
+					<td>
+						<input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${entity.averageSalary}" />
 					</td>
 					<td>滞纳金征收比率(%):</td>
 					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${entity.auditDelayRate}" />
@@ -67,8 +72,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td>计算基数:</td>
-					<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${entity.averageSalary}" />
+					<td>计算基数(事业):</td>
+					<td><input class="easyui-validatebox" name="averageSalaryPi" type="text" required="true" value="${entity.averageSalaryPi}" />
 					</td>
 					<td>支付截至日期:</td>
 					<td><fmt:formatDate value="${entity.payCloseDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" /> <input class="easyui-datebox easyui-validatebox"  id="payCloseDate" name="payCloseDate"

@@ -269,7 +269,7 @@
 				<td>组织机关代码证:</td>
 				<td colspan="2"><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" /></td>
 				<td>企业性质:</td>
-				<td colspan="2"><select style="font-size: 12px; width: 100px;height: 28px;" class="" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
+				<td colspan="2"><select disabled="disabled" style="font-size: 12px; width: 100px;height: 28px;" class="" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
 						<c:forEach items="${companyPropertys}" var="item">
 							<option value="${item.id}" title="${item.companyProperty}" <c:if test="${entity.company.companyProperty.id eq item.id}">selected="selected"</c:if>>${item.companyProperty }</option>
 						</c:forEach>
@@ -281,12 +281,8 @@
 				<td colspan="2"><input name="company.companyContactPerson" class="bj_belu3" type="text" value="${entity.company.companyContactPerson}" /></td>
 				<td>电话号码:</td>
 				<td colspan="2"><input name="company.companyPhone" class="bj_belu3" type="text" value="${entity.company.companyPhone}" /></td>
-				<td>经济类型:</td>
-				<td colspan="2"><select style="font-size: 12px;width: 100px;height: 28px;" class="" name="company.companyEconomyType.id" data-options="width:106,height:30,editable:false">
-						<c:forEach items="${companyEconomyTypes}" var="item">
-							<option value="${item.id}" <c:if test="${entity.company.companyEconomyType.id eq item.id}">selected="selected"</c:if>>${item.companyEconomyType }</option>
-						</c:forEach>
-				</select></td>
+				<td></td>
+				<td colspan="2"></td>
 
 			</tr>
 			<tr>

@@ -22,7 +22,6 @@ public class Constants {
 	public static final BigDecimal ZERO = new BigDecimal("0.00");
 	public static final String YEAR = "year";
 
-	
 	/**
 	 * 未初审
 	 */
@@ -117,7 +116,7 @@ public class Constants {
 	 * 默认每页返回量
 	 */
 	public static final Integer PAGE_SIZE = 50;
-	
+
 	/**
 	 * 用户组-超级管理员
 	 */
@@ -150,4 +149,13 @@ public class Constants {
 	 * 用户组-减免
 	 */
 	public static final Integer USER_GROUP_JIANMIAN = 8;
+
+	/**
+	 * 平均工资--企业
+	 */
+	public static final Integer AVERAGE_SALARY_COMPANY = 4;
+	/**
+	 * 平均工资--事业
+	 */
+	public static final Integer AVERAGE_SALARY_PI = 5;
 }

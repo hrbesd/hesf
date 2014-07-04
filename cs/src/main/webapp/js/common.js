@@ -429,7 +429,7 @@ esd.common.noCloseButtonDialogNoCloseWindow = function(title,msg){
 		closable : false,
 		cache : false,
 		modal : true,
-		content : '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+msg,
+		content : ''+msg,
 		bodyCls : 'noCloseButtonDialogBody',
 	/*	toolbar : [{
 			text : '添加',

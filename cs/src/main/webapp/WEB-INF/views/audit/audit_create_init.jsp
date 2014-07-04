@@ -180,6 +180,10 @@
 
 	};
 	initAudit.save = function() {
+		if($('#zaiZhiYuanGongZongShu').val() <= 0){
+			$.messager.alert('消息','职工总人数要大于 零.','info');
+			return;
+		}
 		esd.common.syncPostSubmit("#form", function(data) {
 			if (data == true) {
 				$.messager.alert('消息','年审信息添加成功!','info',function(){
@@ -303,7 +307,8 @@
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100">档案号码:</td>
-				<td width="290" colspan="3"><input id="auCompanyCode" name="companyCode" class="bj_belu2 readonly" type="text" value="" /> 
+				<td width="290" colspan="3">
+					<input id="auCompanyCode" name="companyCode" class="bj_belu2 readonly" type="text" value="" /> 
 				</td>
 				<td>年审年度:</td>
 				<td colspan="2"><input name="year" class="readonly" type="text" value="${year}" /></td>
@@ -340,10 +345,8 @@
 				<td colspan="2"><input readonly="readonly" id="auCompanyContactPerson" name="company.companyContactPerson" class="bj_belu3" type="text" value="" /></td>
 				<td>电话号码:</td>
 				<td colspan="2"><input readonly="readonly" id="auCompanyPhone" name="company.companyPhone" class="bj_belu3" type="text" value="" /></td>
-				<td>经济类型:</td>
-				<td colspan="2">
-					<select disabled="disabled" id="auCompanyEconomyType" style="font-size: 12px;width: 100px;height: 28px;" class="" name="company.companyEconomyType.id" data-options="width:106,height:30,editable:false">
-					</select>
+				<td> </td>
+				<td colspan="2"> 
 				</td>
 
 			</tr>

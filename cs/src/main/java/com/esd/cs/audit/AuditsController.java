@@ -445,7 +445,16 @@ public class AuditsController {
 		calculateModel.setYiAnPaiCanJiRen(yiAnPaiCanJiRen);// 添加已安排残疾人数;残疾人总数
 		// =========================================================================================
 		// 本地区上年度职工年人均工资数
-		BigDecimal averageSalary = auditParameter.getAverageSalary();
+		BigDecimal averageSalary = null;
+		Company company = companyService.getByPrimaryKey(companyId);
+		//如果为企业单位, 则使用企业平均工资计算
+		if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
+			averageSalary = auditParameter.getAverageSalary();
+		}else{
+			//如果为事业单位, 则使用事业单位平均工资计算
+			averageSalary = auditParameter.getAverageSalaryPi();
+		}
+//		averageSalary = auditParameter.getAverageSalary();
 		// 计算出应缴金额
 		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
 		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
@@ -533,7 +542,17 @@ public class AuditsController {
 		BigDecimal amount = new BigDecimal(0.00);
 		// 本地区上年度职工年人均工资数
 		AuditParameter auditParameter = auditParameterService.getByYear(year);
-		BigDecimal averageSalary = auditParameter.getAverageSalary();
+		BigDecimal averageSalary = null;
+		Company company = companyService.getByPrimaryKey(companyId);
+		//如果为企业单位, 则使用企业平均工资计算
+		if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
+			averageSalary = auditParameter.getAverageSalary();
+		}else{
+			//如果为事业单位, 则使用事业单位平均工资计算
+			averageSalary = auditParameter.getAverageSalaryPi();
+		}
+		
+//		averageSalary = auditParameter.getAverageSalary();
 		// 计算出应缴金额
 		// 残疾人安排比例
 		BigDecimal putScale = auditParameter.getPutScale();

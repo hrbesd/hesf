@@ -11,14 +11,18 @@
 		esd.common.datagrid("#parameter_list_grid", "${contextPath}/security/settings/yearAuditParameter/list", "#parameter_list_boolbar", [ [ {
 			field : 'year',
 			title : '年度',
-			width : 200,
+			width : 100,
 		}, {
 			field : 'areaCode',
 			title : '所属区域',
 			width : 200
 		}, {
 			field : 'averageSalary',
-			title : '计算基数',
+			title : '计算基数(企业单位)',
+			width : 200
+		}, {
+			field : 'averageSalaryPi',
+			title : '计算基数(事业单位)',
 			width : 200
 		}, {
 			field : 'putScale',

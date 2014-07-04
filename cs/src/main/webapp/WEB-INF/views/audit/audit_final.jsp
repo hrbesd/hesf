@@ -183,7 +183,7 @@
 			if (data == true) {
 				$.messager.alert('消息', '拒绝成功', 'info', function() {
 					esd.common.defaultOpenWindowClose();
-					$("#finalAuditList_datagrid").datagrid('reload');
+					$("#initAuditList_datagrid").datagrid('reload');
 				});
 			} else {
 				$.messager.alert('消息', '拒绝失败', 'info');
@@ -200,7 +200,7 @@
 				//打印
 				finalAudit.printFinalAuditWindow();
 				//重新装载数据
-				$("#finalAuditList_datagrid").datagrid('reload');
+				$("#initAuditList_datagrid").datagrid('reload');
 			} else {
 				$.messager.alert('消息', '终审审确认失败', 'info');
 			}

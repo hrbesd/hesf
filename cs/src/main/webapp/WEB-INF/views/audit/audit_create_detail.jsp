@@ -21,6 +21,10 @@
 		onSelect:function(title,index){
 			//公司信息 -- 选项卡
 			if(index == 0){
+			/*	if($('#tempCompanyCode')){
+					var auCompanyCode = $('#tempCompanyCode').val();
+					$('#txtCompanyCode').combobox('setValue',auCompanyCode);
+				}	*/
 				//档案号的自动补全
 				$('#txtCompanyCode').combobox({
 					valueField : 'id',
@@ -50,6 +54,10 @@
 			if(index == 2){
 				//根据公司id, 得到该公司当年的基本审核信息, 显示在下方--关于公司基本信息的.
 				var companyId = $('#companyId').val();
+				if(companyId == null || companyId == ''){
+					$.messager.alert('消息','请先填写公司信息, 再来填写审核信息','info');
+					return;
+				}
 				var bl = initAudit.getAuditInfo(companyId);
 				if(bl == true){
 					//审核信息--关于人数和金额的
