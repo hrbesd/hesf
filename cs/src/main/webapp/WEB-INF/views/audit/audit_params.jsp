@@ -12,24 +12,26 @@
 					value="${params.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${params.id}" /></td>
 			</tr>
 			<tr>
-				<td>所属地区:</td>
-				<td><input value="${areaName}" /></td>
+				<td>安置比例(%):</td>
+				<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="${params.putScale}" /></td>
 				<td>滞纳金开始日期:</td>
 				<td><fmt:formatDate value="${params.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" /> <input class="easyui-datebox easyui-validatebox"
 					name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" />
 				</td>
+				<td>所属地区:${params.averageSalaryPi }</td>
+				<td><input value="${areaName}" /></td>
 			</tr>
 			<tr>
-				<td>安置比例(%):</td>
-				<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="${params.putScale}" /></td>
+				<td>计算基数(企业):</td>
+				<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${params.averageSalary}" /></td>
 				<td>滞纳金征收比率(%):</td>
 				<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${params.auditDelayRate}" /></td>
 				<td>职工退休年龄(男)：</td>
 				<td><input class="easyui-validatebox" name="retireAgeMale" type="text" required="true" value="${params.retireAgeMale}" /></td>
 			</tr>
 			<tr>
-				<td>计算基数:</td>
-				<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${params.averageSalary}" /></td>
+				<td>计算基数(事业):</td>
+				<td><input class="easyui-validatebox" name="averageSalary" type="text" required="true" value="${params.averageSalaryPi}" /></td>
 				<td>支付截至日期:</td>
 				<td><fmt:formatDate value="${params.payCloseDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="date" /> <input class="easyui-datebox easyui-validatebox" name="payCloseDate"
 					data-options="required:false,showSeconds:false,height:30" value="${date}" style="width:150px" /></td>
