@@ -876,20 +876,9 @@ public class AuditsController {
 		Audit audit = auditService.getByPrimaryKey(year, companyId);
 		entity.put("company", company);
 		entity.put("audit", audit);
-		// AuditParameter auditParameter =
-		// auditParameterService.getByYear(year);
-		// String areaName = auditParameter.getArea().getName();
-		// request.setAttribute("areaName", areaName);
-		// request.setAttribute("params", auditParameter);
-		// if (companyPropertys == null) {
-		// companyPropertys = companyPropertyService.getAll();
-		// }
-		// request.setAttribute("companyPropertys", companyPropertys);
-		// if (companyEconomyTypes == null) {
-		// companyEconomyTypes = companyEconomyTypeService.getAll();
-		// }
-		// request.setAttribute("companyEconomyTypes", companyEconomyTypes);
-
+		//查询已经录入了几个残疾人
+		Integer yiLuRuCanJiRen = companyService.getWorkerHandicapTotal(companyId, year);
+		audit.setCompanyHandicapTotal(yiLuRuCanJiRen);
 		// 年龄超标
 		PaginationRecordsAndNumber<Worker, Number> workers = companyService
 				.getOverproofAge(year, companyId, 1, Integer.MAX_VALUE);

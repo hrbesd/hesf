@@ -139,7 +139,7 @@
 	<!-- 数据表格 -->
 	<table id="company_information"  class="companyTable" >
 		<tr>
-			<td class="tdRight">档案编码(<span class="red_notice">*</span>):
+			<td class="tdRight" style="width:15%;">档案编码(<span class="red_notice">*</span>):
 			</td>
 			<td>
 				<input type="text" id="txtCompanyCode" name="companyCode" value="" class="easyui-combobox" data-options="width:400,height:30,editable:true,panelHeight:240" />
@@ -161,18 +161,18 @@
 			<td colspan="3"><input value="" id="txtCompanyName" name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">组织机构代码(<span class="red_notice">*</span>):</td>
 			<td class="">
 				<input id="txtCompanyOrganizationCode" name="companyOrganizationCode" class="easyui-validatebox" required="true" type="text" onblur="auditCreateCompany.getCompanyByOrganizationCode();"/>
 				<!-- <input id="txtCompanyOrganizationCode" name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />	 -->
 			</td>
-			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
-			<td><input id="txtCompanyTaxCode" name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+			<td class="tdRight" style="width:15%;">税务编码(<span class="red_notice">*</span>):</td>
+			<td style="width:20%;"><input id="txtCompanyTaxCode" name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">企业性质:</td>
 			<td><input id="comboboxCompanyProperty" name="companyProperty.id" class="easyui-combobox" value="4"
-				data-options="height:30,required:true,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
+				data-options="panelHeight:55,height:30,required:true,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
 				<!-- 经济类型，单位类型由于数据库限制不能为空，都写死为 1 -->
 				<input type="hidden" name="companyEconomyType.id" value="1" />
 				<input type="hidden" name="companyType.id" value="1" />
@@ -202,7 +202,7 @@
 			<td><input id="txtCompanyBankAccount" name="companyBankAccount" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_number']" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">地区</td>
+			<td class="tdRight">地区:</td>
 			<td><input id="comboboxAreaCode" name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="n001"/>
 			</td>
 			<td class="tdRight">邮政编码:</td>
@@ -214,7 +214,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">备注：</td>
-			<td colspan="4"><textarea id="txtCompanyRemark" name="companyRemark" class="longtext" rows="3" cols="90"></textarea></td>
+			<td colspan="3"><textarea id="txtCompanyRemark" name="companyRemark" class="longtext" rows="3" cols="90"></textarea></td>
 		</tr>
 <!-- 		<tr>
 			<td class="tdRight">&nbsp;</td>
@@ -237,7 +237,7 @@
 
 		<tr>
 			<td class="tdRight"></td>
-			<td class="tdCenter" colspan="4">
+			<td class="tdCenter" colspan="3">
 				<a href="javascript:auditCreateCompany.add();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
 				<a href="javascript:esd.common.defaultOpenWindowClose()" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 				<a href="javascript:auditCreateCompany.reset()" class="easyui-linkbutton" iconCls="icon-undo">重置</a>

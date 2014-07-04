@@ -42,6 +42,11 @@
 			}
 			//残疾职工信息选项卡
 			if(index  == 1 ){
+				var companyId = $('#companyId').val();
+				if(companyId == null || companyId == ''){
+					$.messager.alert('消息','请先填写公司信息, 再来填写残疾职工信息','info');
+					return;
+				}
 				//初始化残疾职工信息选项卡内的参数
 				workerList.init();
 				var companyId = $('#companyId').val();
