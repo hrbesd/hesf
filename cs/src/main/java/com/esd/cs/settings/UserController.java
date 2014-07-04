@@ -276,4 +276,14 @@ public class UserController {
 		request.setAttribute("group", list);
 		return new ModelAndView("settings/user_detail_update", "entity", user);
 	}
+
+	/**
+	 * 跳转到修改密码页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/pwdedit", method = RequestMethod.GET)
+	public ModelAndView pwdedit() {
+		return new ModelAndView("/settings/user_pwd_edit");
+	}
 }

@@ -56,133 +56,133 @@
 			</tr>
 			<tr>
 				<td>视力残疾:</td>
-				<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="eyeOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.eyeOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.eyeOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="eyeTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="eyeTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.eyeTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.eyeTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="eyeThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="eyeThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.eyeThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.eyeThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="eyeFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="eyeFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.eyeFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.eyeFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>听力残疾:</td>
-				<td><select class="easyui-combobox" name="hearingOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="hearingOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.hearingOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.hearingOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="hearingTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="hearingTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.hearingTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.hearingTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="hearingThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="hearingThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.hearingThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.hearingThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="hearingFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="hearingFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.hearingFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.hearingFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>言语残疾:</td>
-				<td><select class="easyui-combobox" name="speakOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="speakOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.speakOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.speakOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="speakTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="speakTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.speakTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.speakTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="speakThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="speakThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.speakThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.speakThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="speakFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="speakFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.speakFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.speakFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>肢体残疾:</td>
-				<td><select class="easyui-combobox" name="bodyOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="bodyOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.bodyOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.bodyOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="bodyTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="bodyTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.bodyTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.bodyTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="bodyThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="bodyThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.bodyThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.bodyThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="bodyFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="bodyFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.bodyFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.bodyFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>智力残疾:</td>
-				<td><select class="easyui-combobox" name="intelligenceOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="intelligenceOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.intelligenceOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.intelligenceOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="intelligenceTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="intelligenceTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.intelligenceTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.intelligenceTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="intelligenceThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="intelligenceThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.intelligenceThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.intelligenceThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="intelligenceFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="intelligenceFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.intelligenceFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.intelligenceFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>精神残疾:</td>
-				<td><select class="easyui-combobox" name="mentalOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="mentalOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.mentalOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.mentalOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="mentalTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="mentalTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.mentalTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.mentalTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="mentalThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="mentalThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.mentalThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.mentalThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="mentalFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="mentalFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.mentalFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.mentalFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
 			</tr>
 			<tr>
 				<td>多重残疾:</td>
-				<td><select class="easyui-combobox" name="multiOne" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="multiOne" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.multiOne eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.multiOne eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="multiTwo" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="multiTwo" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.multiTwo eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.multiTwo eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="multiThree" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="multiThree" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.multiThree eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.multiThree eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>
-				<td><select class="easyui-combobox" name="multiFour" data-options="panelHeight:70,height:30">
+				<td><select class="easyui-combobox" name="multiFour" data-options="panelHeight:55,height:30">
 						<option value="1" <c:if test="${params.multiFour eq '1'}">selected="selected"</c:if>>1</option>
 						<option value="2" <c:if test="${params.multiFour eq '2'}">selected="selected"</c:if>>2</option>
 				</select></td>

@@ -55,8 +55,8 @@
 				if(row.userName == 'admin'){
 					d = '';
 				}				
-				var u = '<a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a>';
-				return e + d + u;
+			//	var u = '<a href="javascript:user_list.changePwd(' + row.id + ')">更改密码</a>';
+				return e + d;
 			}
 		} ] ], params);
 

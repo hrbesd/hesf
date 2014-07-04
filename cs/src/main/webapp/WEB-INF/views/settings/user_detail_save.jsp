@@ -69,7 +69,7 @@
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>状态:</td>
-					<td><select class="easyui-combobox" name="userStatus" data-options="panelHeight:70,height:30,editable:false">
+					<td><select class="easyui-combobox" name="userStatus" data-options="panelHeight:55,height:30,editable:false">
 							<option value="true">正常</option>
 							<option value="false">停用</option>
 					</select>
@@ -77,7 +77,7 @@
 				</tr>
 				<tr style="line-height: 20px;">
 					<td>用户组:</td>
-					<td><select style="font-size: 12px;" class="easyui-combobox" name="userGroup.id" data-options="width:120,panelHeight:120,height:30,editable:false">
+					<td><select style="font-size: 12px;" class="easyui-combobox" name="userGroup.id" data-options="width:120,panelHeight:55,height:30,editable:false">
 							<c:forEach items="${group}" var="item">
 								<option value="${item.id}" <c:if test="${item.id==1}">selected="selected"</c:if>>${item.userGroupName}</option>
 							</c:forEach>
