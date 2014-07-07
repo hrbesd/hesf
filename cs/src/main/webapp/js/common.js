@@ -384,12 +384,12 @@ esd.common.noCloseButtonDialog = function(title,msg){
 	$('#dd').dialog({
 		title : title,
 		width : 280,
-		height : 120,
+		height : 140,
 		closed : false,
 		closable : false,
 		cache : false,
 		modal : true,
-		content : '<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+msg,
+		content : '<p style="text-indent:2em;">'+ msg + '</p>',
 		bodyCls : 'noCloseButtonDialogBody',
 	/*	toolbar : [{
 			text : '添加',
@@ -415,41 +415,8 @@ esd.common.noCloseButtonDialog = function(title,msg){
 };
 
 /**
- * 自定义没有关闭按钮的alert框
- * 适用于不关闭当前默认打开的窗口
- * */
-//重写的alert
-esd.common.noCloseButtonDialogNoCloseWindow = function(title,msg){
-	$('body').append('<div id="dd"></div>');
-	$('#dd').dialog({
-		title : title,
-		width : 280,
-		height : 120,
-		closed : false,
-		closable : false,
-		cache : false,
-		modal : true,
-		content : ''+msg,
-		bodyCls : 'noCloseButtonDialogBody',
-	/*	toolbar : [{
-			text : '添加',
-			iconCls : 'icon-add',
-			handler : function(){
-				alert('add!');
-			}
-		},{
-			text : '提交',
-			iconCls : 'icon-ok',
-			handler : function(){
-				alert('ok!');
-			}
-		}],	*/
-		buttons : [{
-			text : '确定',
-			handler : function(){
-				$('#dd').window('close');
-			//	esd.common.defaultOpenWindowClose();
-			}
-		}]
-	});
+ * 预定义字符串
+ **/
+esd.common.unknown = function(){
+	return '未知';
 };

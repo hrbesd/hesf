@@ -34,10 +34,8 @@ public class HExcelSheetParser {
 			// 获取工作薄workbook
 			workbook = new HSSFWorkbook(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -53,7 +51,7 @@ public class HExcelSheetParser {
 			return result;
 		}
 		// 遍历行row
-		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+		for (int rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
 			// 获得行对象
 			HSSFRow row = sheet.getRow(rowIndex);
 			if (null != row) {

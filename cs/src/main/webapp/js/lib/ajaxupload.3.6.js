@@ -302,7 +302,9 @@ AjaxUpload.prototype = {
 
 		addEvent(input, 'change', function(){
 			// get filename from input
-			var file = fileFromPath(this.value);	
+			var file = fileFromPath(this.value);
+			//自定义, 将得到的文件名赋值在选择后复制到自己的文本框中, 不用等到提交时才能看到
+			$('#picfileTitle').val(file);
 			if(self._settings.onChange.call(self, file, getExt(file)) == false ){
 				return;				
 			}														

@@ -287,4 +287,10 @@
 		</where>
 	</select>
 	
+	<select id="retrieveCountByworkerIdCard" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*)
+		from worker_temp 
+		where worker_id_card = #{workerIdCard,jdbcType=VARCHAR}
+	</select>
 </mapper>

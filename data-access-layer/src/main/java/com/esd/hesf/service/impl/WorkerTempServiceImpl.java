@@ -122,9 +122,17 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 		WorkerTemp wt = new WorkerTemp();
 		wt.setIsOk(isOk);
 		wt.setUserId(userId);
-		// wt.setCheckCode(checkCode);
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("workerTemp", wt);
 		return dao.retrieveCountByCheck(map);
 	}
 
+	@Override
+	public Integer getCountByworkerIdCard(String workerIdCard) {
+		Integer result =dao.retrieveCountByworkerIdCard(workerIdCard);
+		if(result == null || result <0){
+			result =0;
+		}
+		return result;
+	}
 }

@@ -42,4 +42,11 @@ public interface WorkerTempDao extends BaseDao<WorkerTemp> {
 	 * @return
 	 */
 	int deleteByUserId(Integer userId);
+	
+	/**
+	 * 根据身份证号来查询 是否已经存在此身份证号
+	 * @param workerIdCard
+	 * @return 返回存在的条数
+	 */
+	Integer retrieveCountByworkerIdCard(String workerIdCard);
 }
