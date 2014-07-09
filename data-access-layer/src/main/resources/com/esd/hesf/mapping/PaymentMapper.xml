@@ -670,5 +670,8 @@
 		</where>
 	</select>
 
-
+	<select id="retireveCountByCompanyAndYear" resultType="int" parameterType="map">
+		select count(*) from payment 
+		where year = #{year,jdbcType=CHAR} and payment_company = #{companyId,jdbcType=INTEGER};
+	</select>	
 </mapper>

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.druid.util.StringUtils;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AccountsDao;
 import com.esd.hesf.model.Accounts;
@@ -77,6 +78,22 @@ public class AccountsServiceImpl implements AccountsService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Integer delete(String year, Integer companyId, Integer auditId) {
+		if (StringUtils.isEmpty(year)) {
+			return -1;
+		}
+		if (companyId == null || companyId <= 0 || auditId == null
+				|| auditId <= 0) {
+			return -1;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("companyId", companyId);
+		map.put("auditId", auditId);
+		return dao.deleteByYearCompanyIdAuditId(map);
 	}
 
 	@Override
@@ -209,7 +226,7 @@ public class AccountsServiceImpl implements AccountsService {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("accounts", t);
-		//所属类型--是否以6字开头
+		// 所属类型--是否以6字开头
 		map.put(Constants.BELONGS_TYPE, belongsType);
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);

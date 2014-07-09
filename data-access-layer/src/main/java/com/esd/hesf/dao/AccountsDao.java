@@ -13,6 +13,15 @@ import com.esd.hesf.model.Accounts;
  * 
  */
 public interface AccountsDao extends BaseDao<Accounts> {
+	
+	
+	/**
+	 *  根据map中的参数来删除账目表信息
+	 * @param map-放入year-账目年份, companyId-公司id, auditId-审核id 全都是必须的.
+	 * @return
+	 */
+	int deleteByYearCompanyIdAuditId(Map<String,Object> map);
+	
 
 	/**
 	 * 根据 accounts的 year和其中的company.id 得到以公司分组后的accounts对象,其中的id为不可用的-为防止乱用,

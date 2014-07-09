@@ -573,6 +573,18 @@ public class PaymentServiceImpl implements PaymentService {
 		return true;
 	}
 
+	@Override
+	public Integer getCountByeCompanyAndYear(String year, Integer companyId) {
+		if (companyId == null || companyId <= 0 || year == null
+				|| "".equals(year)) {
+			return -1;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("companyId", companyId);
+		return dao.retireveCountByCompanyAndYear(map);
+	}
+
 	// @Override
 	// public boolean createPaymentExcel(String FilePath,
 	// List<Payment> paymentList, Integer page, Integer pageSize) {

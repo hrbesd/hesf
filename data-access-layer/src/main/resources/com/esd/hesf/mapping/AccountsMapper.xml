@@ -280,6 +280,13 @@
 		delete from accounts
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
+	
+	<delete id="deleteByYearCompanyIdAuditId" parameterType="map">
+		delete from accounts
+		where year = #{year,jdbcType=CHAR}
+			and company_id = #{companyId, jdbcType=INTEGER}
+			and audit_id = #{auditId, jdbcType=INTEGER}
+	</delete>
 
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Accounts">

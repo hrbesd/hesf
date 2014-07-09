@@ -126,6 +126,11 @@ public class Constants {
 	 * 录入标示符
 	 */
 	public static final String LURU = "luru";
+	
+	/**
+	 * 撤销复审 操作标示符
+	 */
+	public static final String REPEAL = "repeal";
 
 	/**
 	 * 暂未录入 标示符

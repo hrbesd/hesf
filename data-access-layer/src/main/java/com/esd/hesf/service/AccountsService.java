@@ -15,6 +15,15 @@ import com.esd.hesf.model.Accounts;
 public interface AccountsService extends BaseService<Accounts> {
 
 	/**
+	 * 根据条件删除账目数据, 三个参数全都是必须的.
+	 * @param year 账目年份
+	 * @param companyId 公司id
+	 * @param auditId 审核id
+	 * @return
+	 */
+	Integer delete(String year,Integer companyId, Integer auditId);
+	
+	/**
 	 * 根据 账目年份year和companyId 得到以公司分组后的accounts对象,其中的id为不可用的
 	 * 
 	 * @param year

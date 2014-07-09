@@ -29,7 +29,8 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyCode
 	 * @return
 	 */
-	BigDecimal getEffPaid(String auditYear, String accountsYear, String companyCode);
+	BigDecimal getEffPaid(String auditYear, String accountsYear,
+			String companyCode);
 
 	/**
 	 * 根据公司id,账目年限,审核年份, 得到已缴款数
@@ -38,7 +39,8 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param companyId
 	 * @return
 	 */
-	BigDecimal getEffPaid(String auditYear, String accountsYear, Integer companyId);
+	BigDecimal getEffPaid(String auditYear, String accountsYear,
+			Integer companyId);
 
 	/**
 	 * 根据年份year, 公司id, 得到缴款明细列表
@@ -92,5 +94,14 @@ public interface PaymentService extends BaseService<Payment> {
 	 */
 	boolean createPaymentExcel(String FilePath, List<Payment> paymentList,
 			Integer page, Integer pageSize);
-	
+
+	/**
+	 * 根据 缴款年份(账目年份),公司id 来查询该公司 该年份已经开了几张票
+	 * 
+	 * @param year
+	 * @param companyId
+	 * @return
+	 */
+	Integer getCountByeCompanyAndYear(String year, Integer companyId);
+
 }
