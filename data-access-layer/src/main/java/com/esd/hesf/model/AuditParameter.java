@@ -27,8 +27,10 @@ public class AuditParameter extends PrimaryKey_Int {
 	private Date payCloseDate;// 支付截止日期
 	private Integer payLimitDays;// 支付限制天数
 	private Integer decimalCount;// 小数位数
-	private Integer retireAgeMale; // 职工退休年龄-男-默认为60
-	private Integer retireAgeFemale; // 职工退休年龄-女-默认为50
+	private Integer retireAgeMale; // 退休年龄--职工-男-默认为61
+	private Integer retireAgeFemale; // 退休年龄-职工-女-默认为51
+	private Integer retireAgeCadreMale;	// 退休年龄-干部-男-默认为61
+	private Integer retireAgeCadreFemale; // 退休年龄-干部-女-默认为55
 	private Integer eyeOne;
 	private Integer eyeTwo;
 	private Integer eyeThree;
@@ -171,6 +173,22 @@ public class AuditParameter extends PrimaryKey_Int {
 
 	public void setRetireAgeFemale(Integer retireAgeFemale) {
 		this.retireAgeFemale = retireAgeFemale;
+	}
+
+	public Integer getRetireAgeCadreMale() {
+		return retireAgeCadreMale;
+	}
+
+	public void setRetireAgeCadreMale(Integer retireAgeCadreMale) {
+		this.retireAgeCadreMale = retireAgeCadreMale;
+	}
+
+	public Integer getRetireAgeCadreFemale() {
+		return retireAgeCadreFemale;
+	}
+
+	public void setRetireAgeCadreFemale(Integer retireAgeCadreFemale) {
+		this.retireAgeCadreFemale = retireAgeCadreFemale;
 	}
 
 	public Integer getEyeOne() {

@@ -191,16 +191,28 @@ public class WorkerServiceImpl implements WorkerService {
 				String year = map.get("year").toString();
 				// 得到对应年份的参数
 				AuditParameter ap = apDao.retrieveByYear(year);
-				// 计算男女各自的最大出生日期
+				// 计算 如果达到退休
+				// 男女职工各自的最大出生日期
 				String maxMaleBirth = KitService.getBirthFromAge(ap
 						.getRetireAgeMale() + "");
 				String maxFemaleBirth = KitService.getBirthFromAge(ap
 						.getRetireAgeFemale() + "");
+				// 男女干部各自的最大出生日期
+				String maxMaleCadreBirth = KitService.getBirthFromAge(ap
+						.getRetireAgeCadreMale() + "");
+				String maxFemaleCadreBirth = KitService.getBirthFromAge(ap
+						.getRetireAgeCadreFemale() + "");
 				map.put("maxMaleBirth", maxMaleBirth);
+				map.put("maxMaleCadreBirth", maxMaleCadreBirth);
 				map.put("maxFemaleBirth", maxFemaleBirth);
+				map.put("maxFemaleCadreBirth", maxFemaleCadreBirth);
 			}
 		}
-
+		// 是否是干部
+		if (map.get("isCadre") != null) {
+			Boolean bl = Boolean.parseBoolean(map.get("isCadre").toString());
+			map.put("isCadre", bl);
+		}
 		// 将参数放入到map中
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
@@ -344,9 +356,9 @@ public class WorkerServiceImpl implements WorkerService {
 		if (id == null || id <= 0) {
 			return null;
 		}
-		HashMap resultMap =dao.retrievePic(id);
-		Blob blob = (Blob)resultMap.get("pic");
-		return blob; 
+		HashMap resultMap = dao.retrievePic(id);
+		Blob blob = (Blob) resultMap.get("pic");
+		return blob;
 	}
 
 }

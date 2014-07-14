@@ -21,6 +21,8 @@
 		<result column="ap_decimal_count" property="decimalCount" jdbcType="INTEGER" />
 		<result column="ap_retire_age_male" property="retireAgeMale" jdbcType="INTEGER" />
 		<result column="ap_retire_age_female" property="retireAgeFemale" jdbcType="INTEGER" />
+		<result column="ap_retire_age_cadre_male" property="retireAgeCadreMale" jdbcType="INTEGER" />
+		<result column="ap_retire_age_cadre_female" property="retireAgeCadreFemale" jdbcType="INTEGER" />
 		<result column="ap_eye_one" property="eyeOne" jdbcType="INTEGER" />
 		<result column="ap_eye_two" property="eyeTwo" jdbcType="INTEGER" />
 		<result column="ap_eye_three" property="eyeThree" jdbcType="INTEGER" />
@@ -70,6 +72,8 @@
 		ap.audit_delay_rate as ap_audit_delay_rate, ap.pay_close_date as ap_pay_close_date,
 		ap.pay_limit_days as ap_pay_limit_days, ap.decimal_count as ap_decimal_count,
 		ap.retire_age_male as ap_retire_age_male, ap.retire_age_female as ap_retire_age_female, 
+		ap.retire_age_cadre_male as ap_retire_age_cadre_male,
+		ap.retire_age_cadre_female as ap_retire_age_cadre_female,
 		ap.eye_one as ap_eye_one, ap.eye_two as ap_eye_two,
 		ap.eye_three as ap_eye_three, ap.eye_four as ap_eye_four,
 		ap.hearing_one as ap_hearing_one, ap.hearing_two as ap_hearing_two,
@@ -110,6 +114,8 @@
 		decimal_count,
 		retire_age_male,
 		retire_age_female,
+		retire_age_cadre_male,
+		retire_age_cadre_female,
 		eye_one,
 		eye_two, eye_three,
 		eye_four, hearing_one,
@@ -146,6 +152,7 @@
 		#{payLimitDays,jdbcType=INTEGER},
 		#{decimalCount,jdbcType=INTEGER}, 
 		#{retireAgeMale,jdbcType=INTEGER},#{retireAgeFemale,jdbcType=INTEGER},
+		#{retireAgeCadreMale,jdbcType=INTEGER},#{retireAgeCadreFemale,jdbcType=INTEGER},
 		#{eyeOne,jdbcType=INTEGER},
 		#{eyeTwo,jdbcType=INTEGER}, #{eyeThree,jdbcType=INTEGER},
 		#{eyeFour,jdbcType=INTEGER},
@@ -223,11 +230,17 @@
 			<if test="decimalCount != null">
 				decimal_count,
 			</if>
-			<if test="retireAgeMale != null">
+			<if test="retireAgeMale != null and retireAgeMale > 0">
 				retire_age_male,
 			</if>
-			<if test="retireAgeFemale != null">
+			<if test="retireAgeFemale != null and retireAgeFemale > 0">
 				retire_age_female,
+			</if>
+			<if test="retireAgeCadreMale != null and retireAgeCadreMale > 0">
+				retire_age_cadre_male,
+			</if>
+			<if test="retireAgeCadreFemale != null and retireAgeCadreFemale > 0">
+				retire_age_cadre_female,
 			</if>
 			<if test="eyeOne != null">
 				eye_one,
@@ -358,11 +371,17 @@
 			<if test="decimalCount != null">
 				#{decimalCount,jdbcType=INTEGER},
 			</if>
-			<if test="retireAgeMale != null">
+			<if test="retireAgeMale != null and retireAgeMale > 0">
 				#{retireAgeMale,jdbcType=INTEGER},
 			</if>
-			<if test="retireAgeFemale != null">
+			<if test="retireAgeFemale != null and retireAgeFemale > 0">
 				#{retireAgeFemale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeCadreMale != null and retireAgeCadreMale > 0">
+				#{retireAgeCadreMale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeCadreFemale != null and retireAgeCadreFemale > 0">
+				#{retireAgeCadreFemale,jdbcType=INTEGER},
 			</if>
 			<if test="eyeOne != null">
 				#{eyeOne,jdbcType=INTEGER},
@@ -510,6 +529,12 @@
 			</if>
 			<if test="retireAgeFemale != null">
 				retire_age_female = #{retireAgeFemale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeCadreMale != null">
+				retire_age_cadre_male = #{retireCadreAgeMale,jdbcType=INTEGER},
+			</if>
+			<if test="retireAgeCadreFemale != null">
+				retire_age_cadre_female = #{retireAgeCadreFemale,jdbcType=INTEGER},
 			</if>
 			<if test="eyeOne != null">
 				eye_one = #{eyeOne,jdbcType=INTEGER},

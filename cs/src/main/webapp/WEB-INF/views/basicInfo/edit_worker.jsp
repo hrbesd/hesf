@@ -32,6 +32,13 @@
 			currentJob = esd.common.unknown();
 		}
 		params.currentJob = currentJob;
+		//是否干部
+		var isCadreEdit = $('#isCadreEdit').attr('checked');
+		if(isCadreEdit){
+			params.isCadre = true;
+		}else{
+			params.isCadre = false;
+		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
 			remark = esd.common.unknown();
@@ -68,7 +75,8 @@
 				'careerCard':params.careerCard, //就业证号
 				'phone':params.phone, //电话
 				'currentJob':params.currentJob, //部门
-				'remark':params.remark //备注
+				'remark':params.remark, //备注
+				'isCadre':params.isCadre	//是否干部
 			});
 		},
 		onComplete : function(file,response){
@@ -110,7 +118,8 @@
 					'careerCard':params.careerCard, //就业证号
 					'phone':params.phone, //电话
 					'currentJob':params.currentJob, //部门
-					'remark':params.remark //备注
+					'remark':params.remark, //备注
+					'isCadre':params.isCadre	//是否干部
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -224,23 +233,32 @@
 				</tr>
 				<tr>
 					<td class="">就业证号:</td>
-					<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" value="${worker.careerCard }"/>
+					<td>
+						<input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" value="${worker.careerCard }"/>
 					</td>
 					<td class="">残疾类别:</td>
-					<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="${worker.workerHandicapType.id }"
+					<td>
+						<input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="${worker.workerHandicapType.id }"
 						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
 					</td>
 					<td class="">残疾等级:</td>
-					<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="${worker.workerHandicapLevel.id }"
+					<td>
+						<input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="${worker.workerHandicapLevel.id }"
 						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
 					</td>
 				</tr>
 				<tr>
 					<td class="">联系电话:</td>
-					<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" value="${worker.phone }" />
+					<td>
+						<input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" value="${worker.phone }" />
 					</td>
 					<td class="">现任岗位:</td>
-					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" value="${worker.currentJob }"/>
+					<td>
+						<input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" value="${worker.currentJob }"/>
+					</td>
+					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
+					<td>
+						<input type="checkbox" id="isCadreEdit" style="height:auto;" <c:if test="${worker.isCadre == true }">checked="checked"</c:if> />
 					</td>
 				</tr>
 				<tr>

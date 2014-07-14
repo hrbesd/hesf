@@ -39,6 +39,15 @@ public class WorkerParamModel extends PrimaryKey_Int {
 	private Integer page;
 	private Integer rows;
 	private String isExceed;// 是否超过退休年龄
+	private Boolean isCadre; // 是否是干部
+
+	public Boolean getIsCadre() {
+		return isCadre;
+	}
+
+	public void setIsCadre(Boolean isCadre) {
+		this.isCadre = isCadre;
+	}
 
 	public String getIsExceed() {
 		return isExceed;
@@ -50,9 +59,16 @@ public class WorkerParamModel extends PrimaryKey_Int {
 
 	@Override
 	public String toString() {
-		return "WorkerParamModel [companyId=" + companyId + ", year=" + year + ", workerName=" + workerName + ", workerHandicapCode=" + workerHandicapCode + ", workerGender=" + workerGender
-				+ ", workerAge_1=" + workerAge_1 + ", workerAge_2=" + workerAge_2 + ", workerBirth=" + workerBirth + ", careerCard=" + careerCard + ", phone=" + phone + ", currentJob=" + currentJob
-				+ ", workerHandicapType=" + workerHandicapType + ", workerHandicapLevel=" + workerHandicapLevel + ", page=" + page + ", rows=" + rows + ", isExceed=" + isExceed + "]";
+		return "WorkerParamModel [companyId=" + companyId + ", year=" + year
+				+ ", workerName=" + workerName + ", workerHandicapCode="
+				+ workerHandicapCode + ", workerGender=" + workerGender
+				+ ", workerAge_1=" + workerAge_1 + ", workerAge_2="
+				+ workerAge_2 + ", workerBirth=" + workerBirth
+				+ ", careerCard=" + careerCard + ", phone=" + phone
+				+ ", currentJob=" + currentJob + ", workerHandicapType="
+				+ workerHandicapType + ", workerHandicapLevel="
+				+ workerHandicapLevel + ", page=" + page + ", rows=" + rows
+				+ ", isExceed=" + isExceed + "]";
 	}
 
 	public Integer getPage() {

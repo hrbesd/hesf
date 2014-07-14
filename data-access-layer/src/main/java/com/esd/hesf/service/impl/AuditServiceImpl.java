@@ -268,7 +268,7 @@ public class AuditServiceImpl implements AuditService {
 		}
 		// 向审核表里插入数据
 		int k = dao.insertLastYearData(year);
-		if (k <= 0) {
+		if (k < 0) {
 			new HesfException("向审核表里插入数据		失败").printStackTrace();
 			return false;
 		}

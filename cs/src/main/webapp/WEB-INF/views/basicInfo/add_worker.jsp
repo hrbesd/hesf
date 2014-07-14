@@ -35,6 +35,13 @@
 			currentJob = esd.common.unknown();
 		}
 		params.currentJob = currentJob;
+		//是否干部
+		var isCadre = $('#isCadreChecked').attr('checked');
+		if(isCadre){
+			params.isCadre = 1;
+		}else{
+			params.isCadre = 0;
+		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
 			remark = esd.common.unknown();
@@ -74,7 +81,8 @@
 				'currentJob':params.currentJob, //部门
 				'remark':params.remark, //备注
 				'companyId':params.companyId,
-				'year':params.year
+				'year':params.year,	//审核年
+				'isCadre':params.isCadre	//是否干部
 			});
 		},
 		onComplete : function(file,response){
@@ -117,7 +125,8 @@
 					'currentJob':params.currentJob, //部门
 					'remark':params.remark, //备注
 					'companyId':params.companyId,
-					'year':params.year
+					'year':params.year,	//审核年
+					'isCadre':params.isCadre	//是否干部
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -281,9 +290,18 @@
 		if (sex % 2 === 0) {
 			//偶数 女性职工
 			$("#workerGender").combobox("setValue", "0");
-			if(age >= $("#retireAgeFemale").val()){
-				$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
-				return false;
+			//如果为干部, 则用女干部退休年龄判断, 否则使用职工退休年龄判断
+			var isCadre = $('#isCadreChecked').attr('checked');
+			if(isCadre){
+				if(age >= $("#retireAgeCadreFemale").val()){
+					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过干部退休年龄', 'error');
+					return false;
+				}
+			}else{
+				if(age >= $("#retireAgeFemale").val()){
+					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
+					return false;
+				}
 			}
 		} else {
 			//奇数 男性
@@ -353,10 +371,24 @@
 					//第二种情况，员工存在，不在任何公司
 				} else if(data.notice == 'exists' || data.notice == 'notExists') {
 					//将员工相关控件信息补全
-					$("#addWorkerForm #workerName").val(data.workerName);//姓名
-					$("#addWorkerForm #careerCard").val(data.careerCard);//就业证号
-					$("#addWorkerForm #phone").val(data.phone);//电话
-					$("#addWorkerForm #remark").val(data.remark);//备注
+					if(data.workerName != null && data.workerName != ''){
+						$("#addWorkerForm #workerName").val(data.workerName);//姓名
+					}
+					if(data.careerCard != null && data.careerCard != ''){
+						$("#addWorkerForm #careerCard").val(data.careerCard);//就业证号
+					}
+					if(data.phone != null && data.phone != ''){
+						$("#addWorkerForm #phone").val(data.phone);//电话
+					}
+					if(data.currentJob != null && data.currentJob != ''){
+						$("#addWorkerForm #currentJob").val(data.currentJob);//现任岗位
+					}
+					if(data.remark != null && data.remark != ''){
+						$("#addWorkerForm #remark").val(data.remark);//备注
+					}
+					if(data.isCadre == true || data.Cadre == 'true'){
+						$("#addWorkerForm #isCadre").attr("checked","checked");
+					}
 				//	$.messager.alert('消息', '验证通过，可以注册', 'ok');
 					return;
 				}else{
@@ -398,9 +430,13 @@
 	 	<form id="addWorkerForm" action="#" method="post" class="addWorkerForm">
 			<!--  女退休年龄 -->
 			<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
+			<!--  女干部退休年龄 -->
+			<input type="hidden" value="${retireAgeCadreFemale }" id="retireAgeCadreFemale" />
 			<!--  男退休年龄 -->
 			<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
+			<!-- 审核年份 -->
 			<input type="hidden" value="${year}" id="nowYear" name="year"/>
+			<!-- 目前公司id -->
 			<input type="hidden" value="${companyId}" name="companyId"  />
 			
 			<!-- 数据表格 -->
@@ -455,6 +491,10 @@
 					</td>
 					<td class="">现任岗位:</td>
 					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
+					</td>
+					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
+					<td>
+						<input type="checkbox" id="isCadreChecked" style="height:auto;" />
 					</td>
 				</tr>
 				<tr>

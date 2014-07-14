@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +55,7 @@ import com.esd.hesf.service.WorkerTempService;
 /*
  * 残疾职工控制器
  * 
- * @author yuxingliang
+ * @author administrator
  */
 @Controller
 @RequestMapping(value = "/security/worker")
@@ -109,10 +106,16 @@ public class WorkerController {
 		AuditParameter param = auditParameterService.getByYear(year);
 		if (param != null) {
 			// 男职工退休年龄
-			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
+			request.setAttribute("retireAgeMale", param.getRetireAgeMale());
 			// 女职工退休年龄
-			request.setAttribute("femaleRetirementAge",
+			request.setAttribute("retireAgeFemale",
 					param.getRetireAgeFemale());
+			// 女干部退休年龄
+			request.setAttribute("retireAgeCadreFemale",
+					param.getRetireAgeCadreFemale());
+			// 男干部退休年龄
+			request.setAttribute("retireAgeCadreMale",
+					param.getRetireAgeCadreMale());
 		} else {
 			logger.error("getAuditParameterError");
 		}
@@ -177,7 +180,7 @@ public class WorkerController {
 	}
 
 	/**
-	 * 转到增加残疾职工页面
+	 * 跳转到增加残疾职工页面
 	 */
 	@RequestMapping(value = "/add/{companyId}/{year}", method = RequestMethod.GET)
 	public ModelAndView add_worker(
@@ -193,7 +196,10 @@ public class WorkerController {
 		AuditParameter auditParam = auditParameterService.getByYear(year);
 		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
 		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
-
+		request.setAttribute("retireAgeCadreMale",
+				auditParam.getRetireAgeCadreMale()); // 女干部退休年龄
+		request.setAttribute("retireAgeCadreFemale",
+				auditParam.getRetireAgeCadreFemale()); // 男干部退休年龄
 		logger.info("goToPage:{}", "添加残疾职工页面");
 		return new ModelAndView("basicInfo/add_worker");
 	}
@@ -229,6 +235,7 @@ public class WorkerController {
 			tempWorker.setPhone(worker.getPhone());
 			tempWorker.setCurrentJob(worker.getCurrentJob());
 			tempWorker.setRemark(worker.getRemark());
+			tempWorker.setIsCadre(worker.getIsCadre());
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
@@ -391,7 +398,7 @@ public class WorkerController {
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
-	
+
 	/**
 	 * 异步 更新没有照片的 残疾职工
 	 * 
@@ -407,17 +414,16 @@ public class WorkerController {
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
-	
-	
-	@RequestMapping(value="/getPic/{id}")
-	public void showPic(@PathVariable(value="id") Integer id,HttpServletRequest request,HttpServletResponse response){
+
+	@RequestMapping(value = "/getPic/{id}")
+	public void showPic(@PathVariable(value = "id") Integer id,
+			HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("image/jpeg");
 		Blob picBlob = workerService.getPicByPrimaryKey(id);
 		System.out.println(picBlob);
-		
+
 	}
-	
-	
+
 	/**
 	 * 删除残疾职工
 	 * 
@@ -590,7 +596,8 @@ public class WorkerController {
 		// + "错误数据有 " + wrongCount + " 条."
 		// +"successEnd"
 
-		String notice = totalCount + ","  + rightCount + "," + wrongCount +"successEnd";
+		String notice = totalCount + "," + rightCount + "," + wrongCount
+				+ "successEnd";
 		writer.write(Constants.NOTICE_SUCCESS + ":" + notice);
 
 		// ⑥ 如果有错误残疾职工信息的话, 则将其保存到缓存目录的excel文件中
@@ -804,8 +811,10 @@ public class WorkerController {
 					result.put("workerId", w.getId().toString());
 					result.put("workerName", w.getWorkerName()); // 姓名
 					result.put("careerCard", w.getCareerCard()); // 就业证号
+					result.put("currentJob", w.getCurrentJob()); //现任岗位
 					result.put("phone", w.getPhone()); // 联系电话
 					result.put("remark", w.getRemark()); // 备注
+					result.put("isCadre", w.getIsCadre());	// 是否 干部
 					return result;
 				} else {
 					// 第三种情况，不存在.
@@ -870,7 +879,7 @@ public class WorkerController {
 		// 如果总数大于1K， 则分批导入, 防止内存溢出
 		int circulationTimes = 1;
 		if (totalWorkers > 1000) {
-			circulationTimes =(totalWorkers / 1000) + 1;
+			circulationTimes = (totalWorkers / 1000) + 1;
 		}
 		// 外层循环次数, 即将总数据分为几批导入
 		PaginationRecordsAndNumber<WorkerTemp, Number> workerTempList = null;

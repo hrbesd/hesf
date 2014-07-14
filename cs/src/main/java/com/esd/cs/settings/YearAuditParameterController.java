@@ -146,7 +146,7 @@ public class YearAuditParameterController {
 	public Map<String, Object> addPost(AuditParameter auditParameter,
 			HttpServletRequest request, HttpSession session) {
 		logger.debug("auditParameter:{}", auditParameter);
-		Boolean copy = Boolean.valueOf(request.getParameter("copy"));
+		Boolean copy = Boolean.valueOf(request.getParameter("copy"));	//是否创建审核数据
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (copy) {
 			// 检查审核表中该年份的审核数据是否存在,如不存在-则进行复制以产生审核数据, 如存在-则不进行复制

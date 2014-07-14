@@ -456,17 +456,26 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		// 得到对应年份的参数
 		AuditParameter ap = apDao.retrieveByYear(year);
-		// 计算男女各自的最大出生日期
-		String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale()
-				+ "");
-		String maxFemaleBirth = KitService.getBirthFromAge(ap
-				.getRetireAgeFemale() + "");
 		// 参数map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("year", year);
 		map.put("companyId", companyId);
+		// 计算 如果达到退休
+		// 男女职工各自的最大出生日期
+		String maxMaleBirth = KitService.getBirthFromAge(ap
+				.getRetireAgeMale() + "");
+		String maxFemaleBirth = KitService.getBirthFromAge(ap
+				.getRetireAgeFemale() + "");
+		// 男女干部各自的最大出生日期
+		String maxMaleCadreBirth = KitService.getBirthFromAge(ap
+				.getRetireAgeCadreMale() + "");
+		String maxFemaleCadreBirth = KitService.getBirthFromAge(ap
+				.getRetireAgeCadreFemale() + "");
 		map.put("maxMaleBirth", maxMaleBirth);
+		map.put("maxMaleCadreBirth", maxMaleCadreBirth);
 		map.put("maxFemaleBirth", maxFemaleBirth);
+		map.put("maxFemaleCadreBirth", maxFemaleCadreBirth);
+		
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
 		// 返回量

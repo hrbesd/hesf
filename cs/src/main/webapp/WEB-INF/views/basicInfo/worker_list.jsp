@@ -52,18 +52,30 @@
 
 		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
 		{
-			field : 'retirementAge',
-			title : '退休年龄',
-			hidden : false,
-		}, {
-			field : 'workerName',
+			field : 'yuangongming',
 			title : '姓名',
 			width : 300,
+			formatter : function(value,row,index){
+				var head = row.workerName;
+				var cadreMaleHeadImg = '<img src="${contextPath}/images/cadre_male.png" style="width:15px;height:20px;" title="干部"/>';
+				var cadreFemaleHeadImg = '<img src="${contextPath}/images/cadre_female.png" style="width:15px;height:20px;" title="干部"/>';
+				if(row.isCadre == true  && row.workerGender == '男'){
+					head = cadreMaleHeadImg + head;
+				}else if(row.isCadre == true  && row.workerGender == '女'){
+					head = cadreFemaleHeadImg + head;
+				}else{
+					head = '&nbsp;&nbsp;&nbsp;' + head;
+				}
+				return head;
+			},
 			styler : function(value, row, index) {
 				//年龄检测
 				return workerList.ageDetection(value, row, index);
 			}
-		}, {
+		},{
+			field : 'workerName',
+			hidden : true
+		},{
 			field : 'workerHandicapCode',
 			title : '残疾证号',
 			width : 600,
@@ -117,9 +129,12 @@
 				return workerList.ageDetection(value, row, index);
 			}
 		}, {
+			field : 'isCadre',
+			hidden : true
+		},{
 			field : 'yanz',
 			title : '操作',
-			width : 250,
+			width : 270,
 			align : 'center',
 			formatter : function(value, row, index) {
 				var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
@@ -140,18 +155,29 @@
 	 职工年龄检测
 	 **/
 	workerList.ageDetection = function(value, row, index) {
-
-		if (row.workerGender == '男') {
-			if (row.workerAge >= row.retirementAge) {
-				return 'background-color:red;font-weight: bold;';
+		if(row.isCadre){
+			if (row.workerGender == '男') {
+				if (row.workerAge >= $('#retireAgeCadreMale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+			if (row.workerGender == '女') {
+				if (row.workerAge >= $('#retireAgeCadreFemale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+		}else{
+			if (row.workerGender == '男') {
+				if (row.workerAge >= $('#retireAgeMale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+			if (row.workerGender == '女') {
+				if (row.workerAge >= $('#retireAgeFemale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
 			}
 		}
-		if (row.workerGender == '女') {
-			if (row.workerAge >= row.retirementAge) {
-				return 'background-color:red;font-weight: bold;';
-			}
-		}
-
 	};
 
 	/**
@@ -178,9 +204,11 @@
 	  		params.isExceed=false;
 	  		
 	  	}
-
-	  	
-	  	
+	  	//是否是干部
+	  	var isCadre=$("input[name='isCadre']:checked").val();
+	  	if(isCadre=='on'){
+	  		params.isCadre=true;
+	  	}
 		return params;
 	};
 
@@ -208,12 +236,11 @@
 	workerList.openEditWorker = function(id) {
 		esd.common.openWindow("#workerWindow", "编辑残疾职工", 860, 450, 'worker/edit/' + id);
 	};
+	
 	/**
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-	
-
 		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 860, 450, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
@@ -318,8 +345,14 @@
 		
 	};
 	$(function(){
-	    //年龄超标单选框
+	    //年龄超标复选框
 		$("#isExceed").bind("click",function(){
+			//清楚列表复选框
+			$("#workerList_dataGrid").datagrid("clearChecked");
+			workerList.loadData(workerList.getParams());
+		});
+		//是否干部复选框
+		$("#isCadre").bind("click",function(){
 			//清楚列表复选框
 			$("#workerList_dataGrid").datagrid("clearChecked");
 			workerList.loadData(workerList.getParams());
@@ -362,10 +395,24 @@
 		<table>
 			<tr>
 				<td>
-				<input type="checkbox" name="isExceed"  id="isExceed" />
+					<input type="checkbox" name="isExceed"  id="isExceed" />
+					<!--  女退休年龄 -->
+					<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
+					<!--  女干部退休年龄 -->
+					<input type="hidden" value="${retireAgeCadreFemale }" id="retireAgeCadreFemale" />
+					<!--  男退休年龄 -->
+					<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
+					<!--  女干部退休年龄 -->
+					<input type="hidden" value="${retireAgeCadreMale }" id="retireAgeCadreMale" />
 				</td>
 				<td id="isExceedText">
-							职工年龄超标
+					<span style="font-size:10px;">年龄超标</span>
+				</td>
+				<td>
+					<input type="checkbox" name="isCadre"  id="isCadre" />
+				</td>
+				<td id="isExceedText">
+					<span style="font-size:10px;">干部</span>
 				</td>
 			</tr>
 		</table>

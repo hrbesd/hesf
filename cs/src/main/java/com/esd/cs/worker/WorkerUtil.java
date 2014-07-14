@@ -217,7 +217,7 @@ public class WorkerUtil {
 	public static Worker assembly(Worker worker) {
 		String workerHandicapCode = worker.getWorkerHandicapCode();
 		// 残疾证号
-		worker.setWorkerHandicapCode(workerHandicapCode);
+	//	worker.setWorkerHandicapCode(workerHandicapCode);
 		// 身份证号
 		worker.setWorkerIdCard(workerHandicapCode.substring(0, 18));
 

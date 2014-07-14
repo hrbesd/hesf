@@ -42,6 +42,7 @@
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
+		<result column="w_is_cadre" jdbcType="BIT" property="isCadre" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -74,6 +75,7 @@
 		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
+		<result column="w_is_cadre" jdbcType="BIT" property="isCadre" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -126,7 +128,7 @@
 	<sql id="Column_List_worker">
 		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_birth_year, w_worker_id_card, 
 		w_career_card, w_phone, w_current_job, w_worker_address,
-		w_worker_handicap_code, w_is_college, w_is_retired, w_remark, w_create_time, w_update_time,
+		w_worker_handicap_code, w_is_college, w_is_retired, w_is_cadre, w_remark, w_create_time, w_update_time,
 		w_user_id, w_is_active, w_version
 		<!-- handicap type -->
 		t_id, t_handicap_type,
@@ -177,8 +179,15 @@
 				and l_id = #{workerHandicapLevel}
 			</if>
 			<!-- retired age judge -->
-			<if test="maxMaleBirth != null and maxFemaleBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1) or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
+			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
+					or (w_worker_birth_year &lt;= #{maxMaleCadreBirth} and w_worker_gender = 1 and w_is_cadre = 1)
+					or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0 and w_is_cadre = 0)
+					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1)
+			</if>
+			<!-- is cadre -->
+			<if test="isCadre != null">
+				and w_is_cadre = #{isCadre,jdbcType=BIT} 
 			</if>
 		</trim>
 		order by w_id  
@@ -224,8 +233,15 @@
 				and l_id = #{workerHandicapLevel}
 			</if>
 			<!-- retired age judge -->
-			<if test="maxMaleBirth != null and maxFemaleBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1) or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0)
+			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
+				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
+					or (w_worker_birth_year &lt;= #{maxMaleCadreBirth} and w_worker_gender = 1 and w_is_cadre = 1)
+					or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0 and w_is_cadre = 0)
+					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1)
+			</if>
+			<!-- is cadre -->
+			<if test="isCadre != null">
+				and w_is_cadre = #{isCadre,jdbcType=BIT} 
 			</if>
 		</trim>
 	</select>
@@ -240,6 +256,7 @@
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
 		w.is_college as w_is_college, w.is_retired as w_is_retired, 
+		w.is_cadre as w_is_cadre, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -303,6 +320,10 @@
 			<if test="isRetired != null">
 				and w.is_retired = #{isRetired, jdbcType=BIT} 
 			</if>
+			<!-- is cadre -->
+			<if test="isCadre != null">
+				and w.is_cadre = #{isCadre,jdbcType=BIT} 
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and w.is_active = #{isActive,jdbcType=BIT}
@@ -357,6 +378,10 @@
 			<if test="isRetired != null">
 				and w.is_retired = #{isRetired, jdbcType=BIT} 
 			</if>
+			<!-- is cadre -->
+			<if test="isCadre != null">
+				and w.is_cadre = #{isCadre,jdbcType=BIT} 
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and w.is_active = #{isActive,jdbcType=BIT}
@@ -390,7 +415,10 @@
 	<select id="retrieveRetiredWorkerByCompany" parameterType="map" resultMap="ResultWorker">
 		select	<include refid="Column_List_worker"/> 
 		from (select * from  company_worker_view where c_id =#{companyId,jdbcType=INTEGER} and cyw_year = #{year,jdbcType=CHAR}) as cwv 
-		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
+		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1 and cwv.w_is_cadre = 0) 
+			or (cwv.w_worker_birth_year &lt;= #{maxMaleCadreBirth} and cwv.w_worker_gender = 1 and cwv.w_is_cadre = 1)
+			or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0 and cwv.w_is_cadre = 0)
+			or (cwv.w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and cwv.w_worker_gender = 0 and cwv.w_is_cadre = 1)
 		order by cwv.w_id  
 		limit #{start},#{size}
 	</select>
@@ -398,7 +426,10 @@
 	<select id="retrieveRetiredWorkerByCompanyCount" parameterType="map" resultType="int">
 		select count(*) 
 		from (select * from  company_worker_view where c_id =#{companyId,jdbcType=INTEGER} and cyw_year = #{year,jdbcType=CHAR}) as cwv 
-		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1) or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0) 
+		where (cwv.w_worker_birth_year &lt;= #{maxMaleBirth} and cwv.w_worker_gender = 1 and cwv.w_is_cadre = 0) 
+			or (cwv.w_worker_birth_year &lt;= #{maxMaleCadreBirth} and cwv.w_worker_gender = 1 and cwv.w_is_cadre = 1)
+			or (cwv.w_worker_birth_year &lt;= #{maxFemaleBirth} and cwv.w_worker_gender = 0 and cwv.w_is_cadre = 0)
+			or (cwv.w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and cwv.w_worker_gender = 0 and cwv.w_is_cadre = 1) 
 	</select>
 	
 	<!-- create view sql -->
@@ -423,6 +454,7 @@
 				w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 				w.current_job as w_current_job, w.worker_address as w_worker_address,
 				w.worker_handicap_code as w_worker_handicap_code, w.is_college as w_is_college, w.is_retired as w_is_retired,
+				w.is_cadre as w_is_cadre, 
 				w.remark as w_remark, w.create_time as w_create_time, w.update_time as w_update_time,
 				w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		t.id as t_id, t.handicap_type as t_handicap_type,

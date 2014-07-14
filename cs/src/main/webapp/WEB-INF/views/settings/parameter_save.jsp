@@ -91,6 +91,11 @@
 					</td>
 					<td>滞纳金开始日期:</td>
 					<td><input class="easyui-datebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${year+1}-9-01" style="width:120px" /></td>
+					<td>干部退休年龄(女)：</td>
+					<td>
+						<input class="easyui-validatebox" name="retireAgeCadreFemale" type="text" required="true" value="56" style="width:120px;"/>
+						<input type="hidden" name="retireAgeCadreMale" value="61" />
+					</td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>

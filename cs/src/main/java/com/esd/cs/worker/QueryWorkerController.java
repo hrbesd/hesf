@@ -28,7 +28,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.common.PoiCreateExcel;
-import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.WorkerService;
@@ -125,8 +124,6 @@ public class QueryWorkerController {
 		Map<String, Object> entity = new HashMap<>();
 		Integer total = 0;
 		List<Map<String, Object>> list = null;
-		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(params.getYear());
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			paramsMap.put("getOverproof", params.getIsExceed()); // 是否获取超过退休年龄
@@ -142,11 +139,11 @@ public class QueryWorkerController {
 																					// 对应的id
 			paramsMap.put("workerHandicapLevel", params.getWorkerHandicapLevel()); // 残疾等级
 																					// 对应的id
+			paramsMap.put("isCadre", params.getIsCadre());	//是否是干部
 			paramsMap.put("page", params.getPage()); // 分页--起始页
 														// ******************************
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
 														// ******************************
-
 			PaginationRecordsAndNumber<Worker, Number> query = workerService.getPaginationRecords(paramsMap);
 			total = query.getNumber().intValue();// 数据总条数
 			list = new ArrayList<>();
@@ -158,18 +155,15 @@ public class QueryWorkerController {
 				map.put("workerHandicapCode", it.getWorkerHandicapCode());// 残疾证号
 				if (it.getWorkerGender() == null) {
 					map.put("workerGender", "未知");// 性别
-
 				} else {
-
 					if (it.getWorkerGender().equals("0")) {
 						map.put("workerGender", "女");// 性别
-						map.put("retirementAge", auditParam.getRetireAgeFemale());// 女退休年龄
 					} else {
 						map.put("workerGender", "男");// 性别
-						map.put("retirementAge", auditParam.getRetireAgeMale());// 男退休年龄
 					}
 				}
-
+				//是否干部
+				map.put("isCadre", it.getIsCadre());
 				// 计算年龄(去年的年龄) 传入残疾证号，参数错误返回-1
 				map.put("workerAge", WorkerUtil.conversionAge(it.getWorkerHandicapCode())-1);
 				map.put("phone", it.getPhone());// phone

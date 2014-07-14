@@ -23,6 +23,7 @@ public class Worker extends PrimaryKey_Int {
 	private WorkerHandicapLevel workerHandicapLevel;// 残疾等级
 	private Boolean isCollege; // 是否是大学生
 	private Boolean isRetired; // 是否内退
+	private Boolean isCadre; // 是否干部
 	private String remark;// 备注
 	private String picTitle; // 精神残疾的图片 图片名
 	private byte[] pic; // 精神残疾的图片
@@ -175,6 +176,14 @@ public class Worker extends PrimaryKey_Int {
 
 	public void setIsRetired(Boolean isRetired) {
 		this.isRetired = isRetired;
+	}
+
+	public Boolean getIsCadre() {
+		return isCadre;
+	}
+
+	public void setIsCadre(Boolean isCadre) {
+		this.isCadre = isCadre;
 	}
 
 	public String getPicTitle() {

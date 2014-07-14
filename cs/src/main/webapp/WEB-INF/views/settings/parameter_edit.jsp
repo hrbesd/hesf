@@ -40,7 +40,8 @@
 			<table class="parameterTab">
 				<tr>
 					<td>年度:</td>
-					<td><input class="easyui-validatebox" required="true" name="year" type="text" readonly="readonly" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
+					<td>
+						<input class="easyui-validatebox" required="true" name="year" type="text" readonly="readonly" value="${entity.year}" onfocus="parameter_edit.change(this.value)" onchange="parameter_edit.change(this.value)" /> <input class="easyui-validatebox" name="version" type="hidden"
 						value="${entity.version}" /> <input class="easyui-validatebox" name="id" type="hidden" value="${entity.id}" />
 					</td>
 					<td colspan="2">&nbsp;</td>
@@ -52,15 +53,18 @@
 					</td>
 					<td>滞纳金开始日期:</td>
 					<td>
-					<fmt:formatDate value="${entity.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" />
-					<input class="easyui-datebox easyui-validatebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" /></td>
+						<fmt:formatDate value="${entity.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" />
+						<input class="easyui-datebox easyui-validatebox" id="auditDelayDate" name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" />
+					</td>
+					<td>干部退休年龄(女)：</td>
+					<td><input class="easyui-validatebox" name="retireAgeCadreFemale" type="text" required="true" value="${entity.retireAgeCadreFemale }" /></td>
 				</tr>
 				<tr>
 					<td>安置比例(%):</td>
 					<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="${entity.putScale}" />
 					</td>
 					<td>滞纳金征收比率(%):</td>
-					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${entity.auditDelayRate}" />
+					<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${entity.auditDelayRate}" style="width:148px;"/>
 					</td>
 					<td>职工退休年龄(男)：</td>
 					<td><input class="easyui-validatebox" name="retireAgeMale" type="text" required="true" value="${entity.retireAgeMale}" />
