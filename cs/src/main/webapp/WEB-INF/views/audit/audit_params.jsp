@@ -18,12 +18,14 @@
 				<td><fmt:formatDate value="${params.auditDelayDate}" type="date" dateStyle="long" pattern="yyyy-MM-dd" var="auditDelayDate" /> <input class="easyui-datebox easyui-validatebox"
 					name="auditDelayDate" data-options="required:true,height:30,showSeconds:false" value="${auditDelayDate}" style="width:150px" />
 				</td>
+				<td>干部退休年龄(女)：</td>
+					<td><input class="easyui-validatebox" name="retireAgeCadreFemale" type="text" required="true" value="${params.retireAgeCadreFemale }" /></td>
 			</tr>
 			<tr>
 				<td>安置比例(%):</td>
 				<td><input class="easyui-validatebox" name="putScale" type="text" required="true" value="${params.putScale}" /></td>
 				<td>滞纳金征收比率(%):</td>
-				<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${params.auditDelayRate}" /></td>
+				<td><input class="easyui-validatebox" name="auditDelayRate" type="text" required="true" value="${params.auditDelayRate}"  style="width:148px;"/></td>
 				<td>职工退休年龄(男)：</td>
 				<td><input class="easyui-validatebox" name="retireAgeMale" type="text" required="true" value="${params.retireAgeMale}" /></td>
 			</tr>

@@ -88,7 +88,7 @@
 		<tr>
 			<td class="tdRight">&nbsp;</td>
 			<td colspan="4">
-				<p><input type="checkbox" value="1" name="ckbCreateAudit" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息</span></p>
+				<p style="margin: 0px;"><input type="checkbox" value="1" name="ckbCreateAudit" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息</span></p>
 					<input type="hidden" name="createAudit" id="createAudit" value="0"/>
 				<script type="text/javascript">
 					$('#ckbCreateAudit').click(function(){
