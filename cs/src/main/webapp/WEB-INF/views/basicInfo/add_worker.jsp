@@ -280,8 +280,8 @@
 		var day = workerHandicapCode.substring(12, 14);//日
 		//根据残疾证号获取性别
 		var sex = workerHandicapCode.substring(16, 17);
-		//职工去年年龄=审核年份-出生年份+1
-		var age=$("#nowYear").val()-year+1;
+		//职工去年年龄=审核年份-出生年份
+		var age=$("#nowYear").val()-year;
 		//判断年龄
 		if(age<=16){
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');

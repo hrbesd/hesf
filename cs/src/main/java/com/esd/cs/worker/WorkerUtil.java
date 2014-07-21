@@ -319,8 +319,8 @@ public class WorkerUtil {
 		String bl = "no"; // 是否合格
 		String notice = "";
 		if (param != null) {
-			// 计算去年年龄
-			int age = conversionAge(workerHandicapCode) - 1;
+			// 计算去年年龄(周岁)
+			int age = conversionAge(workerHandicapCode) - 1-1;
 			// 性别
 			if (sex % 2 == 0) {
 				notice += "女性 ";
