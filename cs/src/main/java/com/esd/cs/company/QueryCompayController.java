@@ -110,15 +110,11 @@ public class QueryCompayController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/exportCompany", method = RequestMethod.POST)
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String exportCompany(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
-		logger.debug("deleteCompany:{}", idArr+"");
+	public String export(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
+		logger.debug("exportCompany:{}", idArr+"");
 		boolean b = true;
-//		List<Company> company = new ArrayList<Company>();
-//		for (int i = 0; i < idArr.length; i++) {
-//			company.add(companyService.getByPrimaryKey(idArr[i]));
-//		}
 		List<Company> companyList = null;
 		if(idArr[0] == Integer.MAX_VALUE){
 			companyList = new ArrayList<Company>();
@@ -130,26 +126,20 @@ public class QueryCompayController {
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
-		File uploadPath = new File(url + "upload");
-		// 导出文件夹
-		String exportFolder = uploadPath + File.separator + "company";
-		File companyPath = new File(exportFolder);
-		if (!(uploadPath.exists())) {
-			uploadPath.mkdir();
+		File downloadPath = new File(url + "temp");
+		if (!(downloadPath.exists())) {
+			downloadPath.mkdir();
 		}
-		if (!(companyPath.exists())) {
-			companyPath.mkdir();
-		}
-
+		
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
-		String exportPath = exportFolder + File.separator + uuid + ".xls";
+		String exportPath = downloadPath + File.separator + uuid + ".xls";
 		String FileDownloadPath = "null";
 		// 导出文件
 		b = PoiCreateExcel.createCompanyExcel(exportPath, companyList);
 		if (b) {
 			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-			FileDownloadPath = "http://" + destPath + "/upload/company/" + uuid + ".xls";
+			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
 		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArr);
 		return FileDownloadPath;

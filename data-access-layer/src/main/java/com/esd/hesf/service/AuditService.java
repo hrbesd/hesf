@@ -72,4 +72,12 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	Integer getCountByYear(String year);
+	
+	/**
+	 * 根据多个id, 查询审核数据列表
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	List<Audit> getByIds(Integer[] ids);
 }

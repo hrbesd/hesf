@@ -341,11 +341,23 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public Integer getCountByYear(String year) {
-		if(year == null){
+		if (year == null) {
 			return null;
 		}
 		return dao.retrieveCountByYear(year);
 	}
 
-	
+	@Override
+	public List<Audit> getByIds(Integer[] ids) {
+		if(ids == null){
+			return null;
+		}
+		if(ids.length<1){
+			return null;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put(Constants.ARRAY, ids);
+		return dao.retrieveByPrimaryKeys(map);
+	}
+
 }

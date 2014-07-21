@@ -5,6 +5,7 @@
  */
 package com.esd.cs.payment;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.Constants;
+import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
@@ -45,7 +51,7 @@ import com.esd.hesf.service.PaymentService;
 @RequestMapping("/security/query/payment")
 public class QueryPaymentController {
 
-	private static final Logger log = LoggerFactory.getLogger(QueryPaymentController.class);
+	private static final Logger logger = LoggerFactory.getLogger(QueryPaymentController.class);
 	private DecimalFormat format = new DecimalFormat("0.00");
 	@Autowired
 	private PaymentService pService;
@@ -57,7 +63,9 @@ public class QueryPaymentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listGet(HttpServletRequest req) {
+	public ModelAndView listGet(HttpServletRequest request,HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
 		return new ModelAndView("query/payment");
 	}
 
@@ -70,7 +78,7 @@ public class QueryPaymentController {
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> listPost(PaymentParamModel model) {
-		log.debug(model.toString());
+		logger.debug(model.toString());
 		// payment中的 审核对象
 		Audit audit = new Audit();
 		audit.setYear(model.getYear());
@@ -117,6 +125,7 @@ public class QueryPaymentController {
 		for (Iterator<Payment> iterator = pgs.getRecords().iterator(); iterator.hasNext();) {
 			Payment p = iterator.next();
 			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", p.getId());
 			map.put("paymentDate", getStringDate(p.getPaymentDate()));// 缴款日期
 			map.put("companyCode", p.getPaymentCompany().getCompanyCode());
 			map.put("companyName", p.getPaymentCompany().getCompanyName());// 缴款公司
@@ -141,4 +150,49 @@ public class QueryPaymentController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
+
+	/**
+	 * 批量导出缴款信息
+	 * 
+	 * @param idArr
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	@ResponseBody
+	public String export(@RequestParam(value = "params[]") Integer idArr[], @RequestParam(value="year") String year,HttpServletRequest request) {
+		logger.debug("exportPayment:{}", idArr+"");
+		boolean b = true;
+		List<Payment> list = null;
+		if(idArr[0] == Integer.MAX_VALUE){
+			list = new ArrayList<Payment>();
+			Payment payment = new Payment();
+			payment.setAuditYear(year);
+			for(Payment c:pService.getPaginationRecords(payment, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
+				list.add(c);
+			}
+		}else{
+			list= pService.getByIds(idArr);
+		}
+		String url = request.getServletContext().getRealPath("/");
+		// 创建导出文件夹
+		File downloadPath = new File(url + "temp");
+		if (!(downloadPath.exists())) {
+			downloadPath.mkdir();
+		}
+		
+		// 创建文件唯一名称
+		String uuid = UUID.randomUUID().toString();
+		String exportPath = downloadPath + File.separator + uuid + ".xls";
+		String FileDownloadPath = "null";
+		// 导出文件
+		b = PoiCreateExcel.createPaymentExcel(exportPath, list);
+		if (b) {
+			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
+		}
+		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArr);
+		return FileDownloadPath;
+	}
+	
 }

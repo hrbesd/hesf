@@ -585,6 +585,20 @@ public class PaymentServiceImpl implements PaymentService {
 		return dao.retireveCountByCompanyAndYear(map);
 	}
 
+	
+	@Override
+	public List<Payment> getByIds(Integer[] ids) {
+		if(ids == null){
+			return null;
+		}
+		if(ids.length<1){
+			return null;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put(Constants.ARRAY, ids);
+		return dao.retrieveByPrimaryKeys(map);
+	}
+
 	// @Override
 	// public boolean createPaymentExcel(String FilePath,
 	// List<Payment> paymentList, Integer page, Integer pageSize) {

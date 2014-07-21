@@ -192,7 +192,7 @@ public class QueryWorkerController {
 	 */	
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String exportWorker(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
+	public String export(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
 		logger.debug("idArr:{}", idArr+"");
 		boolean b = true;
 		List<Worker> list = null;
@@ -206,26 +206,20 @@ public class QueryWorkerController {
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
-		File uploadPath = new File(url + "upload");
-		// 导出文件夹
-		String exportFolder = uploadPath + File.separator + "worker";
-		File workerPath = new File(exportFolder);
-		if (!(uploadPath.exists())) {
-			uploadPath.mkdir();
+		File downloadPath = new File(url + "temp");
+		if (!(downloadPath.exists())) {
+			downloadPath.mkdir();
 		}
-		if (!(workerPath.exists())) {
-			workerPath.mkdir();
-		}
-
+		
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
-		String exportPath = exportFolder + File.separator + uuid + ".xls";
+		String exportPath = downloadPath + File.separator + uuid + ".xls";
 		String FileDownloadPath = "null";
 		// 导出文件
 		b = PoiCreateExcel.createWorkerExcel(exportPath, list);
 		if (b) {
 			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
-			FileDownloadPath = "http://" + destPath + "/upload/worker/" + uuid + ".xls";
+			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
 		logger.debug("ecportWorkerResults:{},paramsId:{}", b, idArr);
 		return FileDownloadPath;

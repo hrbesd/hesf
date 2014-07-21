@@ -60,11 +60,20 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @return
 	 */
 	String[] retrieveAuditYears();
-	
+
 	/**
 	 * 根据审核年份, 查询存在多少条该年的审核数据
+	 * 
 	 * @param year
 	 * @return
 	 */
 	Integer retrieveCountByYear(String year);
+
+	/**
+	 * 根据多个id查询年审信息列表, map中放入array数组, 或者list集合等 key值必须为: array
+	 * 
+	 * @param map
+	 * @return
+	 */
+	List<Audit> retrieveByPrimaryKeys(Map<String, Object> map);
 }

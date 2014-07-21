@@ -720,6 +720,19 @@
 		and au.id = #{id,jdbcType=INTEGER}
 	</select>
 
+	<select id="retrieveByPrimaryKeys" parameterType="map" resultMap="ResultAudit">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_List" />
+		where
+			<include refid="Where_List" />
+			and au.id in 
+			<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+	
 	<select id="retrieveByYearAndCompanyId" parameterType="map" resultMap="ResultAudit">
 		select
 		<include refid="Base_Column_List" />
@@ -884,4 +897,5 @@
 	<select id="retrieveAuditYears" parameterType="java.lang.String" resultType="java.lang.String">
 		select year from audit group by year order by year;
 	</select>
+
 </mapper>

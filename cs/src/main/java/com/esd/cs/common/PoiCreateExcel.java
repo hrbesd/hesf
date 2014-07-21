@@ -21,7 +21,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.esd.cs.statistics.ReportModel;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.viewmodels.ReportViewModel;
@@ -89,11 +91,11 @@ public class PoiCreateExcel {
 	 * 导出单位信息
 	 * 
 	 * @param FilePath
-	 * @param companyList
+	 * @param list
 	 * @return
 	 */
 	public static boolean createCompanyExcel(String FilePath,
-			List<Company> companyList) {
+			List<Company> list) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -131,8 +133,8 @@ public class PoiCreateExcel {
 		headell.setCellValue("单位地址");
 		sheet.setColumnWidth(8, 12000);
 
-		for (int i = 1; i <= companyList.size(); i++) {
-			Company company = companyList.get(i - 1);
+		for (int i = 1; i <= list.size(); i++) {
+			Company company = list.get(i - 1);
 			// 创建一个Excel的单元格
 			HSSFRow row = sheet.createRow(i);
 			HSSFCell cell = row.createCell(0);
@@ -170,8 +172,8 @@ public class PoiCreateExcel {
 			wb.write(os);
 			os.flush();
 			os.close();
-			companyList.clear();
-			companyList = null;
+			list.clear();
+			list = null;
 			os = null;
 			wb = null;
 			System.gc();
@@ -183,6 +185,104 @@ public class PoiCreateExcel {
 		return true;
 	}
 
+	/**
+	 * 导出审核信息
+	 * @param FilePath
+	 * @param list
+	 * @return
+	 */
+	public static boolean createAuditExcel(String FilePath,
+			List<Audit> list) {
+		// 创建Excel的工作书册 Workbook,对应到一个excel文档
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 创建Excel的工作sheet,对应到一个excel文档的tab
+		HSSFSheet sheet = wb.createSheet("sheet1");
+		// 设置excel每列宽度
+		sheet.setColumnWidth(0, 4000);
+		sheet.setColumnWidth(1, 3500);
+
+		// 创建一个头部Excel的单元格
+		HSSFRow headRow = sheet.createRow(0);
+		HSSFCell headell = headRow.createCell(0);
+		// 设置单元格的样式格式
+		headell = headRow.createCell(0);
+		headell.setCellValue("档案编码");
+		headell = headRow.createCell(1);
+		headell.setCellValue("税务编码");
+		headell = headRow.createCell(2);
+		headell.setCellValue("单位名称");
+		sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
+
+		headell = headRow.createCell(3);
+		headell.setCellValue("法人代表");
+		headell = headRow.createCell(4);
+		headell.setCellValue("联系人");
+
+		headell = headRow.createCell(5);
+		headell.setCellValue("电话号码");
+
+		headell = headRow.createCell(6);
+		headell.setCellValue("手机号码");
+
+		headell = headRow.createCell(7);
+		headell.setCellValue("邮编");
+		headell = headRow.createCell(8);
+		headell.setCellValue("单位地址");
+		sheet.setColumnWidth(8, 12000);
+
+		for (int i = 1; i <= list.size(); i++) {
+			Audit audit = list.get(i-1);
+			Company company = audit.getCompany();
+			// 创建一个Excel的单元格
+			HSSFRow row = sheet.createRow(i);
+			HSSFCell cell = row.createCell(0);
+			// 设置单元格的样式格式
+			// 档案编码
+			cell = row.createCell(0);
+			cell.setCellValue(company.getCompanyCode());
+			// 税务编码
+			cell = row.createCell(1);
+			cell.setCellValue(company.getCompanyTaxCode());
+			// 企业名称
+			cell = row.createCell(2);
+			cell.setCellValue(company.getCompanyName());
+			// 法人代表
+			cell = row.createCell(3);
+			cell.setCellValue(company.getCompanyLegal());
+			// 联系人
+			cell = row.createCell(4);
+			cell.setCellValue(company.getCompanyContactPerson());
+			// 电话号码
+			cell = row.createCell(5);
+			cell.setCellValue(company.getCompanyPhone());
+			// 手机号码
+			cell = row.createCell(6);
+			cell.setCellValue(company.getCompanyMobile());
+			// 邮编
+			cell = row.createCell(7);
+			cell.setCellValue(company.getCompanyZipCode());
+			// 单位地址
+			cell = row.createCell(8);
+			cell.setCellValue(company.getCompanyAddress());
+		}
+		try {
+			FileOutputStream os = new FileOutputStream(FilePath);
+			wb.write(os);
+			os.flush();
+			os.close();
+			list.clear();
+			list = null;
+			os = null;
+			wb = null;
+			System.gc();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	/**
 	 * 导出残疾人信息
 	 * 
@@ -283,6 +383,105 @@ public class PoiCreateExcel {
 		return true;
 	}
 
+	/**
+	 * 导出付款记录
+	 * @param FilePath
+	 * @param list
+	 * @return
+	 */
+	public static boolean createPaymentExcel(String FilePath,
+			List<Payment> list) {
+		// 创建Excel的工作书册 Workbook,对应到一个excel文档
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 创建Excel的工作sheet,对应到一个excel文档的tab
+		HSSFSheet sheet = wb.createSheet("sheet1");
+		// 设置excel每列宽度
+		sheet.setColumnWidth(0, 4000);
+		sheet.setColumnWidth(1, 3500);
+
+		// 创建一个头部Excel的单元格
+		HSSFRow headRow = sheet.createRow(0);
+		HSSFCell headell = headRow.createCell(0);
+		// 设置单元格的样式格式
+		headell = headRow.createCell(0);
+		headell.setCellValue("档案编码");
+		headell = headRow.createCell(1);
+		headell.setCellValue("税务编码");
+		headell = headRow.createCell(2);
+		headell.setCellValue("单位名称");
+		sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
+
+		headell = headRow.createCell(3);
+		headell.setCellValue("法人代表");
+		headell = headRow.createCell(4);
+		headell.setCellValue("联系人");
+
+		headell = headRow.createCell(5);
+		headell.setCellValue("电话号码");
+
+		headell = headRow.createCell(6);
+		headell.setCellValue("手机号码");
+
+		headell = headRow.createCell(7);
+		headell.setCellValue("邮编");
+		headell = headRow.createCell(8);
+		headell.setCellValue("单位地址");
+		sheet.setColumnWidth(8, 12000);
+
+		for (int i = 1; i <= list.size(); i++) {
+			Payment payment = list.get(i-1);
+			Company company = payment.getPaymentCompany();
+			// 创建一个Excel的单元格
+			HSSFRow row = sheet.createRow(i);
+			HSSFCell cell = row.createCell(0);
+			// 设置单元格的样式格式
+			// 档案编码
+			cell = row.createCell(0);
+			cell.setCellValue(company.getCompanyCode());
+			// 税务编码
+			cell = row.createCell(1);
+			cell.setCellValue(company.getCompanyTaxCode());
+			// 企业名称
+			cell = row.createCell(2);
+			cell.setCellValue(company.getCompanyName());
+			// 法人代表
+			cell = row.createCell(3);
+			cell.setCellValue(company.getCompanyLegal());
+			// 联系人
+			cell = row.createCell(4);
+			cell.setCellValue(company.getCompanyContactPerson());
+			// 电话号码
+			cell = row.createCell(5);
+			cell.setCellValue(company.getCompanyPhone());
+			// 手机号码
+			cell = row.createCell(6);
+			cell.setCellValue(company.getCompanyMobile());
+			// 邮编
+			cell = row.createCell(7);
+			cell.setCellValue(company.getCompanyZipCode());
+			// 单位地址
+			cell = row.createCell(8);
+			cell.setCellValue(company.getCompanyAddress());
+		}
+		try {
+			FileOutputStream os = new FileOutputStream(FilePath);
+			wb.write(os);
+			os.flush();
+			os.close();
+			list.clear();
+			list = null;
+			os = null;
+			wb = null;
+			System.gc();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	
 	/**
 	 * 导出报表
 	 * 

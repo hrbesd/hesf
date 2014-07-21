@@ -236,13 +236,85 @@
 	查看企业信息框
 	 **/
 	queryPayment.openViewPayment = function(id) {
-
-	esd.common.defaultOpenWindow("查看缴款信息", 'company/view/' + id);
+		esd.common.defaultOpenWindow("查看缴款信息", 'company/view/' + id);
 	};
-
+	
+	/**
+	 * 导出选中企业
+	 **/
+	 queryPayment.downloadSelected = function() {
+		// 获取所有选中列
+		var selection = $("#queryPaymentGrid").datagrid('getChecked');
+	//	$.messager.alert(selection.length,selection[0].id);
+		// 判断选择数目是否大于0
+		if (selection.length == 0) {
+			$.messager.alert('消息', '未选择任何数据。', 'error');
+		} else {
+			// 显示确认删除对话框
+			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
+				if (r) {
+					// 组装参数
+					var params = new Array();
+					var year = $("#year").combobox("getValue"); // 审核年度
+					for ( var i = 0; i < selection.length; i++) {
+						params.push(selection[i].id);
+					}
+					//发送导出请求
+					$.ajax({
+						url:'query/payment/export',
+						type:'post',
+						data: {
+							params : params,
+							year : year
+						},
+						success:function(data){
+							if(data!="null"){
+								window.location.href=data;
+							}else{
+								$.messager.alert('消息', '缴款信息导出错误。', 'error');
+							}
+						},error:function(){
+							$.messager.alert('消息', '请求缴款信息数据时出现错误。', 'error');
+						}
+					});
+				}
+			});
+		}
+	};
+	
+	/**
+	 * 导出所有数据
+	 **/
+	 queryPayment.downloadAll = function() {
+		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
+			if (r) {
+				var params = esd.common.maxInteger;
+				var year = $("#year").combobox("getValue"); // 审核年度
+				//发送导出请求
+				$.ajax({
+					url:'query/payment/export',
+					type:'post',
+					data: {
+						params : params,
+						year :year
+					},
+					success:function(data){
+						if(data!="null"){
+							window.location.href=data;
+						}else{
+							$.messager.alert('消息', '缴款信息导出错误。', 'error');
+						}
+					},error:function(){
+						$.messager.alert('消息', '请求缴款信息数据时出现错误。', 'error');
+					}
+				});
+			}
+		});
+	};
+	
 	//组件解析完成
 	$.parser.onComplete = function() {
-		//加载单位档案数据
+		//加载缴款档案数据
 		queryPayment.loadData(queryPayment.getParams());
 	};
 	$(function() {
@@ -262,7 +334,7 @@
 		<table id="queryPaymentParams">
 			<tr>
 				<td class="tipsText">审核年度:</td>
-				<td><input id="year" class="easyui-combobox" value="" data-options="height:30,editable:false" /></td>
+				<td><input id="year" class="easyui-combobox" value="${nowYear }" data-options="height:30,editable:false" /></td>
 				<td class="tipsText">档案号码:</td>
 				<td><input type="text" id="companyCode" class="inputElement" /></td>
 				<td class="tipsText">企业名称:</td>
@@ -293,8 +365,9 @@
 		</table>
 		<div class="findBut">
 			<a href="#" onclick="queryPayment.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
-			
 			<a href="javascript:queryPayment.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a>
+			<a href="javascript:queryPayment.downloadSelected()" class="easyui-linkbutton" iconCls="icon-ok">下载选中</a>
+			<a href="javascript:queryPayment.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载所有数据</a>
 
 		</div>
 	</div>

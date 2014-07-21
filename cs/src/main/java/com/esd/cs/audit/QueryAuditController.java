@@ -5,11 +5,13 @@
  */
 package com.esd.cs.audit;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,11 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
+import com.esd.cs.common.PoiCreateExcel;
 import com.esd.cs.company.CompanyParamModel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
@@ -191,5 +195,49 @@ public class QueryAuditController {
 			logger.error("queryCompanyResult{}", e.getMessage());
 		}
 		return entity;
+	}
+
+	/**
+	 * 批量导出审核信息
+	 * 
+	 * @param idArr
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/export", method = RequestMethod.POST)
+	@ResponseBody
+	public String export(@RequestParam(value = "params[]") Integer idArr[], @RequestParam(value="year") String year,HttpServletRequest request) {
+		logger.debug("exportAudit:{}", idArr+"");
+		boolean b = true;
+		List<Audit> auditList = null;
+		if(idArr[0] == Integer.MAX_VALUE){
+			auditList = new ArrayList<Audit>();
+			Audit param = new Audit();
+			param.setYear(year);
+			for(Audit c:auditService.getPaginationRecords(param, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
+				auditList.add(c);
+			}
+		}else{
+			auditList= auditService.getByIds(idArr);
+		}
+		String url = request.getServletContext().getRealPath("/");
+		// 创建导出文件夹
+		File downloadPath = new File(url + "temp");
+		if (!(downloadPath.exists())) {
+			downloadPath.mkdir();
+		}
+		
+		// 创建文件唯一名称
+		String uuid = UUID.randomUUID().toString();
+		String exportPath = downloadPath + File.separator + uuid + ".xls";
+		String FileDownloadPath = "null";
+		// 导出文件
+		b = PoiCreateExcel.createAuditExcel(exportPath, auditList);
+		if (b) {
+			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
+		}
+		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArr);
+		return FileDownloadPath;
 	}
 }

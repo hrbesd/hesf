@@ -141,14 +141,12 @@
 	*
 	**/
 	queryWorker.downloadSelected = function() {
-		
 		// 获取所有选中列
 		var selection = $("#queryWorker_grid").datagrid('getChecked');
 	
 		// 判断选择数目是否大于0
 		if (selection.length == 0) {
 			$.messager.alert('消息', '未选择任何数据。', 'error');
-			
 		} else {
 			// 显示确认删除对话框
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '条残疾职工信息吗？', function(r) {
@@ -159,24 +157,20 @@
 						params.push(selection[i].id);
 					}
 					//发送导出请求
-					
 					$.ajax({
 						url:'query/worker/export',
 						type:'post',
 						data: {
-								params : params
-							},
+							params : params
+						},
 						success:function(data){
 						if(data!="null"){
-				
 							window.location.href=data;
 						}else{
-								$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
-							
+							$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
 						}
 						},error:function(){
-						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
-						
+							$.messager.alert('消息', 'exportCompanyErrror。', 'error');
 						}
 					});
 				}

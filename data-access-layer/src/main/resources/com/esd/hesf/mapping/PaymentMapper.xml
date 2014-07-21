@@ -340,6 +340,18 @@
 		order by pay.id
 	</select>
 
+	<select id="retrieveByPrimaryKeys" parameterType="map" resultMap="ResultPayment">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_Column" />
+		where
+			pay.id in 
+			<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+	
 	<select id="retrieveByPage" resultMap="ResultPayment" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
@@ -673,5 +685,7 @@
 	<select id="retireveCountByCompanyAndYear" resultType="int" parameterType="map">
 		select count(*) from payment 
 		where year = #{year,jdbcType=CHAR} and payment_company = #{companyId,jdbcType=INTEGER};
-	</select>	
+	</select>
+	
+		
 </mapper>

@@ -399,3 +399,8 @@ esd.common.noCloseButtonDialog = function(title,msg){
 esd.common.unknown = function(){
 	return '未知';
 };
+
+/**
+ * id最大值, 提供给查询中的下载所有数据使用
+ */
+esd.common.maxInteger=[2147483647];

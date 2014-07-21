@@ -124,8 +124,8 @@
 	};
 	
 	/**
-	导出企业
-	**/
+	 * 导出选中企业
+	 **/
 	queryCompany.downloadSelected = function() {
 		
 		// 获取所有选中列
@@ -134,7 +134,6 @@
 		// 判断选择数目是否大于0
 		if (selection.length == 0) {
 			$.messager.alert('消息', '未选择任何数据。', 'error');
-			
 		} else {
 			// 显示确认删除对话框
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
@@ -145,24 +144,20 @@
 						params.push(selection[i].id);
 					}
 					//发送导出请求
-					
 					$.ajax({
-						url:'query/company/exportCompany',
+						url:'query/company/export',
 						type:'post',
 						data: {
-								params : params
-							},
+							params : params
+						},
 						success:function(data){
-						if(data!="null"){
-				
-							window.location.href=data;
-						}else{
+							if(data!="null"){
+								window.location.href=data;
+							}else{
 								$.messager.alert('消息', '单位信息导出错误。', 'error');
-							
-						}
+							}
 						},error:function(){
-						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
-						
+							$.messager.alert('消息', '请求单位信息数据时出现错误。', 'error');
 						}
 					});
 				}
@@ -171,16 +166,15 @@
 	};
 	
 	/**
-	*
-	* 导出所有数据
-	*/
+	 * 导出所有数据
+	 **/
 	queryCompany.downloadAll = function() {
 		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
 			if (r) {
-				var params = [2147483647];
+				var params = esd.common.maxInteger;
 				//发送导出请求
 				$.ajax({
-					url:'query/company/exportCompany',
+					url:'query/company/export',
 					type:'post',
 					data: {
 						params : params
@@ -192,12 +186,13 @@
 							$.messager.alert('消息', '单位信息导出错误。', 'error');
 						}
 					},error:function(){
-						$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+						$.messager.alert('消息', '请求单位信息数据时出现错误。', 'error');
 					}
 				});
 			}
 		});
 	};
+	
 	//组件解析完成
 	$.parser.onComplete=function(){
 	};

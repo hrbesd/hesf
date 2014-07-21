@@ -189,26 +189,79 @@
 	};
 
 	/**
-		下载企业年审缴款记录
+	 * 导出选中审核数据
 	 **/
-	queryAudit.download = function() {
-		//发送导出请求
-		$.ajax({
-			url : '${contextPath}/security/payment/download',
-			type : 'post',
-			success : function(data) {
-				if (data != null) {
-					window.location.href = data;
-				} else {
-					$.messager.alert('消息', '企业年审缴款信息导出出错错误1。', 'error');
+	 queryAudit.downloadSelected = function() {
+		
+		// 获取所有选中列
+		var selection = $("#queryAuditGrid").datagrid('getChecked');
+	
+		// 判断选择数目是否大于0
+		if (selection.length == 0) {
+			$.messager.alert('消息', '未选择任何数据。', 'error');
+		} else {
+			// 显示确认删除对话框
+			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗?', function(r) {
+				if (r) {
+					// 组装参数
+					var params = new Array();
+					var year = $('#year').combobox('getValue');
+					for ( var i = 0; i < selection.length; i++) {
+						params.push(selection[i].id);
+					}
+					//发送导出请求
+					$.ajax({
+						url:'${contextPath}/security/query/audit/export',
+						type:'post',
+						data: {
+							params : params,
+							year : year
+						},
+						success:function(data){
+							if(data!="null"){
+								window.location.href = data;
+							}else{
+								$.messager.alert('消息', '审核信息导出错误。', 'error');
+							}
+						},error:function(){
+							$.messager.alert('消息', '请求审核信息数据时出现错误。', 'error');
+						}
+					});
 				}
-			},
-			error : function() {
-				$.messager.alert('消息', '企业年审缴款信息导出出错错误。', 'error');
-
+			});
+		}
+	};
+	
+	/**
+	 * 导出所有数据
+	 **/
+	 queryAudit.downloadAll = function() {
+		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
+			if (r) {
+				var params = esd.common.maxInteger;
+				var year = $('#year').combobox('getValue');
+				//发送导出请求
+				$.ajax({
+					url:'${contextPath}/security/query/audit/export',
+					type:'post',
+					data: {
+						params : params,
+						year :year
+					},
+					success:function(data){
+						if(data!="null"){
+							window.location.href=data;
+						}else{
+							$.messager.alert('消息', '审核信息导出错误。', 'error');
+						}
+					},error:function(){
+						$.messager.alert('消息', '请求审核信息数据时出现错误。', 'error');
+					}
+				});
 			}
 		});
 	};
+	
 	/**
 	查看企业信息框
 	 **/
@@ -311,7 +364,8 @@
 		<div class="findBut">
 			<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
 			<a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
-			<a href="javascript:queryAudit.download()" class="easyui-linkbutton" iconCls="icon-ok">下载年审缴款记录</a>
+			<a href="javascript:queryAudit.downloadSelected()" class="easyui-linkbutton" iconCls="icon-ok">下载选中</a>
+			<a href="javascript:queryAudit.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载当前审核年度所有数据</a>
 		</div>
 	</div>
 </div>

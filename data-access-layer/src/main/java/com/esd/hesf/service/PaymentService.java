@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Payment;
 
 /**
@@ -104,4 +105,11 @@ public interface PaymentService extends BaseService<Payment> {
 	 */
 	Integer getCountByeCompanyAndYear(String year, Integer companyId);
 
+	/**
+	 * 根据多个id, 查询缴款数据列表
+	 * 
+	 * @param ids
+	 * @return
+	 */
+	List<Payment> getByIds(Integer[] ids);
 }
