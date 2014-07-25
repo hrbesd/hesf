@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditParameterDao;
 import com.esd.hesf.dao.WorkerCalculatorDao;
+import com.esd.hesf.dao.WorkerTempDao;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.WorkerCalculator;
 import com.esd.hesf.service.AuditParameterService;
@@ -35,7 +36,7 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 
 	@Autowired
 	private WorkerCalculatorDao wcDao;
-
+	
 	@Override
 	public boolean save(AuditParameter t) {
 		log.debug("t: " + t);
@@ -160,6 +161,37 @@ public class AuditParameterServiceImpl implements AuditParameterService {
 		return wcDao.retrieveSpecialCount(map);
 	}
 
+	@Override
+	public int getSpecialCountFromWorkerTemp(Integer companyId, String year,
+			int workerHandicapType, int workerHandicapLevel) {
+		if (companyId == null || companyId <= 0) {
+			new HesfException("companyId", HesfException.type_null)
+					.printStackTrace();
+			return -1;
+		}
+		if (year == null || "".equals(year)) {
+			new HesfException("year", HesfException.type_null)
+					.printStackTrace();
+			return -1;
+		}
+		if (workerHandicapType <= 0) {
+			new HesfException("workerHandicapType",
+					HesfException.type_number_negative).printStackTrace();
+			return -1;
+		}
+		if (workerHandicapLevel <= 0) {
+			new HesfException("workerHandicapLevel",
+					HesfException.type_number_negative).printStackTrace();
+			return -1;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("companyId", companyId);
+		map.put("year", year);
+		map.put("workerHandicapType", workerHandicapType);
+		map.put("workerHandicapLevel", workerHandicapLevel);
+		return wcDao.retrieveSpecialCountFromWorkerTemp(map);
+	}
+	
 	@Override
 	public String getLastestYear() {
 		return dao.retrieveLastestYear();

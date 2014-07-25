@@ -140,12 +140,17 @@ public class Constants {
 	/**
 	 * 默认起始页
 	 */
-	public static final Integer START_PAGE = 1;
+	public static final Integer PAGE_START = 1;
 
 	/**
 	 * 默认每页返回量
 	 */
 	public static final Integer PAGE_SIZE = 50;
+	
+	/**
+	 * 默认每页返回最大量
+	 */
+	public static final Integer PAGE_SIZE_MAX = Integer.MAX_VALUE;
 	
 	/**
 	 * 用户组-超级管理员

@@ -214,7 +214,7 @@ public class QueryAuditController {
 			auditList = new ArrayList<Audit>();
 			Audit param = new Audit();
 			param.setYear(year);
-			for(Audit c:auditService.getPaginationRecords(param, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
+			for(Audit c:auditService.getPaginationRecords(param, Constants.PAGE_START, Integer.MAX_VALUE).getRecords()){
 				auditList.add(c);
 			}
 		}else{

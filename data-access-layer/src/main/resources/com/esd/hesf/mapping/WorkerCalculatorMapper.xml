@@ -92,5 +92,11 @@
 			) as a ,worker as b 
 		where a.worker_id=b.id and b.worker_handicap_type = #{workerHandicapType} and b.worker_handicap_level = #{workerHandicapLevel} ;
 	</select>
+	
+	<select id="retrieveSpecialCountFromWorkerTemp" resultType="int" parameterType="map">
+		select 	count(*)
+		from worker_temp
+		where company_id = #{companyId} and worker_handicap_type = #{workerHandicapType} and worker_handicap_level = #{workerHandicapLevel} ;
+	</select>
 
 </mapper>

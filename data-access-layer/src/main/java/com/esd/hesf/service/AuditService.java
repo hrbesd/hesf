@@ -80,4 +80,15 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	List<Audit> getByIds(Integer[] ids);
+	
+	/**
+	 * 多条件查询 公司审核数据中 预定人数大于 0 的数据
+	 * 
+	 * @param map
+	 *            --map中放入:year--审核年份; companyName--公司名称; companyCode--档案号, isPredetermine--Boolean 是否计算预定人数大于0
+	 *            start--页数; size--返回量.
+	 * @return
+	 */
+	PaginationRecordsAndNumber<Audit, Number> getRepealPredict(
+			Map<String, Object> map);
 }

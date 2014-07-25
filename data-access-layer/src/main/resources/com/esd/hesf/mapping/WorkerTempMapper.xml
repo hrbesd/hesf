@@ -4,33 +4,34 @@
 
 	<!-- result of worker -->
 	<resultMap id="ResultWorker" type="com.esd.hesf.model.WorkerTemp">
-		<id column="w_id" jdbcType="INTEGER" property="id" />
-		<result column="w_worker_name" jdbcType="VARCHAR" property="workerName" />
-		<result column="w_worker_gender" jdbcType="VARCHAR" property="workerGender" />
-		<result column="w_worker_birth" jdbcType="VARCHAR" property="workerBirth" />
-		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
-		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
-		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
-		<result column="w_worker_handicap_type" jdbcType="INTEGER" property="workerHandicapType" />
-		<result column="w_worker_handicap_level" jdbcType="INTEGER" property="workerHandicapLevel" />
-		<result column="w_is_ok" jdbcType="BIT" property="isOk" />
-		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
-		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
-		<result column="w_check_code" jdbcType="VARCHAR" property="checkCode" />
-		<result column="w_pre_id" jdbcType="INTEGER" property="preId" />
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="company_id" jdbcType="INTEGER" property="companyId" />
+		<result column="worker_name" jdbcType="VARCHAR" property="workerName" />
+		<result column="worker_gender" jdbcType="VARCHAR" property="workerGender" />
+		<result column="worker_birth" jdbcType="VARCHAR" property="workerBirth" />
+		<result column="worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
+		<result column="worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
+		<result column="worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
+		<result column="worker_handicap_type" jdbcType="INTEGER" property="workerHandicapType" />
+		<result column="worker_handicap_level" jdbcType="INTEGER" property="workerHandicapLevel" />
+		<result column="current_job" jdbcType="VARCHAR" property="currentJob" />
+		<result column="career_card" jdbcType="VARCHAR" property="careerCard" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="is_ok" jdbcType="BIT" property="isOk" />
+		<result column="is_cadre" jdbcType="BIT" property="isCadre" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="check_code" jdbcType="VARCHAR" property="checkCode" />
+		<result column="pre_id" jdbcType="INTEGER" property="preId" />
+		<result column="pic_title" jdbcType="VARCHAR" property="picTitle" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		<!-- worker -->
-		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
-		w_worker_gender, w.worker_birth as w_worker_birth, 
-		w.worker_birth_year as w_worker_birth_year, 
-		w.worker_id_card as w_worker_id_card,
-		w.worker_handicap_code as w_worker_handicap_code,
-		w.worker_handicap_type as w_worker_handicap_type,
-		w.worker_handicap_level as w_worker_handicap_level,
-		w.is_ok as w_is_ok, w.remark as w_remark, w.user_id as w_user_id,
-		w.check_code as w_check_code, w.pre_id as w_pre_id 
+		id, company_id, worker_name, worker_gender, worker_birth, worker_birth_year, 
+		worker_id_card, worker_handicap_code, worker_handicap_type, worker_handicap_level,
+		current_job,career_card,  phone, is_ok, is_cadre, remark, user_id,
+		check_code, pre_id, pic_title 
 	</sql>
 
 	<!-- insert -->
@@ -38,15 +39,17 @@
 		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into worker_temp (worker_name,
-		worker_gender, worker_birth, worker_birth_year, 
-		worker_id_card, worker_handicap_code, worker_handicap_type,
-		worker_handicap_level, is_ok,remark)
-		values (#{workerName,jdbcType=VARCHAR}, #{workerGender,jdbcType=VARCHAR},
+		insert into worker_temp (company_id, worker_name, worker_gender, worker_birth, worker_birth_year, 
+		worker_id_card, worker_handicap_code, worker_handicap_type, worker_handicap_level,
+		current_job,career_card,  phone, is_ok, is_cadre, remark, user_id,
+		check_code, pre_id,pic_title, pic)
+		values (#{companyId, jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR}, #{workerGender,jdbcType=VARCHAR},
 		#{workerBirth,jdbcType=VARCHAR}, #{workerBirthYear,jdbcType=CHAR},
 		#{workerIdCard,jdbcType=VARCHAR}, #{workerHandicapCode,jdbcType=VARCHAR},
-		#{workerHandicapType,jdbcType=INTEGER}, #{workerHandicapLevel,jdbcType=INTEGER},
-		#{isOk,jdbcType=BIT},#{remark,jdbcType=VARCHAR )
+		#{workerHandicapType,jdbcType=INTEGER}, #{workerHandicapLevel,jdbcType=INTEGER},#{currentJob, jdbcType=VARCHAR},
+		#{careerCard, jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isOk, jdbcType=BIT},#{isCadre, jdbcType=BIT}, 
+		#{remark,jdbcType=VARCHAR}, #{userId, jdbcType=INTEGER}, #{checkCode,jdbcType=VARCHAR}, #{preId, jdbcType=INTEGER}
+		, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerTemp">
@@ -55,6 +58,9 @@
 		</selectKey>
 		insert into worker_temp
 		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="companyId != null">
+				company_id,
+			</if>
 			<if test="workerName != null">
 				worker_name,
 			</if>
@@ -79,8 +85,20 @@
 			<if test="workerHandicapLevel != null">
 				worker_handicap_level,
 			</if>
+			<if test="currentJob != null">
+				current_job,
+			</if>
+			<if test="careerCard != null">
+				career_card,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
 			<if test="isOk != null">
 				is_ok,
+			</if>
+			<if test="isCadre != null">
+				is_cadre,
 			</if>
 			<if test="remark != null">
 				remark,
@@ -92,10 +110,19 @@
 				check_code,
 			</if>
 			<if test="preId != null">
-				pre_id
+				pre_id,
+			</if>
+			<if test="picTitle != null">
+				pic_title,
+			</if>
+			<if test="pic != null">
+				pic
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="companyId != null">
+				#{companyId,jdbcType=INTEGER},
+			</if>
 			<if test="workerName != null">
 				#{workerName,jdbcType=VARCHAR},
 			</if>
@@ -115,13 +142,25 @@
 				#{workerHandicapCode,jdbcType=VARCHAR},
 			</if>
 			<if test="workerHandicapType != null">
-				#{workerHandicapType},
+				#{workerHandicapType,jdbcType=INTEGER},
 			</if>
 			<if test="workerHandicapLevel != null">
-				#{workerHandicapLevel},
+				#{workerHandicapLevel,jdbcType=INTEGER},
+			</if>
+			<if test="currentJob != null">
+				#{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="careerCard != null">
+				#{careerCard,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone, jdbcType=VARCHAR},
 			</if>
 			<if test="isOk != null">
 				#{isOk,jdbcType=BIT},
+			</if>
+			<if test="isCadre != null">
+				#{isCadre,jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				#{remark, jdbcType=VARCHAR},
@@ -133,7 +172,13 @@
 				#{checkCode, jdbcType=VARCHAR},
 			</if>
 			<if test="preId != null">
-				#{preId, jdbcType=INTEGER}
+				#{preId, jdbcType=INTEGER},
+			</if>
+			<if test="picTitle != null">
+				#{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				#{pic, jdbcType=BLOB}
 			</if>
 		</trim>
 	</insert>
@@ -141,13 +186,22 @@
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from worker_temp 
-		where id
-		= #{id,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	
 	<delete id="deleteByUserId" parameterType="java.lang.Integer">
 		delete from worker_temp 
 		where user_id = #{user_id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteByCompanyId" parameterType="java.lang.Integer">
+		delete from worker_temp 
+		where company_id = #{user_id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteByWorkerIdCard" parameterType="java.lang.String">
+		delete from worker_temp 
+		where worker_id_card = #{workerIdCard,jdbcType=VARCHAR}
 	</delete>
 	
 	<delete id="deleteAllData">
@@ -158,6 +212,9 @@
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.WorkerTemp">
 		update worker_temp
 		<set>
+			<if test="companyId != null">
+				company_id = #{companyId,jdbcType=INTEGER},
+			</if>
 			<if test="workerName != null">
 				worker_name = #{workerName,jdbcType=VARCHAR},
 			</if>
@@ -177,25 +234,43 @@
 				worker_handicap_code = #{workerHandicapCode,jdbcType=VARCHAR},
 			</if>
 			<if test="workerHandicapType != null">
-				worker_handicap_type = #{workerHandicapType.id,jdbcType=INTEGER},
+				worker_handicap_type = #{workerHandicapType,jdbcType=INTEGER},
 			</if>
 			<if test="workerHandicapLevel != null">
-				worker_handicap_level = #{workerHandicapLevel.id,jdbcType=INTEGER},
+				worker_handicap_level = #{workerHandicapLevel,jdbcType=INTEGER},
+			</if>
+			<if test="currentJob != null">
+				current_job = #{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="careerCard != null">
+				career_card = #{careerCard,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone, jdbcType=VARCHAR},
 			</if>
 			<if test="isOk != null">
 				is_ok = #{isOk,jdbcType=BIT},
+			</if>
+			<if test="isCadre != null">
+				is_cadre = #{isCadre,jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				remark = #{remark, jdbcType=VARCHAR},
 			</if>
 			<if test="userId != null">
-				#{userId, jdbcType=INTEGER},
+				user_id = #{userId, jdbcType=INTEGER},
 			</if>
 			<if test="checkCode != null">
-				#{checkCode, jdbcType=VARCHAR},
+				check_code = #{checkCode, jdbcType=VARCHAR},
 			</if>
 			<if test="preId != null">
-				#{preId, jdbcType=INTEGER}
+				pre_id = #{preId, jdbcType=INTEGER},
+			</if>
+			<if test="picTitle != null">
+				pic_title = #{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				pic = #{pic, jdbcType=BLOB}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -205,25 +280,41 @@
 	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="ResultWorker">
 		select
-		<include refid="Base_Column_List" />
-		from worker_temp as w
-		where w.id = #{id,jdbcType=INTEGER}
+		 <include refid="Base_Column_List" />
+		from worker_temp 
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- retrieve -->
+	<select id="retrieveByWorkerIdCard" parameterType="java.lang.Integer"
+		resultMap="ResultWorker">
+		select
+		 <include refid="Base_Column_List" />
+		from worker_temp 
+		where worker_id_card = #{worker_id_card,jdbcType=INTEGER}
 	</select>
 
+	<!-- 根据id, 取到图片文件 -->
+	<select id="retrievePic" parameterType="int" resultType="hashmap">
+		select pic_title,pic
+		from worker_temp
+		where id = #{id, jdbcType=INTEGER}
+	</select>
+	
 	<select id="retrieveByCheck" parameterType="map" resultMap="ResultWorker">
 		select
 			<include refid="Base_Column_List" />
-		from worker_temp as w
+		from worker_temp
 		<where>
 			<if test="workerTemp != null">
 				<if test="workerTemp.isOk != null">
-					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+					is_ok = #{workerTemp.isOk, jdbcType=BIT}
 				</if>
 				<if test="workerTemp.userId != null">
-					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+					and user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
 				</if>
 			</if>
 		</where>
@@ -232,17 +323,17 @@
 
 	<select id="retrieveCountByCheck" parameterType="map" resultType="int">
 		select count(*)
-		from worker_temp as w
+		from worker_temp
 		<where>
 			<if test="workerTemp != null">
 				<if test="workerTemp.isOk != null">
-					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+					is_ok = #{workerTemp.isOk, jdbcType=BIT}
 				</if>
 				<if test="workerTemp.userId != null">
-					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+					and user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
 				</if>
 			</if>
 		</where>
@@ -251,37 +342,127 @@
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultWorker">
 		select
 		<include refid="Base_Column_List" />
-		from worker_temp as w 
+		from worker_temp 
 		<where>
 			<if test="workerTemp != null">
-				<if test="workerTemp.isOk != null">
-					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				<if test="workerTemp.companyId != null">
+					company_id = #{workerTemp.companyId, jdbcType=INTEGER}
 				</if>
-				<if test="workerTemp.userId != null">
-					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				<if test="workerTemp.workerName != null">
+					and worker_name like concat('%', #{workerTemp.workerName, jdbcType=VARCHAR},'%') 
+				</if>
+				<if test="workerTemp.workerGender != null">
+					and worker_gender = #{workerTemp.workerGender, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerBirth != null">
+					and worker_birth = #{workerTemp.workerBirth, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerBirthYear != null">
+					and worker_birth_year = #{workerTemp.workerBirthYear, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerIdCard != null">
+					and worker_id_card = #{workerTemp.workerIdCard, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerHandicapCode != null">
+					and worker_handicap_code like concat('%', #{workerTemp.workerHandicapCode, jdbcType=VARCHAR},'%') 
+				</if>
+				<if test="workerTemp.workerHandicapType != null and workerTemp.workerHandicapType > 0">
+					worker_handicap_type = #{workerTemp.workerHandicapType, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.workerHandicapLevel != null and workerTemp.workerHandicapLevel > 0">
+					worker_handicap_level = #{workerTemp.workerHandicapLevel, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.currentJob != null">
+					and current_job = #{workerTemp.currentJob, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.careerCard != null">
+					and career_card = #{workerTemp.careerCard, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.phone != null">
+					and phone = #{workerTemp.phone, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.isOk != null">
+					and is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.isCadre != null">
+					and is_cadre = #{workerTemp.isCadre, jdbcType=BIT}
+				</if>
+				<if test="remark != null">
+					and remark = #{workerTemp.remark, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.userId != null and workerTemp.userId > 0">
+					and user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.preId != null and workerTemp.preId > 0">
+					and pre_id = #{workerTemp.preId, jdbcType=INTEGER}
 				</if>
 			</if>
 		</where>
-		order by w.id
+		order by id
 		limit #{start}, #{size}
 	</select>
 
 	<select id="retrieveCount" parameterType="map" resultType="int">
 		select count(*)
-		from worker_temp as w 
+		from worker_temp 
 		<where>
 			<if test="workerTemp != null">
-				<if test="workerTemp.isOk != null">
-					w.is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				<if test="workerTemp.companyId != null">
+					company_id = #{workerTemp.companyId, jdbcType=INTEGER}
 				</if>
-				<if test="workerTemp.userId != null">
-					and w.user_id = #{workerTemp.userId, jdbcType=INTEGER}
+				<if test="workerTemp.workerName != null">
+					and worker_name like concat('%', #{workerTemp.workerName, jdbcType=VARCHAR},'%') 
+				</if>
+				<if test="workerTemp.workerGender != null">
+					and worker_gender = #{workerTemp.workerGender, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerBirth != null">
+					and worker_birth = #{workerTemp.workerBirth, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerBirthYear != null">
+					and worker_birth_year = #{workerTemp.workerBirthYear, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerIdCard != null">
+					and worker_id_card = #{workerTemp.workerIdCard, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.workerHandicapCode != null">
+					and worker_handicap_code like concat('%', #{workerTemp.workerHandicapCode, jdbcType=VARCHAR},'%') 
+				</if>
+				<if test="workerTemp.workerHandicapType != null and workerTemp.workerHandicapType > 0">
+					worker_handicap_type = #{workerTemp.workerHandicapType, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.workerHandicapLevel != null and workerTemp.workerHandicapLevel > 0">
+					worker_handicap_level = #{workerTemp.workerHandicapLevel, jdbcType=INTEGER}
+				</if>
+				<if test="workerTemp.currentJob != null">
+					and current_job = #{workerTemp.currentJob, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.careerCard != null">
+					and career_card = #{workerTemp.careerCard, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.phone != null">
+					and phone = #{workerTemp.phone, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.isOk != null">
+					and is_ok = #{workerTemp.isOk, jdbcType=BIT}
+				</if>
+				<if test="workerTemp.isCadre != null">
+					and is_cadre = #{workerTemp.isCadre, jdbcType=BIT}
+				</if>
+				<if test="remark != null">
+					and remark = #{workerTemp.remark, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.userId != null and workerTemp.userId > 0">
+					and user_id = #{workerTemp.userId, jdbcType=INTEGER}
 				</if>
 				<if test="workerTemp.checkCode != null">
-					and w.check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+					and check_code = #{workerTemp.checkCode, jdbcType=VARCHAR}
+				</if>
+				<if test="workerTemp.preId != null and workerTemp.preId > 0">
+					and pre_id = #{workerTemp.preId, jdbcType=INTEGER}
 				</if>
 			</if>
 		</where>
@@ -294,4 +475,122 @@
 		where worker_id_card = #{workerIdCard,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="retrieveByMultiConditions" parameterType="map" resultMap="ResultWorker">
+		select
+			<include refid="Base_Column_List" />
+		from worker_temp
+		<where>
+			<!-- retired age judge -->
+			<if test="isCadre != null">
+				is_cadre = #{isCadre,jdbcType=BIT} 
+			</if>
+			<!-- validate age -->
+			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
+				and (worker_birth_year &lt;= #{maxMaleBirth} and worker_gender = 1 and is_cadre = 0) 
+					or (worker_birth_year &lt;= #{maxMaleCadreBirth} and worker_gender = 1 and is_cadre = 1)
+					or (worker_birth_year &lt;= #{maxFemaleBirth} and worker_gender = 0 and is_cadre = 0)
+					or (worker_birth_year &lt;= #{maxFemaleCadreBirth} and worker_gender = 0 and is_cadre = 1)
+			</if>
+			<if test="companyId != null and companyId >0">
+				and company_id = #{companyId, jdbcType=INTEGER}
+			</if>
+			<if test="workerName != null and workerName != ''">
+				and worker_name like concat('%', #{workerName, jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="workerGender != null and workerGender != ''">
+				and worker_gender = #{workerGender, jdbcType=VARCHAR}
+			</if>
+			<if test="workerHandicapCode != null and workerHandicapCode != ''">
+				and worker_handicap_code like concat('%', #{workerHandicapCode, jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="workerHandicapType != null and workerHandicapType > 0">
+				and worker_handicap_type = #{workerHandicapType, jdbcType=INTEGER}
+			</if>
+			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
+				and worker_handicap_level = #{workerHandicapLevel, jdbcType=INTEGER}
+			</if>
+			<!-- age scope -->
+			<if test="minBirth != null">
+				and worker_birth_year &lt;= #{minBirth} 
+			</if>
+			<if test="maxBirth != null">
+				and worker_birth_year &gt;= #{maxBirth} 
+			</if>
+			<if test="phone != null and phone != ''">
+				and phone like concat('%', #{phone, jdbcType=VARCHAR},'%')
+			</if>
+			<if test="isOk != null">
+				and is_ok = #{isOk,jdbcType=BIT} 
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+			<if test="checkCode != null">
+				and check_code = #{checkCode, jdbcType=VARCHAR}
+			</if>
+			<if test="remark != null and remark != ''">
+				and remark = #{remark, jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by id
+		limit #{start}, #{size}
+	</select>
+	
+	<select id="retrieveByMultiConditionsCount" parameterType="map" resultType="int">
+		select count(*)
+		from worker_temp 
+		<where>
+			<!-- retired age judge -->
+			<if test="isCadre != null">
+				is_cadre = #{isCadre,jdbcType=BIT} 
+			</if>
+			<!-- validate age -->
+			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
+				and (worker_birth_year &lt;= #{maxMaleBirth} and worker_gender = 1 and is_cadre = 0) 
+					or (worker_birth_year &lt;= #{maxMaleCadreBirth} and worker_gender = 1 and is_cadre = 1)
+					or (worker_birth_year &lt;= #{maxFemaleBirth} and worker_gender = 0 and is_cadre = 0)
+					or (worker_birth_year &lt;= #{maxFemaleCadreBirth} and worker_gender = 0 and is_cadre = 1)
+			</if>
+			<if test="companyId != null and companyId >0">
+				and company_id = #{companyId, jdbcType=INTEGER}
+			</if>
+			<if test="workerName != null and workerName != ''">
+				and worker_name like concat('%', #{workerName, jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="workerGender != null and workerGender != ''">
+				and worker_gender = #{workerGender, jdbcType=VARCHAR}
+			</if>
+			<if test="workerHandicapCode != null and workerHandicapCode != ''">
+				and worker_handicap_code like concat('%', #{workerHandicapCode, jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="workerHandicapType != null and workerHandicapType > 0">
+				and worker_handicap_type = #{workerHandicapType, jdbcType=INTEGER}
+			</if>
+			<if test="workerHandicapLevel != null and workerHandicapLevel > 0">
+				and worker_handicap_level = #{workerHandicapLevel, jdbcType=INTEGER}
+			</if>
+			<!-- age scope -->
+			<if test="minBirth != null">
+				and worker_birth_year &lt;= #{minBirth} 
+			</if>
+			<if test="maxBirth != null">
+				and worker_birth_year &gt;= #{maxBirth} 
+			</if>
+			<if test="phone != null and phone != ''">
+				and phone like concat('%', #{phone, jdbcType=VARCHAR},'%')
+			</if>
+			<if test="isOk != null">
+				and is_ok = #{isOk,jdbcType=BIT} 
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId, jdbcType=INTEGER}
+			</if>
+			<if test="checkCode != null">
+				and check_code = #{checkCode, jdbcType=VARCHAR}
+			</if>
+			<if test="remark != null and remark != ''">
+				and remark = #{remark, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
 </mapper>

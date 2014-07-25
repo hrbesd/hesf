@@ -14,16 +14,8 @@ import com.esd.hesf.model.PrimaryKey_Int;
  * 
  */
 public class WorkerParamModel extends PrimaryKey_Int {
-	private String companyId;// 年度
-
-	public String getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
+	private String companyId;// 公司id
+	private String companyCode; // 公司档案号
 	private String year;// 年度
 	private String workerName; // 员工名
 	private String workerHandicapCode;// 残疾证号
@@ -38,53 +30,39 @@ public class WorkerParamModel extends PrimaryKey_Int {
 	private String workerHandicapLevel;// 残疾等级
 	private Integer page;
 	private Integer rows;
-	private String isExceed;// 是否超过退休年龄
-	private Boolean isCadre; // 是否是干部
-
-	public Boolean getIsCadre() {
-		return isCadre;
-	}
-
-	public void setIsCadre(Boolean isCadre) {
-		this.isCadre = isCadre;
-	}
-
-	public String getIsExceed() {
-		return isExceed;
-	}
-
-	public void setIsExceed(String isExceed) {
-		this.isExceed = isExceed;
-	}
+	private Integer userId; // 操作用户id
+	private Boolean isExceed;// 是否超过退休年龄
+	private Boolean isOk; // 是否ok; 用来销补预订人数时, 则表示是否干部!
+	private Boolean isCadre; // 是否干部, 用作普通员工查询
 
 	@Override
 	public String toString() {
-		return "WorkerParamModel [companyId=" + companyId + ", year=" + year
-				+ ", workerName=" + workerName + ", workerHandicapCode="
-				+ workerHandicapCode + ", workerGender=" + workerGender
-				+ ", workerAge_1=" + workerAge_1 + ", workerAge_2="
-				+ workerAge_2 + ", workerBirth=" + workerBirth
-				+ ", careerCard=" + careerCard + ", phone=" + phone
-				+ ", currentJob=" + currentJob + ", workerHandicapType="
-				+ workerHandicapType + ", workerHandicapLevel="
-				+ workerHandicapLevel + ", page=" + page + ", rows=" + rows
-				+ ", isExceed=" + isExceed + "]";
+		return "WorkerParamModel [companyId=" + companyId + ", companyCode="
+				+ companyCode + ", year=" + year + ", workerName=" + workerName
+				+ ", workerHandicapCode=" + workerHandicapCode
+				+ ", workerGender=" + workerGender + ", workerAge_1="
+				+ workerAge_1 + ", workerAge_2=" + workerAge_2
+				+ ", workerBirth=" + workerBirth + ", careerCard=" + careerCard
+				+ ", phone=" + phone + ", currentJob=" + currentJob
+				+ ", workerHandicapType=" + workerHandicapType
+				+ ", workerHandicapLevel=" + workerHandicapLevel + ", page="
+				+ page + ", rows=" + rows + ", isExceed=" + isExceed + "]";
 	}
 
-	public Integer getPage() {
-		return page;
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setPage(Integer page) {
-		this.page = page;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 
-	public Integer getRows() {
-		return rows;
+	public String getCompanyCode() {
+		return companyCode;
 	}
 
-	public void setRows(Integer rows) {
-		this.rows = rows;
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 
 	public String getYear() {
@@ -182,4 +160,53 @@ public class WorkerParamModel extends PrimaryKey_Int {
 	public void setWorkerHandicapLevel(String workerHandicapLevel) {
 		this.workerHandicapLevel = workerHandicapLevel;
 	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
+
+	public Boolean getIsExceed() {
+		return isExceed;
+	}
+
+	public void setIsExceed(Boolean isExceed) {
+		this.isExceed = isExceed;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Boolean getIsOk() {
+		return isOk;
+	}
+
+	public void setIsOk(Boolean isOk) {
+		this.isOk = isOk;
+	}
+
+	public Boolean getIsCadre() {
+		return isCadre;
+	}
+
+	public void setIsCadre(Boolean isCadre) {
+		this.isCadre = isCadre;
+	}
+
 }

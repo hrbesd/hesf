@@ -39,6 +39,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.common.CommonUtil;
 import com.esd.cs.common.PoiCreateExcel;
+import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyYearWorker;
@@ -47,6 +48,7 @@ import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
 import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.service.AuditParameterService;
+import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyYearWorkerService;
 import com.esd.hesf.service.WorkerService;
@@ -84,6 +86,9 @@ public class WorkerController {
 	@Autowired
 	private CompanyYearWorkerService cywService; // 企业员工关系表service接口
 
+	@Autowired
+	private AuditService auditService;
+
 	@Value("${LoadUpFileMaxSize}")
 	String LoadUpFileMaxSize;
 
@@ -108,8 +113,7 @@ public class WorkerController {
 			// 男职工退休年龄
 			request.setAttribute("retireAgeMale", param.getRetireAgeMale());
 			// 女职工退休年龄
-			request.setAttribute("retireAgeFemale",
-					param.getRetireAgeFemale());
+			request.setAttribute("retireAgeFemale", param.getRetireAgeFemale());
 			// 女干部退休年龄
 			request.setAttribute("retireAgeCadreFemale",
 					param.getRetireAgeCadreFemale());
@@ -310,6 +314,76 @@ public class WorkerController {
 	}
 
 	/**
+	 * 异步增加 不 带照片的残疾职工 到workertemp缓存表中--销补预定人数用
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/addTemp", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean add_worker_temp(WorkerTemp worker, HttpServletRequest request) {
+		// 公司id
+		logger.debug("addTemp--:{},year:{},companyID:{}", worker);
+		// 组装员工对象
+		worker = WorkerUtil.assembly(worker);
+		// 查看数据库中是否有该身份证号的员工, 没有的话-直接保存; 有的话-则将原来的id取出来, 放入的preId字段中,
+		Worker tempWorker = workerService.getByWorkerIdCard(worker
+				.getWorkerIdCard());
+		if (tempWorker != null) {
+			worker.setPreId(tempWorker.getId());
+		}
+		// 验证缓存表中是否已经存在该身份证号了
+		// 先删除可能已经存在的相同的残疾职工
+		wtService.deleteByWorkerIdCard(worker.getWorkerIdCard());
+		// 保存
+		return wtService.save(worker);
+	}
+
+	/**
+	 * 异步增加带照片的残疾职工 到workertemp缓存表中 --销补预定人数用
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/addTempWithPic", method = RequestMethod.POST)
+	public void aaadd_worker(
+			@RequestParam("picfile") CommonsMultipartFile picfile,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		String workerHandicapCode = request.getParameter("workerHandicapCode");
+		// 根据残疾证号 组装残疾职工对象
+		WorkerTemp worker = WorkerUtil.assemblyForTemp(workerHandicapCode);
+		// 添加上其他信息
+		worker.setWorkerName(request.getParameter("workerName"));
+		worker.setCareerCard(request.getParameter("careerCard"));
+		worker.setPhone(request.getParameter("phone"));
+		worker.setCurrentJob(request.getParameter("currentJob"));
+		worker.setRemark(request.getParameter("remark"));
+		// 公司id
+		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+		worker.setCompanyId(companyId);
+		// 从CommonsMultipartFile 得到图片和图片名信息
+		worker.setPic(picfile.getBytes());
+		worker.setPicTitle(picfile.getOriginalFilename());
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter writer = response.getWriter();
+		// 验证缓存表中是否已经存在该身份证号了
+		if (wtService.getByWorkerIdCard(worker.getWorkerIdCard()) != null) {
+			writer.write("该残疾人已经录入过了, 请不要重复录入.");
+			return;
+		}
+		Boolean bl = wtService.save(worker);
+		if (bl) {
+			writer.write("success");
+		} else {
+			writer.write("failure");
+		}
+	}
+
+	/**
 	 * 上传图片超出最大值时, 弹出的异常
 	 * 
 	 * @param ex
@@ -384,6 +458,23 @@ public class WorkerController {
 	}
 
 	/**
+	 * 转到编辑 缓存残疾职工页面
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/editWorkerTemp/{id}", method = RequestMethod.GET)
+	public ModelAndView editWorkerTemp(@PathVariable(value = "id") Integer id,
+			HttpServletRequest request) {
+		logger.debug("editWorkerParamsID:{}", id);
+		WorkerTemp w = wtService.getByPrimaryKey(id);
+		request.setAttribute("worker", w);
+		logger.debug("goToedit_worker{}", w);
+		return new ModelAndView("audit/audit_repeal_predict_edit");
+	}
+
+	/**
 	 * 异步 更新没有照片的 残疾职工
 	 * 
 	 * @param worker
@@ -400,7 +491,23 @@ public class WorkerController {
 	}
 
 	/**
-	 * 异步 更新没有照片的 残疾职工
+	 * 异步 更新没有照片的 缓存 残疾职工
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/editWorkerTemp", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean editWorkerTemp(WorkerTemp worker, HttpServletRequest request) {
+		logger.debug("editWorker:{}", worker);
+		boolean b = wtService.update(worker);
+		logger.debug("editWorkerResult:{}", b);
+		return b;
+	}
+
+	/**
+	 * 异步 更新有照片的 残疾职工
 	 * 
 	 * @param worker
 	 * @param request
@@ -415,6 +522,13 @@ public class WorkerController {
 		return b;
 	}
 
+	/**
+	 * 获得残疾人照片
+	 * 
+	 * @param id
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping(value = "/getPic/{id}")
 	public void showPic(@PathVariable(value = "id") Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
@@ -445,6 +559,35 @@ public class WorkerController {
 			for (int i = 0; i < params.length; i++) {
 				boolean b = companyService.deleteWorkerFromCompany(year,
 						companyId, params[i]);
+				logger.debug("delete_worker:{},result:{}", params[i], b);
+				if (b = false) {
+
+					logger.error("deleteWorkerError:{},result:{}", params[i],
+							"error");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("delete_worker{}", e.getMessage());
+		}
+		return true;
+	}
+
+	/**
+	 * 从workerTemp员工缓存表中 删除残疾职工
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteWorkerTemp", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean delete_worker2(
+			@RequestParam(value = "params[]") Integer params[],
+			HttpServletRequest request) {
+		try {
+			for (int i = 0; i < params.length; i++) {
+				boolean b = wtService.delete(params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
 				if (b = false) {
 
@@ -811,10 +954,10 @@ public class WorkerController {
 					result.put("workerId", w.getId().toString());
 					result.put("workerName", w.getWorkerName()); // 姓名
 					result.put("careerCard", w.getCareerCard()); // 就业证号
-					result.put("currentJob", w.getCurrentJob()); //现任岗位
+					result.put("currentJob", w.getCurrentJob()); // 现任岗位
 					result.put("phone", w.getPhone()); // 联系电话
 					result.put("remark", w.getRemark()); // 备注
-					result.put("isCadre", w.getIsCadre());	// 是否 干部
+					result.put("isCadre", w.getIsCadre()); // 是否 干部
 					return result;
 				} else {
 					// 第三种情况，不存在.
@@ -905,43 +1048,115 @@ public class WorkerController {
 					.iterator();
 			while (iterator.hasNext()) {
 				WorkerTemp wt = iterator.next();
-				// ①如果先前的员工id存在, 则对其进行更新, 然后插入到企业员工关系表中
-				if (wt.getPreId() != null && wt.getPreId() > 0) {
-					Worker w = workerService.getByPrimaryKey(wt.getPreId());
-					w.setWorkerName(wt.getWorkerName());
-					if (!workerService.update(w)) {
-						bl = false;
-					}
-					CompanyYearWorker cyw = new CompanyYearWorker();
-					cyw.setCompanyId(companyId);
-					cyw.setYear(year);
-					cyw.setCurrentJob(Constants.NOTYET);
-					cyw.setWorkerId(w.getId());
-					cyw.setUserId(userId);
-					if (!cywService.save(cyw)) {
-						bl = false;
-					}
-					continue;
-				}
-				// ②如果员工不存在, 则将其保存到worker表中, 然后插入到企业员工关系表中
-				Worker worker = new Worker();
-				worker.setWorkerName(wt.getWorkerName());
-				worker.setWorkerGender(wt.getWorkerGender());
-				worker.setWorkerBirth(wt.getWorkerBirth());
-				worker.setWorkerBirthYear(wt.getWorkerBirthYear());
-				worker.setWorkerIdCard(wt.getWorkerIdCard());
-				worker.setWorkerHandicapCode(wt.getWorkerHandicapCode());
-				worker.setWorkerHandicapLevel(new WorkerHandicapLevel(wt
-						.getWorkerHandicapLevel()));
-				worker.setWorkerHandicapType(new WorkerHandicapType(wt
-						.getWorkerHandicapType()));
-				worker.setUserId(userId);
-				if (!workerService.save(worker, companyId, year)) {
-					bl = false;
-				}
+				bl = exportWorkerFromTempToEntity(wt, companyId, year, userId);
 			}
 		}
 		return bl;
 	}
 
+	/**
+	 * POST请求 提交销补预定人数 这个页面信息
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/repealPredictAdd", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> gotoRepealPredictAdd(
+			@RequestParam(value = "fillNumber") Integer fillNumber,
+			@RequestParam(value = "auditId") Integer auditId,
+			@RequestParam(value = "companyId") Integer companyId,
+			@RequestParam(value = "remark") String remark,
+			HttpServletRequest request, HttpSession session) {
+		// 审核对象
+		Audit audit = auditService.getByPrimaryKey(auditId);
+		// 当前操作用户id
+		Integer userId = Integer.parseInt(session.getAttribute(
+				Constants.USER_ID).toString());
+		// 返回的提示符集合
+		Map<String, Object> notice = new HashMap<String, Object>();
+		notice.put(Constants.NOTICE, Constants.NOTICE_SUCCESS);
+		// ①将该公司所有缓存表中的员工 导入到残疾职工表中, 并建立和该公司的联系
+		// 传递的参数集合
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("companyId", companyId);
+		paramsMap.put("page", Constants.PAGE_START);
+		PaginationRecordsAndNumber<WorkerTemp, Number> workerTemps = wtService
+				.getByMultiConditions(paramsMap);
+		Iterator<WorkerTemp> it = workerTemps.getRecords().iterator();
+		Boolean bl = true;
+		while (it.hasNext()) {
+			WorkerTemp wt = it.next();
+			if (!exportWorkerFromTempToEntity(wt, companyId, audit.getYear(),
+					userId)) {
+				notice.put(Constants.NOTICE, "保存员工数据发生错误, 请重新操作或联系管理员.");
+				bl = false;
+				break;
+			}
+		}
+		// 导入发生错误, 则不进行下面的步骤
+		if (!bl) {
+			return notice;
+		}
+		// ②更新对应的审核数据: 新 预定人数 = 旧预定人数 - 上面导入的残疾职工人数, 并更新备注信息
+		Integer newPredict = audit.getCompanyPredictTotal() - fillNumber;
+		audit.setCompanyPredictTotal(newPredict);
+		audit.setRemark(remark);
+		if (!auditService.update(audit)) {
+			notice.put(Constants.NOTICE, "更新预定人数 发生错误, 请重新操作或联系管理员.");
+		}
+		return notice;
+	}
+
+	/**
+	 * 从员工缓存表中向员工表中导入单个数据
+	 * 
+	 * @param wt
+	 *            员工缓存对象
+	 * @param companyId
+	 *            公司id
+	 * @param year
+	 *            审核年份
+	 * @param userId
+	 *            操作人id
+	 * @return
+	 */
+	private Boolean exportWorkerFromTempToEntity(WorkerTemp wt,
+			Integer companyId, String year, Integer userId) {
+		// ①如果先前的员工id存在, 则对其进行更新, 然后插入到企业员工关系表中
+		if (wt.getPreId() != null && wt.getPreId() > 0) {
+			Worker w = workerService.getByPrimaryKey(wt.getPreId());
+			w.setWorkerName(wt.getWorkerName());
+			if (!workerService.update(w)) {
+				return false;
+			}
+			CompanyYearWorker cyw = new CompanyYearWorker();
+			cyw.setCompanyId(companyId);
+			cyw.setYear(year);
+			cyw.setCurrentJob(Constants.NOTYET);
+			cyw.setWorkerId(w.getId());
+			cyw.setUserId(userId);
+			if (!cywService.save(cyw)) {
+				return false;
+			}
+			return true;
+		}
+		// ②如果员工不存在, 则将其保存到worker表中, 然后插入到企业员工关系表中
+		Worker worker = new Worker();
+		worker.setWorkerName(wt.getWorkerName());
+		worker.setWorkerGender(wt.getWorkerGender());
+		worker.setWorkerBirth(wt.getWorkerBirth());
+		worker.setWorkerBirthYear(wt.getWorkerBirthYear());
+		worker.setWorkerIdCard(wt.getWorkerIdCard());
+		worker.setWorkerHandicapCode(wt.getWorkerHandicapCode());
+		worker.setWorkerHandicapLevel(new WorkerHandicapLevel(wt
+				.getWorkerHandicapLevel()));
+		worker.setWorkerHandicapType(new WorkerHandicapType(wt
+				.getWorkerHandicapType()));
+		worker.setUserId(userId);
+		if (!workerService.save(worker, companyId, year)) {
+			return false;
+		}
+		return true;
+	}
 }

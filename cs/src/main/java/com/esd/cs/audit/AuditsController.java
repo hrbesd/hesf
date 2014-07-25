@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,6 +43,7 @@ import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
+import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -52,6 +54,7 @@ import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.PaymentService;
 import com.esd.hesf.service.ReplyService;
 import com.esd.hesf.service.UserService;
+import com.esd.hesf.service.WorkerTempService;
 
 /**
  * 初审管理控制器
@@ -95,6 +98,9 @@ public class AuditsController {
 	@Autowired
 	private ReplyService replyService;
 
+	@Autowired
+	private WorkerTempService wtService;
+	
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyTypes;
 	private DecimalFormat df = new DecimalFormat("0.00");
@@ -111,6 +117,86 @@ public class AuditsController {
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("audit/audit_list");
+	}
+
+	/**
+	 * 跳转到 销补预定人数的审核数据 列表
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/repealPredictList", method = RequestMethod.GET)
+	public ModelAndView repealPredictList(HttpServletRequest request,
+			HttpSession session) {
+		String auditYear = session.getAttribute(Constants.YEAR).toString();
+		request.setAttribute("nowYear", auditYear);
+		return new ModelAndView("audit/audit_repeal_predict_list");
+	}
+
+	/**
+	 * 跳转到 销补预定人数 页面
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/repealPredict/{auditId}", method = RequestMethod.GET)
+	public ModelAndView repealPredict(
+			@PathVariable(value = "auditId") Integer auditId,
+			HttpServletRequest request, HttpSession session) {
+		Audit audit = auditService.getByPrimaryKey(auditId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("auditId", audit.getId());
+		map.put("year", audit.getYear());
+		map.put("companyId", audit.getCompany().getId());
+		map.put("companyName", audit.getCompany().getCompanyName());
+		map.put("companyCode", audit.getCompany().getCompanyCode());
+		map.put("auditProcessStatus", audit.getAuditProcessStatus()
+				.getAuditProcessStatus());
+
+		map.put("companyEmpTotal", audit.getCompanyEmpTotal()); // 员工总数
+		map.put("companyShouldTotal", audit.getCompanyShouldTotal()); // 应安排人数
+		map.put("companyPredictTotal", audit.getCompanyPredictTotal()); // 预订人数
+		map.put("remark", audit.getRemark());	//备注
+		// 获取年审参数
+		AuditParameter auditParam = auditParameterService.getByYear(audit.getYear());
+		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
+		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
+		request.setAttribute("retireAgeCadreMale",
+				auditParam.getRetireAgeCadreMale()); // 女干部退休年龄
+		request.setAttribute("retireAgeCadreFemale",
+				auditParam.getRetireAgeCadreFemale()); // 男干部退休年龄
+		
+		//删除缓存表中可能存在的该公司的员工数据--暂时测试注释掉****************************
+		wtService.deleteByCompanyId(audit.getCompany().getId());
+		return new ModelAndView("audit/audit_repeal_predict", map);
+	}
+
+	/**
+	 * 跳转到 销补预定 新增一个员工到缓存表页面
+	 * 
+	 * @param companyCode
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/repealPredictAdd/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView gotoRepealPredictAdd(
+			@PathVariable(value = "companyId") String companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
+		logger.debug("gotoRepealPredictAdd,companyId:{},year:{}", companyId,
+				year);
+		// 续传企业id
+		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
+		// 获取年审参数
+		AuditParameter auditParam = auditParameterService.getByYear(year);
+		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
+		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
+		request.setAttribute("retireAgeCadreMale",
+				auditParam.getRetireAgeCadreMale()); // 女干部退休年龄
+		request.setAttribute("retireAgeCadreFemale",
+				auditParam.getRetireAgeCadreFemale()); // 男干部退休年龄
+		return new ModelAndView("audit/audit_repeal_predict_add");
 	}
 
 	/**
@@ -821,6 +907,104 @@ public class AuditsController {
 		try {
 			PaginationRecordsAndNumber<Audit, Number> query = auditService
 					.getByMultiCondition(params);
+			Integer total = query.getNumber().intValue();// 数据总条数
+			List<Map<String, Object>> list = new ArrayList<>();
+			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator
+					.hasNext();) {
+				Audit it = iterator.next();
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", it.getId());// id
+				map.put("year", it.getYear()); // 审核年度
+				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
+				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
+				map.put("companyId", it.getCompany().getId());// 企业名称
+				// 初审时间
+				if (it.getInitAuditDate() != null) {
+					map.put("initAuditDate",
+							CalendarUtil.dateFormat(it.getInitAuditDate()));
+				} else {
+					map.put("initAuditDate", "-");
+				}
+				// 初审人
+				if (it.getInitAuditUser() != null) {
+					if (it.getInitAuditUser().getId() != null) {
+						User initAuditUser = userService.getByPrimaryKey(it
+								.getInitAuditUser().getId());
+						map.put("initAuditUser",
+								initAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("initAuditUser", "-");
+				}
+				// 复审时间
+				if (it.getVerifyAuditDate() != null) {
+					map.put("verifyAuditDate",
+							CalendarUtil.dateFormat(it.getVerifyAuditDate()));
+				} else {
+					map.put("verifyAuditDate", "-");
+				}
+				// 复审人
+				if (it.getVerifyAuditUser() != null) {
+					if (it.getVerifyAuditUser().getId() != null) {
+						User verifyAuditUser = userService.getByPrimaryKey(it
+								.getVerifyAuditUser().getId());
+						map.put("verifyAuditUser",
+								verifyAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("verifyAuditUser", "-");
+				}
+				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
+				Integer pId = it.getAuditProcessStatus().getId();
+				map.put("auditProcessStatusId", pId);// 流程状态
+				String statusName = it.getAuditProcessStatus()
+						.getAuditProcessStatus();
+				if (it.getRefuseTimes() > 0) {
+					statusName = statusName + "(" + it.getRefuseTimes() + ")";
+				}
+				map.put("auditProcessStatus", statusName);// 流程状态
+
+				list.add(map);
+			}
+			entity.put("total", total);
+			entity.put("rows", list);
+			logger.debug("total:{},rows:{}", total, list.toString());
+
+		} catch (Exception e) {
+			logger.error("error{}", e);
+		}
+		return entity;
+	}
+
+	/**
+	 * 获取 预定人数大于零的审计数据列表
+	 * 
+	 * @param page
+	 * @param rows
+	 * @param params
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/repealPredictList", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getRepealPredetermine(HttpServletRequest request) {
+		String year = request.getParameter("year");
+		Integer page = Integer.valueOf(request.getParameter("page"));
+		Integer pageSize = Integer.valueOf(request.getParameter("rows"));
+		String companyCode = request.getParameter("companyCode");
+		String companyName = request.getParameter("companyName");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("page", page);
+		params.put("pageSize", pageSize);
+		params.put("year", year); // 年度
+		params.put("companyCode", companyCode); // 公司档案号
+		params.put("companyName", companyName); // 公司税务编码
+		params.put("isRepealPredict", Boolean.TRUE); // 查询预订人数大于零的审核信息
+		logger.debug("years:{},page:{},rows:{}", year, page, pageSize);
+		Map<String, Object> entity = new HashMap<>();
+		try {
+			PaginationRecordsAndNumber<Audit, Number> query = auditService
+					.getRepealPredict(params);
 			Integer total = query.getNumber().intValue();// 数据总条数
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Iterator<Audit> iterator = query.getRecords().iterator(); iterator

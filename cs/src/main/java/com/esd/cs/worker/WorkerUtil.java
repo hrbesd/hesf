@@ -24,6 +24,7 @@ import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerHandicapLevel;
 import com.esd.hesf.model.WorkerHandicapType;
+import com.esd.hesf.model.WorkerTemp;
 
 public class WorkerUtil {
 	public static Integer DnISABILITYCARDLENGTH = 20;// 身份证位数
@@ -169,7 +170,7 @@ public class WorkerUtil {
 	}
 
 	/**
-	 * 根据残疾证号 组装职工对象
+	 * 根据残疾证号 组装职工对象--①
 	 */
 	public static Worker assembly(String workerHandicapCode) {
 		Worker worker = new Worker();
@@ -206,18 +207,14 @@ public class WorkerUtil {
 		// 出生年份--供后台查询使用
 		worker.setWorkerBirthYear(year);
 		logger.debug("assemblyWorker:{}", worker);
-
 		return worker;
-
 	}
 
 	/**
-	 * 根据残疾证号 组装职工对象
+	 * 根据残疾证号 组装职工对象--②
 	 */
 	public static Worker assembly(Worker worker) {
 		String workerHandicapCode = worker.getWorkerHandicapCode();
-		// 残疾证号
-	//	worker.setWorkerHandicapCode(workerHandicapCode);
 		// 身份证号
 		worker.setWorkerIdCard(workerHandicapCode.substring(0, 18));
 
@@ -249,11 +246,88 @@ public class WorkerUtil {
 		// 出生年份--供后台查询使用
 		worker.setWorkerBirthYear(year);
 		logger.debug("assemblyWorker:{}", worker);
-
 		return worker;
-
 	}
 
+	/**
+	 * 根据残疾证号 组装职工对象--③--缓存对象workerTemp使用
+	 */
+	public static WorkerTemp assembly(WorkerTemp worker) {
+		String workerHandicapCode = worker.getWorkerHandicapCode();
+		// 身份证号
+		worker.setWorkerIdCard(workerHandicapCode.substring(0, 18));
+
+		int age = Integer.valueOf(workerHandicapCode.substring(16, 17));
+		// 性别
+		if (age % 2 == 0) {
+			// 女性
+			worker.setWorkerGender(0 + "");
+		} else {
+			// 男性
+			worker.setWorkerGender(1 + "");
+		}
+		// 残疾类别
+		int handicapType = Integer
+				.valueOf(workerHandicapCode.substring(18, 19));
+		worker.setWorkerHandicapType(handicapType);
+
+		// 残疾等级
+		int handicapLeve = Integer
+				.valueOf(workerHandicapCode.substring(19, 20));
+		worker.setWorkerHandicapLevel(handicapLeve);
+
+		// 出生日期
+		String year = workerHandicapCode.substring(6, 10);// 年份
+		String month = workerHandicapCode.substring(10, 12);// 月
+		String day = workerHandicapCode.substring(12, 14);// 日
+
+		worker.setWorkerBirth(year + "-" + month + "-" + day);
+		// 出生年份--供后台查询使用
+		worker.setWorkerBirthYear(year);
+		logger.debug("assemblyWorker:{}", worker);
+		return worker;
+	}
+	
+	/**
+	 * 根据残疾证号 组装职工对象--①
+	 */
+	public static WorkerTemp assemblyForTemp(String workerHandicapCode) {
+		WorkerTemp worker = new WorkerTemp();
+		// 残疾证号
+		worker.setWorkerHandicapCode(workerHandicapCode);
+		// 身份证号
+		worker.setWorkerIdCard(workerHandicapCode.substring(0, 18));
+
+		int age = Integer.valueOf(workerHandicapCode.substring(16, 17));
+		// 性别
+		if (age % 2 == 0) {
+			// 女性
+			worker.setWorkerGender(0 + "");
+		} else {
+			// 男性
+			worker.setWorkerGender(1 + "");
+		}
+		// 残疾类别
+		int handicapType = Integer
+				.valueOf(workerHandicapCode.substring(18, 19));
+		worker.setWorkerHandicapType(handicapType);
+
+		// 残疾等级
+		int handicapLeve = Integer
+				.valueOf(workerHandicapCode.substring(19, 20));
+		worker.setWorkerHandicapLevel(handicapLeve);
+
+		// 出生日期
+		String year = workerHandicapCode.substring(6, 10);// 年份
+		String month = workerHandicapCode.substring(10, 12);// 月
+		String day = workerHandicapCode.substring(12, 14);// 日
+
+		worker.setWorkerBirth(year + "-" + month + "-" + day);
+		// 出生年份--供后台查询使用
+		worker.setWorkerBirthYear(year);
+		logger.debug("assemblyWorker:{}", worker);
+		return worker;
+	}
 	/**
 	 * 年龄检测--①
 	 * 

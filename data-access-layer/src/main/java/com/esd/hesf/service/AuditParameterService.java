@@ -48,6 +48,17 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 			int workerHandicapLevel);
 
 	/**
+	 * 查询 指定公司, 指定残疾类型和等级的残疾人数--从员工缓存表中
+	 * 
+	 * year-年份, companyId--公司id, workerHandicapType--残疾类型,
+	 * workerHandicapLevel--残疾等级
+	 * 
+	 * @return
+	 */
+	int getSpecialCountFromWorkerTemp(Integer companyId, String year, int workerHandicapType,
+			int workerHandicapLevel);
+	
+	/**
 	 * 得到最近一个审核参数的年份
 	 * 
 	 * @return

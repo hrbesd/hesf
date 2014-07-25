@@ -118,7 +118,7 @@ public class QueryCompayController {
 		List<Company> companyList = null;
 		if(idArr[0] == Integer.MAX_VALUE){
 			companyList = new ArrayList<Company>();
-			for(Company c:companyService.getPaginationRecords(null, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
+			for(Company c:companyService.getPaginationRecords(null, Constants.PAGE_START, Constants.PAGE_SIZE_MAX).getRecords()){
 				companyList.add(c);
 			}
 		}else{

@@ -349,15 +349,50 @@ public class AuditServiceImpl implements AuditService {
 
 	@Override
 	public List<Audit> getByIds(Integer[] ids) {
-		if(ids == null){
+		if (ids == null) {
 			return null;
 		}
-		if(ids.length<1){
+		if (ids.length < 1) {
 			return null;
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(Constants.ARRAY, ids);
 		return dao.retrieveByPrimaryKeys(map);
+	}
+
+	@Override
+	public PaginationRecordsAndNumber<Audit, Number> getRepealPredict(
+			Map<String, Object> map) {
+		if (map == null) {
+			map = new HashMap<String, Object>();
+		}
+		int page = 1;
+		int pageSize = Constants.SIZE;
+		if (map.get("page") != null) {
+			page = Integer.parseInt(map.get("page").toString());
+		}
+		if (map.get("pageSize") != null) {
+			pageSize = Integer.parseInt(map.get("pageSize").toString());
+		}
+		// 处理地区code,转化为适合sql语句的 xxxx 暂时不启用
+		// if (map.get("areaCode") != null) {
+		// map.put("areaCode",
+		// KitService.areaCodeForSql(map.get("areaCode").toString()));
+		// }
+		// 将参数放入到map中
+		// 起始索引值
+		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
+		// 返回量
+		map.put("size", pageSize);
+		// 返回的数据
+		List<Audit> list = acvDao.retrieveByCompany(map);
+		// 数据条数
+		int count = acvDao.retrieveCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Audit, Number> prn = new PaginationRecordsAndNumber<Audit, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
 	}
 
 }

@@ -199,6 +199,9 @@
 			<if test="verifyAuditUser != null and verifyAuditUser > 0">
 				and au.verify_audit_user_id = #{verifyAuditUser, jdbcType=INTEGER}
 			</if>
+			<if test="isRepealPredict != null and isRepealPredict == true">
+				and au.company_predict_total &gt; 0 
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -284,6 +287,9 @@
 			<if test="verifyAuditUser != null and verifyAuditUser > 0">
 				and au.verify_audit_user_id = #{verifyAuditUser, jdbcType=INTEGER}
 			</if>
+			<if test="isRepealPredict != null and isRepealPredict == true">
+				and au.company_predict_total &gt; 0 
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -294,6 +300,10 @@
 			</choose>
 		</trim>
 	</select>
+	
+	
+	
+	
 	
 	<insert id="create_6">
 		create view audit_company_view as 

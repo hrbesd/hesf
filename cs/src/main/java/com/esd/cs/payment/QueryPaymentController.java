@@ -168,7 +168,7 @@ public class QueryPaymentController {
 			list = new ArrayList<Payment>();
 			Payment payment = new Payment();
 			payment.setAuditYear(year);
-			for(Payment c:pService.getPaginationRecords(payment, Constants.START_PAGE, Integer.MAX_VALUE).getRecords()){
+			for(Payment c:pService.getPaginationRecords(payment, Constants.PAGE_START, Constants.PAGE_SIZE_MAX).getRecords()){
 				list.add(c);
 			}
 		}else{

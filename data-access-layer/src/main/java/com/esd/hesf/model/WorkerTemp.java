@@ -9,6 +9,7 @@ package com.esd.hesf.model;
 public class WorkerTemp {
 
 	private Integer id;
+	private Integer companyId;
 	private String workerName; // 员工名
 	private String workerGender;// 性别
 	private String workerBirth;// 生日年月
@@ -17,21 +18,31 @@ public class WorkerTemp {
 	private String workerHandicapCode;// 残疾证号
 	private Integer workerHandicapType;// 残疾类型
 	private Integer workerHandicapLevel;// 残疾等级
+	private String currentJob;// 当前职位
+	private String careerCard;// 职业证号
+	private String phone; // 电话
 	private Boolean isOk; // 是否通过了验证, 默认为false(未通过)
+	private Boolean isCadre; // 是否干部
 	private String remark; // 备注
 	private Integer userId; // 操作用户id
 	private String checkCode; // 检查码, 防止数据冲突
 	private Integer preId; // 校验时检出为已经存在的数据, 此字段保存该员工在员工表worker中的真实id
+	private String picTitle; // 精神残疾的图片 图片名
+	private byte[] pic; // 精神残疾的图片
 
 	@Override
 	public String toString() {
-		return "WorkerTemp [id=" + id + ", workerName=" + workerName
-				+ ", workerGender=" + workerGender + ", workerBirth="
-				+ workerBirth + ", workerBirthYear=" + workerBirthYear
-				+ ", workerIdCard=" + workerIdCard + ", workerHandicapCode="
-				+ workerHandicapCode + ", workerHandicapType="
-				+ workerHandicapType + ", workerHandicapLevel="
-				+ workerHandicapLevel + ", isOk=" + isOk + "]";
+		return "WorkerTemp [id=" + id + ", companyId=" + companyId
+				+ ", workerName=" + workerName + ", workerGender="
+				+ workerGender + ", workerBirth=" + workerBirth
+				+ ", workerBirthYear=" + workerBirthYear + ", workerIdCard="
+				+ workerIdCard + ", workerHandicapCode=" + workerHandicapCode
+				+ ", workerHandicapType=" + workerHandicapType
+				+ ", workerHandicapLevel=" + workerHandicapLevel
+				+ ", currentJob=" + currentJob + ", careerCard=" + careerCard
+				+ ", phone=" + phone + ", isOk=" + isOk + ", isCadre="
+				+ isCadre + ", remark=" + remark + ", userId=" + userId
+				+ ", checkCode=" + checkCode + ", preId=" + preId + "]";
 	}
 
 	public Integer getId() {
@@ -40,6 +51,14 @@ public class WorkerTemp {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getWorkerName() {
@@ -106,12 +125,44 @@ public class WorkerTemp {
 		this.workerHandicapLevel = workerHandicapLevel;
 	}
 
+	public String getCurrentJob() {
+		return currentJob;
+	}
+
+	public void setCurrentJob(String currentJob) {
+		this.currentJob = currentJob;
+	}
+
+	public String getCareerCard() {
+		return careerCard;
+	}
+
+	public void setCareerCard(String careerCard) {
+		this.careerCard = careerCard;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public Boolean getIsOk() {
 		return isOk;
 	}
 
 	public void setIsOk(Boolean isOk) {
 		this.isOk = isOk;
+	}
+
+	public Boolean getIsCadre() {
+		return isCadre;
+	}
+
+	public void setIsCadre(Boolean isCadre) {
+		this.isCadre = isCadre;
 	}
 
 	public String getRemark() {
@@ -144,6 +195,22 @@ public class WorkerTemp {
 
 	public void setPreId(Integer preId) {
 		this.preId = preId;
+	}
+
+	public String getPicTitle() {
+		return picTitle;
+	}
+
+	public void setPicTitle(String picTitle) {
+		this.picTitle = picTitle;
+	}
+
+	public byte[] getPic() {
+		return pic;
+	}
+
+	public void setPic(byte[] pic) {
+		this.pic = pic;
 	}
 
 }
