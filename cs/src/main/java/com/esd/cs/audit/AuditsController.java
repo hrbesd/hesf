@@ -454,13 +454,13 @@ public class AuditsController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String year = CalendarUtil.getNowYear(); // 账目年份--当前年份
 		// ①如果 该数据已经被开票了的话, 则不可以删除.
-		Integer existPayment = paymentService.getCountByeCompanyAndYear(year,
+		Integer existPayment = paymentService.getCountByCompanyAndYear(year,
 				companyId);
 		if (existPayment < 0) {
 			result.put(Constants.NOTICE, "传递的公司id有错误, 请检查参数.");
 			return result;
 		} else if (existPayment > 0) {
-			result.put(Constants.NOTICE, "对不起, 该审核信息在已经开出缴款票, 不可以进行撤消复审操作!");
+			result.put(Constants.NOTICE, "对不起, 该审核信息已经开出缴款票, 不可以进行撤消复审操作!");
 			return result;
 		}
 

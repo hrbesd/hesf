@@ -1136,5 +1136,14 @@ public class TestController {
 			}
 		}
 	}
+	
+	@RequestMapping("/82")
+	@ResponseBody
+	public Map<String, Object> test82() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Integer count = pService.getCountByCompanyAndYear("2014", 3);
+		map.put("entity", count);
+		return map;
+	}
 
 }

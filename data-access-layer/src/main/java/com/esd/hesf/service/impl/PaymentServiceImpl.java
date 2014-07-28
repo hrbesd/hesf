@@ -574,27 +574,31 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public Integer getCountByeCompanyAndYear(String year, Integer companyId) {
+	public Integer getCountByCompanyAndYear(String year, Integer companyId) {
 		if (companyId == null || companyId <= 0 || year == null
 				|| "".equals(year)) {
 			return -1;
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("year", year);
-		map.put("companyId", companyId);
-		return dao.retireveCountByCompanyAndYear(map);
+		Payment payment = new Payment();
+		payment.setYear(year);
+		payment.setPaymentCompany(new Company(companyId));
+		return dao.retireveCountByPayment(payment);
 	}
 
-	
+	@Override
+	public Integer getCountByCompanyAndYear(Payment payment) {
+		return dao.retireveCountByPayment(payment);
+	}
+
 	@Override
 	public List<Payment> getByIds(Integer[] ids) {
-		if(ids == null){
+		if (ids == null) {
 			return null;
 		}
-		if(ids.length<1){
+		if (ids.length < 1) {
 			return null;
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(Constants.ARRAY, ids);
 		return dao.retrieveByPrimaryKeys(map);
 	}

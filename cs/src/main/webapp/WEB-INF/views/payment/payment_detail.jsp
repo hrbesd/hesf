@@ -278,9 +278,14 @@
 			align : 'center',
 			width : 25,
 			formatter : function(value, row, index) {
-				val = '<strong style="color: orange;" >F</strong>';
+			/*	val = '<strong style="color: orange;" >F</strong>';
 				if (value == true) {
 					var val = '<strong>B</strong>';
+				}
+				return val;	*/
+				val = '<span style="font-size:11px;color:red;">否</span>';
+				if(value == true){
+					val = '<span style="font-size:11px;color:blue;">是</span>';
 				}
 				return val;
 			}
@@ -290,9 +295,14 @@
 			width : 25,
 			align : 'center',
 			formatter : function(value, row, index) {
-				val = '<strong style="color: orange;" >F</strong>';
+			/*	val = '<strong style="color: orange;" >F</strong>';
 				if (value == true) {
 					var val = '<strong style="color: red;" >T</strong>';
+				}
+				return val;	*/
+				val = '<span style="font-size:11px;color:blue;">否</span>';
+				if(value == true){
+					val = '<span style="color: red; font-size:11px;" >废</span>';
 				}
 				return val;
 			}

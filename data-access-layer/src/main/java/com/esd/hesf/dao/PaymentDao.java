@@ -33,13 +33,13 @@ public interface PaymentDao extends BaseDao<Payment> {
 	BigDecimal retrieveByCompanyAndYear(Map<String, Object> map);
 
 	/**
-	 * 根据 缴款年份(账目年份),公司id 来查询该公司 该年份已经开了几张票
+	 * 根据 payment的各个字段 计算有几条数据
 	 * 
-	 * @param map
-	 *            放year-账目年份, companyId-公司id
+	 * @param payment
+	 *            根据开票的各种
 	 * @return
 	 */
-	Integer retireveCountByCompanyAndYear(Map<String, Object> map);
+	Integer retireveCountByPayment(Payment payment);
 
 	/**
 	 * 根据多个id查询缴款信息列表, map中放入array数组, 或者list集合等 key值必须为: array

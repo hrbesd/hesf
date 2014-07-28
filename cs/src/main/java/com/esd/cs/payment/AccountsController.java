@@ -72,6 +72,8 @@ public class AccountsController {
 		if (isReceipt != null && !"".equals(isReceipt)) {
 			if ("1".equals(isReceipt)) {
 				ac.setIsReceipt(Boolean.TRUE);
+			}else{
+				ac.setIsReceipt(Boolean.FALSE);
 			}
 		}
 		// 根据公司的相关信息, 查询账目表

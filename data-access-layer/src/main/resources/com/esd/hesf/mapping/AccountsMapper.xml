@@ -607,6 +607,10 @@
 				<if test="accounts.totalMoney != null and accounts.totalMoney > 0">
 					and ac.total_money = #{accounts.totalMoney,jdbcType=DECIMAL}
 				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
+				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">
 					<if test="accounts.company.companyCode != null and accounts.company.companyCode != ''">
@@ -700,6 +704,10 @@
 				<!-- total money -->
 				<if test="accounts.totalMoney != null and accounts.totalMoney > 0">
 					and ac.total_money = #{accounts.totalMoney,jdbcType=DECIMAL}
+				</if>
+				<!-- is receipt -->
+				<if test="accounts.isReceipt != null">
+					and ac.is_receipt = #{accounts.isReceipt, jdbcType=BIT}
 				</if>
 				<!-- accounts company -->
 				<if test="accounts.company != null">

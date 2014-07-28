@@ -25,7 +25,12 @@
 				payment.add.back();
 				$("#payment_datagrid").datagrid('reload');
 				payment.getBalance();
-				$.messager.alert('消息', '保存成功', 'info');
+				$.messager.alert('消息', '保存成功', 'info', function() {
+					//更新显示的已缴金额, 代缴金额
+					//重载 缴款页面
+					$("#payment_datagrid").datagrid('reload');
+					$("#paymentList_datagrid").datagrid('reload');
+				});
 			} else {
 				$.messager.alert('消息', '保存失败', 'info');
 			}

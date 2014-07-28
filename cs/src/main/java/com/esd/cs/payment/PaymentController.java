@@ -194,119 +194,6 @@ public class PaymentController {
 				payment);
 	}
 
-	// /**
-	// * 获取有效的支付金额
-	// *
-	// * @return
-	// */
-	// private BigDecimal getEffPaid(String year, Integer companyId) {
-	// PaginationRecordsAndNumber<Payment, Number> query = paymentService
-	// .getPaymentRecords(year, companyId, 1, Integer.MAX_VALUE);
-	// // 把以回单的费用相加获取所有已缴的金额
-	// BigDecimal bd = new BigDecimal(0.00);
-	// for (Payment pt : query.getRecords()) {
-	// if (pt.getBillObsolete() == Boolean.TRUE) {
-	// continue;
-	// }
-	// if (pt.getBillReturn() == Boolean.TRUE) {
-	// bd = bd.add(pt.getPaymentMoney());
-	// }
-	// }
-	// return bd;
-	// }
-
-	// /**
-	// * 获得支付记录总和
-	// *
-	// * @param payment
-	// * @return
-	// */
-	// private BigDecimal getTotalMoney(Payment payment) {
-	// String year = payment.getYear();
-	// Integer companyId = payment.getPaymentCompany().getId();
-	// List<Accounts> query = accountsService.getCompanyAccount(year,
-	// companyId);
-	// BigDecimal bd = new BigDecimal(0.00);
-	// for (Accounts at : query) {
-	// bd = bd.add(at.getTotalMoney());
-	// }
-	// return bd;
-	// }
-
-	// /**
-	// * 批量更新状态
-	// *
-	// * @param payment
-	// * @return
-	// */
-	// private Boolean batchUpdateAuditStatus(Payment payment,
-	// Integer auditProcessStatus) {
-	// // AuditProcessStatus aup = auditProcessStatusService
-	// // .getByPrimaryKey(auditProcessStatus);
-	// // 1-如果缴款存在审核年份, 则只将 对应审核年份的账目更新状态
-	// if (payment.getAuditYear() != null
-	// && !"".equals(payment.getAuditYear())) {
-	// Audit audit = auditService.getByPrimaryKey(payment.getAuditYear(),
-	// payment.getPaymentCompany().getId());
-	// audit.setAuditProcessStatus(new AuditProcessStatus(
-	// auditProcessStatus));
-	// auditService.update(audit);
-	// Accounts accounts = accountsService.getOneByCompanyAuditYear(
-	// payment.getAuditYear(), payment.getYear(), payment
-	// .getPaymentCompany().getId());
-	// accounts.setAuditProcessStatus(new AuditProcessStatus(
-	// auditProcessStatus));
-	// return accountsService.update(accounts);
-	// }
-	//
-	// // 2-如果不存在审核年份, 则将所有未完成的账目单查询出来, 逐个更新
-	// String year = payment.getYear();
-	// Integer companyId = payment.getPaymentCompany().getId();
-	// List<Accounts> query = accountsService.getCompanyAccount(year,
-	// companyId);
-	// try {
-	// for (Accounts at : query) {
-	// // 如果账单表已经标记为已交款或者达标, 则跳过
-	// if (at.getAuditProcessStatus().getId()
-	// .equals(Constants.PROCESS_STATIC_YJK)
-	// || at.getAuditProcessStatus().getId()
-	// .equals(Constants.PROCESS_STATIC_OK)) {
-	// continue;
-	// }
-	// // 更新审核表 即时审核状态,
-	// Audit audit = auditService.getByPrimaryKey(at.getAudit()
-	// .getId());
-	// audit.setAuditProcessStatus(new AuditProcessStatus(
-	// auditProcessStatus));
-	// // 补缴年份
-	// audit.setSupplementYear(payment.getYear());
-	// auditService.update(audit);
-	// // 更新账目 即时审核状态,对应审核年份
-	// at.setAuditProcessStatus(new AuditProcessStatus(
-	// auditProcessStatus));
-	// accountsService.update(at);
-	// }
-	// } catch (Exception e) {
-	// logger.error("{}", e);
-	// return Boolean.FALSE;
-	// }
-	// return Boolean.TRUE;
-	// }
-
-	// private Boolean batchUpdateAttachmentAuditStatus(Integer companyId,
-	// String year, Integer status) {
-	// AuditProcessStatus auditProcessStatus = auditProcessStatusService
-	// .getByPrimaryKey(status);
-	// List<Audit> list = new ArrayList<Audit>();
-	// for (Audit a : list) {
-	// // a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
-	// a.setAuditProcessStatus(auditProcessStatus);// 设置状态
-	// a.setSupplementYear(year);// 设置补审年度
-	// auditService.update(a);
-	// }
-	// return Boolean.TRUE;
-	// }
-
 	/**
 	 * 确认缴款信息（返票--为true）
 	 * 
@@ -329,6 +216,23 @@ public class PaymentController {
 
 		// 判断缴款明细是否作废, 如果作废的话, 则不执行下面的更新步骤
 		if (queryPayment.getBillObsolete()) {
+			// 判断此票对应的账目对象是否还有其他的有效的缴款信息,没有的话, 则将对应的账目更新为未开票状态
+			Payment p = new Payment();
+			p.setYear(queryPayment.getYear());
+			p.setAuditYear(queryPayment.getAuditYear());
+			p.setBillObsolete(Boolean.FALSE); // 未作废
+			p.setPaymentCompany(queryPayment.getPaymentCompany());// 缴款公司
+			int countPayment = paymentService.getCountByCompanyAndYear(p);
+			if (countPayment <= 0) {
+				// 此缴款账目不存在对应的缴款信息时, 则更新为未开票状态
+				Accounts ac = accountsService.getOneByCompanyAuditYear(
+						queryPayment.getAuditYear(), queryPayment.getYear(),
+						queryPayment.getPaymentCompany().getId());
+				ac.setIsReceipt(Boolean.FALSE);
+				if (!accountsService.update(ac)) {
+					return false;
+				}
+			}
 			return true;
 		}
 		/**
@@ -443,19 +347,6 @@ public class PaymentController {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// BigDecimal b1 = new BigDecimal("-0.01");
-	// BigDecimal b2 = new BigDecimal("0.00");
-	// // System.out.println(b1.compareTo(b2));
-	// String s = "2012";
-	// String[] ar = s.split(",");
-	// // System.out.println(ar.length);
-	// for (String t : ar) {
-	// System.out.println(t);
-	// }
-	// System.out.println(Integer.MAX_VALUE);
-	// }
-
 	/**
 	 * 查看
 	 * 
@@ -554,6 +445,13 @@ public class PaymentController {
 				.getByPrimaryKey(payment.getPaymentExceptional().getId());
 		payment.setPaymentExceptional(paymentExceptional);
 		Boolean b = paymentService.save(payment);
+
+		// 根据出账年份, 缴款公司id 得到今年对应的账目对象,并将其更新为已开票状态
+		Accounts ac = accountsService.getOneByCompanyAuditYear(payment
+				.getAuditYear(), payment.getYear(), payment.getPaymentCompany()
+				.getId());
+		ac.setIsReceipt(Boolean.TRUE); // 是否开票, 这是为是 1
+		accountsService.update(ac);
 		return b;
 	}
 
@@ -700,7 +598,7 @@ public class PaymentController {
 			entity.put("companyPredictTotal", audit.getCompanyPredictTotal());
 			// 备注信息
 			entity.put("remark", audit.getRemark());
-			
+
 			// 年审参数
 			AuditParameter ap = auditParameterService.getByYear(auditYear);
 			entity.put("averageSalary", ap.getAverageSalary());
@@ -740,7 +638,7 @@ public class PaymentController {
 				null, audit.getCompany().getId());
 		String remark = "注意! 该条是在缴款中通过\"重审\"操作返回来的数据, 其中实缴总金额包含已缴的款额："
 				+ alreadyPayment + "元. 如有\"减缴\"操作, 注意需要扣除上述提到的已缴金额.";
-		audit.setRemark(audit.getRemark()+remark);
+		audit.setRemark(audit.getRemark() + remark);
 		Boolean b = auditService.update(audit);
 		// 删除对应的账目信息
 		Accounts ac = accountsService.getOneByCompanyAuditYear(auditYear,

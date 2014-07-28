@@ -682,9 +682,75 @@
 		</where>
 	</select>
 
-	<select id="retireveCountByCompanyAndYear" resultType="int" parameterType="map">
+	<select id="retireveCountByPayment" resultType="int" parameterType="com.esd.hesf.model.Payment">
 		select count(*) from payment 
-		where year = #{year,jdbcType=CHAR} and payment_company = #{companyId,jdbcType=INTEGER};
+		<where>
+			<if test="userId != null and userId > 0">
+					user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<choose>
+				<when test="isActive != null">
+					and is_active = #{isActive}
+				</when>
+				<otherwise>
+					and is_active = 0 
+				</otherwise>
+			</choose>
+			<if test="year != null and year != ''">
+				and year = #{year, jdbcType=CHAR} 
+			</if>
+			<if test="auditYear != null and auditYear != ''">
+				and audit_year = #{auditYear, jdbcType=CHAR} 
+			</if>
+			<if test="paymentDate != null">
+				and payment_date = #{paymentDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="paymentMoney != null and paymentMoney >= 0">
+				and payment_money = #{paymentMoney,jdbcType=DECIMAL}
+			</if>
+			<!-- paymentPerson -->
+			<if test="paymentPerson != null">
+				<if test="paymentPerson.id != null and paymentPerson.id > 0">
+					and payment_person = #{paymentPerson.id,jdbcType=INTEGER}
+				</if>
+			</if>
+			<!-- paymentCompany -->
+			<if test="paymentCompany != null">
+				<if test="paymentCompany.id != null and paymentCompany.id != ''">
+					and payment_company = #{paymentCompany.id,jdbcType=INTEGER}
+				</if>
+			</if>
+			<if test="paymentBill != null and paymentBill != ''">
+				and payment_bill like concat('%',#{paymentBill,jdbcType=VARCHAR},'%')
+			</if>
+			<!-- paymentType -->
+			<if test="paymentType != null">
+				<if test="paymentType.id != null and paymentType.id > 0">
+					and payment_type = #{paymentType.id,jdbcType=INTEGER} 
+				</if>
+			</if>
+			<if test="billPrintDate != null">
+				and bill_print_date = #{billPrintDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="billExchangeDate != null">
+				and bill_exchange_date = #{billExchangeDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="billReturn != null">
+				and bill_return = #{billReturn, jdbcType=BIT} 
+			</if>
+			<if test="billFinance != null">
+				and bill_finance = #{billFinance,jdbcType=BIT} 
+			</if>
+			<if test="billObsolete != null">
+				and bill_obsolete = #{billObsolete,jdbcType=BIT} 
+			</if>
+			<!-- paymentExceptional -->
+			<if test="paymentExceptional != null">
+				<if test="paymentExceptional.id != null and paymentExceptional.id > 0">
+					and payment_exceptional = #{paymentExceptional.id,jdbcType=INTEGER} 
+				</if>
+			</if>
+		</where>
 	</select>
 	
 		

@@ -274,7 +274,6 @@
 							<option value="${item.id}" title="${item.companyProperty}" <c:if test="${entity.company.companyProperty.id eq item.id}">selected="selected"</c:if>>${item.companyProperty }</option>
 						</c:forEach>
 				</select></td>
-
 			</tr>
 			<tr>
 				<td>联系人 :</td>
