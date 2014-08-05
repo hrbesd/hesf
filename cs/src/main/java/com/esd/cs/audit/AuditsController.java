@@ -25,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,7 +42,6 @@ import com.esd.hesf.model.Reply;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.Worker;
 import com.esd.hesf.model.WorkerCalculator;
-import com.esd.hesf.model.WorkerTemp;
 import com.esd.hesf.service.AccountsService;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditProcessStatusService;
@@ -100,7 +98,7 @@ public class AuditsController {
 
 	@Autowired
 	private WorkerTempService wtService;
-	
+
 	private static List<CompanyProperty> companyPropertys;
 	private static List<CompanyEconomyType> companyEconomyTypes;
 	private DecimalFormat df = new DecimalFormat("0.00");
@@ -156,17 +154,26 @@ public class AuditsController {
 		map.put("companyEmpTotal", audit.getCompanyEmpTotal()); // 员工总数
 		map.put("companyShouldTotal", audit.getCompanyShouldTotal()); // 应安排人数
 		map.put("companyPredictTotal", audit.getCompanyPredictTotal()); // 预订人数
-		map.put("remark", audit.getRemark());	//备注
+		String remark = "";
+		if (audit.getInitAuditComment() != null
+				&& !"".equals(audit.getInitAuditComment())) {
+			remark += "初审意见: " + audit.getInitAuditComment() + "  ";
+		}
+		if (audit.getRemark() != null && !"".equals(audit.getRemark())) {
+			remark += "备注信息: " + audit.getInitAuditComment() + "  ";
+		}
+		map.put("remark", remark); // 备注
 		// 获取年审参数
-		AuditParameter auditParam = auditParameterService.getByYear(audit.getYear());
+		AuditParameter auditParam = auditParameterService.getByYear(audit
+				.getYear());
 		request.setAttribute("retireAgeFemale", auditParam.getRetireAgeFemale());// 女退休年龄
 		request.setAttribute("retireAgeMale", auditParam.getRetireAgeMale());// 男退休年龄
 		request.setAttribute("retireAgeCadreMale",
 				auditParam.getRetireAgeCadreMale()); // 女干部退休年龄
 		request.setAttribute("retireAgeCadreFemale",
 				auditParam.getRetireAgeCadreFemale()); // 男干部退休年龄
-		
-		//删除缓存表中可能存在的该公司的员工数据--暂时测试注释掉****************************
+
+		// 删除缓存表中可能存在的该公司的员工数据--暂时测试注释掉****************************
 		wtService.deleteByCompanyId(audit.getCompany().getId());
 		return new ModelAndView("audit/audit_repeal_predict", map);
 	}
