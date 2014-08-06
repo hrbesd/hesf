@@ -112,7 +112,7 @@ public interface WorkerService extends BaseService<Worker> {
 	 * @param id
 	 * @return
 	 */
-	Blob getPicByPrimaryKey(Integer id);
+	byte[] getPicByPrimaryKey(Integer id);
 	
 	
 	

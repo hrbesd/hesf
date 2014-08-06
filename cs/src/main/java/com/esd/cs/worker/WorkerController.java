@@ -362,6 +362,12 @@ public class WorkerController {
 		worker.setPhone(request.getParameter("phone"));
 		worker.setCurrentJob(request.getParameter("currentJob"));
 		worker.setRemark(request.getParameter("remark"));
+		String isCadreStr = request.getParameter("isCadre");
+		if("1".equals(isCadreStr)){
+			worker.setIsCadre(Boolean.TRUE);
+		}else{
+			worker.setIsCadre(Boolean.FALSE);
+		}
 		// 公司id
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 		worker.setCompanyId(companyId);
@@ -533,7 +539,7 @@ public class WorkerController {
 	public void showPic(@PathVariable(value = "id") Integer id,
 			HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("image/jpeg");
-		Blob picBlob = workerService.getPicByPrimaryKey(id);
+		byte[] picBlob = workerService.getPicByPrimaryKey(id);
 		System.out.println(picBlob);
 
 	}
@@ -1126,7 +1132,16 @@ public class WorkerController {
 		// ①如果先前的员工id存在, 则对其进行更新, 然后插入到企业员工关系表中
 		if (wt.getPreId() != null && wt.getPreId() > 0) {
 			Worker w = workerService.getByPrimaryKey(wt.getPreId());
-			w.setWorkerName(wt.getWorkerName());
+			w.setWorkerName(wt.getWorkerName());	//名字
+			w.setCurrentJob(wt.getCurrentJob());	//目前工作
+			w.setCareerCard(wt.getCareerCard());	//就业证号
+			w.setPhone(wt.getPhone());	//联系电话
+			w.setIsCadre(wt.getIsCadre());	//是否干部
+			//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+			if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+				w.setPicTitle(wt.getPicTitle());
+				w.setPic(wtService.getPicByPrimaryKey(wt.getId()));
+			}
 			if (!workerService.update(w)) {
 				return false;
 			}
@@ -1153,7 +1168,17 @@ public class WorkerController {
 				.getWorkerHandicapLevel()));
 		worker.setWorkerHandicapType(new WorkerHandicapType(wt
 				.getWorkerHandicapType()));
+		worker.setCurrentJob(wt.getCurrentJob());	//目前工作
+		worker.setCareerCard(wt.getCareerCard());	//就业证号
+		worker.setPhone(wt.getPhone());	//联系电话
+		worker.setIsCadre(wt.getIsCadre());	//是否干部
 		worker.setUserId(userId);
+		//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+		if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+			worker.setPicTitle(wt.getPicTitle());
+			byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
+			worker.setPic(pic);
+		}
 		if (!workerService.save(worker, companyId, year)) {
 			return false;
 		}

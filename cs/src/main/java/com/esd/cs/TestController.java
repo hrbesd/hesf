@@ -145,14 +145,13 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	// 菜单--for json
 	@RequestMapping("/1_json")
 	@ResponseBody
 	public List<Menu> test1_json() {
 		return menuService.getTreeMap();
 	}
-		
 
 	// 公司--得到一个
 	@RequestMapping("/2")
@@ -215,19 +214,19 @@ public class TestController {
 		map.put("entity", entity);
 		return map;
 	}
-	
+
 	// 审核状态进程
-		@RequestMapping(value="/post9",method=RequestMethod.POST)
-		@ResponseBody
-		public Map<String, Object> test9post(HttpServletRequest req) {
-			String name = req.getParameter("name");
-			String password = req.getParameter("password");
-			Map<String, Object> map = new HashMap<String, Object>();
-		//	List<AuditProcessStatus> entity = apsService.getAll();
-			String entity = "name: "+name+", password: "+password;
-			map.put("entity", entity);
-			return map;
-		}
+	@RequestMapping(value = "/post9", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> test9post(HttpServletRequest req) {
+		String name = req.getParameter("name");
+		String password = req.getParameter("password");
+		Map<String, Object> map = new HashMap<String, Object>();
+		// List<AuditProcessStatus> entity = apsService.getAll();
+		String entity = "name: " + name + ", password: " + password;
+		map.put("entity", entity);
+		return map;
+	}
 
 	// 企业 按组织机构代码查
 	@RequestMapping("/10")
@@ -447,7 +446,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test24() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<User> entity = userService.getUserByGroup(Constants.USER_GROUP_JIAOKUAN);
+		List<User> entity = userService
+				.getUserByGroup(Constants.USER_GROUP_JIAOKUAN);
 		map.put("entity", entity);
 		return map;
 	}
@@ -971,7 +971,7 @@ public class TestController {
 		Accounts accounts = new Accounts();
 		accounts.setAuditProcessStatus(new AuditProcessStatus(3));
 		PaginationRecordsAndNumber<Accounts, Number> entity = acService
-				.getPaginationRecordsGroupByCompany(accounts,null, 1, 100);
+				.getPaginationRecordsGroupByCompany(accounts, null, 1, 100);
 		map.put("entity", entity);
 		return map;
 	}
@@ -1070,20 +1070,22 @@ public class TestController {
 		map.put("entity", 123);
 		return map;
 	}
-	
-	//常量
+
+	// 常量
 	private static Integer c = 0;
+
 	@RequestMapping("/80")
 	@ResponseBody
 	public Map<String, Object> test80() {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		c++;
 		map.put("entity", c);
 		return map;
 	}
-	
-	//常量
-		private static Integer d = 0;
+
+	// 常量
+	private static Integer d = 0;
+
 	@RequestMapping("/81")
 	@ResponseBody
 	public Map<String, Object> test81() {
@@ -1092,11 +1094,11 @@ public class TestController {
 		c.setContent("测试");
 		c.setTitle("test");
 		boolean bl = rService.save(c);
-		if(bl){
+		if (bl) {
 			d++;
 			map.put("entity", bl);
 			map.put("dbCount", d);
-		}else{
+		} else {
 			map.put("entity", bl);
 			map.put("dbCount", d);
 		}
@@ -1114,11 +1116,11 @@ public class TestController {
 				conn = DriverManager.getConnection(
 						"jdbc:mysql://192.168.170.85:3306/hesf", "root",
 						"esd123");
-				String sql = "INSERT INTO area(code,name)"
-						+ " VALUES ('q"+i+"', 'text')"; // 插入数据的sql语句
+				String sql = "INSERT INTO area(code,name)" + " VALUES ('q" + i
+						+ "', 'text')"; // 插入数据的sql语句
 				ps = conn.prepareStatement(sql);
 				int count = ps.executeUpdate(sql); // 执行插入操作的sql语句，并返回插入数据的个数
-				System.out.println("向staff表中插入 " + count + " 条数据: "+(i+1)); // 输出插入操作的处理结果
+				System.out.println("向staff表中插入 " + count + " 条数据: " + (i + 1)); // 输出插入操作的处理结果
 			} catch (SQLException e) {
 				System.out.println("插入数据失败" + e.getMessage());
 			} finally {
@@ -1136,7 +1138,7 @@ public class TestController {
 			}
 		}
 	}
-	
+
 	@RequestMapping("/82")
 	@ResponseBody
 	public Map<String, Object> test82() {
@@ -1146,4 +1148,51 @@ public class TestController {
 		return map;
 	}
 
+	// 根据id得到残疾职工图片
+	@RequestMapping("/83")
+	@ResponseBody
+	public byte[] test83() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		byte[] entity = wtService.getPicByPrimaryKey(4431);
+		// map.put("entity", entity);
+		// return map;
+		return entity;
+	}
+
+	// 测试 读取，保存图片
+	@RequestMapping("/84")
+	@ResponseBody
+	public Map<String, Object> test84() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		byte[] pic = wtService.getPicByPrimaryKey(4441);
+		WorkerTemp wt = wtService.getByPrimaryKey(4441);
+//		WorkerTemp wt1 = new WorkerTemp();
+//		wt1.setPic(pic);
+//		map.put("bl", wtService.save(wt1));
+		Worker worker = new Worker();
+		worker.setWorkerName(wt.getWorkerName());
+		worker.setWorkerGender(wt.getWorkerGender());
+		worker.setWorkerBirth(wt.getWorkerBirth());
+		worker.setWorkerBirthYear(wt.getWorkerBirthYear());
+		worker.setWorkerIdCard(wt.getWorkerIdCard());
+		worker.setWorkerHandicapCode(wt.getWorkerHandicapCode());
+		worker.setWorkerHandicapLevel(new WorkerHandicapLevel(wt
+				.getWorkerHandicapLevel()));
+		worker.setWorkerHandicapType(new WorkerHandicapType(wt
+				.getWorkerHandicapType()));
+		worker.setCurrentJob(wt.getCurrentJob());	//目前工作
+		worker.setCareerCard(wt.getCareerCard());	//就业证号
+		worker.setPhone(wt.getPhone());	//联系电话
+		worker.setIsCadre(wt.getIsCadre());	//是否干部
+		//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+		if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+			worker.setPicTitle(wt.getPicTitle());
+//			byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
+			worker.setPic(pic);
+		}
+		map.put("111bl111", wService.save(worker));
+		// map.put("entity", entity);
+		// return map;
+		return map;
+	}
 }

@@ -233,13 +233,13 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	}
 
 	@Override
-	public Blob getPicByPrimaryKey(Integer id) {
+	public byte[] getPicByPrimaryKey(Integer id) {
 		if (id == null || id <= 0) {
 			return null;
 		}
 		HashMap resultMap = dao.retrievePic(id);
-		Blob blob = (Blob) resultMap.get("pic");
-		return blob;
+		byte[] pic = (byte[]) resultMap.get("pic");
+		return pic;
 	}
 
 	@Override

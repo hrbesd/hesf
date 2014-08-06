@@ -88,7 +88,7 @@ public interface WorkerTempService extends BaseService<WorkerTemp> {
 	 * @param id
 	 * @return
 	 */
-	Blob getPicByPrimaryKey(Integer id);
+	byte[] getPicByPrimaryKey(Integer id);
 	
 	/**
 	 * 根据bean中任意属性条件查询数据条数

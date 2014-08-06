@@ -371,7 +371,7 @@
 	</select>
 
 	<!-- 根据id, 取到图片文件 -->
-	<select id="retrievePic" parameterType="int" resultType="hashmap">
+	<select id="retrievePic" parameterType="int" resultType="java.util.HashMap">
 		select pic_title,pic
 		from worker
 		where id = #{id, jdbcType=INTEGER}
