@@ -83,7 +83,7 @@
 				var c = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >初审</a>';
 				var v = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
 				var j = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >减免</a>';
-				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审/减免</a>';
+				var f = '<a href="javascript:initAuditList.openAudit(' + row.id + ');" >复审</a>';
 				// 未初审
 				if (row.auditProcessStatusId == 1) {
 					r = '<c:if test="${process==1}">' + c + '</c:if><c:if test="${process!=1}">' + v + '</c:if>';
