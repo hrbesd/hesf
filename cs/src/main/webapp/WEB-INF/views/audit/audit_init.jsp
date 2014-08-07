@@ -332,7 +332,7 @@
 				<td><input type="text" class="text_short readonly" value="${entity.companyShouldTotal}" name="companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" /></td>
 				<td><input type="text" class="text_short readonly" value="${entity.companyAlreadyTotal}" name="companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" /></td>
 				<td><input id="yiLuRuCanJiRen" name="companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="${entity.companyHandicapTotal }" /></td>
-				<td><input id="yuDingCanJiRen" name="companyPredictTotal" value="${entity.companyPredictTotal }" title="请填写按比例换算后的预定人数, 例如有2个残疾人,1个视力1级，1个视力2级，则预定人数应填 3,因1个视力1级的相当于2个普通残疾人." class="easyui-numberbox warn" onblur="initAudit.jisuan()"
+				<td><input id="yuDingCanJiRen" name="companyPredictTotal" class="readonly" value="${entity.companyPredictTotal }" title="请填写按比例换算后的预定人数, 例如有2个残疾人,1个视力1级，1个视力2级，则预定人数应填 3,因1个视力1级的相当于2个普通残疾人." class="easyui-numberbox warn" onblur="initAudit.jisuan()"
 					data-options="min:0" /></td>
 				<td><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="补缴金额" class="readonly" value="${entity.remainAmount}" /></td>
 			</tr>
