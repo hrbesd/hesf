@@ -22,13 +22,22 @@ public interface CompanyDao extends BaseDao<Company> {
 	List<Company> retrieveByPrimaryKeys(Map<String, Object> map);
 
 	/**
-	 * retrieveByPrimaryKey : 根据id, 查询一条数据
+	 * retrieveByCompanyCode : 根据公司档案号, 查询一条数据
 	 * 
-	 * @param id
+	 * @param companyCode
 	 * @return
 	 */
 	Company retrieveByCompanyCode(String companyCode);
 
+	
+	/**
+	 * retrieveByCompanyName : 根据公司名称, 查询一条数据
+	 * 
+	 * @param companyName
+	 * @return
+	 */
+	Company retrieveByCompanyName(String companyName);
+	
 	/**
 	 * 得到最新的档案号 xxx暂时不用
 	 * 

@@ -518,6 +518,14 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return dao.retrieveByCompanyCode(companyCode);
 	}
+	
+	@Override
+	public Company getByCompanyName(String companyName) {
+		if (companyName == null || "".equals(companyName)) {
+			return null;
+		}
+		return dao.retrieveByCompanyName(companyName);
+	}
 
 	@Override
 	public List<Audit> getUnauditByCompany(Integer companyId, String year,

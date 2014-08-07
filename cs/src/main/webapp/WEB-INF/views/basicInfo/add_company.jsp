@@ -15,12 +15,14 @@
 		<tr>
 			<td class="tdRight">档案编码(<span class="red_notice">*</span>):</td>
 			<td >
-			<input name="companyCode" id="companyCode" class="easyui-validatebox"  data-options="required:true"  validType="remote['company/validate_companyCode','param','组织机关代码证已存在']" type="text" />
-		</td>
-			</tr>
+				<input name="companyCode" id="companyCode" class="easyui-validatebox"  data-options="required:true"  validType="remote['company/validate_companyCode','param','企业档案号已存在']" type="text" />
+			</td>
+		</tr>
 		<tr>
 			<td class="tdRight">企业名称(<span class="red_notice">*</span>):</td>
-			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" /></td>
+			<td colspan="3">
+				<input name="companyName" class="longtext easyui-validatebox" type="text" data-options="required:true" validType="remote['company/validate_companyName','param','企业名称已经存在, 请不要重复添加, 在审核或者公司资料 查询页面输入公司名称即可查询到.']" />
+			</td>
 		</tr>
 		<tr>
 			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>

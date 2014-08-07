@@ -54,7 +54,7 @@ public class CompayController {
 			@PathVariable(value = "property") String property,
 			HttpServletRequest request) {
 		logger.debug("companyProperty{}", property);
-		if(Constants.LURU.equals(property)){
+		if (Constants.LURU.equals(property)) {
 			return new ModelAndView("audit/audit_create_list");
 		}
 		request.setAttribute("companyProperty", property);
@@ -155,7 +155,7 @@ public class CompayController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 根据公司组织机构代码获取单位对象
 	 * 
@@ -164,12 +164,15 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/getCompanyByOrganizationCode", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getCompanyByOrganizationCode(HttpServletRequest request) {
+	public Map<String, Object> getCompanyByOrganizationCode(
+			HttpServletRequest request) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		try {
-			String companyOrganizationCode = request.getParameter("companyOrganizationCode");
+			String companyOrganizationCode = request
+					.getParameter("companyOrganizationCode");
 			logger.debug("companyOrganizationCode:{}", companyOrganizationCode);
-			Company company = companyService.getByCompanyOrganizationCode(companyOrganizationCode);
+			Company company = companyService
+					.getByCompanyOrganizationCode(companyOrganizationCode);
 			logger.debug(" getcompany{}", company);
 			entity.put("entity", company);
 			return entity;
@@ -274,26 +277,27 @@ public class CompayController {
 							CalendarUtil.getBeforeYear(), company.getId());
 				}
 			}
-			
-			//检查是否存在当年的审核数据, 如不存在则创建
-			Audit audit = auditService.getByPrimaryKey(nowYear, company.getId());
-			if(audit==null){
+
+			// 检查是否存在当年的审核数据, 如不存在则创建
+			Audit audit = auditService
+					.getByPrimaryKey(nowYear, company.getId());
+			if (audit == null) {
 				audit = new Audit();
 				audit.setCompany(company);
 				audit.setYear(nowYear);
 				auditService.save(audit);
 			}
-//			// 如果选中创建当年审核数据
-//			String createAudit = request.getParameter("createAudit");
-//			if (createAudit != null && "1".equals(createAudit)) {
-//				Audit audit = new Audit();
-//				audit.setCompany(company);
-//				audit.setYear(nowYear);
-//				auditService.save(audit);
-//			}
+			// // 如果选中创建当年审核数据
+			// String createAudit = request.getParameter("createAudit");
+			// if (createAudit != null && "1".equals(createAudit)) {
+			// Audit audit = new Audit();
+			// audit.setCompany(company);
+			// audit.setYear(nowYear);
+			// auditService.save(audit);
+			// }
 			// 检查一下,
 			logger.debug("addCompanyResult:{}", b);
-			//返回创建/更新的公司id
+			// 返回创建/更新的公司id
 			return company.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -301,7 +305,7 @@ public class CompayController {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * 编辑企业信息
 	 * 
@@ -430,6 +434,30 @@ public class CompayController {
 			return true;
 		} else {
 			logger.debug("validate_companyCode:{},Result{}", param, "fasle");
+			return false;
+		}
+	}
+
+	/**
+	 * 验证 公司名称
+	 * 
+	 * @param param
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/validate_companyName")
+	@ResponseBody
+	public Boolean validate_companyName(
+			@RequestParam(value = "param") String param,
+			HttpServletRequest request) {
+		if (param == null || "".equals(param)) {
+			return false;
+		}
+		if (companyService.getByCompanyName(param) == null) {
+			logger.debug("validate_companyName:{},Result{}", param, "true");
+			return true;
+		} else {
+			logger.debug("validate_companyName:{},Result{}", param, "fasle");
 			return false;
 		}
 	}

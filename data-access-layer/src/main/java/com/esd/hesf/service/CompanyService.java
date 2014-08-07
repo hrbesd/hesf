@@ -41,6 +41,14 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return
 	 */
 	Company getByCompanyCode(String companyCode);
+	
+	/**
+	 * 根据公司名称  得到一个公司对象,如不存在则返回null
+	 * 
+	 * @param companyCode
+	 * @return
+	 */
+	Company getByCompanyName(String companyName);
 
 	/**
 	 * 修改测试数据用--暂时勿删

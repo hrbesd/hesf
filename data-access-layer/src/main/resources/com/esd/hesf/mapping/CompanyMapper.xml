@@ -402,6 +402,16 @@
 		<include refid="Where_condition_list" />
 		and c.company_code = #{companyCode,jdbcType=INTEGER}
 	</select>
+	
+	<select id="retrieveByCompanyName" parameterType="java.lang.String" resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where
+		<include refid="Where_condition_list" />
+		and c.company_name = #{companyName,jdbcType=VARCHAR}
+	</select>
 
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultCompany">
 		select
