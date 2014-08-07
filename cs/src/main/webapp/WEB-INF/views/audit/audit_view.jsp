@@ -48,9 +48,18 @@
 }
 </style>
 <script type="text/javascript">
+
 	//组件解析完成
 	$.parser.onComplete = function() {
 		//加载单位档案数据
+	};
+	
+	var viewAudit = {};
+	/*
+	关闭单位年审窗口
+	*/
+	viewAudit.back = function() {
+		esd.common.defaultOpenWindowClose();
 	};
 </script>
 <form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 2px;">
@@ -234,18 +243,24 @@
 			</tr>
 			<tr>
 				<td class="">初审日期:</td>
-				<td><c:if test="${entity.initAuditDate==null}">
+				<td>
+				<!-- 	<c:if test="${entity.initAuditDate==null}">
 						<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <input class="readonly" value="${date}" />
+					</c:if>  -->
+					<c:if test="${entity.initAuditDate != null}">
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initDate" />
+					</c:if> 
+					<input class="readonly" value="${initDate}" />
 				</td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" />
 				</td>
 				<td class="">复审日期:</td>
-				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-					value="${verifyAuditDate}" />
+				<td>
+					<c:if test="${entity.verifyAuditDate != null}">
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					</c:if> 
+					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" />
 				</td>
 				<td width="100">复审人:</td>
 				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" />
@@ -254,7 +269,7 @@
 		</table>
 	</div>
 	<div style="text-align: center;margin-top: 10px;">
-		<a href="javascript:initAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> <a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
+		<a href="javascript:viewAudit.back();" class="easyui-linkbutton" iconCls="icon-back">返回</a> <a href="javascript:esd.common.printWindow();" class="easyui-linkbutton" iconCls="icon-print">打印</a>
 	</div>
 
 </form>

@@ -418,16 +418,18 @@
 			</tr>
 			<tr>
 				<td class="">初审日期:</td>
-				<td><c:if test="${entity.initAuditDate==null}">
-						<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <input class="readonly" value="${date}" /></td>
+				<td>
+					<c:if test="${entity.initAuditDate!=null}">
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initDate" />
+					</c:if> <input class="readonly" value="${initDate}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复审日期:</td>
-				<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-					value="${verifyAuditDate}" /></td>
+				<td>
+					<c:if test="${entity.verifyAuditDate != null}">
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					</c:if>  
+					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>
 				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
 			</tr>

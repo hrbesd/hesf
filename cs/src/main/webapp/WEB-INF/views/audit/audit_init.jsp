@@ -400,29 +400,34 @@
 			</tr>
 			<tr>
 				<td class="">初审日期:</td>
-				<td><c:if test="${entity.initAuditDate==null}">
-						<fmt:formatDate value="${now}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="date" />
-					</c:if> <input class="readonly" value="${date}" /></td>
+				<td>
+					<c:if test="${entity.initAuditDate!=null}">
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initDate" />
+					</c:if> 
+					<input class="readonly" value="${initDate}" />
+				</td>
 				<td width="100">初审人:</td>
-				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
+				<td>
+					<input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" />
+				</td>
 				<!-- 审核状态为 " 已减免 未通过 " 时 显示减免 意见 -->
-				<c:if test="${entity.auditProcessStatus.id == 13 }">
+			<!-- 	<c:if test="${entity.auditProcessStatus.id == 13 }">
 					<td class="">减免日期:</td>
 					<td><fmt:formatDate value="${entity.jianMianAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="jianMianAuditDate" /> <input type="text" class="bj_belu4 readonly"
 						value="${jianMianAuditDate}" /></td>
 					<td width="100">减免人:</td>
 					<td><input type="text" class="readonly" value="${entity.jianMianAuditUser.userRealName}" /></td>
-				</c:if>
+				</c:if>	 -->
 				<!-- 审核状态为 "未初审" 或者 "已复审 未通过" 时 显示复审意见 -->
-				<c:if test="${entity.auditProcessStatus.id == 7 || entity.auditProcessStatus.id == 1}">
-					<td class="">复审日期:</td>
-					<td><fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" /> <input type="text" class="bj_belu4 readonly"
-						value="${verifyAuditDate}" /></td>
-					<td width="100">复审人:</td>
-					<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
-				</c:if>
+				<td class="">复审日期:</td>
+				<td>
+					<c:if test="${entity.verifyAuditDate!=null}">
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+					</c:if> 
+					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" />
+				</td>
+				<td width="100">复审人:</td>
+				<td><input type="text" class="readonly" value="${entity.verifyAuditUser.userRealName}" /></td>
 			</tr>
 		</table>
 	</div>

@@ -126,7 +126,7 @@
 		</c:if>
 		//已初审 未复审
 		<c:if test="${process==2}">
-			esd.common.defaultOpenWindowEx("复审/减免", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
+			esd.common.defaultOpenWindowEx("复审", 920, 600, "${contextPath}/security/audits/edit/" + index + "/${process}");
 		</c:if>
 		// 已减免 未复审
 	//	<c:if test="${process==12}">

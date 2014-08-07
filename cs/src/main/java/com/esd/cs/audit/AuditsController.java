@@ -1089,26 +1089,41 @@ public class AuditsController {
 			@PathVariable(value = "process") int process,
 			HttpServletRequest request, HttpSession session) {
 		Audit audit = auditService.getByPrimaryKey(id);
-		// 如果不存在初审人, 则添加上初审人
-		if (audit.getInitAuditUser() == null) {
+		/**
+		 * 初审, 复审人是否显示判断 1-初始时, 只添加初审人 2-复审时, 只添加复审人 3-其余情况, 审核人/时间 不为空时给补充上,
+		 * 为空则不补充
+		 */
+		Date today = new Date();
+		if (process == Constants.PROCESS_STATIC_WCS) {
+			// 添加上初审人
 			Integer userId = Integer.parseInt(session.getAttribute(
 					Constants.USER_ID).toString());
 			User user = userService.getByPrimaryKey(userId);
 			audit.setInitAuditUser(user);
-		}
-		// 如果不存在减免缓人 且 为减免缓操作, 则添加上减免缓热
-		if (audit.getJianMianAuditUser() == null && process == 11) {
-			Integer userId = Integer.parseInt(session.getAttribute(
-					Constants.USER_ID).toString());
-			User user = userService.getByPrimaryKey(userId);
-			audit.setJianMianAuditUser(user);
-		}
-		// 如果不存在复审人 且 为复审, 则添加上复审人
-		if (audit.getVerifyAuditUser() == null && process == 12) {
+			audit.setInitAuditDate(today);
+		} else if (process == Constants.PROCESS_STATIC_WFS) {
+			// // 添加上减免缓热
+			// Integer userId = Integer.parseInt(session.getAttribute(
+			// Constants.USER_ID).toString());
+			// User user = userService.getByPrimaryKey(userId);
+			// audit.setJianMianAuditUser(user);
+			// 添加上复审人
 			Integer userId = Integer.parseInt(session.getAttribute(
 					Constants.USER_ID).toString());
 			User user = userService.getByPrimaryKey(userId);
 			audit.setVerifyAuditUser(user);
+			audit.setVerifyAuditDate(today);
+		} else {
+			if (audit.getInitAuditUser() != null) {
+				User user = userService.getByPrimaryKey(audit
+						.getInitAuditUser().getId());
+				audit.setInitAuditUser(user);
+			}
+			if (audit.getVerifyAuditUser() != null) {
+				User user = userService.getByPrimaryKey(audit
+						.getVerifyAuditUser().getId());
+				audit.setVerifyAuditUser(user);
+			}
 		}
 		// 如果为重审回来的数据, 则总缴款额需要-该审核年度以前已经缴过的款
 		if (process == 2) {
