@@ -405,11 +405,11 @@
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<td width="100" rowspan="3">复审意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
-				<td colspan="3" rowspan="2"><textarea class="warn" <c:if test="${userGroupId != 3 }">disabled="disabled"</c:if>  name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
+				<td colspan="3" rowspan="2"><textarea class="warn" name="verifyAuditComment" rows="3" cols="45" style="height: 60px;" id="fsyj" >${entity.verifyAuditComment}</textarea></td>
 			</tr>
 			<tr>
 				<td>
-					<select <c:if test="${userGroupId != 3 }">disabled="disabled"</c:if> style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
+					<select style="font-size: 12px; width: 100px; height: 28px;" id="reasons" onchange="initAudit.reasons(this);" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<c:forEach items="${reasons}" var="item">
 							<option value="${item.id}" title="${item.content }" <c:if test="${1 eq item.id}">selected="selected"</c:if>>${item.title }</option>
 						</c:forEach>
@@ -437,9 +437,9 @@
 			<input name="id" type="hidden" value="${entity.id}" />
 			<input name="version" type="hidden" value="${entity.version}" />
 			<!-- 减免用户操作按钮 -->
-			<c:if test="${userGroupId == 1 || userGroupId == 8 }">
+<!-- 			<c:if test="${userGroupId == 1 || userGroupId == 8 }">
 				<a href="javascript:initAudit.jianMianAudit();" class="easyui-linkbutton" iconCls="icon-ok">确认减免</a>
-			</c:if>
+			</c:if>	 -->
 			
 			<!-- 复审用户操作按钮 -->
 			<c:if test="${userGroupId == 1 || userGroupId == 3 }">
