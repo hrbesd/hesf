@@ -225,6 +225,9 @@
 		<input type="hidden" name="year" id="currentyear" value="${year}" />
 		<div>
 			<p>
+				<span class="red_notice">*</span>女干部 不要使用导入功能, 请单个录入.<br/>
+			</p>
+			<p>
 				<span class="red_notice">*</span>导入数据条数(残疾员工数)不超过7000条。<br/>
 				<span style="font-size:9px;color:red;">&nbsp;&nbsp;&nbsp;&nbsp;数据超过2000条时, 解析会比较慢, 请耐心等待1-4分钟.</span>
 			</p>

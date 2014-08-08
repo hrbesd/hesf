@@ -18,6 +18,7 @@
 		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_is_cadre" jdbcType="BIT" property="isCadre" />
+		<result column="w_is_professor" jdbcType="BIT" property="isProfessor" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
  		<result column="w_pic_title" jdbcType="VARCHAR" property="picTitle" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -57,12 +58,11 @@
 		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
 		w_worker_gender, w.worker_birth as w_worker_birth, 
 		w.worker_birth_year as w_worker_birth_year, 
-		w.worker_id_card as
-		w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
+		w.worker_id_card as w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
-		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
-		w.pic_title as w_pic_title, 
+		w.worker_handicap_code as w_worker_handicap_code,
 		w.is_college as w_is_college, w.is_retired as w_is_retired, w.is_cadre as w_is_cadre,
+		w.is_professor as w_is_professor, w.remark as w_remark, w.pic_title as w_pic_title, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -93,7 +93,7 @@
 		worker_id_card, career_card,
 		phone, current_job, worker_address,
 		area_code, worker_handicap_code, worker_handicap_type,
-		worker_handicap_level, is_college, is_retired, is_cadre,
+		worker_handicap_level, is_college, is_retired, is_cadre, is_professor, 
 		remark, pic_title, pic, create_time,
 		update_time, user_id, is_active,
 		version)
@@ -107,7 +107,7 @@
 		#{workerHandicapCode,jdbcType=VARCHAR},
 		#{workerHandicapType.id,jdbcType=INTEGER},
 		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
-		#{isCadre, jdbcType=BIT},
+		#{isCadre, jdbcType=BIT},#{isProfessor, jdbcType=BIT},
 		#{remark,jdbcType=VARCHAR}, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB}, 
 		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
@@ -171,6 +171,9 @@
 			</if>
 			<if test="isCadre != null">
 				is_cadre,
+			</if>
+			<if test="isProfessor != null">
+				is_professor,
 			</if>
 			<if test="remark != null">
 				remark,
@@ -245,6 +248,9 @@
 			</if>
 			<if test="isCadre != null">
 				#{isCadre, jdbcType=BIT},
+			</if>
+			<if test="isProfessor != null">
+				#{isProfessor, jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				#{remark,jdbcType=VARCHAR},
@@ -336,6 +342,9 @@
 			</if>
 			<if test="isCadre != null">
 				is_cadre = #{isCadre, jdbcType=BIT},
+			</if>
+			<if test="isProfessor != null">
+				is_professor = #{isProfessor, jdbcType=BIT},
 			</if>
 			<if test="remark != null">
 				remark = #{remark,jdbcType=VARCHAR},
@@ -448,6 +457,9 @@
 				<if test="worker.isCadre != null">
 					and w.is_cadre  = #{worker.isCadre,jdbcType=BIT} 
 				</if>
+				<if test="worker.isProfessor != null">
+					and w.is_professor = #{worker.isProfessor,jdbcType=BIT}
+				</if>
 				<if test="worker.userId != null and worker.userId > 0">
 					and w.user_id = #{worker.userId,jdbcType=INTEGER} 
 				</if>
@@ -530,6 +542,9 @@
 				</if>
 				<if test="worker.isCadre != null">
 					and w.is_cadre  = #{worker.isCadre,jdbcType=BIT} 
+				</if>
+				<if test="worker.isProfessor != null">
+					and w.is_professor = #{worker.isProfessor,jdbcType=BIT}
 				</if>
 				<if test="worker.userId != null and worker.userId > 0">
 					and w.user_id = #{worker.userId,jdbcType=INTEGER} 

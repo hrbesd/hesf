@@ -195,6 +195,8 @@ public class QueryWorkerController {
 				}
 				// 是否干部
 				map.put("isCadre", it.getIsCadre());
+				// 是否是老教授
+				map.put("isProfessor", it.getIsProfessor());
 				// 计算年龄(去年的年龄,周岁 ) 传入残疾证号
 				map.put("workerAge",
 						WorkerUtil.conversionAge(it.getWorkerHandicapCode()) - 1 - 1);

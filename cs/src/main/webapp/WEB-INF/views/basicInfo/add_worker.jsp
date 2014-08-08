@@ -42,6 +42,13 @@
 		}else{
 			params.isCadre = 0;
 		}
+		//是否忽略年龄, 即是否是老教授
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			params.isProfessor = 1;
+		}else{
+			params.isProfessor = 0;
+		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
 			remark = esd.common.unknown();
@@ -82,7 +89,8 @@
 				'remark':params.remark, //备注
 				'companyId':params.companyId,
 				'year':params.year,	//审核年
-				'isCadre':params.isCadre	//是否干部
+				'isCadre':params.isCadre,	//是否干部
+				'isProfessor':params.isProfessor	//是否是老教授
 			});
 		},
 		onComplete : function(file,response){
@@ -126,7 +134,8 @@
 					'remark':params.remark, //备注
 					'companyId':params.companyId,
 					'year':params.year,	//审核年
-					'isCadre':params.isCadre	//是否干部
+					'isCadre':params.isCadre,	//是否干部
+					'isProfessor':params.isProfessor	//是否是老教授
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -287,28 +296,32 @@
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
 				return false;
 		}
-		if (sex % 2 === 0) {
-			//偶数 女性职工
-			$("#workerGender").combobox("setValue", "0");
-			//如果为干部, 则用女干部退休年龄判断, 否则使用职工退休年龄判断
-			var isCadre = $('#isCadreChecked').attr('checked');
-			if(isCadre){
-				if(age >= $("#retireAgeCadreFemale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过干部退休年龄', 'error');
+		// 如果忽略年龄 复选框被选中的话, 则不进行年龄上限的验证;没有被选中时, 才进行年龄上限的验证.
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(!ignoreAge){
+			if (sex % 2 === 0) {
+				//偶数 女性职工
+				$("#workerGender").combobox("setValue", "0");
+				//如果为干部, 则用女干部退休年龄判断, 否则使用职工退休年龄判断
+				var isCadre = $('#isCadreChecked').attr('checked');
+				if(isCadre){
+					if(age >= $("#retireAgeCadreFemale").val()){
+						$.messager.alert('消息', '干部年龄：'+age+'岁，性别：女性。去年已超过干部退休年龄', 'error');
+						return false;
+					}
+				}else{
+					if(age >= $("#retireAgeFemale").val()){
+						$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
+						return false;
+					}
+				}
+			} else {
+				//奇数 男性
+				$("#workerGender").combobox("setValue", "1");
+					if(age >= $("#retireAgeMale").val()){
+						$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。去年已超过退休年龄', 'error');
 					return false;
 				}
-			}else{
-				if(age >= $("#retireAgeFemale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
-					return false;
-				}
-			}
-		} else {
-			//奇数 男性
-			$("#workerGender").combobox("setValue", "1");
-				if(age >= $("#retireAgeMale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。去年已超过退休年龄', 'error');
-				return false;
 			}
 		}
 		//出生日期
@@ -405,6 +418,17 @@
 	};
 	
 	
+	//忽略年龄校验复选框 点击时间
+	var clickIgnoreAge = function(){
+		// 忽略年龄  选中的话, 干部也选中且只读
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			$('#isCadreChecked').attr('checked',true).attr('disabled',true);
+		}else{
+			$('#isCadreChecked').attr('checked',false).attr('disabled',false);
+		}
+	};
+	
 	//组件解析完成
 	$.parser.onComplete = function() {
 		
@@ -449,12 +473,13 @@
 				<tr>
 					<td>残疾证号(<label class="red_notice"> *</label>):</td>
 					<td colspan="5">
-		
 						<div style="float: left;width: 600px;">
-							<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']"
-								style="width: 200px" /> <input type="hidden" name="workerIdCard" id="workerIdCard" /> <a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> <a
-								href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
-						</div></td>
+							<input class="easyui-validatebox" type="text" id="workerHandicapCode" value="" name="workerHandicapCode" data-options="required:true,validType:['length[20,22]']" style="width: 200px" /> 
+							<input type="hidden" name="workerIdCard" id="workerIdCard" /> 
+							<a href="javascript:addWorker.handicapCodeValidate()" class="easyui-linkbutton" iconCls="icon-search">调取残疾人信息</a> 
+							<a href="javascript:addWorker.empty()" class="easyui-linkbutton" iconCls="icon-reload">清空</a>
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<td class="">姓名:</td>
@@ -492,9 +517,9 @@
 					<td class="">现任岗位:</td>
 					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
 					</td>
-					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
-					<td>
-						<input type="checkbox" id="isCadreChecked" style="height:auto;" />
+					<td colspan="2" class="" style="text-align:right:padding-right:12px;">
+						干部:&nbsp;&nbsp;<input type="checkbox" id="isCadreChecked" style="height:auto;" />&nbsp;&nbsp; 
+						忽略年龄:&nbsp;&nbsp;<input title="勾选上以后, 年龄校验没有上限." onclick="clickIgnoreAge()" type="checkbox" id="ignoreAge" style="height:auto;" />
 					</td>
 				</tr>
 				<tr>

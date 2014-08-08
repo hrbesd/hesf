@@ -8,7 +8,6 @@ package com.esd.cs.worker;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -240,6 +239,7 @@ public class WorkerController {
 			tempWorker.setCurrentJob(worker.getCurrentJob());
 			tempWorker.setRemark(worker.getRemark());
 			tempWorker.setIsCadre(worker.getIsCadre());
+			tempWorker.setIsProfessor(worker.getIsProfessor());
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
@@ -272,6 +272,18 @@ public class WorkerController {
 		worker.setPhone(request.getParameter("phone"));
 		worker.setCurrentJob(request.getParameter("currentJob"));
 		worker.setRemark(request.getParameter("remark"));
+		// 干部
+		if ("1".equals(request.getParameter("isCadre"))) {
+			worker.setIsCadre(Boolean.TRUE);
+		} else {
+			worker.setIsCadre(Boolean.FALSE);
+		}
+		// 老教授
+		if ("1".equals(request.getParameter("isProfessor"))) {
+			worker.setIsProfessor(Boolean.TRUE);
+		} else {
+			worker.setIsProfessor(Boolean.FALSE);
+		}
 		// 年审年度
 		String year = request.getParameter("year");
 		// 公司id
@@ -296,6 +308,8 @@ public class WorkerController {
 			tempWorker.setRemark(worker.getRemark());
 			tempWorker.setPic(picfile.getBytes());
 			tempWorker.setPicTitle(picfile.getOriginalFilename());
+			tempWorker.setIsCadre(worker.getIsCadre());
+			tempWorker.setIsProfessor(worker.getIsProfessor());
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
@@ -363,9 +377,9 @@ public class WorkerController {
 		worker.setCurrentJob(request.getParameter("currentJob"));
 		worker.setRemark(request.getParameter("remark"));
 		String isCadreStr = request.getParameter("isCadre");
-		if("1".equals(isCadreStr)){
+		if ("1".equals(isCadreStr)) {
 			worker.setIsCadre(Boolean.TRUE);
-		}else{
+		} else {
 			worker.setIsCadre(Boolean.FALSE);
 		}
 		// 公司id
@@ -1132,13 +1146,13 @@ public class WorkerController {
 		// ①如果先前的员工id存在, 则对其进行更新, 然后插入到企业员工关系表中
 		if (wt.getPreId() != null && wt.getPreId() > 0) {
 			Worker w = workerService.getByPrimaryKey(wt.getPreId());
-			w.setWorkerName(wt.getWorkerName());	//名字
-			w.setCurrentJob(wt.getCurrentJob());	//目前工作
-			w.setCareerCard(wt.getCareerCard());	//就业证号
-			w.setPhone(wt.getPhone());	//联系电话
-			w.setIsCadre(wt.getIsCadre());	//是否干部
-			//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
-			if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+			w.setWorkerName(wt.getWorkerName()); // 名字
+			w.setCurrentJob(wt.getCurrentJob()); // 目前工作
+			w.setCareerCard(wt.getCareerCard()); // 就业证号
+			w.setPhone(wt.getPhone()); // 联系电话
+			w.setIsCadre(wt.getIsCadre()); // 是否干部
+			// 检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+			if (wt.getPicTitle() != null && !"".equals(wt.getPicTitle())) {
 				w.setPicTitle(wt.getPicTitle());
 				w.setPic(wtService.getPicByPrimaryKey(wt.getId()));
 			}
@@ -1168,13 +1182,13 @@ public class WorkerController {
 				.getWorkerHandicapLevel()));
 		worker.setWorkerHandicapType(new WorkerHandicapType(wt
 				.getWorkerHandicapType()));
-		worker.setCurrentJob(wt.getCurrentJob());	//目前工作
-		worker.setCareerCard(wt.getCareerCard());	//就业证号
-		worker.setPhone(wt.getPhone());	//联系电话
-		worker.setIsCadre(wt.getIsCadre());	//是否干部
+		worker.setCurrentJob(wt.getCurrentJob()); // 目前工作
+		worker.setCareerCard(wt.getCareerCard()); // 就业证号
+		worker.setPhone(wt.getPhone()); // 联系电话
+		worker.setIsCadre(wt.getIsCadre()); // 是否干部
 		worker.setUserId(userId);
-		//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
-		if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+		// 检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+		if (wt.getPicTitle() != null && !"".equals(wt.getPicTitle())) {
 			worker.setPicTitle(wt.getPicTitle());
 			byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
 			worker.setPic(pic);

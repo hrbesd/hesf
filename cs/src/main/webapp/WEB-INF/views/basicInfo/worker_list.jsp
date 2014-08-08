@@ -57,8 +57,8 @@
 			width : 300,
 			formatter : function(value,row,index){
 				var head = row.workerName;
-				var cadreMaleHeadImg = '<img src="${contextPath}/images/cadre_male.png" style="width:15px;height:20px;" title="干部"/>';
-				var cadreFemaleHeadImg = '<img src="${contextPath}/images/cadre_female.png" style="width:15px;height:20px;" title="干部"/>';
+				var cadreMaleHeadImg = '<img src="${contextPath}/images/cadre_male.png" style="width:15px;height:20px;" title="男干部"/>';
+				var cadreFemaleHeadImg = '<img src="${contextPath}/images/cadre_female.png" style="width:15px;height:20px;" title="女干部"/>';
 				if(row.isCadre == true  && row.workerGender == '男'){
 					head = cadreMaleHeadImg + head;
 				}else if(row.isCadre == true  && row.workerGender == '女'){
@@ -155,7 +155,11 @@
 	 职工年龄检测
 	 **/
 	workerList.ageDetection = function(value, row, index) {
-		if(row.isCadre){
+		//如果是老教授的话, 则不做修饰
+		if(row.isProfessor){
+			
+		}else if(row.isCadre){
+			//如果是干部的话, 则按干部标准进行年龄判断
 			if (row.workerGender == '男') {
 				if (row.workerAge >= $('#retireAgeCadreMale').val()) {
 					return 'background-color:red;font-weight: bold;';
@@ -167,6 +171,7 @@
 				}
 			}
 		}else{
+			//如果是员工的话, 则按员工标准进行年龄判断
 			if (row.workerGender == '男') {
 				if (row.workerAge >= $('#retireAgeMale').val()) {
 					return 'background-color:red;font-weight: bold;';
