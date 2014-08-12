@@ -140,7 +140,8 @@ esd.common.datagrid = function(grid, url, toolbar, columns, params) {
 /**
  * 创建通用的列表控件
  */
-esd.common.datagrid = function(grid, url, toolbar, columns, params, onLoadSuccess) {
+esd.common.datagrid = function(grid, url, toolbar, columns, params,
+		onLoadSuccess) {
 
 	$(grid).datagrid({
 		url : url,
@@ -354,11 +355,10 @@ window.onkeydown = function(event) {
 	}
 };
 /**
- * 自定义没有关闭按钮的alert框
- * 适用于关闭当前默认打开的窗口
- * */
-//重写的alert
-esd.common.noCloseButtonDialog = function(title,msg){
+ * 自定义没有关闭按钮的alert框 适用于关闭当前默认打开的窗口
+ */
+// 重写的alert
+esd.common.noCloseButtonDialog = function(title, msg) {
 	$('body').append('<div id="dd"></div>');
 	$('#dd').dialog({
 		title : title,
@@ -368,39 +368,58 @@ esd.common.noCloseButtonDialog = function(title,msg){
 		closable : false,
 		cache : false,
 		modal : true,
-		content : '<p style="text-indent:2em;">'+ msg + '</p>',
+		content : '<p style="text-indent:2em;">' + msg + '</p>',
 		bodyCls : 'noCloseButtonDialogBody',
-	/*	toolbar : [{
-			text : '添加',
-			iconCls : 'icon-add',
-			handler : function(){
-				alert('add!');
-			}
-		},{
-			text : '提交',
-			iconCls : 'icon-ok',
-			handler : function(){
-				alert('ok!');
-			}
-		}],	*/
-		buttons : [{
+		/*
+		 * toolbar : [{ text : '添加', iconCls : 'icon-add', handler : function(){
+		 * alert('add!'); } },{ text : '提交', iconCls : 'icon-ok', handler :
+		 * function(){ alert('ok!'); } }],
+		 */
+		buttons : [ {
 			text : '确定',
-			handler : function(){
+			handler : function() {
 				$('#dd').window('close');
 				esd.common.defaultOpenWindowClose();
 			}
-		}]
+		} ]
 	});
 };
 
 /**
  * 预定义字符串
- **/
-esd.common.unknown = function(){
+ */
+esd.common.unknown = function() {
 	return '未知';
 };
 
 /**
  * id最大值, 提供给查询中的下载所有数据使用
  */
-esd.common.maxInteger=[2147483647];
+esd.common.maxInteger = [ 2147483647 ];
+
+/**
+ * 将数字转化为每三位用逗号分开的格式
+ */
+esd.common.fmoney = function(s, n) {
+	var s; // 数字字符串
+	var l; // 单个字符的数组
+	var t = '';
+	// 如果n为零, 则表示对整数记性千位的划分
+	if (n != null && n == 0) {
+		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed() + "";
+		l = s.split("").reverse();
+		for (i = 0; i < l.length; i++) {
+			t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		}
+		return t.split("").reverse().join("");
+	} else if (n != null && n > 0) {
+		s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+		var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+		t = "";
+		for (i = 0; i < l.length; i++) {
+			t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+		}
+		return t.split("").reverse().join("") + "." + r;
+	}
+	return s;
+};
