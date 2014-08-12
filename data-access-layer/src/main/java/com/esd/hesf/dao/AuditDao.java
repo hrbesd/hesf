@@ -76,4 +76,20 @@ public interface AuditDao extends BaseDao<Audit> {
 	 * @return
 	 */
 	List<Audit> retrieveByPrimaryKeys(Map<String, Object> map);
+
+	/**
+	 * 根据公司id, 审核年份 查询该公司小于该年的历史审核数据
+	 * 
+	 * @param map
+	 * @return
+	 */
+	List<Audit> retrieveHistory(Map<String, Object> map);
+
+	/**
+	 * 根据公司id, 审核年份 查询该公司小于该年的历史审核数据总条数
+	 * 
+	 * @param map
+	 * @return
+	 */
+	Integer retrieveHistoryCount(Map<String, Object> map);
 }

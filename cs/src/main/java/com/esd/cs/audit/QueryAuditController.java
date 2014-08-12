@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +44,6 @@ public class QueryAuditController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(QueryWorkerController.class);
 
-	
 	@Autowired
 	private AuditService auditService;
 
@@ -206,19 +206,22 @@ public class QueryAuditController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@RequestParam(value = "params[]") Integer idArr[], @RequestParam(value="year") String year,HttpServletRequest request) {
-		logger.debug("exportAudit:{}", idArr+"");
+	public String export(@RequestParam(value = "params[]") Integer idArr[],
+			@RequestParam(value = "year") String year,
+			HttpServletRequest request) {
+		logger.debug("exportAudit:{}", idArr + "");
 		boolean b = true;
 		List<Audit> auditList = null;
-		if(idArr[0] == Integer.MAX_VALUE){
+		if (idArr[0] == Integer.MAX_VALUE) {
 			auditList = new ArrayList<Audit>();
 			Audit param = new Audit();
 			param.setYear(year);
-			for(Audit c:auditService.getPaginationRecords(param, Constants.PAGE_START, Integer.MAX_VALUE).getRecords()){
+			for (Audit c : auditService.getPaginationRecords(param,
+					Constants.PAGE_START, Integer.MAX_VALUE).getRecords()) {
 				auditList.add(c);
 			}
-		}else{
-			auditList= auditService.getByIds(idArr);
+		} else {
+			auditList = auditService.getByIds(idArr);
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
@@ -226,7 +229,7 @@ public class QueryAuditController {
 		if (!(downloadPath.exists())) {
 			downloadPath.mkdir();
 		}
-		
+
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
 		String exportPath = downloadPath + File.separator + uuid + ".xls";
@@ -234,10 +237,67 @@ public class QueryAuditController {
 		// 导出文件
 		b = PoiCreateExcel.createAuditExcel(exportPath, auditList);
 		if (b) {
-			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			String destPath = request.getLocalAddr() + ":"
+					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
 		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArr);
 		return FileDownloadPath;
 	}
+
+	/**
+	 * 跳转到查看某公司的历史审核数据页面中
+	 * 
+	 * @param companyId
+	 * @param year
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/history/{companyId}/{year}", method = RequestMethod.GET)
+	public ModelAndView queryAuditHistoryList(
+			@PathVariable(value = "companyId") Integer companyId,
+			@PathVariable(value = "year") String year,
+			HttpServletRequest request) {
+		request.setAttribute("companyId", companyId);
+		request.setAttribute("year", year);
+		return new ModelAndView("audit/history_list");
+	}
+
+	@RequestMapping(value = "/history")
+	public Map<String, Object> queryHistoryList(
+			HttpServletRequest request) {
+		Integer companyId = Integer.parseInt(request.getParameter("companyId"));
+		String year = request.getParameter("year");
+		PaginationRecordsAndNumber<Audit, Number> history = auditService
+				.getHistory(companyId, year);
+		// 返回的结果集
+		Map<String, Object> entity = new HashMap<String, Object>();
+
+		// 装迭代起来的审核数据的list
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		for (Iterator<Audit> iterator = history.getRecords().iterator(); iterator
+				.hasNext();) {
+			Audit it = iterator.next();
+			Map<String, Object> map = new HashMap<>();
+			map.put("id", it.getId());// id
+			map.put("year", it.getYear());	//审核年度
+			map.put("companyEmpTotal", it.getCompanyEmpTotal());// 企业员工总人数
+			map.put("companyHandicapTotal", it.getCompanyHandicapTotal());	//残疾职工总人数
+			map.put("companyShouldTotal", it.getCompanyShouldTotal());	//应安排人数
+			map.put("companyAlreadyTotal", it.getCompanyAlreadyTotal());	//已安排人数
+			map.put("amountPayable", it.getAmountPayable());	//应缴金额
+			map.put("reductionAmount", it.getReductionAmount()); //减缴金额
+			map.put("remainAmount",it.getRemainAmount()); //上年度未缴金额
+			map.put("complementAmount", it.getComplementAmount());	//补缴金额
+			map.put("delayPayAmount", it.getDelayPayAmount()); //滞纳金
+			map.put("isDelayPay", it.getIsDelayPay()); //是否减免滞纳金
+			map.put("payAmount", it.getPayAmount()); //实缴总金额
+			map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());	//审核状态
+			list.add(map);
+		}
+		entity.put("rows", list);
+		entity.put("total", history.getNumber());
+		return entity;
+	}
+
 }

@@ -400,6 +400,8 @@ public class CompayController {
 			map.put("companyEconomyType", c.getCompanyEconomyType()
 					.getCompanyEconomyType());// 经济类型
 			map.put("companyArea", c.getArea().getName());// 地区
+			map.put("companyAddress", c.getCompanyAddress()); //地址
+			map.put("companyLegal", c.getCompanyLegal()); //法人/联系人
 			Audit audit = auditService.getByPrimaryKey(year, companyId);
 			if (audit == null) {
 				logger.error("get_comapnmy_information:{}", "null");

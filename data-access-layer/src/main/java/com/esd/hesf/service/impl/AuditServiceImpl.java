@@ -395,4 +395,31 @@ public class AuditServiceImpl implements AuditService {
 		return prn;
 	}
 
+	@Override
+	public PaginationRecordsAndNumber<Audit, Number> getHistory(
+			Integer companyId, String year) {
+		if (companyId == null || year == "") {
+			return null;
+		}
+		// 将参数放入到audit对象中
+		Audit audit = new Audit();
+		audit.setCompany(new Company(companyId));
+		audit.setYear(year);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("audit", audit);
+		// 起始索引值
+		map.put("start", Constants.START);
+		// 返回量
+		map.put("size", Constants.SIZE);
+		// 返回的数据
+		List<Audit> list = dao.retrieveHistory(map);
+		// 数据条数
+		int count = dao.retrieveHistoryCount(map);
+		// 将信息和数据总条数放入PaginationRecordsAndNumber对象中
+		PaginationRecordsAndNumber<Audit, Number> prn = new PaginationRecordsAndNumber<Audit, Number>();
+		prn.setNumber(count);
+		prn.setRecords(list);
+		return prn;
+	}
+
 }

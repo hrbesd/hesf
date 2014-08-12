@@ -65,14 +65,15 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	String[] getAuditYears();
-	
+
 	/**
 	 * 根据审核年份, 查询该审核年份存在多少条审核数据
+	 * 
 	 * @param year
 	 * @return
 	 */
 	Integer getCountByYear(String year);
-	
+
 	/**
 	 * 根据多个id, 查询审核数据列表
 	 * 
@@ -80,15 +81,27 @@ public interface AuditService extends BaseService<Audit> {
 	 * @return
 	 */
 	List<Audit> getByIds(Integer[] ids);
-	
+
 	/**
 	 * 多条件查询 公司审核数据中 预定人数大于 0 的数据
 	 * 
 	 * @param map
-	 *            --map中放入:year--审核年份; companyName--公司名称; companyCode--档案号, isPredetermine--Boolean 是否计算预定人数大于0
-	 *            start--页数; size--返回量.
+	 *            --map中放入:year--审核年份; companyName--公司名称; companyCode--档案号,
+	 *            isPredetermine--Boolean 是否计算预定人数大于0 start--页数; size--返回量.
 	 * @return
 	 */
 	PaginationRecordsAndNumber<Audit, Number> getRepealPredict(
 			Map<String, Object> map);
+
+	/**
+	 * 根据公司id, 审核年份, 查询小于该审核年份的所有历史数据
+	 * 
+	 * @param companyId
+	 *            公司id
+	 * @param year
+	 *            审核年份
+	 * @return
+	 */
+	PaginationRecordsAndNumber<Audit, Number> getHistory(Integer companyId,
+			String year);
 }

@@ -46,7 +46,11 @@
 		<c:if test="${process==3}">
 			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
+		<!-- 往年审核数据 -->
+		<div title="历史数据" data-options="href:'query/audit/history/${entity.company.id }/${entity.year }'"></div>
+		
 		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
+			
 	</div>
 </div>
 
