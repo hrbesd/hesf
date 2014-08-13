@@ -34,7 +34,7 @@
 	};
 	
 	//定义绑定上传按钮事件
-	var button = $('#picfile'),interval;
+	var button = $('#picFileImport'),interval;
 	
 	//提示文字
 	var loadingWords = ['数','据','校','验','中',',','请','稍','后','.','.','.'];
@@ -214,10 +214,8 @@
 		<table>
 			<tr>
 				<td>
-					<input type="button" name="file" value="选择文件" id="picfile" display="none"/>
+					<input type="button" name="file" value="选择文件" id="picFileImport"/>
 					<input type="text" readonly="readonly" id="picfileTitle" style="border:none;width:350px;color:blue;"/>
-				</td>
-				<td>
 				</td>
 			</tr>
 		</table>
