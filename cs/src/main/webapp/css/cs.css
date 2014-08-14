@@ -120,8 +120,8 @@ textarea {
 
 .printOverAll {
 	text-align: center;
-	margin: auto 20px;
-	margin-top: 30px;
+	margin: auto 10px;
+	margin-top: 15px;
 }
 
 .printOverAllTitle {
@@ -199,7 +199,7 @@ textarea {
 }
 /*增加残疾职工*/
 .addWorkerForm {
-	margin-top: 35px;
+	margin-top: 20px;
 }
 
 .addWorkerForm td {
