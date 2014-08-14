@@ -21,6 +21,8 @@
 		<result column="w_is_professor" jdbcType="BIT" property="isProfessor" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
  		<result column="w_pic_title" jdbcType="VARCHAR" property="picTitle" />
+ 		<result column="w_salary" jdbcType="DECIMAL" property="salary" />
+ 		<result column="w_pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
@@ -62,7 +64,8 @@
 		w.current_job as w_current_job, w.worker_address as w_worker_address,
 		w.worker_handicap_code as w_worker_handicap_code,
 		w.is_college as w_is_college, w.is_retired as w_is_retired, w.is_cadre as w_is_cadre,
-		w.is_professor as w_is_professor, w.remark as w_remark, w.pic_title as w_pic_title, 
+		w.is_professor as w_is_professor, w.remark as w_remark, w.pic_title as w_pic_title,
+		w.salary as w_salary, w.pension_insurance as w_pension_insurance,
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -94,7 +97,7 @@
 		phone, current_job, worker_address,
 		area_code, worker_handicap_code, worker_handicap_type,
 		worker_handicap_level, is_college, is_retired, is_cadre, is_professor, 
-		remark, pic_title, pic, create_time,
+		remark, pic_title, pic, salary, pension_insurance, create_time,
 		update_time, user_id, is_active,
 		version)
 		values (#{workerName,jdbcType=VARCHAR},
@@ -109,6 +112,7 @@
 		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
 		#{isCadre, jdbcType=BIT},#{isProfessor, jdbcType=BIT},
 		#{remark,jdbcType=VARCHAR}, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB}, 
+		#{salary, jdbcType=DECIMAL}, #{pension_insurance, jdbcType=DECIMAL}, 
 		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
 	</insert>
 
@@ -183,6 +187,12 @@
 			</if>
 			<if test="pic != null">
 				pic,
+			</if>
+			<if test="salary != null">
+				salary,
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance,
 			</if>
 				create_time,
 				update_time,
@@ -260,6 +270,12 @@
 			</if>
 			<if test="pic != null">
 				#{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				#{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				#{pensionInsurance, jdbcType=DECIMAL},
 			</if>
 			now(),now(),
 			<if test="userId != null">
@@ -354,6 +370,12 @@
 			</if>
 			<if test="pic != null">
 				pic = #{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				salary = #{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance = #{pensionInsurance, jdbcType=DECIMAL},
 			</if>
 			update_time = now(),
 			<if test="userId != null">

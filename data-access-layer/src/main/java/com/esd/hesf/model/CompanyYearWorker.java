@@ -1,5 +1,7 @@
 package com.esd.hesf.model;
 
+import java.math.BigDecimal;
+
 /**
  * 企业--残疾员工 关系表
  * 
@@ -12,10 +14,14 @@ public class CompanyYearWorker extends PrimaryKey_Int {
 	private Integer workerId; // 员工id
 	private Integer companyId; // 公司id
 	private String currentJob; // 当前工作
+	private BigDecimal salary; // 当前工资
+	private BigDecimal pensionInsurance; // 养老保险
 
 	@Override
 	public String toString() {
-		return "CompanyYearWorker [year=" + year + ", workerId=" + workerId + ", companyId=" + companyId + ", currentJob=" + currentJob + "]";
+		return "CompanyYearWorker [year=" + year + ", workerId=" + workerId
+				+ ", companyId=" + companyId + ", currentJob=" + currentJob
+				+ "]";
 	}
 
 	public String getYear() {
@@ -48,6 +54,22 @@ public class CompanyYearWorker extends PrimaryKey_Int {
 
 	public void setCurrentJob(String currentJob) {
 		this.currentJob = currentJob;
+	}
+
+	public BigDecimal getSalary() {
+		return salary;
+	}
+
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+
+	public BigDecimal getPensionInsurance() {
+		return pensionInsurance;
+	}
+
+	public void setPensionInsurance(BigDecimal pensionInsurance) {
+		this.pensionInsurance = pensionInsurance;
 	}
 
 }

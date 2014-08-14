@@ -1,5 +1,7 @@
 package com.esd.hesf.model;
 
+import java.math.BigDecimal;
+
 /**
  * 员工信息类
  * 
@@ -28,6 +30,8 @@ public class Worker extends PrimaryKey_Int {
 	private String remark;// 备注
 	private String picTitle; // 精神残疾的图片 图片名
 	private byte[] pic; // 精神残疾的图片
+	private BigDecimal salary; // 当前工资
+	private BigDecimal pensionInsurance; // 养老保险
 
 	public Worker() {
 	}
@@ -209,6 +213,22 @@ public class Worker extends PrimaryKey_Int {
 
 	public void setPic(byte[] pic) {
 		this.pic = pic;
+	}
+
+	public BigDecimal getSalary() {
+		return salary;
+	}
+
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+
+	public BigDecimal getPensionInsurance() {
+		return pensionInsurance;
+	}
+
+	public void setPensionInsurance(BigDecimal pensionInsurance) {
+		this.pensionInsurance = pensionInsurance;
 	}
 
 }

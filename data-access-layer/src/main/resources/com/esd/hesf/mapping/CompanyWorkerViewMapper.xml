@@ -78,6 +78,8 @@
 		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
 		<result column="w_is_cadre" jdbcType="BIT" property="isCadre" />
 		<result column="w_is_professor" jdbcType="BIT" property="isProfessor" />
+		<result column="w_salary" jdbcType="DECIMAL" property="salary" />
+		<result column="w_pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
 		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -130,7 +132,7 @@
 	<sql id="Column_List_worker">
 		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_birth_year, w_worker_id_card, 
 		w_career_card, w_phone, w_current_job, w_worker_address, w_worker_handicap_code, w_is_college, 
-		w_is_retired, w_is_cadre, w_is_professor, w_remark, w_create_time, w_update_time,
+		w_is_retired, w_is_cadre, w_is_professor, w_salary, w_pension_insurance, w_remark, w_create_time, w_update_time,
 		w_user_id, w_is_active, w_version
 		<!-- handicap type -->
 		t_id, t_handicap_type,
@@ -259,6 +261,7 @@
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
 		w.is_college as w_is_college, w.is_retired as w_is_retired, 
 		w.is_cadre as w_is_cadre, w.is_professor as w_is_professor, 
+		w.salary as w_salary, w_pension_insurance as w_pension_insurance, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
@@ -451,7 +454,8 @@
 				c.company_remark as c_company_remark, c.create_time as c_create_time, 
 				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version, 
 		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_id as cyw_company_id,
-				cyw.current_job as cyw_current_job, cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
+				cyw.current_job as cyw_current_job, cyw.salary as cyw_salary, cyw.pension_insurance as cyw_pension_insurance, 
+				cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
 				cyw.is_active as cyw_is_active, cyw.user_id as cyw_user_id,
 		w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
 				w_worker_gender, w.worker_birth as w_worker_birth, w.worker_birth_year as w_worker_birth_year, w.worker_id_card as
@@ -459,6 +463,7 @@
 				w.current_job as w_current_job, w.worker_address as w_worker_address,
 				w.worker_handicap_code as w_worker_handicap_code, w.is_college as w_is_college, w.is_retired as w_is_retired,
 				w.is_cadre as w_is_cadre, w.is_professor as w_is_professor, 
+				w.salary as w_salary, w.pension_insurance as w_pension_insurance, 
 				w.remark as w_remark, w.create_time as w_create_time, w.update_time as w_update_time,
 				w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		t.id as t_id, t.handicap_type as t_handicap_type,

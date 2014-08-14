@@ -34,9 +34,30 @@
 		//是否干部
 		var isCadreEdit = $('#isCadreEdit').attr('checked');
 		if(isCadreEdit){
-			params.isCadre = true;
+			params.isCadre = 1;
 		}else{
-			params.isCadre = false;
+			params.isCadre = 0;
+		}
+		//是否忽略年龄, 即是否是老教授
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			params.isProfessor = 1;
+		}else{
+			params.isProfessor = 0;
+		}
+		//工资
+		var salary = $('#salary').val();
+		if(salary == null || salary == ''){
+			params.salary = 0;
+		}else{
+			params.salary = salary;
+		}
+		//养老保险
+		var pensionInsurance = $('#pensionInsurance').val();
+		if(pensionInsurance == null || pensionInsurance == ''){
+			params.pensionInsurance = 0;
+		}else{
+			params.pensionInsurance = pensionInsurance;
 		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
@@ -53,7 +74,7 @@
 	 * 异步上传带照片的员工的数据
 	 */
 	var ajaxUploadPic = new AjaxUpload(button, {
-		action: '${contextPath}/security/worker/addWithPic',
+		action: '${contextPath}/security/worker/editWorkerTempWithPic',
 		name: 'picfile',//更改上传的文件名
 		autoSubmit:false,
 		type:'POST',
@@ -74,7 +95,10 @@
 				'phone':params.phone, //电话
 				'currentJob':params.currentJob, //部门
 				'remark':params.remark, //备注
-				'isCadre':params.isCadre	//是否干部
+				'isCadre':params.isCadre,	//是否干部
+				'isProfessor':params.isProfessor,	//是否是老教授
+				'salary':params.salary,	//工资
+				'pensionInsurance':params.pensionInsurance //养老保险
 			});
 		},
 		onComplete : function(file,response){
@@ -116,7 +140,10 @@
 					'phone':params.phone, //电话
 					'currentJob':params.currentJob, //部门
 					'remark':params.remark, //备注
-					'isCadre':params.isCadre	//是否干部
+					'isCadre':params.isCadre,	//是否干部
+					'isProfessor':params.isProfessor,	//是否是老教授
+					'salary':params.salary,	//工资
+					'pensionInsurance':params.pensionInsurance //养老保险
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -138,6 +165,16 @@
 		 
 	};
 	
+	//忽略年龄校验复选框 点击时间
+	var clickIgnoreAge = function(){
+		// 忽略年龄  选中的话, 干部也选中且只读
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			$('#isCadreEdit').attr('checked',true).attr('disabled',true);
+		}else{
+			$('#isCadreEdit').attr('checked',false).attr('disabled',false);
+		}
+	};
 	
 	
 	/**
@@ -253,8 +290,19 @@
 						<input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" value="${worker.currentJob }"/>
 					</td>
 					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
+					<td style="text-align:right:padding-right:12px;">
+						干部:&nbsp;&nbsp;<input type="checkbox" id="isCadreEdit" style="height:auto;" <c:if test="${worker.isCadre == true }">checked="checked"</c:if>/>&nbsp;&nbsp; 
+						忽略年龄:&nbsp;&nbsp;<input title="勾选上以后, 年龄校验没有上限." onclick="clickIgnoreAge()" type="checkbox" id="ignoreAge" style="height:auto;" <c:if test="${worker.isProfessor == true }">checked="checked"</c:if>/>
+					</td>
+				</tr>
+				<tr>
+					<td >工资:</td>
 					<td>
-						<input type="checkbox" id="isCadreEdit" style="height:auto;" <c:if test="${worker.isCadre == true }">checked="checked"</c:if> />
+						<input class="easyui-validatebox" type="text" name="salary" id="salary" value="${worker.salary }"/>
+					</td>
+					<td>养老保险:</td>
+					<td colspan="3">
+						<input class="easyui-validatebox" type="text" name="pensionInsurance" id="pensionInsurance" value="${worker.pensionInsurance }" />
 					</td>
 				</tr>
 				<tr>

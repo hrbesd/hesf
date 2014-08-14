@@ -8,6 +8,8 @@
 		<result column="cyw_worker_id" jdbcType="INTEGER" property="workerId" />
 		<result column="cyw_company_id" jdbcType="VARCHAR" property="companyId" />
 		<result column="cyw_current_job" jdbcType="VARCHAR" property="currentJob" />
+		<result column="cyw_salary" jdbcType="DECIMAL" property="salary" />
+		<result column="cyw_pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
 		<result column="cyw_create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="cyw_update_time" jdbcType="TIMESTAMP" property="updateTime" />
 		<result column="cyw_is_active" jdbcType="BIT" property="isActive" />
@@ -16,17 +18,20 @@
 	
 	<sql id="Base_Column_List">
 		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_id as cyw_company_id,
-		cyw.current_job as cyw_current_job, cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
+		cyw.current_job as cyw_current_job, 
+		cyw.salary as cyw_salary, cyw.pension_insurance as cyw_pension_insurance,
+		cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
 		cyw.is_active as cyw_is_active, cyw.user_id as cyw_user_id
 	</sql>
 	
 	<!-- insert -->
 	<insert id="insert" parameterType="com.esd.hesf.model.CompanyYearWorker">
 		insert into company_year_worker (year, worker_id,
-		company_id, current_job, create_time,
+		company_id, current_job, salary, pension_insurance, create_time,
 		update_time, is_active, user_id )
 		values (#{year,jdbcType=CHAR}, #{workerId,jdbcType=INTEGER},
 		#{companyId,jdbcType=INTEGER}, #{currentJob,jdbcType=VARCHAR},
+		#{salary, jdbcType=DECIMAL}, #{pensionInsurance, jdbcType=DECIMAL},
 		now(),now(),default,#{userId,jdbcType=INTEGER} )
 	</insert>
 	
@@ -44,6 +49,12 @@
 			</if>
 			<if test="currentJob != null">
 				current_job,
+			</if>
+			<if test="salary != null">
+				salary,
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance,
 			</if>
 			create_time, update_time, 
 			<if test="isActive != null">
@@ -65,6 +76,12 @@
 			</if>
 			<if test="currentJob != null">
 				#{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="salary != null">
+				#{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				#{pensionInsurance, jdbcType=DECIMAL},
 			</if>
 			now(),now(),
 			<if test="isActive != null">
@@ -145,6 +162,12 @@
 			</if>
 			<if test="currentJob != null">
 				current_job = #{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="salary != null">
+				salary = #{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance = #{pensionInsurance, jdbcType=DECIMAL},
 			</if>
 			update_time = now(),
 			<if test="isActive != null">

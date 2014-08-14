@@ -42,6 +42,27 @@
 		}else{
 			params.isCadre = 0;
 		}
+		//是否忽略年龄, 即是否是老教授
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			params.isProfessor = 1;
+		}else{
+			params.isProfessor = 0;
+		}
+		//工资
+		var salary = $('#salary').val();
+		if(salary == null || salary == ''){
+			params.salary = 0;
+		}else{
+			params.salary = salary;
+		}
+		//养老保险
+		var pensionInsurance = $('#pensionInsurance').val();
+		if(pensionInsurance == null || pensionInsurance == ''){
+			params.pensionInsurance = 0;
+		}else{
+			params.pensionInsurance = pensionInsurance;
+		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
 			remark = esd.common.unknown();
@@ -83,7 +104,10 @@
 				'remark':params.remark, //备注
 				'companyId':params.companyId,
 				'year':params.year,	//审核年
-				'isCadre':params.isCadre	//是否干部
+				'isCadre':params.isCadre,	//是否干部
+				'isProfessor':params.isProfessor,	//是否是老教授
+				'salary':params.salary,	//工资
+				'pensionInsurance':params.pensionInsurance //养老保险
 			});
 		},
 		onComplete : function(file,response){
@@ -128,7 +152,10 @@
 					'remark':params.remark, //备注
 					'companyId':params.companyId,
 					'year':params.year,	//审核年
-					'isCadre':params.isCadre	//是否干部
+					'isCadre':params.isCadre,	//是否干部
+					'isProfessor':params.isProfessor,	//是否是老教授
+					'salary':params.salary,	//工资
+					'pensionInsurance':params.pensionInsurance //养老保险
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -167,7 +194,9 @@
 		$("#addWorkerForm #workerBirth").val("");//出生日期
 		$("#addWorkerForm #careerCard").val("");//就业证号
 		$("#addWorkerForm #phone").val("");//电话
-		$("#addWorkerForm #currentJob").val("");//部门
+		$("#addWorkerForm #currentJob").val("");//
+		$("#addWorkerForm #salary").val("");//薪资
+		$("#addWorkerForm #pensionInsurance").val("");// 养老保险
 		$("#addWorkerForm #remark").val("");//备注
 		$("#addWorkerForm #verification").val("");//验证
 		$("#workerGender").combobox("setValue", "1");//性别
@@ -292,28 +321,32 @@
 				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
 				return false;
 		}
-		if (sex % 2 === 0) {
-			//偶数 女性职工
-			$("#workerGender").combobox("setValue", "0");
-			//如果为干部, 则用女干部退休年龄判断, 否则使用职工退休年龄判断
-			var isCadre = $('#isCadreChecked').attr('checked');
-			if(isCadre){
-				if(age >= $("#retireAgeCadreFemale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过干部退休年龄', 'error');
+		// 如果忽略年龄 复选框被选中的话, 则不进行年龄上限的验证;没有被选中时, 才进行年龄上限的验证.
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(!ignoreAge){
+			if (sex % 2 === 0) {
+				//偶数 女性职工
+				$("#workerGender").combobox("setValue", "0");
+				//如果为干部, 则用女干部退休年龄判断, 否则使用职工退休年龄判断
+				var isCadre = $('#isCadreChecked').attr('checked');
+				if(isCadre){
+					if(age >= $("#retireAgeCadreFemale").val()){
+						$.messager.alert('消息', '干部年龄：'+age+'岁，性别：女性。去年已超过干部退休年龄', 'error');
+						return false;
+					}
+				}else{
+					if(age >= $("#retireAgeFemale").val()){
+						$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
+						return false;
+					}
+				}
+			} else {
+				//奇数 男性
+				$("#workerGender").combobox("setValue", "1");
+					if(age >= $("#retireAgeMale").val()){
+						$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。去年已超过退休年龄', 'error');
 					return false;
 				}
-			}else{
-				if(age >= $("#retireAgeFemale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：女性。去年已超过退休年龄', 'error');
-					return false;
-				}
-			}
-		} else {
-			//奇数 男性
-			$("#workerGender").combobox("setValue", "1");
-				if(age >= $("#retireAgeMale").val()){
-					$.messager.alert('消息', '职工年龄：'+age+'岁，性别：男性。去年已超过退休年龄'+$("#retireAgeMale").val()+'123', 'error');
-				return false;
 			}
 		}
 		//出生日期
@@ -388,6 +421,12 @@
 					if(data.currentJob != null && data.currentJob != ''){
 						$("#addWorkerForm #currentJob").val(data.currentJob);//现任岗位
 					}
+					if(data.salay != null){
+						$("#addWorkerForm #salay").val(data.salay);//薪资
+					}
+					if(data.pensionInsurance != null){
+						$("#addWorkerForm #pensionInsurance").val(data.pensionInsurance);//现任岗位
+					}
 					if(data.remark != null && data.remark != ''){
 						$("#addWorkerForm #remark").val(data.remark);//备注
 					}
@@ -409,6 +448,16 @@
 		return;
 	};
 	
+	//忽略年龄校验复选框 点击时间
+	var clickIgnoreAge = function(){
+		// 忽略年龄  选中的话, 干部也选中且只读
+		var ignoreAge = $('#ignoreAge').attr('checked');
+		if(ignoreAge){
+			$('#isCadreChecked').attr('checked',true).attr('disabled',true);
+		}else{
+			$('#isCadreChecked').attr('checked',false).attr('disabled',false);
+		}
+	};
 	
 	//组件解析完成
 	$.parser.onComplete = function() {
@@ -498,8 +547,19 @@
 					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
 					</td>
 					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
+					<td style="text-align:right:padding-right:12px;">
+						干部:&nbsp;&nbsp;<input type="checkbox" id="isCadreChecked" style="height:auto;" />&nbsp;&nbsp; 
+						忽略年龄:&nbsp;&nbsp;<input title="勾选上以后, 年龄校验没有上限." onclick="clickIgnoreAge()" type="checkbox" id="ignoreAge" style="height:auto;" />
+					</td>
+				</tr>
+				<tr>
+					<td >工资:</td>
 					<td>
-						<input type="checkbox" id="isCadreChecked" style="height:auto;" />
+						<input class="easyui-validatebox" type="text" name="salary" id="salary"/>
+					</td>
+					<td>养老保险:</td>
+					<td colspan="3">
+						<input class="easyui-validatebox" type="text" name="pensionInsurance" id="pensionInsurance" />
 					</td>
 				</tr>
 				<tr>

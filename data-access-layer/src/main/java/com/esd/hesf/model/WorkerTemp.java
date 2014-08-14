@@ -1,5 +1,7 @@
 package com.esd.hesf.model;
 
+import java.math.BigDecimal;
+
 /**
  * 员工信息缓存类_验证通过的
  * 
@@ -29,6 +31,9 @@ public class WorkerTemp {
 	private Integer preId; // 校验时检出为已经存在的数据, 此字段保存该员工在员工表worker中的真实id
 	private String picTitle; // 精神残疾的图片 图片名
 	private byte[] pic; // 精神残疾的图片
+	private Boolean isProfessor; // 是否是老教授, 终审不退休, 退休年龄在他/她身上不好使!
+	private BigDecimal salary; // 当前工资
+	private BigDecimal pensionInsurance; // 养老保险
 
 	@Override
 	public String toString() {
@@ -211,6 +216,30 @@ public class WorkerTemp {
 
 	public void setPic(byte[] pic) {
 		this.pic = pic;
+	}
+
+	public Boolean getIsProfessor() {
+		return isProfessor;
+	}
+
+	public void setIsProfessor(Boolean isProfessor) {
+		this.isProfessor = isProfessor;
+	}
+
+	public BigDecimal getSalary() {
+		return salary;
+	}
+
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
+
+	public BigDecimal getPensionInsurance() {
+		return pensionInsurance;
+	}
+
+	public void setPensionInsurance(BigDecimal pensionInsurance) {
+		this.pensionInsurance = pensionInsurance;
 	}
 
 }

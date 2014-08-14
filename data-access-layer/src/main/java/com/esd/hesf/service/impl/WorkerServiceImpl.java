@@ -71,6 +71,8 @@ public class WorkerServiceImpl implements WorkerService {
 		cyw.setCompanyId(companyId);
 		cyw.setYear(year);
 		cyw.setCurrentJob(worker.getCurrentJob());
+		cyw.setSalary(worker.getSalary());
+		cyw.setPensionInsurance(worker.getPensionInsurance());
 		cyw.setUserId(worker.getUserId());
 		int k = cywDao.insertSelective(cyw);
 		if (k == 1) {

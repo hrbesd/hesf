@@ -32,12 +32,26 @@
 			currentJob = esd.common.unknown();
 		}
 		params.currentJob = currentJob;
-		//是否干部
+	/*	//是否干部
 		var isCadreEdit = $('#isCadreEdit').attr('checked');
 		if(isCadreEdit){
 			params.isCadre = true;
 		}else{
 			params.isCadre = false;
+		}	*/
+		//工资
+		var salary = $('#salary').val();
+		if(salary == null || salary == ''){
+			params.salary = 0;
+		}else{
+			params.salary = salary;
+		}
+		//养老保险
+		var pensionInsurance = $('#pensionInsurance').val();
+		if(pensionInsurance == null || pensionInsurance == ''){
+			params.pensionInsurance = 0;
+		}else{
+			params.pensionInsurance = pensionInsurance;
 		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
@@ -76,7 +90,10 @@
 				'phone':params.phone, //电话
 				'currentJob':params.currentJob, //部门
 				'remark':params.remark, //备注
-				'isCadre':params.isCadre	//是否干部
+			//	'isCadre':params.isCadre,	//是否是干部
+			//	'isProfessor':params.isProfessor,	//是否是老教授
+				'salary':params.salary,	//工资
+				'pensionInsurance':params.pensionInsurance //养老保险
 			});
 		},
 		onComplete : function(file,response){
@@ -119,7 +136,10 @@
 					'phone':params.phone, //电话
 					'currentJob':params.currentJob, //部门
 					'remark':params.remark, //备注
-					'isCadre':params.isCadre	//是否干部
+			//		'isCadre':params.isCadre,	//是否干部
+			//		'isProfessor':params.isProfessor,	//是否是老教授
+					'salary':params.salary,	//工资
+					'pensionInsurance':params.pensionInsurance //养老保险
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -256,9 +276,18 @@
 					<td>
 						<input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" value="${worker.currentJob }"/>
 					</td>
-					<td class="" style="text-align:right:padding-right:12px;">干部:</td>
+					<td colspan="2">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td >工资:</td>
 					<td>
-						<input type="checkbox" id="isCadreEdit" style="height:auto;" <c:if test="${worker.isCadre == true }">checked="checked"</c:if> />
+						<input class="easyui-validatebox" type="text" name="salary" id="salary" value="${worker.salary }"/>
+					</td>
+					<td>养老保险:</td>
+					<td colspan="3">
+						<input class="easyui-validatebox" type="text" name="pensionInsurance" id="pensionInsurance" value="${worker.pensionInsurance }"/>
 					</td>
 				</tr>
 				<tr>

@@ -49,6 +49,20 @@
 		}else{
 			params.isProfessor = 0;
 		}
+		//工资
+		var salary = $('#salary').val();
+		if(salary == null || salary == ''){
+			params.salary = 0;
+		}else{
+			params.salary = salary;
+		}
+		//养老保险
+		var pensionInsurance = $('#pensionInsurance').val();
+		if(pensionInsurance == null || pensionInsurance == ''){
+			params.pensionInsurance = 0;
+		}else{
+			params.pensionInsurance = pensionInsurance;
+		}
 		var remark = $('#remark').val();
 		if(remark == null || remark == ''){
 			remark = esd.common.unknown();
@@ -90,7 +104,9 @@
 				'companyId':params.companyId,
 				'year':params.year,	//审核年
 				'isCadre':params.isCadre,	//是否干部
-				'isProfessor':params.isProfessor	//是否是老教授
+				'isProfessor':params.isProfessor,	//是否是老教授
+				'salary':params.salary,	//工资
+				'pensionInsurance':params.pensionInsurance //养老保险
 			});
 		},
 		onComplete : function(file,response){
@@ -135,7 +151,9 @@
 					'companyId':params.companyId,
 					'year':params.year,	//审核年
 					'isCadre':params.isCadre,	//是否干部
-					'isProfessor':params.isProfessor	//是否是老教授
+					'isProfessor':params.isProfessor,	//是否是老教授
+					'salary':params.salary,	//工资
+					'pensionInsurance':params.pensionInsurance //养老保险
 				},
 				success : function(data) {
 					if(data == 'true' || data == true){
@@ -172,6 +190,8 @@
 		$("#addWorkerForm #careerCard").val("");//就业证号
 		$("#addWorkerForm #phone").val("");//电话
 		$("#addWorkerForm #currentJob").val("");//部门
+		$("#addWorkerForm #salary").val("");//薪资
+		$("#addWorkerForm #pensionInsurance").val("");// 养老保险
 		$("#addWorkerForm #remark").val("");//备注
 		$("#addWorkerForm #verification").val("");//验证
 		$("#workerGender").combobox("setValue", "1");//性别
@@ -293,8 +313,8 @@
 		var age=$("#nowYear").val()-year;
 		//判断年龄
 		if(age<=16){
-				$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
-				return false;
+			$.messager.alert('消息', '职工年龄过小，不能录入。', 'error');
+			return false;
 		}
 		// 如果忽略年龄 复选框被选中的话, 则不进行年龄上限的验证;没有被选中时, 才进行年龄上限的验证.
 		var ignoreAge = $('#ignoreAge').attr('checked');
@@ -482,48 +502,60 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="">姓名:</td>
+					<td >姓名:</td>
 					<td><input class="easyui-validatebox" type="text" name="workerName" id="workerName" />
 					</td>
-					<td class="">性别:</td>
+					<td >性别:</td>
 					<td><select name="workerGender" id="workerGender" class="easyui-combobox" data-options="height:30,disabled:'true'">
 							<option value="1">男</option>
 							<option value="0">女</option>
 					</select>
 					</td>
-					<td class="">出生日期:</td>
+					<td >出生日期:</td>
 					<td><input  readonly ="readonly"  type="text" data-options="disabled:true" id="workerBirth" name="workerBirth"></input> <input type="hidden"
 						id="workerBirthYear" name="workerBirthYear" /></td>
 		
 		
 				</tr>
 				<tr>
-					<td class="">就业证号:</td>
+					<td >就业证号:</td>
 					<td><input class="easyui-validatebox" type="text" name="careerCard" id="careerCard" />
 					</td>
-					<td class="">残疾类别:</td>
+					<td >残疾类别:</td>
 					<td><input class="easyui-combobox" type="text" name="workerHandicapType.id" id="workerHandicapType" value="1"
 						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapType',url:'parameter/workerHandicapTypeService'" />
 					</td>
-					<td class="">残疾等级:</td>
+					<td >残疾等级:</td>
 					<td><input class="easyui-combobox" type="text" name="workerHandicapLevel.id" id="workerHandicapLevel" value="1"
 						data-options="height:30,disabled:'true',required:true,editable:false,valueField:'id',textField:'handicapLevel',url:'parameter/workerHandicapLevelService'" />
 					</td>
 				</tr>
 				<tr>
-					<td class="">联系电话:</td>
-					<td><input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" />
+					<td >联系电话:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="phone" id="phone" data-options="" />
 					</td>
-					<td class="">现任岗位:</td>
-					<td><input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
+					<td>现任岗位:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="currentJob" id="currentJob" />
 					</td>
-					<td colspan="2" class="" style="text-align:right:padding-right:12px;">
+					<td colspan="2"  style="text-align:right:padding-right:12px;">
 						干部:&nbsp;&nbsp;<input type="checkbox" id="isCadreChecked" style="height:auto;" />&nbsp;&nbsp; 
 						忽略年龄:&nbsp;&nbsp;<input title="勾选上以后, 年龄校验没有上限." onclick="clickIgnoreAge()" type="checkbox" id="ignoreAge" style="height:auto;" />
 					</td>
 				</tr>
 				<tr>
-					<td class="" style="height:31px;">上传照片:</td>
+					<td >工资:</td>
+					<td>
+						<input class="easyui-validatebox" type="text" name="salary" id="salary"/>
+					</td>
+					<td>养老保险:</td>
+					<td colspan="3">
+						<input class="easyui-validatebox" type="text" name="pensionInsurance" id="pensionInsurance" />
+					</td>
+				</tr>
+				<tr>
+					<td  style="height:31px;">上传照片:</td>
 					<td colspan="5">
 						<input type="checkbox" id="isUpload" style="height:auto;" />
 						<input type="button" name="file" value="上传" id="picfile" display="none"/>
@@ -531,7 +563,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="">备注:</td>
+					<td >备注:</td>
 					<td colspan="5"><textarea rows="4" cols="100" name="remark" id="remark"></textarea>
 					</td>
 				</tr>

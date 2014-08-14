@@ -19,19 +19,22 @@
 		<result column="phone" jdbcType="VARCHAR" property="phone" />
 		<result column="is_ok" jdbcType="BIT" property="isOk" />
 		<result column="is_cadre" jdbcType="BIT" property="isCadre" />
+		<result column="is_professor" jdbcType="BIT" property="isProfessor" />
 		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="user_id" jdbcType="INTEGER" property="userId" />
 		<result column="check_code" jdbcType="VARCHAR" property="checkCode" />
 		<result column="pre_id" jdbcType="INTEGER" property="preId" />
 		<result column="pic_title" jdbcType="VARCHAR" property="picTitle" />
+		<result column="salary" jdbcType="DECIMAL" property="salary" />
+ 		<result column="pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		<!-- worker -->
 		id, company_id, worker_name, worker_gender, worker_birth, worker_birth_year, 
 		worker_id_card, worker_handicap_code, worker_handicap_type, worker_handicap_level,
-		current_job,career_card,  phone, is_ok, is_cadre, remark, user_id,
-		check_code, pre_id, pic_title 
+		current_job,career_card,  phone, is_ok, is_cadre, is_professor, remark, user_id,
+		check_code, pre_id, pic_title, salary, pension_insurance
 	</sql>
 
 	<!-- insert -->
@@ -41,15 +44,16 @@
 		</selectKey>
 		insert into worker_temp (company_id, worker_name, worker_gender, worker_birth, worker_birth_year, 
 		worker_id_card, worker_handicap_code, worker_handicap_type, worker_handicap_level,
-		current_job,career_card,  phone, is_ok, is_cadre, remark, user_id,
-		check_code, pre_id,pic_title, pic)
+		current_job,career_card,  phone, is_ok, is_cadre, is_professor, remark, user_id,
+		check_code, pre_id,pic_title, pic, salary, pension_insurance)
 		values (#{companyId, jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR}, #{workerGender,jdbcType=VARCHAR},
 		#{workerBirth,jdbcType=VARCHAR}, #{workerBirthYear,jdbcType=CHAR},
 		#{workerIdCard,jdbcType=VARCHAR}, #{workerHandicapCode,jdbcType=VARCHAR},
 		#{workerHandicapType,jdbcType=INTEGER}, #{workerHandicapLevel,jdbcType=INTEGER},#{currentJob, jdbcType=VARCHAR},
 		#{careerCard, jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isOk, jdbcType=BIT},#{isCadre, jdbcType=BIT}, 
+		#{isProfessor, jdbcType=BIT},
 		#{remark,jdbcType=VARCHAR}, #{userId, jdbcType=INTEGER}, #{checkCode,jdbcType=VARCHAR}, #{preId, jdbcType=INTEGER}
-		, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB})
+		, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB}, #{salary, jdbcType=DECIMAL}, #{pensionInsurance, jdbcType=DECIMAL})
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.WorkerTemp">
@@ -100,6 +104,9 @@
 			<if test="isCadre != null">
 				is_cadre,
 			</if>
+			<if test="isProfessor != null">
+				is_professor,
+			</if>
 			<if test="remark != null">
 				remark,
 			</if>
@@ -116,7 +123,13 @@
 				pic_title,
 			</if>
 			<if test="pic != null">
-				pic
+				pic,
+			</if>
+			<if test="salary != null">
+				salary,
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -162,6 +175,9 @@
 			<if test="isCadre != null">
 				#{isCadre,jdbcType=BIT},
 			</if>
+			<if test="isProfessor != null">
+				#{isProfessor,jdbcType=BIT},
+			</if>
 			<if test="remark != null">
 				#{remark, jdbcType=VARCHAR},
 			</if>
@@ -178,7 +194,13 @@
 				#{picTitle, jdbcType=VARCHAR},
 			</if>
 			<if test="pic != null">
-				#{pic, jdbcType=BLOB}
+				#{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				#{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				#{pensionInsurance, jdbcType=DECIMAL}
 			</if>
 		</trim>
 	</insert>
@@ -254,6 +276,9 @@
 			<if test="isCadre != null">
 				is_cadre = #{isCadre,jdbcType=BIT},
 			</if>
+			<if test="isProfessor != null">
+				is_professor = #{isProfessor,jdbcType=BIT},
+			</if>
 			<if test="remark != null">
 				remark = #{remark, jdbcType=VARCHAR},
 			</if>
@@ -270,7 +295,13 @@
 				pic_title = #{picTitle, jdbcType=VARCHAR},
 			</if>
 			<if test="pic != null">
-				pic = #{pic, jdbcType=BLOB}
+				pic = #{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				salary = #{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance = #{pensionInsurance, jdbcType=DECIMAL}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

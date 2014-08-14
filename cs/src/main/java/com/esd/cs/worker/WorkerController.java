@@ -8,6 +8,7 @@ package com.esd.cs.worker;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -216,7 +217,11 @@ public class WorkerController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean add_worker(Worker worker, HttpServletRequest request) {
+	public Boolean add_worker(Worker worker, HttpServletRequest request,
+			HttpSession session) {
+		// 当前用户id
+		Integer userId = Integer.parseInt(session.getAttribute(
+				Constants.USER_ID).toString());
 		// 年审年度
 		String year = request.getParameter("year");
 		// 公司id
@@ -225,6 +230,7 @@ public class WorkerController {
 				companyId);
 		// 组装员工对象
 		worker = WorkerUtil.assembly(worker);
+		worker.setUserId(userId);
 		// 查看数据库中是否有该身份证号的员工, 没有的话-直接保存; 有的话-更新该条数据,并同时保存和该公司的关系
 		Worker tempWorker = workerService.getByWorkerIdCard(worker
 				.getWorkerIdCard());
@@ -240,11 +246,18 @@ public class WorkerController {
 			tempWorker.setRemark(worker.getRemark());
 			tempWorker.setIsCadre(worker.getIsCadre());
 			tempWorker.setIsProfessor(worker.getIsProfessor());
+			tempWorker.setSalary(worker.getSalary());
+			tempWorker.setPensionInsurance(worker.getPensionInsurance());
+			tempWorker.setUserId(userId);
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
+			cyw.setCurrentJob(worker.getCurrentJob());
+			cyw.setSalary(worker.getSalary());
+			cyw.setPensionInsurance(worker.getPensionInsurance());
+			cyw.setUserId(userId);
 			// 更新并保存关系
 			return workerService.update(tempWorker) && cywService.save(cyw);
 		}
@@ -261,9 +274,15 @@ public class WorkerController {
 	@RequestMapping(value = "/addWithPic", method = RequestMethod.POST)
 	public void aadd_worker(
 			@RequestParam("picfile") CommonsMultipartFile picfile,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+			HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws IOException {
+		// 当前用户id
+		Integer userId = Integer.parseInt(session.getAttribute(
+				Constants.USER_ID).toString());
 		String workerHandicapCode = request.getParameter("workerHandicapCode");
+		BigDecimal salary = new BigDecimal(request.getParameter("salary"));
+		BigDecimal pensionInsurance = new BigDecimal(
+				request.getParameter("pensionInsurance"));
 		// 根据残疾证号 组装残疾职工对象
 		Worker worker = WorkerUtil.assembly(workerHandicapCode);
 		// 添加上其他信息
@@ -271,7 +290,10 @@ public class WorkerController {
 		worker.setCareerCard(request.getParameter("careerCard"));
 		worker.setPhone(request.getParameter("phone"));
 		worker.setCurrentJob(request.getParameter("currentJob"));
+		worker.setSalary(salary);
+		worker.setPensionInsurance(pensionInsurance);
 		worker.setRemark(request.getParameter("remark"));
+		worker.setUserId(userId);
 		// 干部
 		if ("1".equals(request.getParameter("isCadre"))) {
 			worker.setIsCadre(Boolean.TRUE);
@@ -310,11 +332,18 @@ public class WorkerController {
 			tempWorker.setPicTitle(picfile.getOriginalFilename());
 			tempWorker.setIsCadre(worker.getIsCadre());
 			tempWorker.setIsProfessor(worker.getIsProfessor());
+			tempWorker.setSalary(worker.getSalary());
+			tempWorker.setPensionInsurance(worker.getPensionInsurance());
+			tempWorker.setUserId(userId);
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
 			cyw.setCompanyId(companyId);
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
+			cyw.setCurrentJob(worker.getCurrentJob());
+			cyw.setSalary(worker.getSalary());
+			cyw.setPensionInsurance(worker.getPensionInsurance());
+			cyw.setUserId(userId);
 			// 更新并保存关系
 			bl = workerService.update(tempWorker) && cywService.save(cyw);
 		}
@@ -376,11 +405,22 @@ public class WorkerController {
 		worker.setPhone(request.getParameter("phone"));
 		worker.setCurrentJob(request.getParameter("currentJob"));
 		worker.setRemark(request.getParameter("remark"));
+		worker.setSalary(new BigDecimal(request.getParameter("salary")));// 薪资
+		worker.setPensionInsurance(new BigDecimal(request
+				.getParameter("pensionInsurance"))); // 养老保险
+		// 干部
 		String isCadreStr = request.getParameter("isCadre");
 		if ("1".equals(isCadreStr)) {
 			worker.setIsCadre(Boolean.TRUE);
 		} else {
 			worker.setIsCadre(Boolean.FALSE);
+		}
+		// 不退休的老教授
+		String isProfessorStr = request.getParameter("isProfessor");
+		if ("1".equals(isProfessorStr)) {
+			worker.setIsProfessor(Boolean.TRUE);
+		} else {
+			worker.setIsProfessor(Boolean.FALSE);
 		}
 		// 公司id
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
@@ -511,6 +551,22 @@ public class WorkerController {
 	}
 
 	/**
+	 * 异步 更新有照片的 残疾职工
+	 * 
+	 * @param worker
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/editWithPic", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean editWithPic(Worker worker, HttpServletRequest request) {
+		logger.debug("editWorker:{}", worker);
+		boolean b = workerService.update(worker);
+		logger.debug("editWorkerResult:{}", b);
+		return b;
+	}
+	
+	/**
 	 * 异步 更新没有照片的 缓存 残疾职工
 	 * 
 	 * @param worker
@@ -526,22 +582,59 @@ public class WorkerController {
 		return b;
 	}
 
+
 	/**
-	 * 异步 更新有照片的 残疾职工
+	 * 异步 更新有照片的 缓存表中的 残疾职工
 	 * 
 	 * @param worker
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/editWithPic", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean editWithPic(Worker worker, HttpServletRequest request) {
-		logger.debug("editWorker:{}", worker);
-		boolean b = workerService.update(worker);
-		logger.debug("editWorkerResult:{}", b);
-		return b;
+	@RequestMapping(value = "/editWorkerTempWithPic", method = RequestMethod.POST)
+	public void editWorkerTempWithPic(
+			@RequestParam("picfile") CommonsMultipartFile picfile,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		//员工id
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		WorkerTemp worker = wtService.getByPrimaryKey(id);
+		// 添加上其他信息
+		worker.setWorkerName(request.getParameter("workerName"));
+		worker.setCareerCard(request.getParameter("careerCard"));
+		worker.setPhone(request.getParameter("phone"));
+		worker.setCurrentJob(request.getParameter("currentJob"));
+		worker.setRemark(request.getParameter("remark"));
+		worker.setSalary(new BigDecimal(request.getParameter("salary")));// 薪资
+		worker.setPensionInsurance(new BigDecimal(request
+				.getParameter("pensionInsurance"))); // 养老保险
+		// 干部
+		String isCadreStr = request.getParameter("isCadre");
+		if ("1".equals(isCadreStr)) {
+			worker.setIsCadre(Boolean.TRUE);
+		} else {
+			worker.setIsCadre(Boolean.FALSE);
+		}
+		// 不退休的老教授
+		String isProfessorStr = request.getParameter("isProfessor");
+		if ("1".equals(isProfessorStr)) {
+			worker.setIsProfessor(Boolean.TRUE);
+		} else {
+			worker.setIsProfessor(Boolean.FALSE);
+		}
+		// 从CommonsMultipartFile 得到图片和图片名信息
+		worker.setPic(picfile.getBytes());
+		worker.setPicTitle(picfile.getOriginalFilename());
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter writer = response.getWriter();
+		Boolean bl = wtService.update(worker);
+		if (bl) {
+			writer.write("success");
+		} else {
+			writer.write("failure");
+		}
 	}
-
+	
 	/**
 	 * 获得残疾人照片
 	 * 
@@ -1151,6 +1244,10 @@ public class WorkerController {
 			w.setCareerCard(wt.getCareerCard()); // 就业证号
 			w.setPhone(wt.getPhone()); // 联系电话
 			w.setIsCadre(wt.getIsCadre()); // 是否干部
+			w.setIsProfessor(wt.getIsProfessor());	//是否是 不退休的老干部
+			w.setSalary(wt.getSalary());	//薪资
+			w.setPensionInsurance(wt.getPensionInsurance()); //养老保险
+			w.setUserId(userId);
 			// 检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
 			if (wt.getPicTitle() != null && !"".equals(wt.getPicTitle())) {
 				w.setPicTitle(wt.getPicTitle());
@@ -1163,6 +1260,8 @@ public class WorkerController {
 			cyw.setCompanyId(companyId);
 			cyw.setYear(year);
 			cyw.setCurrentJob(Constants.NOTYET);
+			cyw.setSalary(wt.getSalary());
+			cyw.setPensionInsurance(wt.getPensionInsurance());
 			cyw.setWorkerId(w.getId());
 			cyw.setUserId(userId);
 			if (!cywService.save(cyw)) {
@@ -1186,6 +1285,9 @@ public class WorkerController {
 		worker.setCareerCard(wt.getCareerCard()); // 就业证号
 		worker.setPhone(wt.getPhone()); // 联系电话
 		worker.setIsCadre(wt.getIsCadre()); // 是否干部
+		worker.setIsProfessor(wt.getIsProfessor());	//是否是 不退休的老干部
+		worker.setSalary(wt.getSalary());	//薪资
+		worker.setPensionInsurance(wt.getPensionInsurance()); //养老保险
 		worker.setUserId(userId);
 		// 检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
 		if (wt.getPicTitle() != null && !"".equals(wt.getPicTitle())) {
