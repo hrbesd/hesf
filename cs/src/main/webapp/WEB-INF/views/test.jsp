@@ -23,6 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   	<h2>${entity.createTime }</h2>
-    today is <h1><fmt:formatDate value="${entity.createTime }" pattern="yyyy年MM月dd日" /></h1>
+    hello, today is <h1><fmt:formatDate value="${entity.createTime }" pattern="yyyy年MM月dd日" /></h1>
   </body>
 </html>
