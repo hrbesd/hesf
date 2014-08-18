@@ -133,7 +133,7 @@
 		w_id, w_worker_name, w_worker_gender, w_worker_birth, w_worker_birth_year, w_worker_id_card, 
 		w_career_card, w_phone, w_current_job, w_worker_address, w_worker_handicap_code, w_is_college, 
 		w_is_retired, w_is_cadre, w_is_professor, w_salary, w_pension_insurance, w_remark, w_create_time, w_update_time,
-		w_user_id, w_is_active, w_version
+		w_user_id, w_is_active, w_version,
 		<!-- handicap type -->
 		t_id, t_handicap_type,
 		<!-- handicap level -->
@@ -261,7 +261,7 @@
 		w.worker_handicap_code as w_worker_handicap_code, w.remark as w_remark,
 		w.is_college as w_is_college, w.is_retired as w_is_retired, 
 		w.is_cadre as w_is_cadre, w.is_professor as w_is_professor, 
-		w.salary as w_salary, w_pension_insurance as w_pension_insurance, 
+		w.salary as w_salary, w.pension_insurance as w_pension_insurance, 
 		w.create_time as w_create_time, w.update_time as w_update_time,
 		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
 		<!-- handicap type -->
