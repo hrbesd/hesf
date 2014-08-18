@@ -899,6 +899,10 @@ public class WorkerController {
 		String workerHandicapCode = worker.getWorkerHandicapCode();
 		// 取得员工姓名
 		String workerName = worker.getWorkerName().replace(" ", "");// 去除所有空格
+		// 取得员工电话
+		if(worker.getPhone()!=null && !"".equals(worker.getPhone())){
+			result.setPhone(worker.getPhone());
+		}
 		// 残疾证号, 姓名保存到缓存对象中去
 		result.setWorkerHandicapCode(workerHandicapCode);
 		result.setWorkerName(workerName);
@@ -1001,8 +1005,8 @@ public class WorkerController {
 				|| StringUtils.equals(notice, "notExists")) {
 			// 根据残疾证号, 组装 残疾职工基本信息
 			Worker workerCorrect = WorkerUtil.assembly(workerHandicapCode);
-			result.setWorkerName(workerName);
-			result.setWorkerHandicapCode(workerCorrect.getWorkerHandicapCode());
+//			result.setWorkerName(workerName);
+//			result.setWorkerHandicapCode(workerCorrect.getWorkerHandicapCode());
 			result.setIsOk(true); // 设为OK， 即 可以导入的意思
 			result.setWorkerBirth(workerCorrect.getWorkerBirth());
 			result.setWorkerBirthYear(workerCorrect.getWorkerBirthYear());

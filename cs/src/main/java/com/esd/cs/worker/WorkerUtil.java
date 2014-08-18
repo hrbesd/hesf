@@ -123,8 +123,12 @@ public class WorkerUtil {
 				// 残疾证号
 				callBack.setWorkerHandicapCode(value);
 				break;
+			case 2:
+				//电话号码
+				callBack.setPhone(value);
+				break;
 			}
-			logger.debug(callBack.toString());
+		//	logger.debug(callBack.toString());
 		}
 		return callBack;
 	}
