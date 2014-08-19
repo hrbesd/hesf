@@ -8,6 +8,12 @@ body,input,textarea {
 	margin: 0;
 }
 
+a{
+	text-decoration:none;
+}
+a:hover{
+	font-weight:bold;
+}
 input {
 	height: 28px;
 	line-height: 28px;
@@ -205,7 +211,14 @@ textarea {
 .addWorkerForm td {
 	height: 15px;
 }
-
+/*预览残疾职工*/
+.viewWorkerForm {
+	margin-top: 20px;
+}
+.viewWorkerForm input{
+	border:none;
+	border-bottom: 1px solid rgb(195, 195, 211);
+}
 /*引入页面*/
 .importTitle {
 	text-align: left;

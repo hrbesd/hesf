@@ -1153,7 +1153,7 @@ public class TestController {
 	@ResponseBody
 	public byte[] test83() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		byte[] entity = wtService.getPicByPrimaryKey(4431);
+		byte[] entity = wService.getPicByPrimaryKey(45);
 		// map.put("entity", entity);
 		// return map;
 		return entity;

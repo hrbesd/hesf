@@ -52,11 +52,11 @@
 
 		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
 		{
-			field : 'yuangongming',
+			field : 'action',
 			title : '姓名',
 			width : 300,
 			formatter : function(value,row,index){
-				var head = row.workerName;
+				var head = '<a href="javascript:workerList.viewWorker(' + row.id + ');" >'+row.workerName+'</a>';
 				var cadreMaleHeadImg = '<img src="${contextPath}/images/cadre_male.png" style="width:15px;height:20px;" title="男干部"/>';
 				var cadreFemaleHeadImg = '<img src="${contextPath}/images/cadre_female.png" style="width:15px;height:20px;" title="女干部"/>';
 				if(row.isCadre == true  && row.workerGender == '男'){
@@ -151,6 +151,14 @@
 		});
 	};
 
+	/**
+	 * 查看单个残疾人信息
+	 **/
+	workerList.viewWorker = function(id){
+		esd.common.openWindow("#workerWindow", "查看残疾职工", 780, 450, 'worker/view/'+id);
+		return;
+	};
+	
 	/**
 	 职工年龄检测
 	 **/

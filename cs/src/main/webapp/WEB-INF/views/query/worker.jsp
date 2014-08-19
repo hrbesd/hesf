@@ -62,9 +62,13 @@
 	queryWorker.loadData = function(params) {
 
 		esd.common.datagrid("#queryWorker_grid", "query/worker/list", "#queryWorker_boolbar", [ [ {
-			field : 'workerName',
+			field : 'action',
 			title : '姓名',
-			width : 300
+			width : 300,
+			formatter : function(value,row,index){
+				var a ='<a href="javascript:queryWorker.viewWorker(' + row.id + ');" >'+row.workerName+'</a>';
+				return a;
+			}
 		}, {
 			field : 'workerHandicapCode',
 			title : '残疾证号',
@@ -114,6 +118,14 @@
 		params.workerHandicapLevel = $("#workerFind_workerHandicapLevel").combobox("getValue");// 残疾等级
 		params.careerCard = $("#workerFind_careerCard").val();// 就业证号
 		return params;
+	};
+	
+	/**
+	 * 查看单个残疾人信息
+	 **/
+	queryWorker.viewWorker = function(id){
+		esd.common.openWindow("#workerWindow", "查看残疾职工", 780, 450, 'worker/view/'+id);
+		return;
 	};
 	/**
 	 查询数据 并校验所有输入框

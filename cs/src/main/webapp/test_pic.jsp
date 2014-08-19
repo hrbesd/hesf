@@ -12,28 +12,8 @@
 	<script type="text/javascript" src="${contextPath}/js/lib/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		pRequest();
+		
 	});
-	
-	
-	//请求controller
-	function pRequest(){
-		$.ajax({
-			url:'${contextPath}/test/83',
-			type:'GET',
-			success:function(data){
-				if(data.entity == true){
-					$('#dbValue').html("数据插入成功请求成功, 现在是第 "+data.dbCount+ " 次.");
-				}else{
-					$('#dbValue').html("数据插入成功请求失败, 现在是第 "+data.dbCount+ " 次.");
-					//出错清除
-					clearInterval(dValue);
-				}
-			}
-			
-		});
-	}
-	
 	</script>
   </head>
   

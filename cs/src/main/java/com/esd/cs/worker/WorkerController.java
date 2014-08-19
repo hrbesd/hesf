@@ -499,6 +499,14 @@ public class WorkerController {
 		return new ModelAndView("basicInfo/view_worker");
 	}
 
+	// 根据id得到残疾职工图片
+	@RequestMapping("/pic/{id}")
+	@ResponseBody
+	public byte[] viewWorkerPicGet(@PathVariable(value="id") Integer id) {
+		byte[] entity = workerService.getPicByPrimaryKey(id);
+		return entity;
+	}
+	
 	/**
 	 * 转到编辑残疾职工页面
 	 * 
