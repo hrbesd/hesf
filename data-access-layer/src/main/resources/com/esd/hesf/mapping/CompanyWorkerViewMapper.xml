@@ -184,10 +184,10 @@
 			</if>
 			<!-- retired age judge -->
 			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
+				and ((w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
 					or (w_worker_birth_year &lt;= #{maxMaleCadreBirth} and w_worker_gender = 1 and w_is_cadre = 1)
 					or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0 and w_is_cadre = 0)
-					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1)
+					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1))
 			</if>
 			<!-- is cadre -->
 			<if test="isCadre != null">
@@ -238,10 +238,10 @@
 			</if>
 			<!-- retired age judge -->
 			<if test="maxMaleBirth != null and maxMaleCadreBirth != null and maxFemaleBirth != null and maxFemaleCadreBirth != null">
-				and (w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
+				and ((w_worker_birth_year &lt;= #{maxMaleBirth} and w_worker_gender = 1 and w_is_cadre = 0) 
 					or (w_worker_birth_year &lt;= #{maxMaleCadreBirth} and w_worker_gender = 1 and w_is_cadre = 1)
 					or (w_worker_birth_year &lt;= #{maxFemaleBirth} and w_worker_gender = 0 and w_is_cadre = 0)
-					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1)
+					or (w_worker_birth_year &lt;= #{maxFemaleCadreBirth} and w_worker_gender = 0 and w_is_cadre = 1))
 			</if>
 			<!-- is cadre -->
 			<if test="isCadre != null">
