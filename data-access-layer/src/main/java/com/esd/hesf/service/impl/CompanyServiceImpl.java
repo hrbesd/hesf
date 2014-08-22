@@ -79,16 +79,16 @@ public class CompanyServiceImpl implements CompanyService {
 					.printStackTrace();
 			return false;
 		}
-		if (t.getCompanyLegal() == null) {
-			new HesfException("company.companyLegal", HesfException.type_null)
-					.printStackTrace();
-			return false;
-		}
-		if (t.getCompanyOrganizationCode() == null) {
-			new HesfException("company.companyOrganizationCode",
-					HesfException.type_null).printStackTrace();
-			return false;
-		}
+//		if (t.getCompanyLegal() == null) {
+//			new HesfException("company.companyLegal", HesfException.type_null)
+//					.printStackTrace();
+//			return false;
+//		}
+//		if (t.getCompanyOrganizationCode() == null) {
+//			new HesfException("company.companyOrganizationCode",
+//					HesfException.type_null).printStackTrace();
+//			return false;
+//		}
 		if (t.getCompanyType() == null) {
 			new HesfException("company.companyType", HesfException.type_null)
 					.printStackTrace();

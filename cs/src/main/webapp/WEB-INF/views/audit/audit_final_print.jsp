@@ -3,13 +3,13 @@
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 	<script type="text/javascript">
-		var initAudit = {};
-		initAudit.printFinalAuditWindow = function(){
+		var finalPrint = {};
+		finalPrint.printFinalAuditWindow = function(){
 			esd.common.printFinalAuditWindow();
 		};
 		//初始化打印页面数据
-		initAudit.initFinalPrintInfo = function(){
-			var auditId = '${entity.id}';
+		finalPrint.initFinalPrintInfo = function(){
+		//	var auditId = '${entity.id}';
 			$.ajax({
 				url : '${contextPath}/security/query/audit/getFinalPrintInfo/${entity.id}',
 				type : 'get',
@@ -55,6 +55,7 @@
 						});
 					}
 					$('#infoBody tbody').append(workerStr);
+					return true;
 				},
 				error : function() {
 					$.messager.alert('消息', '获取数据失败, 请重新尝试或联系管理员.', 'error');
@@ -62,7 +63,7 @@
 			});
 		};
 		$(document).ready(function(){
-			initAudit.initFinalPrintInfo();
+			finalPrint.initFinalPrintInfo();
 		});
 	</script>
 	<!--startfinalauditprint-->
@@ -178,7 +179,7 @@
 	<!--endfinalauditprint--> 
 	<div style="width:100%;text-align:center;margin-top:20px;">
 		<c:if test="${userGroupId == 1 || userGroupId == 6 }">
-			<input type="button" onclick="initAudit.printFinalAuditWindow();" value="点击我打印本页" />
+			<input type="button" onclick="finalPrint.printFinalAuditWindow();" value="点击我打印本页" />
 		</c:if>
 	</div>
 

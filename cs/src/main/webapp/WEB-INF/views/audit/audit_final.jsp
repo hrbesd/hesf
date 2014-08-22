@@ -161,7 +161,9 @@
 				$('#zhiNaJin').val(data.s_zhiNaJin);
 				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
 				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
-
+				
+				//更新打印页面的实缴总金额
+				$('#printArea #printAuditPayAmount').html(data.s_shiJiaoZongJinE);
 			},
 			error : function() {
 				alert("请求错误");
@@ -265,19 +267,22 @@
 				<td>企业名称:</td>
 				<td colspan="3"><input name="company.companyName" type="text" value="${entity.company.companyName}" /></td>
 
-				<td style="width:100px;">税务代码:</td>
-				<td width="180" colspan="2"><input name="company.companyTaxCode" type="text" value="${entity.company.companyTaxCode}" /></td>
+				<td style="width:100px;">&nbsp;</td>
+				<td width="180" colspan="2">
+					<!-- <input name="company.companyTaxCode" type="text" value="${entity.company.companyTaxCode}" /> -->
+					&nbsp;
+				</td>
 				<td width="100">年龄超标</td>
 				<td colspan="2"><input type="text" readonly="readonly" value="${ageEx}" <c:if test="${ageEx>0}">class="error"</c:if> <c:if test="${ageEx==0}">class="readonly"</c:if> /></td>
 			</tr>
 
 			<tr>
-				<td rowspan="4">单位基本情况</td>
+				<td rowspan="3">单位基本情况</td>
 				<td width="100">法人代表:</td>
 				<td width="199" colspan="2"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" />
 				</td>
-				<td>组织机关代码证:</td>
-				<td colspan="2"><input name="company.companyOrganizationCode" class="bj_belu3" type="text" value="${entity.company.companyOrganizationCode}" /></td>
+				<td>邮政编码:</td>
+				<td colspan="2"><input name="company.companyZipCode" class="bj_belu3" type="text" value="${entity.company.companyZipCode}" /></td>
 				<td>企业性质:</td>
 				<td colspan="2"><select style="font-size: 12px; width: 100px;height: 28px;" class="" name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
 						<c:forEach items="${companyPropertys}" var="item">
@@ -289,7 +294,7 @@
 			<tr>
 				<td>联系人 :</td>
 				<td colspan="2"><input name="company.companyContactPerson" class="bj_belu3" type="text" value="${entity.company.companyContactPerson}" /></td>
-				<td>电话号码:</td>
+				<td>公司电话:</td>
 				<td colspan="2"><input name="company.companyPhone" class="bj_belu3" type="text" value="${entity.company.companyPhone}" /></td>
 				<td>经济类型:</td>
 				<td colspan="2"><select style="font-size: 12px;width: 100px;height: 28px;" class="" name="company.companyEconomyType.id" data-options="width:106,height:30,editable:false">
@@ -304,15 +309,6 @@
 				<td colspan="2"><input name="company.companyMobile" class="bj_belu3" value="${entity.company.companyMobile}" /></td>
 				<td>企业地址:</td>
 				<td colspan="5"><input name="company.companyAddress" value="${entity.company.companyAddress }" /></td>
-
-			</tr>
-			<tr>
-				<td>开户银行:</td>
-				<td colspan="2"><input name="company.companyBank" class="bj_belu3" value="${entity.company.companyBank}" /></td>
-				<td>银行账号:</td>
-				<td colspan="2"><input name="company.companyBankAccount" class="bj_belu3" value="${entity.company.companyBankAccount}" /></td>
-				<td>邮政编码:</td>
-				<td colspan="2"><input name="company.companyZipCode" value="${entity.company.companyZipCode}" /></td>
 
 			</tr>
 			<!-- 年审企业表格  第三部分(残疾人信息) -->

@@ -320,19 +320,21 @@
 				<td>企业名称:</td>
 				<td colspan="3"><input readonly="readonly" id="auCompanyName" name="company.companyName" type="text" value="" /></td>
 
-				<td style="width:100px;">税务代码:</td>
-				<td width="180" colspan="2"><input readonly="readonly" id="auCompanyTaxCode" name="company.companyTaxCode" type="text" value="" /></td>
+				<td style="width:100px;">&nbsp;</td>
+				<td width="180" colspan="2">
+					<!-- <input readonly="readonly" id="auCompanyTaxCode" name="company.companyTaxCode" type="text" value="" /> -->
+				</td>
 				<td width="100">年龄超标</td>
 				<td colspan="2"><input type="text" id="ageEx" readonly="readonly" value="" /></td>
 			</tr>
 
 			<tr>
-				<td rowspan="4">单位基本情况</td>
+				<td rowspan="3">单位基本情况</td>
 				<td width="100">法人代表:</td>
 				<td width="199" colspan="2"><input readonly="readonly" id="auCompanyLegal" name="company.companyLegal" class="bj_belu3" type="text" value="" />
 				</td>
-				<td>组织机关代码证:</td>
-				<td colspan="2"><input readonly="readonly" id="auCompanyOrganizationCode" name="company.companyOrganizationCode" class="bj_belu3" type="text" value="" /></td>
+				<td>邮政编码:</td>
+				<td colspan="2"><input readonly="readonly" id="auCompanyZipCode" name="company.companyZipCode" class="bj_belu3" type="text" value="" /></td>
 				<td>企业性质:</td>
 				<td colspan="2">
 					<select disabled="disabled" id="auCompanyProperty" style="font-size: 12px; width: 100px;height: 28px;"  name="company.companyProperty.id" data-options="width:106,height:30,editable:false">
@@ -343,7 +345,7 @@
 			<tr>
 				<td>联系人 :</td>
 				<td colspan="2"><input readonly="readonly" id="auCompanyContactPerson" name="company.companyContactPerson" class="bj_belu3" type="text" value="" /></td>
-				<td>电话号码:</td>
+				<td>公司电话:</td>
 				<td colspan="2"><input readonly="readonly" id="auCompanyPhone" name="company.companyPhone" class="bj_belu3" type="text" value="" /></td>
 				<td> </td>
 				<td colspan="2"> 
@@ -355,15 +357,6 @@
 				<td colspan="2"><input readonly="readonly" id="auCompanyMobile" name="company.companyMobile" class="bj_belu3" value="" /></td>
 				<td>企业地址:</td>
 				<td colspan="5"><input readonly="readonly" id="auCompanyAddress" name="company.companyAddress" value="" /></td>
-
-			</tr>
-			<tr>
-				<td>开户银行:</td>
-				<td colspan="2"><input readonly="readonly" id="auCompanyBank" name="company.companyBank" class="bj_belu3" value="" /></td>
-				<td>银行账号:</td>
-				<td colspan="2"><input readonly="readonly" id="auCompanyBankAccount" name="company.companyBankAccount" class="bj_belu3" value="" /></td>
-				<td>邮政编码:</td>
-				<td colspan="2"><input readonly="readonly" id="auCompanyZipCode" name="company.companyZipCode" value="" /></td>
 
 			</tr>
 			<!-- 年审企业表格  第三部分(残疾人信息) -->
@@ -394,7 +387,7 @@
 				<td><input type="text" class="text_short readonly" value="" name="companyShouldTotal" id="yingAnPaiCanJiRen" title="应按排数" /></td>
 				<td><input type="text" class="text_short readonly" value="" name="companyAlreadyTotal" id="yiAnPaiCanJiRen" title="已按排数" /></td>
 				<td><input id="yiLuRuCanJiRen" name="companyHandicapTotal" class="readonly" title="已录入残疾职工人数" value="" /></td>
-				<td><input id="yuDingCanJiRen" name="companyPredictTotal" value="" title="预定残疾职工人数" class="easyui-numberbox warn" onblur="initAudit.jisuan()"
+				<td><input id="yuDingCanJiRen" name="companyPredictTotal" readonly="readonly" value="" title="预定残疾职工人数" class="easyui-numberbox readonly" onblur="initAudit.jisuan()"
 					data-options="min:0" /></td>
 				<td><input name="remainAmount" id="shangNianDuWeiJiaoBaoZhangJin" title="补缴金额" class="readonly" value="" /></td>
 			</tr>

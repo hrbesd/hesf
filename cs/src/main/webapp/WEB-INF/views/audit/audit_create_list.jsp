@@ -26,15 +26,13 @@
 
 <script type="text/javascript">
 		var auditCreate = {};
+		
 		/**
 		打开添加公司信息和相关审核信息的页面
 		**/
 		auditCreate.openAddCompany = function(){
-			esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 600, "${contextPath}/security/audits/createCompany");
+			esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 550, "${contextPath}/security/audits/createCompany");
 		};
-
-
-
 
 	$.parser.onComplete = function() {
 		basicFile.loadData(basicFile.getParams());

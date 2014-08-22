@@ -36,7 +36,7 @@
 	<!-- 数据表格 -->
 	<table id="company_information" align="center" style="margin-top: 40px;">
 		<tr>
-			<td align="center"><span style="font-size: 18px;font-weight: bold;">编辑残疾人信息</span>
+			<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">编辑残疾人信息</span>
 			</td>
 		</tr>
 		<tr>
@@ -86,9 +86,9 @@
 		</tr>
 
 		<tr>
-			<td colspan="6"><a href="javascript:workerList.edit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
-			 <a href="javascript:workerList.close();" class="easyui-linkbutton"
-				iconCls="icon-undo">取消</a>
+			<td colspan="6" align="center">
+				<a href="javascript:workerList.edit();" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+				<a href="javascript:workerList.close();" class="easyui-linkbutton" iconCls="icon-undo">取消</a>
 			</td>
 		</tr>
 	</table>

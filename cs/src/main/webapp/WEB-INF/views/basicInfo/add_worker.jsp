@@ -459,9 +459,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="" style="height:31px;">上传照片:</td>
+					<td class="" style="height:31px;color:white;">上传照片:</td>
 					<td colspan="5">
-						<input type="checkbox" value="土豆 " style="height:auto;" />
+					<!-- 	<input type="checkbox" value="土豆 " style="height:auto;" />	 -->
 						<input type="button" name="file" value="上传" id="picfile" display="none"/>
 						<input type="text" readonly="readonly" id="picfileTitle" style="border:none;width:400px;" display="none"/>
 					</td>
