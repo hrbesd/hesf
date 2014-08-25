@@ -47,13 +47,14 @@ CREATE TABLE `area` (
   `pyname` varchar(255) DEFAULT NULL COMMENT '地名全拼',
   `abbr` varchar(50) DEFAULT NULL COMMENT '地名拼音缩写',
   `mark` varchar(50) DEFAULT NULL COMMENT '备注',
+  `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   PRIMARY KEY (`code`),
   UNIQUE KEY `code_UNIQUE` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `area` */
 
-insert  into `area`(`code`,`name`,`pyname`,`abbr`,`mark`) values ('10230000','黑龙江省',NULL,NULL,''),('20230100','哈尔滨市',NULL,NULL,''),('20230200','齐齐哈尔市',NULL,NULL,''),('20230300','鸡西市',NULL,NULL,''),('20230400','鹤岗市',NULL,NULL,''),('20230500','双鸭山市',NULL,NULL,''),('20230600','大庆市',NULL,NULL,''),('20230700','伊春市',NULL,NULL,''),('20230800','佳木斯市',NULL,NULL,''),('20230900','七台河市',NULL,NULL,''),('20231000','牡丹江市',NULL,NULL,''),('20231100','黑河市',NULL,NULL,''),('20231200','绥化市',NULL,NULL,''),('20232700','大兴安岭地区',NULL,NULL,''),('20232800','森工总局',NULL,NULL,'残保金项目需求添加，可删除掉');
+insert  into `area`(`code`,`name`,`pyname`,`abbr`,`mark`,`is_active`) values ('10230000','黑龙江省',NULL,NULL,'',1),('20230100','哈尔滨市',NULL,NULL,'',1),('20230200','齐齐哈尔市',NULL,NULL,'',1),('20230300','鸡西市',NULL,NULL,'',1),('20230400','鹤岗市',NULL,NULL,'',1),('20230500','双鸭山市',NULL,NULL,'',1),('20230600','大庆市',NULL,NULL,'',1),('20230700','伊春市',NULL,NULL,'',1),('20230800','佳木斯市',NULL,NULL,'',1),('20230900','七台河市',NULL,NULL,'',1),('20231000','牡丹江市',NULL,NULL,'',1),('20231100','黑河市',NULL,NULL,'',1),('20231200','绥化市',NULL,NULL,'',1),('20232700','大兴安岭地区',NULL,NULL,'',1),('20232800','森工总局',NULL,NULL,'残保金项目需求添加，可删除掉',1),('n001','宝泉岭',NULL,NULL,NULL,0),('n002','北安',NULL,NULL,NULL,0),('n003','哈尔滨',NULL,NULL,NULL,0),('n004','红兴隆',NULL,NULL,NULL,0),('n005','建三江',NULL,NULL,NULL,0),('n006','九三',NULL,NULL,NULL,0),('n007','局直',NULL,NULL,NULL,0),('n008','牡丹江',NULL,NULL,NULL,0),('n009','齐齐哈尔',NULL,NULL,NULL,0),('n010','绥化',NULL,NULL,NULL,0);
 
 /*Table structure for table `audit` */
 
@@ -80,10 +81,16 @@ CREATE TABLE `audit` (
   `is_delay_pay` tinyint(1) DEFAULT '0' COMMENT '是否减免滞纳金,默认为0--不减免',
   `init_audit_user_id` int(11) DEFAULT NULL COMMENT '初审人',
   `init_audit_date` timestamp NULL DEFAULT NULL COMMENT '初审日期',
-  `init_audit_comment` varchar(255) DEFAULT NULL COMMENT '初审意见',
+  `init_audit_comment` varchar(1000) DEFAULT NULL COMMENT '初审意见',
+  `jianmian_audit_user_id` int(11) DEFAULT NULL COMMENT '减免操作人',
+  `jianmian_audit_date` timestamp NULL DEFAULT NULL COMMENT '减免日期',
+  `jianmian_audit_comment` varchar(1000) DEFAULT NULL COMMENT '减免意见',
   `verify_audit_user_id` int(11) DEFAULT NULL COMMENT '复审人',
   `verify_audit_date` timestamp NULL DEFAULT NULL COMMENT '复审日期',
-  `verify_audit_comment` varchar(255) DEFAULT NULL COMMENT '复审意见',
+  `verify_audit_comment` varchar(1000) DEFAULT NULL COMMENT '复审意见',
+  `final_audit_user_id` int(11) DEFAULT NULL COMMENT '终审人ID',
+  `final_audit_date` timestamp NULL DEFAULT NULL COMMENT '终审时间',
+  `final_audit_comment` varchar(1000) DEFAULT NULL COMMENT '终审意见',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `is_exempt` tinyint(1) DEFAULT '0' COMMENT '是否是减免缓,1-免缴, 0-不免缴',
   `reduction_type` int(11) DEFAULT '0' COMMENT '减免缓类型',
@@ -111,7 +118,7 @@ CREATE TABLE `audit` (
   CONSTRAINT `FK_audit_area_code` FOREIGN KEY (`area_code`) REFERENCES `area` (`code`),
   CONSTRAINT `FK_audit_audit_process_staus` FOREIGN KEY (`audit_process_status`) REFERENCES `audit_process_status` (`id`),
   CONSTRAINT `FK_audit_company_id` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='		';
+) ENGINE=InnoDB AUTO_INCREMENT=3790 DEFAULT CHARSET=utf8 COMMENT='		';
 
 /*Data for the table `audit` */
 
@@ -129,7 +136,8 @@ CREATE TABLE `audit_parameter` (
   `year` char(4) DEFAULT NULL COMMENT '审核年份',
   `area_code` char(8) DEFAULT NULL COMMENT '审核地区\n',
   `put_scale` decimal(16,4) NOT NULL COMMENT '安置比例\n',
-  `average_salary` decimal(16,2) NOT NULL COMMENT '当年平均工资',
+  `average_salary` decimal(16,2) NOT NULL COMMENT '当年平均工资(企业)',
+  `average_salary_pi` decimal(16,2) DEFAULT NULL COMMENT '当年平均工资(事业)',
   `audit_start_date` timestamp NULL DEFAULT NULL COMMENT '审核开始日期',
   `audit_close_date` timestamp NULL DEFAULT NULL COMMENT '审核截止日期\n',
   `audit_delay_date` timestamp NULL DEFAULT NULL COMMENT '滞纳金开始日期',
@@ -169,7 +177,7 @@ CREATE TABLE `audit_parameter` (
   `multi_four` int(11) DEFAULT NULL COMMENT '多重4级',
   PRIMARY KEY (`id`),
   UNIQUE KEY `NewIndex1` (`year`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='						';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='						';
 
 /*Data for the table `audit_parameter` */
 
@@ -186,12 +194,13 @@ CREATE TABLE `audit_process_status` (
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
   `priority` varchar(20) DEFAULT NULL COMMENT '排序值',
+  `remark` varchar(255) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='审核进程表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='审核进程表';
 
 /*Data for the table `audit_process_status` */
 
-insert  into `audit_process_status`(`id`,`audit_process_status`,`create_time`,`update_time`,`user_id`,`is_active`,`version`,`priority`) values (1,'未初审','1999-12-12 00:00:00','1999-12-12 00:00:00',1,0,1,'1'),(2,'已初审 未复审','2013-01-21 16:08:52','2013-01-21 16:08:52',1,0,1,'2'),(3,'已复审 未缴款','2013-01-23 08:57:52','2013-01-23 08:57:52',1,0,1,'3'),(4,'部分缴款','2013-01-23 08:58:05','2013-01-23 08:57:52',1,0,1,'5'),(5,'已缴款','2013-01-23 09:08:59','2013-01-23 08:57:52',1,0,1,'6'),(6,'达标','2012-02-11 15:25:46','2013-01-23 08:57:52',1,0,1,'7'),(7,'已复审 未通过','2012-02-11 15:25:46','2013-01-23 08:57:52',1,0,1,'4');
+insert  into `audit_process_status`(`id`,`audit_process_status`,`create_time`,`update_time`,`user_id`,`is_active`,`version`,`priority`,`remark`) values (1,'未初审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'1','公用'),(2,'已初审 未复审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'2','公用'),(3,'已复审 未缴款','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'3','省残联保障金使用'),(4,'部分缴款','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'4','省残联保障金使用'),(5,'已缴款','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'5','省残联保障金使用'),(6,'达标','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'6','公用'),(7,'已复审 未通过','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'7','公用'),(8,'已复审 未终审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'8','农垦保障金使用'),(9,'已终审 未通过','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'9','农垦保障金使用'),(10,'终审完成','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'10','农垦保障金使用'),(11,'已初审 未减免','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'11','省残联保障金使用'),(12,'已减免 未复审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'12','省残联保障金使用'),(13,'已减免 未通过','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'13','省残联保障金使用'),(14,'已初审 未终审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'14','农垦保障金使用');
 
 /*Table structure for table `company` */
 
@@ -202,12 +211,12 @@ CREATE TABLE `company` (
   `company_code` varchar(45) NOT NULL COMMENT '联合主键--档案号',
   `company_management` varchar(45) DEFAULT NULL COMMENT '主管部门',
   `company_name` varchar(45) NOT NULL COMMENT '企业名称',
-  `company_legal` varchar(45) NOT NULL COMMENT '企业法人',
+  `company_legal` varchar(45) DEFAULT NULL COMMENT '企业法人',
   `company_contact_person` varchar(45) DEFAULT NULL COMMENT '公司联系人',
-  `company_organization_code` varchar(128) NOT NULL COMMENT '组织机构代码证号',
+  `company_organization_code` varchar(128) DEFAULT NULL COMMENT '组织机构代码证号',
   `company_tax_code` varchar(128) DEFAULT NULL COMMENT '税务编码',
   `company_address` varchar(255) NOT NULL COMMENT '企业地址',
-  `company_zip_code` char(6) NOT NULL COMMENT '企业邮政编码',
+  `company_zip_code` varchar(10) DEFAULT NULL COMMENT '企业邮政编码',
   `company_fax` varchar(45) DEFAULT NULL COMMENT '传真---暂时未写到bean类中',
   `company_type` int(11) NOT NULL COMMENT '企业类型',
   `company_economy_type` int(11) NOT NULL COMMENT '企业经济类型',
@@ -228,7 +237,7 @@ CREATE TABLE `company` (
   KEY `fk_company_company_economy_type1_idx` (`company_economy_type`),
   KEY `fk_company_company_property1_idx` (`company_property`),
   KEY `fk_company_area1_idx` (`area_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公司表';
+) ENGINE=InnoDB AUTO_INCREMENT=2224 DEFAULT CHARSET=utf8 COMMENT='公司表';
 
 /*Data for the table `company` */
 
@@ -244,12 +253,13 @@ CREATE TABLE `company_economy_type` (
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `user_id` int(11) DEFAULT NULL,
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注说明',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='经济类型';
 
 /*Data for the table `company_economy_type` */
 
-insert  into `company_economy_type`(`id`,`company_economy_type`,`create_time`,`update_time`,`is_active`,`user_id`,`version`) values (1,'国有','2013-01-12 14:31:21','2013-01-15 10:00:49',1,1,1),(2,'集体','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(3,'私营','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(4,'个体','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(5,'联营','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(6,'股份制','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(7,'外商投资','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(8,'港澳台投资','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1),(9,'其他','2013-01-12 14:31:21','2013-01-12 14:31:21',1,1,1);
+insert  into `company_economy_type`(`id`,`company_economy_type`,`create_time`,`update_time`,`is_active`,`user_id`,`version`,`remark`) values (1,'国有','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(2,'集体','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(3,'私营','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(4,'个体','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(5,'联营','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(6,'股份制','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(7,'外商投资','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(8,'港澳台投资','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用'),(9,'其他','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'公用');
 
 /*Table structure for table `company_log` */
 
@@ -295,12 +305,13 @@ CREATE TABLE `company_property` (
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `user_id` int(11) DEFAULT NULL,
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='企业性质';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='企业性质';
 
 /*Data for the table `company_property` */
 
-insert  into `company_property`(`id`,`company_property`,`create_time`,`update_time`,`is_active`,`user_id`,`version`) values (1,'中直企业','2013-01-13 13:46:05','2013-01-13 13:46:05',1,1,NULL),(2,'省直企业','2013-01-14 10:38:32','2013-01-13 13:46:05',1,1,NULL),(3,'机关事业单位','2013-01-14 10:38:42','2013-01-13 13:46:05',1,1,NULL);
+insert  into `company_property`(`id`,`company_property`,`create_time`,`update_time`,`is_active`,`user_id`,`version`,`remark`) values (1,'中直企业','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'省残联保障金使用'),(2,'省直企业','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'省残联保障金使用'),(3,'机关事业单位','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'省残联保障金使用'),(4,'企业单位','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'农垦保障金使用'),(5,'事业单位','2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,1,'农垦保障金使用');
 
 /*Table structure for table `company_type` */
 
@@ -319,7 +330,7 @@ CREATE TABLE `company_type` (
 
 /*Data for the table `company_type` */
 
-insert  into `company_type`(`id`,`company_type`,`create_time`,`update_time`,`is_active`,`user_id`,`version`) values (1,'企业','2013-01-12 14:45:32','2013-01-12 14:45:32',0,1,1),(2,'事业','2013-01-12 14:45:47','2013-01-12 14:45:32',0,1,1),(3,'机关','2013-01-12 14:45:57','2013-01-12 14:45:32',0,1,1),(4,'机关团体','2012-02-24 08:12:38','2012-02-24 08:12:38',0,1,1);
+insert  into `company_type`(`id`,`company_type`,`create_time`,`update_time`,`is_active`,`user_id`,`version`) values (1,'企业','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(2,'事业','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(3,'机关','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(4,'机关团体','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1);
 
 /*Table structure for table `company_year_worker` */
 
@@ -340,7 +351,7 @@ CREATE TABLE `company_year_worker` (
   KEY `FK_company_year_worker_company_id` (`company_id`),
   CONSTRAINT `FK_company_year_worker_company_id` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`),
   CONSTRAINT `FK_company_year_worker_worker_id` FOREIGN KEY (`worker_id`) REFERENCES `worker` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=723 DEFAULT CHARSET=utf8;
 
 /*Data for the table `company_year_worker` */
 
@@ -352,24 +363,25 @@ CREATE TABLE `menu` (
   `primary_key` int(4) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `id` char(10) NOT NULL,
   `text` varchar(255) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `iconcls` varchar(45) DEFAULT NULL,
   `state` varchar(45) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
-  `checked` varchar(45) DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
+  `checked` varchar(45) DEFAULT 'false',
+  `user_id` int(11) NOT NULL DEFAULT '1',
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
-  `permission_type_id` int(11) NOT NULL,
+  `permission_type_id` int(11) NOT NULL DEFAULT '1',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT NULL,
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
   PRIMARY KEY (`primary_key`),
   KEY `fk_menu_permission_type1` (`permission_type_id`),
   CONSTRAINT `fk_menu_permission_type1` FOREIGN KEY (`permission_type_id`) REFERENCES `permission_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=422 DEFAULT CHARSET=utf8;
 
 /*Data for the table `menu` */
 
-insert  into `menu`(`primary_key`,`id`,`text`,`iconcls`,`state`,`url`,`checked`,`user_id`,`is_active`,`permission_type_id`,`create_time`,`update_time`,`version`) values (122,'10010000','保障金菜单','icon-fold','open','','false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(123,'10020000','退出','','','/quit','false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(124,'20010100','基本档案','icon-fold','open','','false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(125,'20010200','初审管理','icon-fold','open',NULL,'false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(126,'20010300','复审管理','icon-fold','open',NULL,'false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(127,'20010400','缴款管理','icon-fold','open',NULL,'false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(128,'20010500','文书管理','icon-fold','open',NULL,'false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(129,'20010600','查询统计','icon-fold','open',NULL,'false',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(130,'20010700','统计报表','icon-fold','open',NULL,NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(131,'20010800','系统设置','icon-fold','open',NULL,NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(132,'30010101','中直企业',NULL,NULL,'company/list/1','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(133,'30010102','省直企业',NULL,NULL,'company/list/2','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(134,'30010103','机关事业单位',NULL,NULL,'company/list/3','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(135,'30010201','年审单位初审',NULL,NULL,'audits/list/1','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(136,'30010301','年审单位复审',NULL,NULL,'audits/list/2','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(137,'30010401','企业缴款列表',NULL,NULL,'payment/list/3','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(138,'30010501','打印列表',NULL,NULL,'print/list','',1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(139,'30010601','单位档案查询',NULL,NULL,'query/company/list',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(140,'30010602','单位年审查询',NULL,NULL,'query/audit/list',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(141,'30010603','残疾职工查询',NULL,NULL,'query/worker/list',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(142,'30010701','年审情况汇总表(单位性质)',NULL,NULL,'report/nature',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(143,'30010702','年审情况汇总表(地区)',NULL,NULL,'report/area',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(144,'30010703','年审情况汇总表(经济类型)',NULL,NULL,'report/economytype',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(145,'30010801','年审参数列表',NULL,NULL,'settings/yearAuditParameter',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(146,'30010802','用户设置列表',NULL,NULL,'settings/user',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(148,'10010000','保障金菜单','icon-fold','open','','false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(149,'10020000','退出','','','/quit','false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(150,'20010100','基本档案','icon-fold','open','','false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(151,'20010200','初审管理','icon-fold','open',NULL,'false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(154,'20010500','文书管理','icon-fold','open',NULL,'false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(155,'20010600','查询统计','icon-fold','open',NULL,'false',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(156,'20010700','统计报表','icon-fold','open',NULL,NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(158,'30010101','中直企业',NULL,NULL,'company/list/1','',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(159,'30010102','省直企业',NULL,NULL,'company/list/2','',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(160,'30010103','机关事业单位',NULL,NULL,'company/list/3','',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(161,'30010201','年审单位初审',NULL,NULL,'audits/list/1','',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(164,'30010501','打印列表',NULL,NULL,'print/list','',1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(165,'30010601','单位档案查询',NULL,NULL,'query/company/list',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(166,'30010602','单位年审查询',NULL,NULL,'query/audit/list',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(167,'30010603','残疾职工查询',NULL,NULL,'query/worker/list',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(168,'30010701','年审情况汇总表(单位性质)',NULL,NULL,'report/nature',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(169,'30010702','年审情况汇总表(地区)',NULL,NULL,'report/area',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(170,'30010703','年审情况汇总表(经济类型)',NULL,NULL,'report/economytype',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(179,'10010000','保障金菜单','icon-fold','open','','false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(180,'10020000','退出','','','/quit','false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(181,'20010100','基本档案','icon-fold','open','','false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(183,'20010300','复审管理','icon-fold','open',NULL,'false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(185,'20010500','文书管理','icon-fold','open',NULL,'false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(186,'20010600','查询统计','icon-fold','open',NULL,'false',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(187,'20010700','统计报表','icon-fold','open',NULL,NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(189,'30010101','中直企业',NULL,NULL,'company/list/1','',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(190,'30010102','省直企业',NULL,NULL,'company/list/2','',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(191,'30010103','机关事业单位',NULL,NULL,'company/list/3','',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(193,'30010301','年审单位复审',NULL,NULL,'audits/list/2','',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(195,'30010501','打印列表',NULL,NULL,'print/list','',1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(196,'30010601','单位档案查询',NULL,NULL,'query/company/list',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(197,'30010602','单位年审查询',NULL,NULL,'query/audit/list',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(198,'30010603','残疾职工查询',NULL,NULL,'query/worker/list',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(199,'30010701','年审情况汇总表(单位性质)',NULL,NULL,'report/nature',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(200,'30010702','年审情况汇总表(地区)',NULL,NULL,'report/area',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(201,'30010703','年审情况汇总表(经济类型)',NULL,NULL,'report/economytype',NULL,1,0,3,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(205,'10010000','保障金菜单','icon-fold','open','','false',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(206,'10020000','退出','','','/quit','false',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(210,'20010400','缴款管理','icon-fold','open',NULL,'false',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(211,'20010500','文书管理','icon-fold','open',NULL,'false',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(212,'20010600','查询统计','icon-fold','open',NULL,'false',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(213,'20010700','统计报表','icon-fold','open',NULL,NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(220,'30010401','企业缴款列表',NULL,NULL,'payment/list/3','',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(221,'30010501','打印列表',NULL,NULL,'print/list','',1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(222,'30010601','单位档案查询',NULL,NULL,'query/company/list',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(223,'30010602','单位年审查询',NULL,NULL,'query/audit/list',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(224,'30010603','残疾职工查询',NULL,NULL,'query/worker/list',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(225,'30010701','年审情况汇总表(单位性质)',NULL,NULL,'report/nature',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(226,'30010702','年审情况汇总表(地区)',NULL,NULL,'report/area',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(227,'30010703','年审情况汇总表(经济类型)',NULL,NULL,'report/economytype',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(228,'30010402','部分缴款列表',NULL,NULL,'payment/list/4',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(229,'30010402','部分缴款列表',NULL,NULL,'payment/list/4',NULL,1,0,4,'2012-03-05 15:06:03','2012-03-05 15:05:50',1),(230,'30010202','已复审未通过',NULL,NULL,'audits/list/7',NULL,1,0,1,'2012-03-05 15:06:03','2012-03-05 15:06:03',1),(231,'30010202','已复审未通过',NULL,NULL,'audits/list/7',NULL,1,0,2,'2012-03-05 15:06:03','2012-03-05 15:06:03',1),(232,'30010604','缴款记录查询',NULL,NULL,'query/payment/list',NULL,1,0,1,'2012-03-11 14:53:12','2012-03-11 14:53:12',1),(233,'30010604','缴款记录查询',NULL,NULL,'query/payment/list',NULL,1,0,2,'2012-03-11 14:54:55','2012-03-11 14:53:12',1),(234,'30010604','缴款记录查询',NULL,NULL,'query/payment/list',NULL,1,0,3,'2012-03-11 14:55:01','2012-03-11 14:53:12',1),(235,'30010604','缴款记录查询',NULL,NULL,'query/payment/list',NULL,1,0,4,'2012-03-11 14:54:51','2012-03-11 14:53:12',1),(236,'30010803','复审意见设置',NULL,NULL,'settings/reply',NULL,1,0,1,'2014-03-17 15:29:57','2014-03-17 15:29:57',1),(239,'10010000','保障金菜单','icon-fold','open','','false',1,0,5,'2014-04-09 15:07:13','2014-04-09 15:07:13',1),(240,'20010600','查询统计','icon-fold','open',NULL,'false',1,0,5,'2014-04-09 15:09:32','2014-04-09 15:09:32',1);
+insert  into `menu`(`primary_key`,`id`,`text`,`remark`,`iconcls`,`state`,`url`,`checked`,`user_id`,`is_active`,`permission_type_id`,`create_time`,`update_time`,`version`) values (122,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(123,'10020000','退出',NULL,'','','/quit','false',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(124,'20010100','基本档案',NULL,'icon-fold','open','','false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(125,'20010200','初审管理',NULL,'icon-fold','open',NULL,'false',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(126,'20010400','复审管理',NULL,'icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(127,'20010600','缴款管理',NULL,'icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(128,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(129,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(130,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(131,'20011000','系统设置',NULL,'icon-fold','open',NULL,'false',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(135,'30010201','年审单位初审',NULL,NULL,NULL,'audits/list/1','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(136,'30010401','年审单位复审',NULL,NULL,NULL,'audits/list/12','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(137,'30010601','企业缴款列表',NULL,NULL,NULL,'payment/list/3','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(138,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(139,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(140,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(141,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(142,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(143,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(144,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(145,'30011001','年审参数列表',NULL,NULL,NULL,'settings/yearAuditParameter',NULL,1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(146,'30011002','用户设置列表',NULL,NULL,NULL,'settings/user',NULL,1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(148,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(149,'10020000','退出',NULL,'','','/quit','false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(150,'20010100','基本档案',NULL,'icon-fold','open','','false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(155,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(156,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(161,'30010201','年审单位初审',NULL,NULL,NULL,'audits/list/1','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(168,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(169,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(170,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(179,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(180,'10020000','退出',NULL,'','','/quit','false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(181,'20010100','基本档案',NULL,'icon-fold','open','','false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(186,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(187,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(193,'30010401','年审单位复审',NULL,NULL,NULL,'audits/list/12','',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(199,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(200,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(201,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(205,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(206,'10020000','退出',NULL,'','','/quit','false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(210,'20010600','缴款管理',NULL,'icon-fold','open',NULL,'false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(212,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(213,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(220,'30010601','企业缴款列表',NULL,NULL,NULL,'payment/list/3','',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(225,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(226,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(227,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(228,'30010602','部分缴款列表',NULL,NULL,NULL,'payment/list/4',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(229,'30010602','部分缴款列表',NULL,NULL,NULL,'payment/list/4',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(230,'30010203','已复审未通过',NULL,NULL,NULL,'audits/list/7',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(231,'30010203','已复审未通过',NULL,NULL,NULL,'audits/list/7',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(232,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(236,'30011003','复审意见设置',NULL,NULL,NULL,'settings/reply',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(240,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(241,'30010104','机关','农垦保障金使用',NULL,NULL,'company/list/4',NULL,0,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(242,'30010105','企事业单位','农垦保障金使用',NULL,NULL,'company/list/5',NULL,0,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(243,'30010106','省直/局直单位','农垦保障金使用',NULL,NULL,'company/list/6',NULL,0,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(245,'30010501','年审单位终审','农垦保障金使用',NULL,NULL,'audits/list/14',NULL,1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(246,'20010500','终审管理','农垦保障金使用','icon-fold','open',NULL,'false',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(247,'30010205','已终审未通过','农垦保障金使用',NULL,NULL,'audits/list/9',NULL,1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(248,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(249,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(250,'10020000','退出',NULL,'','','/quit','false',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(251,'10020000','退出',NULL,'','','/quit','false',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(252,'20010100','基本档案',NULL,'icon-fold','open',NULL,'false',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(256,'30010101','中直企业',NULL,NULL,NULL,'company/list/1','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(257,'30010102','省直企业',NULL,NULL,NULL,'company/list/2','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(258,'30010103','机关事业单位',NULL,NULL,NULL,'company/list/3','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(259,'30010101','中直企业',NULL,NULL,NULL,'company/list/1','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(260,'30010102','省直企业',NULL,NULL,NULL,'company/list/2','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(261,'30010103','机关事业单位',NULL,NULL,NULL,'company/list/3','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(268,'30010101','中直企业',NULL,NULL,NULL,'company/list/1','',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(269,'30010102','省直企业',NULL,NULL,NULL,'company/list/2','',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(270,'30010103','机关事业单位',NULL,NULL,NULL,'company/list/3','',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(271,'30010101','中直企业',NULL,NULL,NULL,'company/list/1','',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(272,'30010102','省直企业',NULL,NULL,NULL,'company/list/2','',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(273,'30010103','机关事业单位',NULL,NULL,NULL,'company/list/3','',1,1,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(299,'30010104','机关','农垦保障金使用',NULL,NULL,'company/list/4',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(300,'30010105','企事业单位','农垦保障金使用',NULL,NULL,'company/list/5',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(301,'30010106','省直/局直单位','农垦保障金使用',NULL,NULL,'company/list/6',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(302,'30010104','机关','农垦保障金使用',NULL,NULL,'company/list/4',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(303,'30010105','企事业单位','农垦保障金使用',NULL,NULL,'company/list/5',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(304,'30010106','省直/局直单位','农垦保障金使用',NULL,NULL,'company/list/6',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(305,'30010104','机关','农垦保障金使用',NULL,NULL,'company/list/4',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(306,'30010105','企事业单位','农垦保障金使用',NULL,NULL,'company/list/5',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(307,'30010106','省直/局直单位','农垦保障金使用',NULL,NULL,'company/list/6',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(309,'30010204','公司信息年审','农垦保障金使用',NULL,NULL,'audits/list/1',NULL,1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(310,'30010205','已终审未通过','农垦保障金使用',NULL,NULL,'audits/list/9',NULL,1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(315,'20010200','初审管理',NULL,'icon-fold','open',NULL,'false',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(316,'20010200','初审管理',NULL,'icon-fold','open',NULL,'false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(318,'30010204','公司信息年审','农垦保障金使用',NULL,NULL,'audits/list/1',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(319,'30010204','公司信息年审','农垦保障金使用',NULL,NULL,'audits/list/1',NULL,1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(321,'20010500','终审管理','农垦保障金使用','icon-fold','open',NULL,'false',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(322,'30010501','年审单位终审','农垦保障金使用',NULL,NULL,'audits/list/14',NULL,1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(323,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(324,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(325,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(326,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(330,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(331,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(332,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(333,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(337,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(338,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(339,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(340,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(341,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(342,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(343,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(344,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(345,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(346,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(347,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(348,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(349,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(350,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(351,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(352,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(368,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(369,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(370,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(371,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(372,'20010300','减免缓管理','黑龙江省残联残保金使用','icon-fold','open',NULL,'false',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(373,'20010300','减免缓管理','黑龙江省残联残保金使用','icon-fold','open',NULL,'false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(374,'30010301','年审单位减免缓','黑龙江省残联残保金使用','','','audits/list/11','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(375,'30010301','年审单位减免缓','黑龙江省残联残保金使用','','','audits/list/11','',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(376,'30010202','已减免未通过','黑龙江省残联残保金使用',NULL,NULL,'audits/list/13','',1,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(377,'30010202','已减免未通过','黑龙江省残联残保金使用',NULL,NULL,'audits/list/13','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(378,'20010900','统计报表',NULL,'icon-fold','open',NULL,'false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(379,'30010901','年审情况汇总表(单位性质)',NULL,NULL,NULL,'report/nature',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(380,'30010902','年审情况汇总表(地区)',NULL,NULL,NULL,'report/area',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(381,'30010903','年审情况汇总表(经济类型)',NULL,NULL,NULL,'report/economytype',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(382,'10010000','保障金菜单',NULL,'icon-fold','open','','false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(383,'10020000','退出',NULL,'','','/quit','false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(384,'20010100','基本档案',NULL,'icon-fold','open','','false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(386,'20010800','查询统计',NULL,'icon-fold','open',NULL,'false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(388,'30010101','中直企业',NULL,NULL,NULL,'company/list/1','',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(389,'30010102','省直企业',NULL,NULL,NULL,'company/list/2','',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(390,'30010103','机关事业单位',NULL,NULL,NULL,'company/list/3','',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(391,'30010104','机关','农垦保障金使用',NULL,NULL,'company/list/4',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(392,'30010105','企事业单位','农垦保障金使用',NULL,NULL,'company/list/5',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(393,'30010106','省直/局直单位','农垦保障金使用',NULL,NULL,'company/list/6',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(394,'20010700','文书管理',NULL,'icon-fold','open',NULL,'false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(395,'30010701','打印列表',NULL,NULL,NULL,'print/list','',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(396,'30010801','单位档案查询',NULL,NULL,NULL,'query/company/list',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(397,'30010802','单位年审查询',NULL,NULL,NULL,'query/audit/list',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(398,'30010803','残疾职工查询',NULL,NULL,NULL,'query/worker/list',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(399,'30010804','缴款记录查询',NULL,NULL,NULL,'query/payment/list',NULL,1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(409,'20010400','复审管理',NULL,'icon-fold','open',NULL,'false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(410,'30011001','年审参数列表',NULL,NULL,NULL,'settings/yearAuditParameter','',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(411,'20011000','系统设置',NULL,'icon-fold',NULL,NULL,'false',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(412,'20011000','系统设置',NULL,'icon-fold',NULL,NULL,'false',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(413,'30011002','用户设置列表',NULL,NULL,NULL,'settings/user','',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(414,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','',1,0,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(415,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','',1,0,2,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(416,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,3,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(417,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,4,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(418,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,5,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(419,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,6,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(420,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,7,'2014-08-22 17:11:05','2014-08-22 17:11:05',1),(421,'30011004','修改密码',NULL,NULL,NULL,'settings/user/pwdedit','false',1,0,8,'2014-08-22 17:11:05','2014-08-22 17:11:05',1);
 
 /*Table structure for table `payment` */
 
@@ -414,12 +426,13 @@ CREATE TABLE `payment_exceptional` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `payment_exceptional` varchar(45) DEFAULT NULL,
   `value` varchar(45) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `payment_exceptional` */
 
-insert  into `payment_exceptional`(`id`,`payment_exceptional`,`value`) values (1,'正常','normal'),(2,'手工补录','yellow'),(3,'电汇','blue'),(4,'退款','green');
+insert  into `payment_exceptional`(`id`,`payment_exceptional`,`value`,`is_active`) values (1,'正常','normal',0),(2,'手工补录','yellow',0),(3,'电汇','blue',0),(4,'退款','green',0);
 
 /*Table structure for table `payment_type` */
 
@@ -437,7 +450,7 @@ CREATE TABLE `payment_type` (
 
 /*Data for the table `payment_type` */
 
-insert  into `payment_type`(`id`,`text`,`create_time`,`update_time`,`user_id`,`is_active`) values (1,'残联自收',NULL,NULL,NULL,1),(2,'地税代征',NULL,NULL,NULL,1);
+insert  into `payment_type`(`id`,`text`,`create_time`,`update_time`,`user_id`,`is_active`) values (1,'残联自收','2014-08-22 17:11:05','2014-08-22 17:11:05',NULL,0),(2,'地税代征','2014-08-22 17:11:05','2014-08-22 17:11:05',NULL,0);
 
 /*Table structure for table `permission_type` */
 
@@ -451,12 +464,13 @@ CREATE TABLE `permission_type` (
   `user_id` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 /*Data for the table `permission_type` */
 
-insert  into `permission_type`(`id`,`permission_type`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'超级管理员','2013-01-12 13:36:22','2013-01-12 13:44:42',1,1,1),(2,'初审','2013-01-12 13:43:51','2013-01-12 13:44:42',1,1,1),(3,'复审','2013-01-12 13:45:11','2013-01-12 13:44:42',1,1,1),(4,'缴款','2013-01-14 08:36:01','2013-01-14 08:36:01',1,1,1),(5,'查询','2014-04-10 09:14:03','2014-04-10 09:14:03',1,0,1);
+insert  into `permission_type`(`id`,`permission_type`,`create_time`,`update_time`,`user_id`,`is_active`,`version`,`remark`) values (1,'超级管理员','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,NULL),(2,'初审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(3,'复审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(4,'缴款','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(5,'查询','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(6,'终审','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'农垦保障金使用'),(7,'录入','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'农垦保障金使用'),(8,'减免缓','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'黑龙江省残联残保金使用');
 
 /*Table structure for table `reply` */
 
@@ -476,7 +490,7 @@ CREATE TABLE `reply` (
 
 /*Data for the table `reply` */
 
-insert  into `reply`(`id`,`title`,`content`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'无','','2014-03-17 13:48:55','2014-03-19 15:21:05',0,0,4),(2,'年龄超标','存在年龄超标的残疾人员工','2014-03-17 15:41:11','2014-03-19 15:28:35',0,0,3),(5,'预定人数过多','预定人数过多','2014-03-19 10:57:25','2014-03-19 15:29:34',0,0,2),(7,'金额计算问题','金额计算有问题','2014-03-19 10:58:48','2014-03-19 15:30:03',0,0,2),(14,'安排人数问题','安排人数存在问题。确认人数是否正确','2014-03-19 13:02:48','2014-03-19 15:31:00',0,0,2);
+insert  into `reply`(`id`,`title`,`content`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'无','','2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,4),(2,'年龄超标','存在年龄超标的残疾人员工','2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,3),(5,'预定人数过多','预定人数过多','2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,2),(7,'金额计算问题','金额计算有问题','2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,2),(14,'安排人数问题','安排人数存在问题。确认人数是否正确','2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,2);
 
 /*Table structure for table `user` */
 
@@ -492,24 +506,22 @@ CREATE TABLE `user` (
   `user_phone` varchar(45) DEFAULT NULL COMMENT '电话',
   `user_group_id` int(11) NOT NULL COMMENT '用户组 user_group',
   `user_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态',
-  `user_remark` varchar(255) DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
+  `user_remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name_UNIQUE` (`user_name`),
-  UNIQUE KEY `user_mobile_UNIQUE` (`user_mobile`),
   UNIQUE KEY `user_email_UNIQUE` (`user_email`),
-  UNIQUE KEY `user_phone_UNIQUE` (`user_phone`),
   KEY `fk_user_user_group1_idx` (`user_group_id`),
   CONSTRAINT `fk_user_user_group1` FOREIGN KEY (`user_group_id`) REFERENCES `user_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`user_name`,`user_real_name`,`user_password`,`user_email`,`user_mobile`,`user_phone`,`user_group_id`,`user_status`,`user_remark`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'admin','管理员','d138768d3b5eca407f0dd579c5ca3767',NULL,'15846538450',NULL,1,1,'','2013-01-12 13:59:44','2012-03-10 09:30:39',0,0,5),(2,'chushen','初审专家','b71cf3839f16f4e828d2a946e5af551f',NULL,'12321321',NULL,2,1,'321321','2013-01-22 11:23:01','2014-04-03 14:52:55',0,0,3),(3,'fushen','复审专家','417e03278b3417e6e863f296ad6d288d',NULL,'1232321',NULL,3,1,'','2013-01-22 11:23:22','2014-04-03 14:52:50',0,0,2),(4,'jiaokuan','缴款专家','3acfb9cafa6a27d56c38fd30988d62b1',NULL,'12321321321',NULL,4,1,'','2013-01-22 11:22:26','2014-04-03 14:24:34',0,0,3),(5,'chaxun','查询','6fba6418627a2a1dfd7f8643a94324d6',NULL,'13812345678',NULL,5,1,'','2014-04-09 15:04:02','2014-04-09 15:04:02',0,0,1);
+insert  into `user`(`id`,`user_name`,`user_real_name`,`user_password`,`user_email`,`user_mobile`,`user_phone`,`user_group_id`,`user_status`,`create_time`,`update_time`,`user_id`,`is_active`,`version`,`user_remark`) values (1,'admin','管理员','d138768d3b5eca407f0dd579c5ca3767',NULL,'15846538450',NULL,1,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',0,1,7,''),(8,'zhongshen','终审专家','b70bbb87e5dbbc2857b51fc8fc514254',NULL,'13812345678',NULL,6,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,3,'农垦保障金使用'),(9,'luru','录入专家','0bd5321219a130ae069b191359b75161',NULL,'13521458562',NULL,7,1,'2014-08-22 17:11:05','2014-08-22 17:11:05',0,0,2,'农垦保障金使用');
 
 /*Table structure for table `user_group` */
 
@@ -524,14 +536,15 @@ CREATE TABLE `user_group` (
   `user_id` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '0' COMMENT '是否逻辑删除: 0--no(即未被删除), 1--yes(即被删除)',
   `version` int(11) DEFAULT '1' COMMENT '悲观锁--版本号',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
   KEY `fk_user_group_permission_type1_idx` (`permission_type_id`),
   CONSTRAINT `fk_user_group_permission_type1` FOREIGN KEY (`permission_type_id`) REFERENCES `permission_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user_group` */
 
-insert  into `user_group`(`id`,`permission_type_id`,`user_group_name`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,1,'超级管理员组','2013-01-12 13:48:30','2013-01-12 13:49:00',1,1,1),(2,2,'初审用户组','2013-01-12 13:48:30','2013-01-12 13:48:30',1,0,1),(3,3,'复审用户组','2013-01-12 13:48:30','2013-01-12 13:48:30',1,0,1),(4,4,'缴款用户组','2013-01-12 13:48:30','2013-01-12 13:48:30',1,0,1),(5,5,'查询用户组','2014-04-10 09:15:05','2014-04-10 09:15:05',1,0,1);
+insert  into `user_group`(`id`,`permission_type_id`,`user_group_name`,`create_time`,`update_time`,`user_id`,`is_active`,`version`,`remark`) values (1,1,'超级管理员组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(2,2,'初审用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(3,3,'复审用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(4,4,'缴款用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(5,5,'查询用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,NULL),(6,6,'终审用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'农垦保障金使用'),(7,7,'录入用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1,'农垦保障金使用'),(8,8,'减免用户组','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1,'黑龙江省残联残保金使用');
 
 /*Table structure for table `user_log` */
 
@@ -576,11 +589,13 @@ CREATE TABLE `worker` (
   `phone` varchar(45) DEFAULT NULL COMMENT '联系电话',
   `current_job` varchar(45) DEFAULT NULL COMMENT '当前岗位',
   `worker_address` varchar(45) DEFAULT NULL COMMENT '工作人住址',
+  `acode_back` char(8) DEFAULT NULL COMMENT '地区code, 备份数据',
   `area_code` char(8) NOT NULL DEFAULT '10230000' COMMENT '地区code,默认值为黑龙江省',
   `worker_handicap_code` varchar(45) NOT NULL COMMENT '残疾证编号',
   `worker_handicap_type` int(11) NOT NULL COMMENT '残疾类别',
   `worker_handicap_level` int(11) NOT NULL COMMENT '残疾级别',
   `is_college` tinyint(1) DEFAULT '0' COMMENT '是否是大学生',
+  `is_retired` tinyint(1) DEFAULT '0' COMMENT '是否内退',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT NULL,
@@ -594,7 +609,7 @@ CREATE TABLE `worker` (
   KEY `fk_worker_handicap_type1_idx` (`worker_handicap_type`),
   KEY `fk_worker_handicap_level1_idx` (`worker_handicap_level`),
   KEY `fk_worker_area1_idx` (`area_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='职工表';
+) ENGINE=InnoDB AUTO_INCREMENT=27293 DEFAULT CHARSET=utf8 COMMENT='职工表';
 
 /*Data for the table `worker` */
 
@@ -615,7 +630,7 @@ CREATE TABLE `worker_handicap_level` (
 
 /*Data for the table `worker_handicap_level` */
 
-insert  into `worker_handicap_level`(`id`,`handicap_level`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'一级','2013-01-12 17:37:14','2013-01-12 17:37:14',1,1,1),(2,'二级','2013-01-12 17:37:14','2013-01-12 17:37:14',1,1,1),(3,'三级','2013-01-22 14:01:43','2013-01-12 17:37:14',1,1,1),(4,'四级','2013-01-22 14:01:54','2013-01-12 17:37:14',1,1,1);
+insert  into `worker_handicap_level`(`id`,`handicap_level`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'一级','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(2,'二级','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(3,'三级','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(4,'四级','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1);
 
 /*Table structure for table `worker_handicap_type` */
 
@@ -634,7 +649,31 @@ CREATE TABLE `worker_handicap_type` (
 
 /*Data for the table `worker_handicap_type` */
 
-insert  into `worker_handicap_type`(`id`,`handicap_type`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'视力残疾','2013-01-12 17:37:34','2013-01-12 17:37:34',1,1,1),(2,'听力残疾','2013-01-12 17:37:34','2013-01-12 17:37:34',1,1,1),(3,'言语残疾','2013-01-22 14:03:06','2013-01-12 17:37:34',NULL,0,1),(4,'肢体残疾','2013-01-22 14:03:11','2013-01-12 17:37:34',NULL,0,1),(5,'智力残疾','2013-01-22 14:03:14','2013-01-12 17:37:34',NULL,0,1),(6,'精神残疾','2013-01-22 14:03:18','2013-01-12 17:37:34',NULL,0,1),(7,'多重残疾','2013-01-22 14:03:24','2013-01-22 14:03:24',NULL,0,1);
+insert  into `worker_handicap_type`(`id`,`handicap_type`,`create_time`,`update_time`,`user_id`,`is_active`,`version`) values (1,'视力残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(2,'听力残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,1,1),(3,'言语残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1),(4,'肢体残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1),(5,'智力残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1),(6,'精神残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1),(7,'多重残疾','2014-08-22 17:11:05','2014-08-22 17:11:05',1,0,1);
+
+/*Table structure for table `worker_temp` */
+
+DROP TABLE IF EXISTS `worker_temp`;
+
+CREATE TABLE `worker_temp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '职工唯一编号',
+  `worker_name` varchar(45) DEFAULT NULL COMMENT '职工姓名',
+  `worker_gender` varchar(2) DEFAULT NULL COMMENT '性别',
+  `worker_birth` varchar(45) DEFAULT NULL COMMENT '出生日期',
+  `worker_birth_year` char(4) DEFAULT NULL COMMENT '出生年份, 供查询使用, 不映射到bean类中',
+  `worker_id_card` varchar(20) DEFAULT NULL COMMENT '身份证号',
+  `worker_handicap_code` varchar(45) DEFAULT NULL COMMENT '残疾证编号',
+  `worker_handicap_type` int(11) DEFAULT NULL COMMENT '残疾类别',
+  `worker_handicap_level` int(11) DEFAULT NULL COMMENT '残疾级别',
+  `is_ok` tinyint(1) DEFAULT '0' COMMENT '是否通过验证, 默认为o-false',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `user_id` int(11) DEFAULT NULL COMMENT '操作用户id',
+  `check_code` varchar(50) DEFAULT NULL COMMENT '检查码, 防止数据冲突',
+  `pre_id` int(11) DEFAULT NULL COMMENT '校验时检出为已经存在的数据, 此字段保存该员工在员工表worker中的真实id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1397 DEFAULT CHARSET=utf8 COMMENT='职工表';
+
+/*Data for the table `worker_temp` */
 
 /*Table structure for table `audit_company_view` */
 
@@ -648,12 +687,12 @@ DROP TABLE IF EXISTS `audit_company_view`;
   `c_company_code` varchar(45) COMMENT '联合主键--档案号',
   `c_company_management` varchar(45) DEFAULT NULL COMMENT '主管部门',
   `c_company_name` varchar(45) COMMENT '企业名称',
-  `c_company_legal` varchar(45) COMMENT '企业法人',
+  `c_company_legal` varchar(45) DEFAULT NULL COMMENT '企业法人',
   `c_company_contact_person` varchar(45) DEFAULT NULL COMMENT '公司联系人',
-  `c_company_organization_code` varchar(128) COMMENT '组织机构代码证号',
+  `c_company_organization_code` varchar(128) DEFAULT NULL COMMENT '组织机构代码证号',
   `c_company_tax_code` varchar(128) DEFAULT NULL COMMENT '税务编码',
   `c_company_address` varchar(255) COMMENT '企业地址',
-  `c_company_zip_code` char(6) COMMENT '企业邮政编码',
+  `c_company_zip_code` varchar(10) DEFAULT NULL COMMENT '企业邮政编码',
   `c_company_fax` varchar(45) DEFAULT NULL COMMENT '传真---暂时未写到bean类中',
   `c_company_phone` varchar(45) DEFAULT NULL COMMENT '企业联系人手机',
   `c_company_mobile` varchar(45) DEFAULT NULL COMMENT '企业电话',
@@ -690,10 +729,10 @@ DROP TABLE IF EXISTS `audit_company_view`;
   `au_is_delay_pay` tinyint(1) DEFAULT '0' COMMENT '是否减免滞纳金,默认为0--不减免',
   `au_init_audit_user_id` int(11) DEFAULT NULL COMMENT '初审人',
   `au_init_audit_date` timestamp NULL DEFAULT NULL COMMENT '初审日期',
-  `au_init_audit_comment` varchar(255) DEFAULT NULL COMMENT '初审意见',
+  `au_init_audit_comment` varchar(1000) DEFAULT NULL COMMENT '初审意见',
   `au_verify_audit_user_id` int(11) DEFAULT NULL COMMENT '复审人',
   `au_verify_audit_date` timestamp NULL DEFAULT NULL COMMENT '复审日期',
-  `au_verify_audit_comment` varchar(255) DEFAULT NULL COMMENT '复审意见',
+  `au_verify_audit_comment` varchar(1000) DEFAULT NULL COMMENT '复审意见',
   `au_remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `au_is_exempt` tinyint(1) DEFAULT '0' COMMENT '是否是减免缓,1-免缴, 0-不免缴',
   `au_reduction_type` int(11) DEFAULT '0' COMMENT '减免缓类型',
@@ -729,12 +768,12 @@ DROP TABLE IF EXISTS `company_worker_view`;
   `c_company_code` varchar(45) NOT NULL COMMENT '联合主键--档案号',
   `c_company_management` varchar(45) DEFAULT NULL COMMENT '主管部门',
   `c_company_name` varchar(45) NOT NULL COMMENT '企业名称',
-  `c_company_legal` varchar(45) NOT NULL COMMENT '企业法人',
+  `c_company_legal` varchar(45) DEFAULT NULL COMMENT '企业法人',
   `c_company_contact_person` varchar(45) DEFAULT NULL COMMENT '公司联系人',
-  `c_company_organization_code` varchar(128) NOT NULL COMMENT '组织机构代码证号',
+  `c_company_organization_code` varchar(128) DEFAULT NULL COMMENT '组织机构代码证号',
   `c_company_tax_code` varchar(128) DEFAULT NULL COMMENT '税务编码',
   `c_company_address` varchar(255) NOT NULL COMMENT '企业地址',
-  `c_company_zip_code` char(6) NOT NULL COMMENT '企业邮政编码',
+  `c_company_zip_code` varchar(10) DEFAULT NULL COMMENT '企业邮政编码',
   `c_company_fax` varchar(45) DEFAULT NULL COMMENT '传真---暂时未写到bean类中',
   `c_company_phone` varchar(45) DEFAULT NULL COMMENT '企业联系人手机',
   `c_company_mobile` varchar(45) DEFAULT NULL COMMENT '企业电话',
@@ -767,6 +806,7 @@ DROP TABLE IF EXISTS `company_worker_view`;
   `w_worker_address` varchar(45) DEFAULT NULL COMMENT '工作人住址',
   `w_worker_handicap_code` varchar(45) NOT NULL COMMENT '残疾证编号',
   `w_is_college` tinyint(1) DEFAULT NULL COMMENT '是否是大学生',
+  `w_is_retired` tinyint(1) DEFAULT NULL COMMENT '是否内退',
   `w_remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `w_create_time` timestamp NULL DEFAULT NULL,
   `w_update_time` timestamp NULL DEFAULT NULL,
@@ -793,7 +833,7 @@ DROP TABLE IF EXISTS `company_worker_view`;
 /*!50001 DROP TABLE IF EXISTS `company_worker_view` */;
 /*!50001 DROP VIEW IF EXISTS `company_worker_view` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `company_worker_view` AS (select `c`.`id` AS `c_id`,`c`.`company_code` AS `c_company_code`,`c`.`company_management` AS `c_company_management`,`c`.`company_name` AS `c_company_name`,`c`.`company_legal` AS `c_company_legal`,`c`.`company_contact_person` AS `c_company_contact_person`,`c`.`company_organization_code` AS `c_company_organization_code`,`c`.`company_tax_code` AS `c_company_tax_code`,`c`.`company_address` AS `c_company_address`,`c`.`company_zip_code` AS `c_company_zip_code`,`c`.`company_fax` AS `c_company_fax`,`c`.`company_phone` AS `c_company_phone`,`c`.`company_mobile` AS `c_company_mobile`,`c`.`company_bank` AS `c_company_bank`,`c`.`company_bank_account` AS `c_company_bank_account`,`c`.`company_remark` AS `c_company_remark`,`c`.`create_time` AS `c_create_time`,`c`.`update_time` AS `c_update_time`,`c`.`user_id` AS `c_user_id`,`c`.`is_active` AS `c_is_active`,`c`.`version` AS `c_version`,`cyw`.`id` AS `cyw_id`,`cyw`.`year` AS `cyw_year`,`cyw`.`worker_id` AS `cyw_worker_id`,`cyw`.`company_id` AS `cyw_company_id`,`cyw`.`current_job` AS `cyw_current_job`,`cyw`.`create_time` AS `cyw_create_time`,`cyw`.`update_time` AS `cyw_update_time`,`cyw`.`is_active` AS `cyw_is_active`,`cyw`.`user_id` AS `cyw_user_id`,`w`.`id` AS `w_id`,`w`.`worker_name` AS `w_worker_name`,`w`.`worker_gender` AS `w_worker_gender`,`w`.`worker_birth` AS `w_worker_birth`,`w`.`worker_birth_year` AS `w_worker_birth_year`,`w`.`worker_id_card` AS `w_worker_id_card`,`w`.`career_card` AS `w_career_card`,`w`.`phone` AS `w_phone`,`w`.`current_job` AS `w_current_job`,`w`.`worker_address` AS `w_worker_address`,`w`.`worker_handicap_code` AS `w_worker_handicap_code`,`w`.`is_college` AS `w_is_college`,`w`.`remark` AS `w_remark`,`w`.`create_time` AS `w_create_time`,`w`.`update_time` AS `w_update_time`,`w`.`user_id` AS `w_user_id`,`w`.`is_active` AS `w_is_active`,`w`.`version` AS `w_version`,`t`.`id` AS `t_id`,`t`.`handicap_type` AS `t_handicap_type`,`l`.`id` AS `l_id`,`l`.`handicap_level` AS `l_handicap_level`,`a`.`code` AS `a_code`,`a`.`name` AS `a_name` from (((((`company` `c` join `company_year_worker` `cyw`) join `worker` `w`) join `worker_handicap_type` `t`) join `worker_handicap_level` `l`) join `area` `a`) where ((`c`.`id` = `cyw`.`company_id`) and (`cyw`.`worker_id` = `w`.`id`) and (`w`.`worker_handicap_type` = `t`.`id`) and (`w`.`worker_handicap_level` = `l`.`id`) and (`w`.`area_code` = `a`.`code`))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `company_worker_view` AS (select `c`.`id` AS `c_id`,`c`.`company_code` AS `c_company_code`,`c`.`company_management` AS `c_company_management`,`c`.`company_name` AS `c_company_name`,`c`.`company_legal` AS `c_company_legal`,`c`.`company_contact_person` AS `c_company_contact_person`,`c`.`company_organization_code` AS `c_company_organization_code`,`c`.`company_tax_code` AS `c_company_tax_code`,`c`.`company_address` AS `c_company_address`,`c`.`company_zip_code` AS `c_company_zip_code`,`c`.`company_fax` AS `c_company_fax`,`c`.`company_phone` AS `c_company_phone`,`c`.`company_mobile` AS `c_company_mobile`,`c`.`company_bank` AS `c_company_bank`,`c`.`company_bank_account` AS `c_company_bank_account`,`c`.`company_remark` AS `c_company_remark`,`c`.`create_time` AS `c_create_time`,`c`.`update_time` AS `c_update_time`,`c`.`user_id` AS `c_user_id`,`c`.`is_active` AS `c_is_active`,`c`.`version` AS `c_version`,`cyw`.`id` AS `cyw_id`,`cyw`.`year` AS `cyw_year`,`cyw`.`worker_id` AS `cyw_worker_id`,`cyw`.`company_id` AS `cyw_company_id`,`cyw`.`current_job` AS `cyw_current_job`,`cyw`.`create_time` AS `cyw_create_time`,`cyw`.`update_time` AS `cyw_update_time`,`cyw`.`is_active` AS `cyw_is_active`,`cyw`.`user_id` AS `cyw_user_id`,`w`.`id` AS `w_id`,`w`.`worker_name` AS `w_worker_name`,`w`.`worker_gender` AS `w_worker_gender`,`w`.`worker_birth` AS `w_worker_birth`,`w`.`worker_birth_year` AS `w_worker_birth_year`,`w`.`worker_id_card` AS `w_worker_id_card`,`w`.`career_card` AS `w_career_card`,`w`.`phone` AS `w_phone`,`w`.`current_job` AS `w_current_job`,`w`.`worker_address` AS `w_worker_address`,`w`.`worker_handicap_code` AS `w_worker_handicap_code`,`w`.`is_college` AS `w_is_college`,`w`.`is_retired` AS `w_is_retired`,`w`.`remark` AS `w_remark`,`w`.`create_time` AS `w_create_time`,`w`.`update_time` AS `w_update_time`,`w`.`user_id` AS `w_user_id`,`w`.`is_active` AS `w_is_active`,`w`.`version` AS `w_version`,`t`.`id` AS `t_id`,`t`.`handicap_type` AS `t_handicap_type`,`l`.`id` AS `l_id`,`l`.`handicap_level` AS `l_handicap_level`,`a`.`code` AS `a_code`,`a`.`name` AS `a_name` from (((((`company` `c` join `company_year_worker` `cyw`) join `worker` `w`) join `worker_handicap_type` `t`) join `worker_handicap_level` `l`) join `area` `a`) where ((`c`.`id` = `cyw`.`company_id`) and (`cyw`.`worker_id` = `w`.`id`) and (`w`.`worker_handicap_type` = `t`.`id`) and (`w`.`worker_handicap_level` = `l`.`id`) and (`w`.`area_code` = `a`.`code`))) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
