@@ -151,11 +151,11 @@ public class Constants {
 	public static final Integer USER_GROUP_JIANMIAN = 8;
 
 	/**
-	 * 平均工资--企业
+	 * 公司计算基准--企业
 	 */
 	public static final Integer AVERAGE_SALARY_COMPANY = 4;
 	/**
-	 * 平均工资--事业
+	 * 公司计算基准--事业
 	 */
 	public static final Integer AVERAGE_SALARY_PI = 5;
 }

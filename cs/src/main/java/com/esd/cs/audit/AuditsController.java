@@ -450,21 +450,57 @@ public class AuditsController {
 		//如果为企业单位, 则使用企业平均工资计算
 		if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
 			averageSalary = auditParameter.getAverageSalary();
-		}else{
+		}else if(Constants.AVERAGE_SALARY_PI== company.getCompanyProperty().getId()){
 			//如果为事业单位, 则使用事业单位平均工资计算
 			averageSalary = auditParameter.getAverageSalaryPi();
 		}
 //		averageSalary = auditParameter.getAverageSalary();
-		// 计算出应缴金额
-		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
-		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
-				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
-		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
-			calculateModel.setYingJiaoJinE(yingJiaoJinE);
-		} else {
+		//-------------------//
+		//---计算出应缴金额---//
+		//-------------------//
+		
+		//
+		// 2014年审核, 使用下面的这个方法
+		//
+		// 如果 已安排人数  大于等于 应安排人数  , 则应缴金额为 零; 否则 应缴金额 = (职工总人数 - 已安排人数*66)* 平均工资(企业645, 事业742)
+		// 已安排人数 大于等于 应安排人数时 应缴款为零
+		BigDecimal yingJiaoJinE = null;	//声明应缴金额
+		if(new BigDecimal(yiAnPaiCanJiRen).compareTo(yingAnPaiCanJiRen) >= 0){
 			yingJiaoJinE = Constants.ZERO;
-			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+		}else{
+		// 已安排人数  小于  应安排人数时  应缴金额 = (职工总人数 - 已安排人数*66)* 平均工资(企业645, 事业742)
+			yingJiaoJinE = new BigDecimal(zaiZhiYuanGongZongShu - yiAnPaiCanJiRen*66).multiply(averageSalary);
 		}
+		calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
+//				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+//		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		} else {
+//			yingJiaoJinE = Constants.ZERO;
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		}
+		//
+		// 2014年审核, 使用上面的这个方法
+		//
+		
+		//
+		// 2015年审核, 使用下面的这个方法
+		//
+//		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
+//		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
+//				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+//		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		} else {
+//			yingJiaoJinE = Constants.ZERO;
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		}
+		//
+		// 2015年审核, 使用上面的这个方法
+		//
+		
+		
 		// 获得减缴金额
 		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
 		// 应缴金额=应缴金额-减缴金额
