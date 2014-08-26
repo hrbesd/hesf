@@ -337,7 +337,7 @@ esd.common.printFinalAuditWindow = function() {
  * 查看企业
  */
 esd.common.viewCompany = function(id) {
-	esd.common.defaultOpenWindow("查看企业信息", 'company/view/' + id);
+	esd.common.defaultOpenWindowEx("查看企业信息", 850,440, 'company/view/' + id);
 };
 
 /**

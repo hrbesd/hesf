@@ -174,9 +174,8 @@
 		<tr>
 			<td class="tdRight">法人代表:</td>
 			<td><input id="txtCompanyLegal" name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="" /></td>
-		<td class="tdRight">联系人:</td>
+			<td class="tdRight">联系人:</td>
 			<td><input id="txtCompanyContactPerson" name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="" /></td>
-		
 		</tr>
 		<tr>
 			<td class="tdRight">公司电话:</td>

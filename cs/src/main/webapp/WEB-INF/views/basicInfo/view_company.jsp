@@ -17,31 +17,16 @@
 			<td colspan="3"><input name="companyName" class="longtext easyui-validatebox" type="text" value="${company.companyName}" data-options="required:true" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码 :</td>
-			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" /> <!-- 地区码 --> <input
-				name="id" type="hidden" value="${company.id}" /> <!-- 地区码 --> <input name="version" type="hidden" value="${company.version}" /></td>
-			<td class="tdRight">税务编码 :</td>
-			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" value="${company.companyTaxCode}" data-options="required:true" /></td>
-		</tr>
-		<tr>
 			<td class="tdRight">企业性质:</td>
-			<td><input value="${company.companyProperty.id}" name="companyProperty.id" class="easyui-combobox iniTcompanyProperty"
-				data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
+			<td>
+				<input value="${company.companyProperty.id}" name="companyProperty.id" class="easyui-combobox iniTcompanyProperty"
+					data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" />
 			</td>
-			<td class="tdRight">经济类型:</td>
-			<td class="bj_belu"><input value="${company.companyEconomyType.id}" name="companyEconomyType.id" class="easyui-combobox "
-				data-options="height:30,editable:false,valueField:'id',textField:'companyEconomyType',url:'parameter/economytypeEx'" />
-			</td>
-		</tr>
-		<tr>
-			<td class="tdRight">单位类别:</td>
-			<td class="bj_belu"><input value="${company.companyType.id}" id="companyType" name="companyType.id" class="easyui-combobox iniTcompanyType"
-				data-options="height:30,ditable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" /></td>
 			<td class="tdRight">主管部门:</td>
-			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" />
+			<td class="bj_belu">
+				<input name="companyManagement" id="txtCompanyManagement"  />
 			</td>
 		</tr>
-
 		<tr>
 			<td class="tdRight">法人代表 :</td>
 			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" data-options="required:true" /></td>
@@ -49,16 +34,10 @@
 			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" value="${company.companyContactPerson}" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">电话号码 :</td>
+			<td class="tdRight">公司电话 :</td>
 			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" value="${company.companyPhone}" data-options="required:true" /></td>
 			<td class="tdRight">手机号码:</td>
 			<td><input name="companyMobile" class="inNormal easyui-validatebox" type="text" value="${company.companyMobile}" data-options="required:true" /></td>
-		</tr>
-		<tr>
-			<td class="tdRight">开户银行 :</td>
-			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" value="${company.companyBank}" data-options="required:true" /></td>
-			<td class="tdRight">银行账户 :</td>
-			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" value="${company.companyBankAccount}" data-options="required:true" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">地区</td>

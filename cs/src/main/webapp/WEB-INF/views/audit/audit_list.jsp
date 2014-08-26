@@ -110,7 +110,7 @@
 	initAuditList.createAudit = function() {
 	//	esd.common.defaultOpenWindowEx("新建审计记录", 600, 200, "${contextPath}/security/audits/create");
 		//农垦用的创空
-		esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 600, "${contextPath}/security/audits/createCompany");
+		esd.common.defaultOpenWindowEx("添加企业年审信息", 920, 570, "${contextPath}/security/audits/createCompany");
 	};
 
 	/**
