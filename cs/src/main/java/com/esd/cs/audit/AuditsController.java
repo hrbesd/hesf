@@ -784,6 +784,42 @@ public class AuditsController {
 				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyId", it.getCompany().getId());// 企业名称
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
+				// 初审时间
+				if (it.getInitAuditDate() != null) {
+					map.put("initAuditDate",
+							CalendarUtil.dateFormat(it.getInitAuditDate()));
+				} else {
+					map.put("initAuditDate", "-");
+				}
+				// 初审人
+				if (it.getInitAuditUser() != null) {
+					if (it.getInitAuditUser().getId() != null) {
+						User initAuditUser = userService.getByPrimaryKey(it
+								.getInitAuditUser().getId());
+						map.put("initAuditUser",
+								initAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("initAuditUser", "-");
+				}
+				// 终审时间
+				if (it.getFinalAuditDate() != null) {
+					map.put("finalAuditDate",
+							CalendarUtil.dateFormat(it.getFinalAuditDate()));
+				} else {
+					map.put("finalAuditDate", "-");
+				}
+				// 终审人
+				if (it.getFinalAuditUser() != null) {
+					if (it.getFinalAuditUser().getId() != null) {
+						User finalAuditUser = userService.getByPrimaryKey(it
+								.getFinalAuditUser().getId());
+						map.put("finalAuditUser",
+								finalAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("finalAuditUser", "-");
+				}
 				Integer pId = it.getAuditProcessStatus().getId();
 				map.put("auditProcessStatusId", pId);// 流程状态
 				String statusName = it.getAuditProcessStatus()
@@ -792,13 +828,11 @@ public class AuditsController {
 					statusName = statusName + "(" + it.getRefuseTimes() + ")";
 				}
 				map.put("auditProcessStatus", statusName);// 流程状态
-
 				list.add(map);
 			}
 			entity.put("total", total);
 			entity.put("rows", list);
 			logger.debug("total:{},rows:{}", total, list.toString());
-
 		} catch (Exception e) {
 			logger.error("error{}", e);
 		}

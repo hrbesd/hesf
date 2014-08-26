@@ -28,21 +28,37 @@
 			field : 'companyCode',
 			title : '档案编码',
 			width : 200
-		}, {
-			field : 'companyTaxCode',
-			title : '税务编码',
-			width : 200
-		}, {
+		},{
 			field : 'companyId',
 			hidden : true
 		}, {
 			field : 'companyName',
 			title : '企业名称',
-			width : 700,
+			width : 600,
 			formatter : function(value, row, index) {
 				var c = '<a href="javascript:void(0);" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
 				return c;
 			}
+		}, {
+			field : 'initAuditDate',
+			align : 'center',
+			title : '初审时间',
+			width : 140
+		}, {
+			field : 'initAuditUser',
+			align : 'center',
+			title : '初审人',
+			width : 100
+		}, {
+			field : 'finalAuditDate',
+			align : 'center',
+			title : '终审时间',
+			width : 140
+		}, {
+			field : 'finalAuditUser',
+			align : 'center',
+			title : '终审人',
+			width : 100
 		}, {
 			field : 'auditProcessStatus',
 			title : '流程状态',
