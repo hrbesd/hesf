@@ -118,7 +118,7 @@
 		$('#txtCompanyMobile').val('');
 		$('#txtCompanyBank').val('');
 		$('#txtCompanyBankAccount').val('');
-		$('#comboboxAreaCode').combobox('setValue','n001');
+		$('#comboboxAreaCode').combobox('setValue','n003');
 		$('#txtCompanyZipCode').val('');
 		$('#txtCompanyAddress').val('');
 		$('#txtCompanyRemark').val('');
@@ -186,7 +186,7 @@
 		</tr>
 		<tr>
 			<td class="tdRight">地区:</td>
-			<td><input id="comboboxAreaCode" name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="n001"/>
+			<td><input id="comboboxAreaCode" name="area.code" class="easyui-combobox" data-options="height:30,required:true,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" value="n003"/>
 			</td>
 			<td class="tdRight">邮政编码:</td>
 			<td class="bj_belu"><input id="txtCompanyZipCode" name="companyZipCode" class="inNormal easyui-validatebox" type="text" data-options="" /></td>
