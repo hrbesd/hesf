@@ -87,6 +87,19 @@ public class PaymentServiceImpl implements PaymentService {
 		return true;
 	}
 
+	
+	@Override
+	public Integer deleteByCompanyAndYear(Integer companyId, String year) {
+		if(companyId ==null || companyId<0 || year == null || "".equals(year)){
+			return -1;
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("companyId", companyId);
+		map.put("year", year);
+		return dao.deleteByCompanyAndYear(map);
+	}
+	
+
 	@Override
 	public boolean update(Payment t) {
 		int k = dao.updateByPrimaryKey(t);

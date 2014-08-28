@@ -21,6 +21,15 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @return
 	 */
 	List<Payment> getAll();
+	
+	/**
+	 * 根据公司id, 账目年份 删除该公司今年所开的所有票
+	 * @param companyId
+	 * @param year
+	 * @return
+	 */
+	Integer deleteByCompanyAndYear(Integer companyId,String year);
+	
 
 	/**
 	 * 根据公司档案code,账目年限,审核年份, 得到已缴款数
@@ -119,4 +128,6 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @return
 	 */
 	List<Payment> getByIds(Integer[] ids);
+	
+	
 }

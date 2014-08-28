@@ -448,7 +448,7 @@ public class AuditsController {
 	}
 
 	/**
-	 * 撤消复审, 使数据返回到初审状态(只删除账目明细和修改状态, 其余数值等 一律不变)
+	 * 撤消复审, 使数据返回到初审状态(1-删除账单, 已开/未开的都包括; 2-删除账目明细; 3-修改审核状态状态, 其余数值等 一律不变)
 	 * 
 	 * @param req
 	 *            实际是传一个审核id即可,但为了保险起见, 加传公司id,和账目年份
@@ -460,14 +460,11 @@ public class AuditsController {
 			@PathVariable Integer companyId, HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String year = CalendarUtil.getNowYear(); // 账目年份--当前年份
-		// ①如果 该数据已经被开票了的话, 则不可以删除.
-		Integer existPayment = paymentService.getCountByCompanyAndYear(year,
-				companyId);
-		if (existPayment < 0) {
-			result.put(Constants.NOTICE, "传递的公司id有错误, 请检查参数.");
-			return result;
-		} else if (existPayment > 0) {
-			result.put(Constants.NOTICE, "对不起, 该审核信息已经开出缴款票, 不可以进行撤消复审操作!");
+		// ① 删除该公司 审核数据已经开的票
+		Integer delPayment = paymentService.deleteByCompanyAndYear(companyId,
+				year);
+		if (delPayment < 0) {
+			result.put(Constants.NOTICE, "删除该公司开的票 出现错误, 请联系管理员.");
 			return result;
 		}
 
@@ -484,10 +481,10 @@ public class AuditsController {
 				return result;
 			}
 		}
-		// ③更新审核信息状态为 已初审未复审
+		// ③更新审核信息状态为 未初审
 		Audit audit = auditService.getByPrimaryKey(auditId);
 		audit.setAuditProcessStatus(new AuditProcessStatus(
-				Constants.PROCESS_STATIC_WFS));
+				Constants.PROCESS_STATIC_WCS));
 		boolean bl = auditService.update(audit);
 		if (bl) {
 			result.put(Constants.NOTICE, Constants.NOTICE_SUCCESS);

@@ -261,6 +261,13 @@
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 
+	<!-- delete by company and year(account year) -->
+	<delete id="deleteByCompanyAndYear" parameterType="java.lang.Integer">
+		delete from
+		payment
+		where year = #{year, jdbcType=CHAR} and payment_company = #{companyId,jdbcType=INTEGER}
+	</delete>
+	
 	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Payment">
 		update payment

@@ -15,6 +15,13 @@ import com.esd.hesf.model.Payment;
 public interface PaymentDao extends BaseDao<Payment> {
 
 	/**
+	 * 根据账目年year, 公司id 删除该公司该年所开出的所有票
+	 * @param map
+	 * @return
+	 */
+	int deleteByCompanyAndYear(Map<String,Object> map);
+	
+	/**
 	 * 根据公司id/code, 年份 获得该公司某年度已缴款总额
 	 * 
 	 * @param payment对象

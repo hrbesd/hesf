@@ -73,7 +73,7 @@
 			formatter : function(value, row, index) {
 				//只有处于复审状态的数据, 才可以执行撤消操作
 				var r ='';
-				if(row.auditProcessStatusId == 3){
+				if(row.auditProcessStatusId > 1){
 					r = '<a href="javascript:initAuditList.repeal('+row.companyCode+',' + row.id + ','+row.companyId+');" style="color:red;">撤消</a>';
 				}else{
 					r = '<a href="javascript:initAuditList.viewAudit(' + row.id + ');" >查看</a>';
@@ -95,7 +95,7 @@
 	 */
 	 initAuditList.repeal = function(companyCode,auditId,companyId){
 		var nowYear = $('#year').val();
-		$.messager.confirm('警告','确定要撤消档案号为：'+companyCode+'的公司的复审信息吗?请慎重操作!',function(r){
+		$.messager.confirm('警告','确定要撤消档案号为：'+companyCode+'的公司回到初审状态吗?该操作会删除已经开出的缴款票!请慎重操作!',function(r){
 			if(!r){
 				return;
 			}else{
