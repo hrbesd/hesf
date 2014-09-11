@@ -23,6 +23,7 @@ public class PaymentParamModel {
 	private String endDate; // 缴款结束时间
 	private Boolean billReturn; // 返票?
 	private Boolean billObsolete; // 作废票号?
+	private String belongsType;	//区分省残联和地税的单位
 	private Integer page;
 	private Integer rows;
 
@@ -32,6 +33,17 @@ public class PaymentParamModel {
 				+ companyEconomyType + ", area=" + area + ", paymentPerson=" + paymentPerson + ", startDate=" + startDate + ", endDate=" + endDate + ", billReturn=" + billReturn + ", billObsolete="
 				+ billObsolete + "]";
 	}
+
+	
+	public String getBelongsType() {
+		return belongsType;
+	}
+
+
+	public void setBelongsType(String belongsType) {
+		this.belongsType = belongsType;
+	}
+
 
 	public String getYear() {
 		return year;

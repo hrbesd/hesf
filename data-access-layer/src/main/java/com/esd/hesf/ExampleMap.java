@@ -107,6 +107,7 @@ public class ExampleMap {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Payment payment = new Payment();	//payment对象, 包含其中的各种属性值
 		map.put("payment", payment);
+		map.put("belongsType", "six");	//区分是不是以6开头的企业(即区分地税和省残联),非6开头的为省残联的单位 'six', 6开头的为地税的单位 'nonSix'
 		map.put("startDate", "2001-12-01");	//缴款开始日期
 		map.put("endDate", "2011-02-05");	//缴款结束日期
 		map.put("page", 2); // 分页--起始页 ******************************

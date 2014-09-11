@@ -491,6 +491,15 @@
 					and pay.is_active = 0
 				</otherwise>
 			</choose>
+			<!-- judge the company is taxOrganization or handicapped Organization -->
+			<if test="belongsType != null and belongsType != ''">
+				<if test="belongsType == 'six'">
+					and c.company_code like '6%' 
+				</if>
+				<if test="belongsType == 'nonSix'">
+					and c.company_code not like '6%' 
+				</if>
+			</if>
 		</trim>
 		order by pay.create_time desc
 		limit #{start}, #{size}
@@ -627,6 +636,15 @@
 					and pay.is_active = 0
 				</otherwise>
 			</choose>
+			<!-- judge the company is taxOrganization or handicapped Organization -->
+			<if test="belongsType != null and belongsType != ''">
+				<if test="belongsType == 'six'">
+					and c.company_code like '6%' 
+				</if>
+				<if test="belongsType == 'nonSix'">
+					and c.company_code not like '6%' 
+				</if>
+			</if>
 		</trim>
 	</select>
 

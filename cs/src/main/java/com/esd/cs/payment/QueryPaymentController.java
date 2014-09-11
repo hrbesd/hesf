@@ -77,7 +77,7 @@ public class QueryPaymentController {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> listPost(PaymentParamModel model) {
+	public Map<String, Object> listPost(PaymentParamModel model,HttpServletRequest request) {
 		logger.debug(model.toString());
 		// payment中的 审核对象
 		Audit audit = new Audit();
@@ -113,6 +113,8 @@ public class QueryPaymentController {
 		payment.setBillObsolete(model.getBillObsolete());
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		paramsMap.put("payment", payment);
+		//区分省残联和地税的单位
+		paramsMap.put("belongsType", model.getBelongsType());
 		paramsMap.put("startDate", model.getStartDate());
 		paramsMap.put("endDate", model.getEndDate());
 		paramsMap.put("page", model.getPage()); // 分页--起始页

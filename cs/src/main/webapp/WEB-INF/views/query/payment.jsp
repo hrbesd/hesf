@@ -148,7 +148,8 @@
 	/*
 	 * 获取缴款基本档案函数
 	 */
-	queryPayment.loadData = function(params) {
+	queryPayment.loadData = function() {
+		var params = queryPayment.getParams();
 		esd.common.datagrid("#queryPaymentGrid", "query/payment/list", "#queryPaymentBoolbar", [ [ {
 			field : 'paymentDate',
 			title : '缴款时间',
@@ -211,6 +212,7 @@
 		params.paymentPerson = $("#paymentPerson").combobox("getValue");// 缴款人
 		params.startDate = $('#startDate').combobox("getValue");	//缴款起始时间
 		params.endDate = $('#endDate').combobox("getValue");	//缴款结束时间
+		params.belongsType = $('input[name="belongsType"]:checked').val();
 		var billReturn = $('#billReturn').attr('checked');
 		if(billReturn == 'checked'){
 			params.billReturn = true;
@@ -315,7 +317,7 @@
 	//组件解析完成
 	$.parser.onComplete = function() {
 		//加载缴款档案数据
-		queryPayment.loadData(queryPayment.getParams());
+		queryPayment.loadData();
 	};
 	$(function() {
 		queryPayment.init();
@@ -357,7 +359,13 @@
 				<td colspan="3"><input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:150px" />至
 				<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:150px" />
 				</td>
-				<td class="tipsText" colspan="4" style="text-align:left;padding-left:20px;font-size:13px;">
+				<td colspan="2" style="text-align:left;font-size:13px;">
+					<div style="width:70%;border:2px rgb(174, 179, 243) solid;height: 22px;padding: 2px 5px;text-align: center;border-radius: 5px;">
+						省残指 : <input type="radio" onclick="queryPayment.loadData()" name="belongsType" checked="checked" value="nonSix" style="height:auto;margin-right:20px;"/>
+						地税 : <input type="radio" onclick="queryPayment.loadData()" name="belongsType" value="six" style="height:auto" />
+					</div>
+				</td>
+				<td class="tipsText" colspan="2" style="text-align:left;padding-left:20px;font-size:13px;">
 				已返票 : <input id="billReturn" type="checkbox" style="height:auto;margin-right:20px;"/>
 				作废票据号 : <input id="billObsolete" type="checkbox" style="height:auto" />
 				</td>
