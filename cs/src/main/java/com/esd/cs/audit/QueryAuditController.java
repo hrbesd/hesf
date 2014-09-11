@@ -94,7 +94,7 @@ public class QueryAuditController {
 			paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
 			paramsMap.put("companyName", params.getCompanyName()); // 公司名称
 			paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
-			paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
+			paramsMap.put("companyContactPerson", params.getCompanyContactPerson()); // 公司联系人
 			paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
 			paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
 			String overYear = params.getOverYear();// 超过几年未初审的公司
@@ -120,11 +120,11 @@ public class QueryAuditController {
 				map.put("id", it.getId());// id
 				map.put("companyId", it.getCompany().getId());// id
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
-				map.put("companyTaxCode", it.getCompany().getCompanyTaxCode());// 税务编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("companyLegal", it.getCompany().getCompanyLegal());
-				map.put("companyAddress", it.getCompany().getCompanyAddress());
-				map.put("companyPhone", it.getCompany().getCompanyPhone());// 流程状态
+				map.put("companyContactPerson", it.getCompany().getCompanyContactPerson());	//联系人
+				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
+				map.put("companyAddress", it.getCompany().getCompanyAddress());//公司地址
+				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());	//流程状态
 				list.add(map);
 			}
 			entity.put("total", total);

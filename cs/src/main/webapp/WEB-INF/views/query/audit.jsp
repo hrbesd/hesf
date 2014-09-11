@@ -97,11 +97,6 @@
 									width : 80
 								},
 								{
-									field : 'companyTaxCode',
-									title : '税务编码',
-									width : 150
-								},
-								{
 									field : 'companyId',
 									hidden : true
 								},
@@ -118,18 +113,22 @@
 										return c;
 									}
 								},{
-									field : 'companyLegal',
-									title : '企业法人',
+									field : 'companyContactPerson',
+									title : '企业联系人',
 									width : 100
 								},{
-									field : 'companyAddress',
-									title : '地址',
-									width : 250
-								},
-								{
 									field : 'companyPhone',
 									title : '联系电话',
 									width : 110
+								},
+								{
+									field : 'companyAddress',
+									title : '地址',
+									width : 270
+								},{
+									field : 'auditProcessStatus',
+									title : '审核状态',
+									width : '110'
 								},
 								{
 									field : 'auditProcessStatusId',
@@ -138,7 +137,7 @@
 								{
 									field : 'action',
 									title : '操作',
-									width : 80,
+									width : 50,
 									align : 'center',
 									formatter : function(value, row, index) {
 										var v = '<a href="#" onclick="queryAudit.openAudit('
@@ -166,7 +165,7 @@
 		params.companyEmpTotal_2 = $("#companyEmpTotal_2").val();
 		params.companyName = $("#companyName").val(); // 企业名称
 		params.companyAddress = $("#companyAddress").val();// 企业地址
-		params.companyLegal = $("#companyLegal").val();//	企业法人
+		params.companyContactPerson = $("#companyContactPerson").val();//	联系人
 
 		params.auditProcessStatus = $("#auditProcessStatus").combobox(
 				"getValue");// 流程状态
@@ -338,8 +337,8 @@
 
 			</tr>
 			<tr>
-				<td class="tipsText">法人代表:</td>
-				<td><input id="companyLegal" type="text" class=" inputElement" />
+				<td class="tipsText">联系人:</td>
+				<td><input id="companyContactPerson" type="text" class="inputElement" />
 				</td>
 				<td class="tipsText">缴款人:</td>
 				<td><input type="text" id="paymentPerson"

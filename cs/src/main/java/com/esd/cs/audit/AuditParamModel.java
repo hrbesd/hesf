@@ -18,6 +18,7 @@ public class AuditParamModel {
 	private String companyName; // 企业名称
 	private String companyAddress;// 企业地址
 	private String companyLegal; // 企业法人
+	private String companyContactPerson; // 企业联系人
 	private String auditProcessStatus; // 流程状态
 	private String paymentPerson; // 缴款人
 	private String overYear; // 超过指定年度未初审的企业
@@ -33,6 +34,14 @@ public class AuditParamModel {
 
 	public void setPaymentPerson(String paymentPerson) {
 		this.paymentPerson = paymentPerson;
+	}
+
+	public String getCompanyContactPerson() {
+		return companyContactPerson;
+	}
+
+	public void setCompanyContactPerson(String companyContactPerson) {
+		this.companyContactPerson = companyContactPerson;
 	}
 
 	public String getYear() {

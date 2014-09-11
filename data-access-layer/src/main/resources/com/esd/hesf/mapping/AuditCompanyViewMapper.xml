@@ -178,6 +178,9 @@
 			<if test="companyLegal != null and companyLegal != ''">
 				and c.company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
 			</if>
+			<if test="companyContactPerson != null and companyContactPerson != ''">
+				and c.company_contact_person like concat('%',#{companyContactPerson,jdbcType=VARCHAR},'%')
+			</if>
 			<if test="auditProcessStatus != null and auditProcessStatus > 0">
 				and au.audit_process_status = #{auditProcessStatus,jdbcType=INTEGER} 
 			</if>
@@ -265,6 +268,9 @@
 			</if>				
 			<if test="companyLegal != null and companyLegal != ''">
 				and c.company_legal like concat('%',#{companyLegal,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="companyContactPerson != null and companyContactPerson != ''">
+				and c.company_contact_person like concat('%',#{companyContactPerson,jdbcType=VARCHAR},'%')
 			</if>
 			<if test="auditProcessStatus != null and auditProcessStatus > 0">
 				and au.audit_process_status = #{auditProcessStatus,jdbcType=INTEGER} 
