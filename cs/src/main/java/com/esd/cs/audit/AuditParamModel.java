@@ -25,8 +25,17 @@ public class AuditParamModel {
 	private String isExempt; // 是否免交
 	private String firstTime;
 
+	private String isDownLoadAll; // 是否下载全部查询出来的数据 yes or no
 	private Integer page;
 	private Integer rows;
+
+	public String getIsDownLoadAll() {
+		return isDownLoadAll;
+	}
+
+	public void setIsDownLoadAll(String isDownLoadAll) {
+		this.isDownLoadAll = isDownLoadAll;
+	}
 
 	public String getPaymentPerson() {
 		return paymentPerson;

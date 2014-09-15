@@ -24,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -81,33 +80,7 @@ public class QueryAuditController {
 
 		Map<String, Object> entity = new HashMap<>();
 		try {
-			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			paramsMap.put("year", params.getYear()); // 年度
-			paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
-			paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
-			paramsMap.put("companyOrganizationCode",
-					params.getCompanyOrganizationCode()); // 组织机构代码证
-			paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
-			paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
-			paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
-			paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 查询范围中
-			paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
-			paramsMap.put("companyName", params.getCompanyName()); // 公司名称
-			paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
-			paramsMap.put("companyContactPerson", params.getCompanyContactPerson()); // 公司联系人
-			paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
-			paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
-			String overYear = params.getOverYear();// 超过几年未初审的公司
-			if (StringUtils.isBlank(overYear)) {
-				overYear = "0";
-			}
-			paramsMap.put("overYear", overYear);// 超过几年未初审的公司
-			paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
-																				// true免缴,
-																				// false不免缴
-			paramsMap.put("page", params.getPage()); // 分页--起始页
-			paramsMap.put("pageSize", params.getRows());// 分页--返回量
-
+			Map<String, Object> paramsMap = getParams(params);
 			logger.debug("queryAuditParamsEx:{}", params);
 			PaginationRecordsAndNumber<Audit, Number> query = auditService
 					.getByMultiCondition(paramsMap);
@@ -121,10 +94,12 @@ public class QueryAuditController {
 				map.put("companyId", it.getCompany().getId());// id
 				map.put("companyCode", it.getCompany().getCompanyCode());// 企业档案编号
 				map.put("companyName", it.getCompany().getCompanyName());// 企业名称
-				map.put("companyContactPerson", it.getCompany().getCompanyContactPerson());	//联系人
+				map.put("companyContactPerson", it.getCompany()
+						.getCompanyContactPerson()); // 联系人
 				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
-				map.put("companyAddress", it.getCompany().getCompanyAddress());//公司地址
-				map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());	//流程状态
+				map.put("companyAddress", it.getCompany().getCompanyAddress());// 公司地址
+				map.put("auditProcessStatus", it.getAuditProcessStatus()
+						.getAuditProcessStatus()); // 流程状态
 				list.add(map);
 			}
 			entity.put("total", total);
@@ -206,22 +181,23 @@ public class QueryAuditController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@RequestParam(value = "params[]") Integer idArr[],
-			@RequestParam(value = "year") String year,
-			HttpServletRequest request) {
-		logger.debug("exportAudit:{}", idArr + "");
+	public String export(AuditParamModel params, Integer[] idArray,HttpServletRequest request) {
 		boolean b = true;
 		List<Audit> auditList = null;
-		if (idArr[0] == Integer.MAX_VALUE) {
+		// 下载全部
+		if ("yes".equals(params.getIsDownLoadAll())) {
+			// 获得参数
+			Map<String, Object> paramsMap = getParams(params);
+			paramsMap.put("page", Constants.PAGE_START); // 分页--起始页
+			paramsMap.put("pageSize", Integer.MAX_VALUE);// 分页--返回量
 			auditList = new ArrayList<Audit>();
-			Audit param = new Audit();
-			param.setYear(year);
-			for (Audit c : auditService.getPaginationRecords(param,
-					Constants.PAGE_START, Integer.MAX_VALUE).getRecords()) {
+			for (Audit c : auditService.getByMultiCondition(paramsMap)
+					.getRecords()) {
 				auditList.add(c);
 			}
 		} else {
-			auditList = auditService.getByIds(idArr);
+			// 下载选中的
+			auditList = auditService.getByIds(idArray);
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
@@ -241,7 +217,6 @@ public class QueryAuditController {
 					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
-		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArr);
 		return FileDownloadPath;
 	}
 
@@ -264,8 +239,7 @@ public class QueryAuditController {
 	}
 
 	@RequestMapping(value = "/history")
-	public Map<String, Object> queryHistoryList(
-			HttpServletRequest request) {
+	public Map<String, Object> queryHistoryList(HttpServletRequest request) {
 		Integer companyId = Integer.parseInt(request.getParameter("companyId"));
 		String year = request.getParameter("year");
 		PaginationRecordsAndNumber<Audit, Number> history = auditService
@@ -280,19 +254,20 @@ public class QueryAuditController {
 			Audit it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", it.getId());// id
-			map.put("year", it.getYear());	//审核年度
+			map.put("year", it.getYear()); // 审核年度
 			map.put("companyEmpTotal", it.getCompanyEmpTotal());// 企业员工总人数
-			map.put("companyHandicapTotal", it.getCompanyHandicapTotal());	//残疾职工总人数
-			map.put("companyShouldTotal", it.getCompanyShouldTotal());	//应安排人数
-			map.put("companyAlreadyTotal", it.getCompanyAlreadyTotal());	//已安排人数
-			map.put("amountPayable", it.getAmountPayable());	//应缴金额
-			map.put("reductionAmount", it.getReductionAmount()); //减缴金额
-			map.put("remainAmount",it.getRemainAmount()); //上年度未缴金额
-			map.put("complementAmount", it.getComplementAmount());	//补缴金额
-			map.put("delayPayAmount", it.getDelayPayAmount()); //滞纳金
-			map.put("isDelayPay", it.getIsDelayPay()); //是否减免滞纳金
-			map.put("payAmount", it.getPayAmount()); //实缴总金额
-			map.put("auditProcessStatus", it.getAuditProcessStatus().getAuditProcessStatus());	//审核状态
+			map.put("companyHandicapTotal", it.getCompanyHandicapTotal()); // 残疾职工总人数
+			map.put("companyShouldTotal", it.getCompanyShouldTotal()); // 应安排人数
+			map.put("companyAlreadyTotal", it.getCompanyAlreadyTotal()); // 已安排人数
+			map.put("amountPayable", it.getAmountPayable()); // 应缴金额
+			map.put("reductionAmount", it.getReductionAmount()); // 减缴金额
+			map.put("remainAmount", it.getRemainAmount()); // 上年度未缴金额
+			map.put("complementAmount", it.getComplementAmount()); // 补缴金额
+			map.put("delayPayAmount", it.getDelayPayAmount()); // 滞纳金
+			map.put("isDelayPay", it.getIsDelayPay()); // 是否减免滞纳金
+			map.put("payAmount", it.getPayAmount()); // 实缴总金额
+			map.put("auditProcessStatus", it.getAuditProcessStatus()
+					.getAuditProcessStatus()); // 审核状态
 			list.add(map);
 		}
 		entity.put("rows", list);
@@ -300,4 +275,39 @@ public class QueryAuditController {
 		return entity;
 	}
 
+	/**
+	 * 从AuditParamModel 参数对象中, 将各个属性字段取出, 放到map对象中
+	 * 
+	 * @param param
+	 * @return
+	 */
+	private Map<String, Object> getParams(AuditParamModel params) {
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("year", params.getYear()); // 年度
+		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
+		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
+		paramsMap.put("companyOrganizationCode",
+				params.getCompanyOrganizationCode()); // 组织机构代码证
+		paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
+		paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
+		paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
+		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 查询范围中
+		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
+		paramsMap.put("companyName", params.getCompanyName()); // 公司名称
+		paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
+		paramsMap.put("companyContactPerson", params.getCompanyContactPerson()); // 公司联系人
+		paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
+		paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
+		String overYear = params.getOverYear();// 超过几年未初审的公司
+		if (StringUtils.isBlank(overYear)) {
+			overYear = "0";
+		}
+		paramsMap.put("overYear", overYear);// 超过几年未初审的公司
+		paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
+																			// true免缴,
+																			// false不免缴
+		paramsMap.put("page", params.getPage()); // 分页--起始页
+		paramsMap.put("pageSize", params.getRows());// 分页--返回量
+		return paramsMap;
+	}
 }

@@ -203,18 +203,20 @@
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗?', function(r) {
 				if (r) {
 					// 组装参数
-					var params = new Array();
-					var year = $('#year').combobox('getValue');
+					var params = {};
+					params.isDownLoadAll = 'no';
+					var ids = new Array();
 					for ( var i = 0; i < selection.length; i++) {
-						params.push(selection[i].id);
+						ids.push(selection[i].id);
 					}
 					//发送导出请求
 					$.ajax({
 						url:'${contextPath}/security/query/audit/export',
 						type:'post',
+						traditional:true,
 						data: {
-							params : params,
-							year : year
+							'idArray' : ids,
+							'isDownLoadAll' : 'no'
 						},
 						success:function(data){
 							if(data!="null"){
@@ -237,15 +239,31 @@
 	 queryAudit.downloadAll = function() {
 		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
 			if (r) {
-				var params = esd.common.maxInteger;
-				var year = $('#year').combobox('getValue');
+		//		var year = $('#year').combobox('getValue');
+				var params = queryAudit.getParams();
+				params.isDownLoadAll = 'yes';
 				//发送导出请求
 				$.ajax({
 					url:'${contextPath}/security/query/audit/export',
 					type:'post',
 					data: {
-						params : params,
-						year :year
+						'year' : params.year,// 年度
+						'companyCode' : params.companyCode, // 档案号码
+						'companyTaxCode' : params.companyTaxCode, // 税务编码
+						'companyOrganizationCode' : params.companyOrganizationCode,// 组织机构代码证号
+						'companyProperty' : params.companyProperty,// 公司性质 _
+						'companyEconomyType' : params.companyEconomyType,// 企业经济类型
+						'area' : params.area,// 公司所属地区
+						'companyEmpTotal_1' : params.companyEmpTotal_1, // 员工总数
+						'companyEmpTotal_2' : params.companyEmpTotal_2, 
+						'companyName' : params.companyName, // 企业名称
+						'companyAddress' : params.companyAddress, // 企业地址
+						'companyContactPerson' : params.companyContactPerson, //	联系人
+						'auditProcessStatus' : params.auditProcessStatus, // 流程状态
+						'paymentPerson' : params.paymentPerson, // 缴款人
+						'overYear' : params.overYear, // 超过指定年度未初审的企业
+						'isExempt' : params.isExempt, // 是否免交
+						'isDownLoadAll' : params.isDownLoadAll
 					},
 					success:function(data){
 						if(data!="null"){
@@ -364,7 +382,7 @@
 			<a href="#" onclick="queryAudit.findData()" class="easyui-linkbutton" iconCls="icon-search">查询</a> 
 			<a href="javascript:queryAudit.init()" class="easyui-linkbutton" iconCls="icon-redo">重置</a> 
 			<a href="javascript:queryAudit.downloadSelected()" class="easyui-linkbutton" iconCls="icon-ok">下载选中</a>
-			<a href="javascript:queryAudit.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载当前审核年度所有数据</a>
+			<a href="javascript:queryAudit.downloadAll()" class="easyui-linkbutton" iconCls="icon-ok">下载所有数据</a>
 		</div>
 	</div>
 </div>
