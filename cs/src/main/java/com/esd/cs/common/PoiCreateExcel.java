@@ -283,11 +283,11 @@ public class PoiCreateExcel {
 //		rowCell.setCellValue("复审时间");
 //		sheet.setColumnWidth(19, 2738);
 		
-		rowCell = headRow.createCell(20);
+		rowCell = headRow.createCell(16);
 		rowCell.setCellValue("审核状态");
-		sheet.setColumnWidth(20, 2738);
+		sheet.setColumnWidth(16, 2738);
 		
-		rowCell = headRow.createCell(21);
+		rowCell = headRow.createCell(17);
 		rowCell.setCellValue("备注");
 		
 		for (int i = 1; i <= list.size(); i++) {
@@ -359,10 +359,10 @@ public class PoiCreateExcel {
 //			loopCell = loopRow.createCell(19);
 //			loopCell.setCellValue(audit.getVerifyAuditDate());
 			
-			loopCell = loopRow.createCell(20);
+			loopCell = loopRow.createCell(16);
 			loopCell.setCellValue(audit.getAuditProcessStatus().getAuditProcessStatus());
 			
-			loopCell = loopRow.createCell(21);
+			loopCell = loopRow.createCell(17);
 			loopCell.setCellValue(audit.getRemark());
 		}
 		try {
