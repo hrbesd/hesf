@@ -51,20 +51,31 @@
 	workerList.loadData = function(params) {
 
 		esd.common.datagrid("#workerList_dataGrid", "query/worker/company_worker_list", "#workerListBoolbar", [ [
-
 		{
-			field : 'retirementAge',
-			title : '休年龄',
-			hidden : true,
-		}, {
-			field : 'workerName',
+			field : 'action',
 			title : '姓名',
 			width : 300,
+			formatter : function(value,row,index){
+				var head = '<a href="javascript:workerList.viewWorker(' + row.id + ');" >'+row.workerName+'</a>';
+				var cadreMaleHeadImg = '<img src="${contextPath}/images/cadre_male.png" style="width:15px;height:20px;" title="男干部"/>';
+				var cadreFemaleHeadImg = '<img src="${contextPath}/images/cadre_female.png" style="width:15px;height:20px;" title="女干部"/>';
+				if(row.isCadre == true  && row.workerGender == '男'){
+					head = cadreMaleHeadImg + head;
+				}else if(row.isCadre == true  && row.workerGender == '女'){
+					head = cadreFemaleHeadImg + head;
+				}else{
+					head = '&nbsp;&nbsp;&nbsp;' + head;
+				}
+				return head;
+			},
 			styler : function(value, row, index) {
 				//年龄检测
 				return workerList.ageDetection(value, row, index);
 			}
-		}, {
+		},{
+			field : 'workerName',
+			hidden : true
+		},{
 			field : 'workerHandicapCode',
 			title : '残疾证号',
 			width : 600,
@@ -118,16 +129,17 @@
 				return workerList.ageDetection(value, row, index);
 			}
 		}, {
+			field : 'isCadre',
+			hidden : true
+		},{
 			field : 'yanz',
 			title : '操作',
-			width : 250,
+			width : 270,
 			align : 'center',
 			formatter : function(value, row, index) {
-			//	var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
-			//	var d = '<a href="#" onclick="workerList.deleteWorker(' + row.id + ',0)">删除</a>';
-			//	return e + d;
-				var e = '<a href="#" onclick="workerList.openViewWorker(' + row.id + ')">查看</a> ';
-				return e;
+				var e = '<a href="#" onclick="workerList.openEditWorker(' + row.id + ')">编辑</a> ';
+				var d = '<a href="#" onclick="workerList.deleteWorker(' + row.id + ',0)">删除</a>';
+				return e + d;
 			},
 			styler : function(value, row, index) {
 				//年龄检测
@@ -140,21 +152,45 @@
 	};
 
 	/**
+	 * 查看单个残疾人信息
+	 **/
+	workerList.viewWorker = function(id){
+		esd.common.openWindow("#workerWindow", "查看残疾职工", 780, 450, 'worker/view/'+id);
+		return;
+	};
+	
+	/**
 	 职工年龄检测
 	 **/
 	workerList.ageDetection = function(value, row, index) {
-
-		if (row.workerGender == '男') {
-			if (row.workerAge > row.retirementAge) {
-				return 'background-color:red;font-weight: bold;';
+		//如果是老教授的话, 则不做修饰
+		if(row.isProfessor){
+			
+		}else if(row.isCadre){
+			//如果是干部的话, 则按干部标准进行年龄判断
+			if (row.workerGender == '男') {
+				if (row.workerAge >= $('#retireAgeCadreMale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+			if (row.workerGender == '女') {
+				if (row.workerAge >= $('#retireAgeCadreFemale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+		}else{
+			//如果是员工的话, 则按员工标准进行年龄判断
+			if (row.workerGender == '男') {
+				if (row.workerAge >= $('#retireAgeMale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
+			}
+			if (row.workerGender == '女') {
+				if (row.workerAge >= $('#retireAgeFemale').val()) {
+					return 'background-color:red;font-weight: bold;';
+				}
 			}
 		}
-		if (row.workerGender == '女') {
-			if (row.workerAge > row.retirementAge) {
-				return 'background-color:red;font-weight: bold;';
-			}
-		}
-
 	};
 
 	/**
@@ -162,7 +198,7 @@
 	 **/
 	workerList.getParams = function() {
 
-		params = {};
+		var params = {};
 		params.year = $("#currentYear").val();//年份
 		params.companyId = $("#companyId").val();//单位id
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
@@ -173,7 +209,19 @@
 		params.phone = $("#workerFind_phone").val();// 电话号
 		params.workerHandicapType = $("#workerFind_workerHandicapType").combobox("getValue");//残疾类型 
 		params.workerHandicapLevel = $("#workerFind_workerHandicapLevel").combobox("getValue");// 残疾等级
-
+		//是否显示年龄超标职工
+	 	var isExceed=$("input[name='isExceed']:checked").val();
+	  	if(isExceed=='on'){
+	  		params.isExceed=true;
+	  	}else{
+	  		params.isExceed=false;
+	  		
+	  	}
+	  	//是否是干部
+	  	var isCadre=$("input[name='isCadre']:checked").val();
+	  	if(isCadre=='on'){
+	  		params.isCadre=true;
+	  	}
 		return params;
 	};
 
@@ -192,22 +240,21 @@
 	 **/
 	workerList.openAddWorker = function() {
 	
-		esd.common.openWindow("#workerWindow", "增加残疾职工", 960, 550, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
+		esd.common.openWindow("#workerWindow", "增加残疾职工", 860, 450, 'worker/add/' + $("#companyId").val()+'/'+$("#currentYear").val());
 	};
 
 	/**
-	打开 查看残疾职工页面
+	打开编辑残疾职工页面
 	 **/
-	workerList.openViewWorker = function(id) {
-		esd.common.openWindow("#workerWindow", "查看残疾职工", 960, 550, 'worker/view/' + id);
+	workerList.openEditWorker = function(id) {
+		esd.common.openWindow("#workerWindow", "编辑残疾职工", 860, 450, 'worker/edit/' + id);
 	};
+	
 	/**
 	打开导入残疾职工页面
 	 **/
 	workerList.openImportWorker = function() {
-	
-
-		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 960, 550, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
+		esd.common.openWindowEx("#importWorkerWindow", "导入残疾职工", 860, 450, 'worker/importworker/'+ $("#companyId").val()+'/'+$("#currentYear").val(), function() {
 			$("#importWorkerWindow").window("destroy");
 			//刷新数据列表
 			$('#workerList_dataGrid').datagrid('reload');
@@ -215,18 +262,21 @@
 	};
 
 	/**
-	删除企业
+	删除残疾员工
 	 **/
 	workerList.deleteWorker = function(id, type) {
 		var params = new Array();
+		var len = 0;
 		//删除单条
 		if (type == 0) {
 			params.push(id);
+			len=1;
 		}
 		//删除多条
 		if (type == 1) {
 			// 获取所有选中列
 			var selection = $("#workerList_dataGrid").datagrid('getChecked');
+			len = selection.length;
 			// 判断选择数目是否大于0
 			if (selection.length == 0) {
 				
@@ -240,7 +290,7 @@
 			}
 		}
 		// 显示确认删除对话框
-		$.messager.confirm('确认', '您确认想要删除' + params.length + '记录吗？', function(r) {
+		$.messager.confirm('确认', '您确认想要删除' + len + '记录吗？', function(r) {
 			if (r) {
 				// 删除请求
 				$.ajax({
@@ -254,10 +304,10 @@
 					success : function(data) {
 						if (data == true) {
 							// 刷新数据列表
+							$("#workerList_dataGrid").datagrid('clearChecked');
 							$('#workerList_dataGrid').datagrid('reload');
-							$("#workerList_dataGrid").datagrid('clearSelections');
-						
-							$.messager.alert('消息', '删除成功。', 'ok');
+						// 去掉提示
+						//	$.messager.alert('消息', '删除成功。', 'ok');
 						} else {
 							$.messager.alert('消息', '残疾职工删除失败。', 'error');
 							
@@ -273,7 +323,7 @@
 	};
 
 	/**
-	 获取企业信息
+	 	删除残疾员工
 	 **/
 	workerList.getCompany = function() {
 
@@ -282,16 +332,13 @@
 			type : 'post',
 			success : function(data) {
 				if (data.length > 0) {
-
 					$("#company_name").html(data[0].companyName);//企业名字
 					$("#company_EmpTotal").html(data[0].companyEmpTotal);//总人数
 					$("#company_Code").html(data[0].companyCode);// 档案编码
 					$("#worker_HandicapTotal").html(data[0].workerHandicapTotal);// 已录用残疾职工总人数
 					$("#company_TaxCode").html(data[0].companyTaxCode);// 税务编码
 					$("#company_Area").html(data[0].companyArea);// 地区
-
 				} else {
-			
 					$.messager.alert('消息', '未获得到企业信息数据。', 'error');
 				}
 
@@ -310,6 +357,20 @@
 		workerList.loadData(workerList.getParams());
 		
 	};
+	$(function(){
+	    //年龄超标复选框
+		$("#isExceed").bind("click",function(){
+			//清楚列表复选框
+			$("#workerList_dataGrid").datagrid("clearChecked");
+			workerList.loadData(workerList.getParams());
+		});
+		//是否干部复选框
+		$("#isCadre").bind("click",function(){
+			//清楚列表复选框
+			$("#workerList_dataGrid").datagrid("clearChecked");
+			workerList.loadData(workerList.getParams());
+		});
+	});
 
 
 </script>
@@ -323,7 +384,7 @@
 
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="tipTextEx">企业名称:</td>
+			<td class="tipTextEx">企业名称123:</td>
 			<td id="company_name" style="width: 330px" class="readonly"></td>
 			<td class="tipTextEx">档案编码:</td>
 			<td id="company_Code" class="readonly"></td>
@@ -343,7 +404,40 @@
 		</tr>
 	</table>
 
-	<table>
+		<div style="text-align: right; margin: 7px 7px 7px 48px;float: left;">
+		<table>
+			<tr>
+				<td>
+					<input type="checkbox" name="isExceed"  id="isExceed" />
+					<!--  女退休年龄 -->
+					<input type="hidden" value="${retireAgeFemale}"  id="retireAgeFemale"/>
+					<!--  女干部退休年龄 -->
+					<input type="hidden" value="${retireAgeCadreFemale }" id="retireAgeCadreFemale" />
+					<!--  男退休年龄 -->
+					<input type="hidden" value="${retireAgeMale}" id="retireAgeMale"/>
+					<!--  女干部退休年龄 -->
+					<input type="hidden" value="${retireAgeCadreMale }" id="retireAgeCadreMale" />
+				</td>
+				<td id="isExceedText">
+					<span style="font-size:10px;">年龄超标</span>
+				</td>
+				<td>
+					<input type="checkbox" name="isCadre"  id="isCadre" />
+				</td>
+				<td id="isExceedText">
+					<span style="font-size:10px;">干部</span>
+				</td>
+			</tr>
+		</table>
+			
+		</div>
+	
+	<div style="text-align: right; margin: 7px;">
+		<a href="javascript:workerList.openAddWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> 
+		<a href="javascript:workerList.deleteWorker('',1);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a> 
+		<a href="javascript:workerList.openImportWorker();" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">导入文件</a>
+	</div>
+	<table style="clear: both;">
 		<tr>
 			<td>
 				<!-- 姓名 --> <input id="workerFind_workerName" type="text" style="width: 100px;margin-left: 48px" />
@@ -365,8 +459,10 @@
 				<!-- 残疾类型 --> <input style="width:80px" type="text" id="workerFind_workerHandicapType" data-options="height:30,panelHeight:240" class="easyui-combobox" />
 			</td>
 			<td>
-				<!-- 残疾等级 --> <input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" /> <a
-				href="javascript:workerList.findData();" class="easyui-linkbutton" iconCls="icon-search">查找</a>
+				<!-- 残疾等级 --> 
+				<input style="width:80px" type="text" id="workerFind_workerHandicapLevel" data-options="height:30,panelHeight:145" class="easyui-combobox" />
+				 <a href="#" onclick="workerList.findData()" class="easyui-linkbutton"  iconCls="icon-search">查询</a>
+			
 			</td>
 		</tr>
 	</table>

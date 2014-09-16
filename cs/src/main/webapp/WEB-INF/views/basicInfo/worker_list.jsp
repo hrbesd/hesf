@@ -198,7 +198,7 @@
 	 **/
 	workerList.getParams = function() {
 
-		params = {};
+		var params = {};
 		params.year = $("#currentYear").val();//年份
 		params.companyId = $("#companyId").val();//单位id
 		params.workerName = $("#workerFind_workerName").val(); // //员工名

@@ -108,6 +108,11 @@
 //		}
 //		return true;
 //	};
+	initAudit.initVerify = function() {
+		$('#zaiZhiYuanGongZongShu').attr("maxlength", "9");
+		$('#yuDingCanJiRen').attr("maxlength", "9");
+	};
+	
 	initAudit.jisuan = function() {
 		var param = {};
 		param.zaiZhiYuanGongZongShu = $('#zaiZhiYuanGongZongShu').val();
@@ -143,6 +148,7 @@
 				$('#yiAnPaiCanJiRen').val(data.s_yiAnPaiCanJiRen);
 				$('#yiLuRuCanJiRen').val(data.s_yiLuRuCanJiRen);
 				$('#yuDingCanJiRen').val(data.s_yuDingCanJiRen);
+				
 				$('#shangNianDuWeiJiaoBaoZhangJin').val(data.s_shangNianDuWeiJiaoBaoZhangJin);
 				var wl = data.weiShenMingXi.length;
 				var ql = data.qianJiaoMingXi.length;
@@ -239,6 +245,7 @@
 			$(this).attr("readonly", "readonly");
 			$(this).attr("disabled", "disabled");
 		});
+		initAudit.initVerify();
 		//初始化easyUi完成
 		$.parser.onComplete = function() {
 			//$('#mianJiao').combobox({
@@ -251,11 +258,16 @@
 		//	initAudit.jisuan();
 		};
 	});
-/*	$('#auditTabs').tabs({
+	$('#auditTabs').tabs({
 		onSelect : function(title,index) {
+			if(index==0){
+				if($('#worker_HandicapTotal').length>0){
+					if($('#yiLuRuCanJiRen').val($('#worker_HandicapTotal').html()));
+				};
+			};
 			initAudit.jisuan();
 		}
-	});	*/
+	});
 </script>
 
 <form id="form" action="${contextPath }/security/audits/save" method="post" style="margin-top: 5px; margin-left: 2px;">

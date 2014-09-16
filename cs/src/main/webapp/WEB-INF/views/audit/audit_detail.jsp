@@ -41,7 +41,7 @@
 			<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
 		<c:if test="${process==2}">
-			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
+			<div title="残疾职工信息" data-options="href:'worker/list/${entity.company.id}/${entity.year}'"></div>
 		</c:if>
 		<c:if test="${process==3}">
 			<div title="残疾职工信息" data-options="href:'worker/view/${entity.company.id}/${entity.year}'"></div>
