@@ -70,8 +70,8 @@ basicFile.loadData = function(params) {
 		align : 'center',
 		formatter : function(value, row, index) {
 			var e = '<a  href="#" onclick="basicFile.openEditCompany(\'' + row.id + '\')">编辑</a> ';
-			var d = '<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">删除</a> ';
-			return e + d;
+		//	var d = '<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">删除</a> ';
+			return e;
 		}
 	} ] ], params);
 
