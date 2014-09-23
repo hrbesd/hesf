@@ -13,8 +13,10 @@ public class AuditParamModel {
 	private Integer companyProperty; // 公司性质 _
 	private String companyEconomyType; // 企业经济类型
 	private String area; // 公司所属地区
-	private Integer companyEmpTotal_1;// 员工总数
-	private Integer companyEmpTotal_2;// 员工总数
+	private Integer companyEmpTotal_1;// 最少员工总数
+	private Integer companyEmpTotal_2;// 最多员工总数
+	private Integer companyHandicapTotal_1;//最少残疾人数
+	private Integer companyHandicapTotal_2;//最多残疾人数
 	private String companyName; // 企业名称
 	private String companyAddress;// 企业地址
 	private String companyLegal; // 企业法人
@@ -139,6 +141,22 @@ public class AuditParamModel {
 
 	public void setCompanyEmpTotal_2(Integer companyEmpTotal_2) {
 		this.companyEmpTotal_2 = companyEmpTotal_2;
+	}
+
+	public Integer getCompanyHandicapTotal_1() {
+		return companyHandicapTotal_1;
+	}
+
+	public void setCompanyHandicapTotal_1(Integer companyHandicapTotal_1) {
+		this.companyHandicapTotal_1 = companyHandicapTotal_1;
+	}
+
+	public Integer getCompanyHandicapTotal_2() {
+		return companyHandicapTotal_2;
+	}
+
+	public void setCompanyHandicapTotal_2(Integer companyHandicapTotal_2) {
+		this.companyHandicapTotal_2 = companyHandicapTotal_2;
 	}
 
 	public String getCompanyName() {

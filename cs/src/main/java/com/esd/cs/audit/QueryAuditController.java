@@ -98,6 +98,8 @@ public class QueryAuditController {
 						.getCompanyContactPerson()); // 联系人
 				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
 				map.put("companyAddress", it.getCompany().getCompanyAddress());// 公司地址
+				map.put("companyEmpTotal", it.getCompanyEmpTotal());	// 员工总数
+				map.put("companyHandicapTotal", it.getCompanyHandicapTotal());
 				map.put("auditProcessStatus", it.getAuditProcessStatus()
 						.getAuditProcessStatus()); // 流程状态
 				list.add(map);
@@ -291,8 +293,10 @@ public class QueryAuditController {
 		paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
 		paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
 		paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
-		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 查询范围中
-		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
+		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 最少职工人数
+		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 最多职工人数
+		paramsMap.put("minHandicapTotal", params.getCompanyHandicapTotal_1());	// 最少残疾人数
+		paramsMap.put("maxHandicapTotal", params.getCompanyHandicapTotal_2());	// 最多残疾人数
 		paramsMap.put("companyName", params.getCompanyName()); // 公司名称
 		paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
 		paramsMap.put("companyContactPerson", params.getCompanyContactPerson()); // 公司联系人

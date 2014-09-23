@@ -94,7 +94,7 @@
 								{
 									field : 'companyCode',
 									title : '档案编码',
-									width : 80
+									width : 75 
 								},
 								{
 									field : 'companyId',
@@ -103,7 +103,7 @@
 								{
 									field : 'companyName',
 									title : '企业名称',
-									width : 300,
+									width : 280,
 									formatter : function(value, row, index) {
 										var c = '<a href="javascript:void(0);" onclick="queryAudit.openViewCompany('
 												+ row.companyId
@@ -115,20 +115,27 @@
 								},{
 									field : 'companyContactPerson',
 									title : '企业联系人',
-									width : 100
+									width : 80
 								},{
 									field : 'companyPhone',
 									title : '联系电话',
-									width : 110
-								},
-								{
+									width : 100
+								},{
 									field : 'companyAddress',
 									title : '地址',
-									width : 270
+									width : 250
+								},{
+									field : 'companyEmpTotal',
+									title : '职工人数',
+									width : 65
+								},{
+									field : 'companyHandicapTotal',
+									title : '残疾员工',
+									width : 65
 								},{
 									field : 'auditProcessStatus',
 									title : '审核状态',
-									width : '110'
+									width : '100'
 								},
 								{
 									field : 'auditProcessStatusId',
@@ -137,7 +144,7 @@
 								{
 									field : 'action',
 									title : '操作',
-									width : 50,
+									width : 30,
 									align : 'center',
 									formatter : function(value, row, index) {
 										var v = '<a href="#" onclick="queryAudit.openAudit('
@@ -161,8 +168,10 @@
 		params.companyEconomyType = $("#companyEconomyType").combobox(
 				"getValue");// 企业经济类型
 		params.area = $("#area").combobox("getValue");// 公司所属地区
-		params.companyEmpTotal_1 = $("#companyEmpTotal_1").val();// 员工总数
-		params.companyEmpTotal_2 = $("#companyEmpTotal_2").val();
+		params.companyEmpTotal_1 = $("#companyEmpTotal_1").val();// 最小员工总数
+		params.companyEmpTotal_2 = $("#companyEmpTotal_2").val();//最多员工总数
+		params.companyHandicapTotal_1 = $("#companyHandicapTotal_1").val();// 最小员工总数
+		params.companyHandicapTotal_2 = $("#companyHandicapTotal_2").val();//最多员工总数
 		params.companyName = $("#companyName").val(); // 企业名称
 		params.companyAddress = $("#companyAddress").val();// 企业地址
 		params.companyContactPerson = $("#companyContactPerson").val();//	联系人
@@ -254,8 +263,10 @@
 						'companyProperty' : params.companyProperty,// 公司性质 _
 						'companyEconomyType' : params.companyEconomyType,// 企业经济类型
 						'area' : params.area,// 公司所属地区
-						'companyEmpTotal_1' : params.companyEmpTotal_1, // 员工总数
-						'companyEmpTotal_2' : params.companyEmpTotal_2, 
+						'companyEmpTotal_1' : params.companyEmpTotal_1, // 最少员工总数
+						'companyEmpTotal_2' : params.companyEmpTotal_2, // 最多员工总数
+						'companyHandicapTotal_1':params.companyHandicapTotal_1,	// 最少残疾人数
+						'companyHandicapTotal_2':params.companyHandicapTotal_2,	// 最多残疾人数
 						'companyName' : params.companyName, // 企业名称
 						'companyAddress' : params.companyAddress, // 企业地址
 						'companyContactPerson' : params.companyContactPerson, //	联系人
@@ -314,13 +325,17 @@
 				<td class="tipsText">档案号码:</td>
 				<td><input type="text" id="companyCode" class="inputElement" />
 				</td>
-				<td class="tipsText">税务号码:</td>
-				<td class="tipsText"><input id="companyTaxCode" type="text"
-					class="inputElement" />
+				<td class="tipsText">缴款人:</td>
+				<td><input type="text" id="paymentPerson"
+					class="easyui-combobox" data-options="height:30,editable:false" />
 				</td>
-				<td class="tipsText">组织机构代码:</td>
-				<td><input type="text" id="companyOrganizationCode"
-					class="inputElement" /></td>
+				<td class="tipsText">企业人数:</td>
+				<td><input type="text" style="width: 40px"
+					id="companyEmpTotal_1" data-options="validType:['_number']"
+					class="easyui-validatebox inputElement" />-<input type="text"
+					style="width: 40px" id="companyEmpTotal_2"
+					data-options="validType:['_number']"
+					class="easyui-validatebox inputElement" />人</td>
 
 			</tr>
 			<tr>
@@ -336,11 +351,11 @@
 				<td><input id="area" class="easyui-combobox"
 					data-options="height:30,editable:false" value="10230000" />
 				</td>
-				<td class="tipsText">企业人数:</td>
+				<td class="tipsText">残疾人数:</td>
 				<td><input type="text" style="width: 40px"
-					id="companyEmpTotal_1" data-options="validType:['_number']"
+					id="companyHandicapTotal_1" data-options="validType:['_number']"
 					class="easyui-validatebox inputElement" />-<input type="text"
-					style="width: 40px" id="companyEmpTotal_2"
+					style="width: 40px" id="companyHandicapTotal_2"
 					data-options="validType:['_number']"
 					class="easyui-validatebox inputElement" />人</td>
 			</tr>
@@ -358,9 +373,9 @@
 				<td class="tipsText">联系人:</td>
 				<td><input id="companyContactPerson" type="text" class="inputElement" />
 				</td>
-				<td class="tipsText">缴款人:</td>
-				<td><input type="text" id="paymentPerson"
-					class="easyui-combobox" data-options="height:30,editable:false" />
+				<td class="tipsText">流程状态:</td>
+				<td><input id="auditProcessStatus" class="easyui-combobox"
+					data-options="height:30,editable:false" />
 				</td>
 				<td class="tipsText">超过:</td>
 				<td><input id="overYear" type="text" value="0"
@@ -371,10 +386,7 @@
 				<td><input type="text" id="isExempt" /></td>
 			</tr>
 			<tr>
-				<td class="tipsText">流程状态:</td>
-				<td><input id="auditProcessStatus" class="easyui-combobox"
-					data-options="height:30,editable:false" />
-				</td>
+				<td></td>
 
 			</tr>
 		</table>
