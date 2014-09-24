@@ -131,7 +131,8 @@
 		}, {
 			field : 'isCadre',
 			hidden : true
-		},{
+		}
+	/*	,{
 			field : 'yanz',
 			title : '操作',
 			width : 270,
@@ -145,7 +146,7 @@
 				//年龄检测
 				return workerList.ageDetection(value, row, index);
 			}
-		} ] ], params,function(){
+		}*/ ] ], params,function(){
 		//从新获企业信息
 		workerList.getCompany();
 		});
@@ -384,7 +385,7 @@
 
 	<table class="workerListTip" border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td class="tipTextEx">企业名称123:</td>
+			<td class="tipTextEx">企业名称:</td>
 			<td id="company_name" style="width: 330px" class="readonly"></td>
 			<td class="tipTextEx">档案编码:</td>
 			<td id="company_Code" class="readonly"></td>

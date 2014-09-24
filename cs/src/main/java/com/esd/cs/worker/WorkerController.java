@@ -104,7 +104,6 @@ public class WorkerController {
 			@PathVariable(value = "year") String year,
 			HttpServletRequest request) {
 		logger.debug("goToWorkerList year:{},companyId:{}", year, companyId);
-
 		request.setAttribute("year", year);
 		request.setAttribute("companyId", companyId);
 		// 获取年审参数
@@ -168,14 +167,21 @@ public class WorkerController {
 			HttpServletRequest request) {
 		request.setAttribute("companyId", companyId);
 		request.setAttribute("year", year);
+		request.setAttribute("year", year);
+		request.setAttribute("companyId", companyId);
 		// 获取年审参数
 		AuditParameter param = auditParameterService.getByYear(year);
 		if (param != null) {
 			// 男职工退休年龄
-			request.setAttribute("maleRetirementAge", param.getRetireAgeMale());
+			request.setAttribute("retireAgeMale", param.getRetireAgeMale());
 			// 女职工退休年龄
-			request.setAttribute("femaleRetirementAge",
-					param.getRetireAgeFemale());
+			request.setAttribute("retireAgeFemale", param.getRetireAgeFemale());
+			// 女干部退休年龄
+			request.setAttribute("retireAgeCadreFemale",
+					param.getRetireAgeCadreFemale());
+			// 男干部退休年龄
+			request.setAttribute("retireAgeCadreMale",
+					param.getRetireAgeCadreMale());
 		} else {
 			logger.error("getAuditParameterError");
 		}
