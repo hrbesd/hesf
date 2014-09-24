@@ -98,7 +98,7 @@ public class QueryAuditController {
 						.getCompanyContactPerson()); // 联系人
 				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
 				map.put("companyAddress", it.getCompany().getCompanyAddress());// 公司地址
-				map.put("companyEmpTotal", it.getCompanyEmpTotal());	// 员工总数
+				map.put("companyEmpTotal", it.getCompanyEmpTotal()); // 员工总数
 				map.put("companyHandicapTotal", it.getCompanyHandicapTotal());
 				map.put("auditProcessStatus", it.getAuditProcessStatus()
 						.getAuditProcessStatus()); // 流程状态
@@ -183,7 +183,8 @@ public class QueryAuditController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(AuditParamModel params, Integer[] idArray,HttpServletRequest request) {
+	public String export(AuditParamModel params, Integer[] idArray,
+			HttpServletRequest request) {
 		boolean b = true;
 		List<Audit> auditList = null;
 		// 下载全部
@@ -283,35 +284,35 @@ public class QueryAuditController {
 	 * @param param
 	 * @return
 	 */
-	private Map<String, Object> getParams(AuditParamModel params) {
+	private Map<String, Object> getParams(AuditParamModel model) {
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("year", params.getYear()); // 年度
-		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
-		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
+		paramsMap.put("year", model.getYear()); // 年度
+		paramsMap.put("companyCode", model.getCompanyCode()); // 公司档案号
+		paramsMap.put("companyTaxCode", model.getCompanyTaxCode()); // 公司税务编码
 		paramsMap.put("companyOrganizationCode",
-				params.getCompanyOrganizationCode()); // 组织机构代码证
-		paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
-		paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
-		paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
-		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 最少职工人数
-		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 最多职工人数
-		paramsMap.put("minHandicapTotal", params.getCompanyHandicapTotal_1());	// 最少残疾人数
-		paramsMap.put("maxHandicapTotal", params.getCompanyHandicapTotal_2());	// 最多残疾人数
-		paramsMap.put("companyName", params.getCompanyName()); // 公司名称
-		paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
-		paramsMap.put("companyContactPerson", params.getCompanyContactPerson()); // 公司联系人
-		paramsMap.put("auditProcessStatus", params.getAuditProcessStatus()); // 流程状态
-		paramsMap.put("paymentPerson", params.getPaymentPerson()); // 缴款人 id
-		String overYear = params.getOverYear();// 超过几年未初审的公司
+				model.getCompanyOrganizationCode()); // 组织机构代码证
+		paramsMap.put("companyProperty", model.getCompanyProperty()); // 公司性质
+		paramsMap.put("companyEconomyType", model.getCompanyEconomyType()); // 公司经济类型
+		paramsMap.put("areaCode", model.getArea()); // 地区 对应地区 code
+		paramsMap.put("minTotal", model.getCompanyEmpTotal_1()); // 最少职工人数
+		paramsMap.put("maxTotal", model.getCompanyEmpTotal_2()); // 最多职工人数
+		paramsMap.put("minHandicapTotal", model.getCompanyHandicapTotal_1()); // 最少残疾人数
+		paramsMap.put("maxHandicapTotal", model.getCompanyHandicapTotal_2()); // 最多残疾人数
+		paramsMap.put("companyName", model.getCompanyName()); // 公司名称
+		paramsMap.put("companyAddress", model.getCompanyAddress()); // 公司地址
+		paramsMap.put("companyContactPerson", model.getCompanyContactPerson()); // 公司联系人
+		paramsMap.put("auditProcessStatus", model.getAuditProcessStatus()); // 流程状态
+		paramsMap.put("paymentPerson", model.getPaymentPerson()); // 缴款人 id
+		String overYear = model.getOverYear();// 超过几年未初审的公司
 		if (StringUtils.isBlank(overYear)) {
 			overYear = "0";
 		}
 		paramsMap.put("overYear", overYear);// 超过几年未初审的公司
-		paramsMap.put("isExempt", Boolean.valueOf(params.getIsExempt())); // 是否免缴
+		paramsMap.put("isExempt", Boolean.valueOf(model.getIsExempt())); // 是否免缴
 																			// true免缴,
 																			// false不免缴
-		paramsMap.put("page", params.getPage()); // 分页--起始页
-		paramsMap.put("pageSize", params.getRows());// 分页--返回量
+		paramsMap.put("page", model.getPage()); // 分页--起始页
+		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		return paramsMap;
 	}
 }

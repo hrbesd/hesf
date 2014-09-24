@@ -5,6 +5,8 @@
  */
 package com.esd.cs.payment;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * @author Administrator
@@ -23,27 +25,51 @@ public class PaymentParamModel {
 	private String endDate; // 缴款结束时间
 	private Boolean billReturn; // 返票?
 	private Boolean billObsolete; // 作废票号?
-	private String belongsType;	//区分省残联和地税的单位
+	private String belongsType; // 区分省残联和地税的单位
+	private String minPaymentMoney; // 最小缴款额
+	private String maxPaymentMoney; // 最大缴款额
 	private Integer page;
 	private Integer rows;
 
 	@Override
 	public String toString() {
-		return "PaymentParamModel [year=" + year + ", companyCode=" + companyCode + ", companyName=" + companyName + ", companyProperty=" + companyProperty + ", companyEconomyType="
-				+ companyEconomyType + ", area=" + area + ", paymentPerson=" + paymentPerson + ", startDate=" + startDate + ", endDate=" + endDate + ", billReturn=" + billReturn + ", billObsolete="
-				+ billObsolete + "]";
+		return "PaymentParamModel [year=" + year + ", companyCode="
+				+ companyCode + ", companyName=" + companyName
+				+ ", companyProperty=" + companyProperty
+				+ ", companyEconomyType=" + companyEconomyType + ", area="
+				+ area + ", paymentPerson=" + paymentPerson + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", billReturn="
+				+ billReturn + ", billObsolete=" + billObsolete + "]";
 	}
 
-	
+
+	public String getMinPaymentMoney() {
+		return minPaymentMoney;
+	}
+
+
+	public void setMinPaymentMoney(String minPaymentMoney) {
+		this.minPaymentMoney = minPaymentMoney;
+	}
+
+
+	public String getMaxPaymentMoney() {
+		return maxPaymentMoney;
+	}
+
+
+	public void setMaxPaymentMoney(String maxPaymentMoney) {
+		this.maxPaymentMoney = maxPaymentMoney;
+	}
+
+
 	public String getBelongsType() {
 		return belongsType;
 	}
 
-
 	public void setBelongsType(String belongsType) {
 		this.belongsType = belongsType;
 	}
-
 
 	public String getYear() {
 		return year;

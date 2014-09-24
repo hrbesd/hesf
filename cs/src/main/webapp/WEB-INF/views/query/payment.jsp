@@ -221,6 +221,8 @@
 		if(billObsolete == 'checked'){
 			params.billObsolete = true;
 		}
+		params.minPaymentMoney = $('#minPaymentMoney').val();	//最小缴款额
+		params.maxPaymentMoney = $('#maxPaymentMoney').val();	//最大缴款额
 		return params;
 	};
 
@@ -356,8 +358,8 @@
 			</tr>
 			<tr>
 				<td class="tipsText">缴款时间:</td>
-				<td colspan="3"><input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:150px" />至
-				<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:150px" />
+				<td colspan="2"><input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:100px" />-
+					<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:100px" />
 				</td>
 				<td colspan="2" style="text-align:left;font-size:13px;">
 					<div style="width:70%;border:2px rgb(174, 179, 243) solid;height: 22px;padding: 2px 5px;text-align: center;border-radius: 5px;">
@@ -365,10 +367,17 @@
 						地税 : <input type="radio" onclick="queryPayment.loadData()" name="belongsType" value="six" style="height:auto" />
 					</div>
 				</td>
-				<td class="tipsText" colspan="2" style="text-align:left;padding-left:20px;font-size:13px;">
-				已返票 : <input id="billReturn" type="checkbox" style="height:auto;margin-right:20px;"/>
-				作废票据号 : <input id="billObsolete" type="checkbox" style="height:auto" />
+				<td class="tipsText" style="text-align:left;font-size:13px;">
+				已返票 : <input id="billReturn" type="checkbox" style="height:auto; "/>
+				作废票 : <input id="billObsolete" type="checkbox" style="height:auto" />
 				</td>
+				<td class="tipsText">缴款金额:</td>
+				<td><input type="text" style="width: 60px"
+					id="minPaymentMoney" data-options="validType:['_number']"
+					class="easyui-validatebox inputElement" />~<input type="text"
+					style="width: 60px" id="maxPaymentMoney"
+					data-options="validType:['_number']"
+					class="easyui-validatebox inputElement" />元</td>
 			</tr>
 		</table>
 		<div class="findBut">

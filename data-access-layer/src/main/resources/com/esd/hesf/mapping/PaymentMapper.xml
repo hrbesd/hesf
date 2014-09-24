@@ -500,6 +500,13 @@
 					and c.company_code not like '6%' 
 				</if>
 			</if>
+			<!-- judge the payment money between min and max -->
+			<if test="minPaymentMoney != null and minPaymentMoney > 0 ">
+				and pay.payment_money &gt;= #{minPaymentMoney} 
+			</if>
+			<if test="maxPaymentMoney != null and maxPaymentMoney > 0">
+				and pay.payment_money &lt;= #{maxPaymentMoney} 
+			</if>
 		</trim>
 		order by pay.create_time desc
 		limit #{start}, #{size}
@@ -644,6 +651,13 @@
 				<if test="belongsType == 'nonSix'">
 					and c.company_code not like '6%' 
 				</if>
+			</if>
+			<!-- judge the payment money between min and max -->
+			<if test="minPaymentMoney != null and minPaymentMoney > 0 ">
+				and pay.payment_money &gt;= #{minPaymentMoney} 
+			</if>
+			<if test="maxPaymentMoney != null and maxPaymentMoney > 0">
+				and pay.payment_money &lt;= #{maxPaymentMoney} 
 			</if>
 		</trim>
 	</select>

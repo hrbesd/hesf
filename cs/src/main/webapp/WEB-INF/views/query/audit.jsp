@@ -332,11 +332,10 @@
 				<td class="tipsText">企业人数:</td>
 				<td><input type="text" style="width: 40px"
 					id="companyEmpTotal_1" data-options="validType:['_number']"
-					class="easyui-validatebox inputElement" />-<input type="text"
+					class="easyui-validatebox inputElement" />~<input type="text"
 					style="width: 40px" id="companyEmpTotal_2"
 					data-options="validType:['_number']"
 					class="easyui-validatebox inputElement" />人</td>
-
 			</tr>
 			<tr>
 				<td class="tipsText">企业性质:</td>
@@ -354,7 +353,7 @@
 				<td class="tipsText">残疾人数:</td>
 				<td><input type="text" style="width: 40px"
 					id="companyHandicapTotal_1" data-options="validType:['_number']"
-					class="easyui-validatebox inputElement" />-<input type="text"
+					class="easyui-validatebox inputElement" />~<input type="text"
 					style="width: 40px" id="companyHandicapTotal_2"
 					data-options="validType:['_number']"
 					class="easyui-validatebox inputElement" />人</td>

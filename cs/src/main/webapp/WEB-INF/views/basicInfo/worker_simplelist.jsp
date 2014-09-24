@@ -389,7 +389,6 @@
 			<td id="company_name" style="width: 330px" class="readonly"></td>
 			<td class="tipTextEx">档案编码:</td>
 			<td id="company_Code" class="readonly"></td>
-
 			<td class="tipTextEx">税务编码:</td>
 			<td id="company_TaxCode" class="readonly"></td>
 		</tr>
