@@ -543,6 +543,8 @@
 		)
 		select #{year,jdbcType=CHAR},id 
 		from company
+		<!-- only copy the effective company data -->
+		where is_active = 0
 	</insert>
 
 	<!-- delete -->
