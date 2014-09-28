@@ -1,83 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.esd.hesf.dao.UserLogDao">
+
 	<resultMap id="BaseResultMap" type="com.esd.hesf.model.UserLog">
-		<id column="u_id" property="id" jdbcType="INTEGER" />
-		<result column="u_log_id" property="logId" jdbcType="INTEGER" />
+		<id column="u_log_id" jdbcType="INTEGER" property="logId" />
+		<result column="u_id" property="id" jdbcType="INTEGER" />
 		<result column="u_user_name" property="userName" jdbcType="VARCHAR" />
-		<result column="u_user_password" property="userPassword"
-			jdbcType="VARCHAR" />
+		<result column="u_user_real_name" property="userRealName" jdbcType="VARCHAR" />
+		<result column="u_user_password" property="userPassword" jdbcType="VARCHAR" />
 		<result column="u_user_email" property="userEmail" jdbcType="VARCHAR" />
 		<result column="u_user_mobile" property="userMobile" jdbcType="VARCHAR" />
 		<result column="u_user_phone" property="userPhone" jdbcType="VARCHAR" />
-		<result column="u_user_group_id" property="userGroupId"
-			jdbcType="INTEGER" />
 		<result column="u_user_status" property="userStatus" jdbcType="BIT" />
 		<result column="u_user_remark" property="userRemark" jdbcType="VARCHAR" />
 		<result column="u_create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="u_update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="u_user_id" property="userId" jdbcType="INTEGER" />
 		<result column="u_is_active" property="isActive" jdbcType="BIT" />
-		<result column="u_method" property="method" jdbcType="VARCHAR" />
-		<association property="userGroup" javaType="com.esd.hesf.model.UserGroup"
-			resultMap="ResultUserGroup" />
+		<result column="u_version" property="version" jdbcType="INTEGER" />
+		<association property="userGroup" javaType="com.esd.hesf.model.UserGroup" resultMap="ResultUserGroup" />
 	</resultMap>
-
+	
 	<resultMap id="ResultUserGroup" type="com.esd.hesf.model.UserGroup">
 		<id column="ug_id" property="id" jdbcType="INTEGER" />
-		<result column="ug_user_group_name" property="userGroupName"
-			jdbcType="VARCHAR" />
-		<result column="ug_create_time" property="createTime" jdbcType="TIMESTAMP" />
-		<result column="ug_update_time" property="updateTime" jdbcType="TIMESTAMP" />
-		<result column="ug_user_id" property="userId" jdbcType="INTEGER" />
-		<result column="ug_is_active" property="isActive" jdbcType="BIT" />
+		<result column="ug_user_group_name" property="userGroupName" jdbcType="VARCHAR" />
 	</resultMap>
-
+	
 	<sql id="Base_Column_List">
-		u.id as u_id, u.log_id as u_log_id, u.user_name as u_user_name,
-		u.user_password as u_user_password, u.user_email as u_user_email,
-		u.user_mobile as u_user_mobile, u.user_phone as u_user_phone,
-		u.user_status as u_user_status, u.user_remark as u_user_remark,
-		u.create_time as u_create_time, u.update_time as u_update_time,
-		u.user_id as u_user_id, u.is_active as u_is_active, u.method as u_method,
-		ug.id as ug_id, ug.user_group_name as ug_user_group_name, 
-		ug.create_time as ug_create_time, 
-		ug.update_time as ug_update_time, ug.user_id as ug_user_id, 
-		ug.is_active as ug_is_active
+		u.log_id as u_log_id, u.id as u_id, u.user_name as u_user_name, u.user_real_name as u_user_real_name, u.user_password as u_user_password, u.user_email as u_user_email, u.user_mobile as u_user_mobile, 
+		u.user_phone as u_user_phone, u.user_status as u_user_status, u.user_remark as u_user_remark, u.create_time as u_create_time, u.update_time as u_update_time,
+		u.user_id as u_user_id, u.is_active as u_is_active, u.version as u_version, 
+		ug.id as ug_id, ug.user_group_name as ug_user_group_name
 	</sql>
-
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.UserLog">
-		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.UserLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into user_log ( log_id, user_name,
-		user_password, user_email, user_mobile,
-		user_phone, user_group_id, user_status,
-		user_remark, create_time, update_time,
-		user_id, is_active, method
-		)
-		values (#{logId,jdbcType=INTEGER},
-		#{userName,jdbcType=VARCHAR},
-		#{userPassword,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR},
-		#{userPhone,jdbcType=VARCHAR}, #{userGroupId,jdbcType=INTEGER},
-		#{userStatus,jdbcType=BIT},
-		#{userRemark,jdbcType=VARCHAR}, now(),now(),
-		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT},
-		#{method,jdbcType=VARCHAR}
-		)
+		insert into user_log (id, user_name, user_real_name, user_password,
+		user_email, user_mobile, user_phone,
+		user_group_id, user_status, user_remark,
+		create_time, update_time, user_id, is_active, version)
+		values (#{id, jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userRealName, jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
+		#{userEmail,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR},
+		#{userGroup.id,jdbcType=INTEGER}, #{userStatus,jdbcType=BIT},
+		#{userRemark,jdbcType=VARCHAR},
+		now(),now(), #{userId,jdbcType=INTEGER},
+		default, default)
 	</insert>
 	
-	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.UserLog">
-		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.UserLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into user_log
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="logId != null">
-				log_id,
+			<if test="id != null">
+				id,
 			</if>
 			<if test="userName != null">
 				user_name,
+			</if>
+			<if test="userRealName != null">
+				user_real_name,
 			</if>
 			<if test="userPassword != null">
 				user_password,
@@ -91,8 +77,10 @@
 			<if test="userPhone != null">
 				user_phone,
 			</if>
-			<if test="userGroupId != null">
-				user_group_id,
+			<if test="userGroup != null">
+				<if test="userGroup.id != null and userGroup.id > 0">
+					user_group_id,
+				</if>
 			</if>
 			<if test="userStatus != null">
 				user_status,
@@ -105,18 +93,19 @@
 				user_id,
 			</if>
 			<if test="isActive != null">
-				is_active,
+				is_active, 
 			</if>
-			<if test="method != null">
-				method,
-			</if>
+			version
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="logId != null">
-				#{logId,jdbcType=INTEGER},
+			<if test="id != null">
+				#{id},
 			</if>
 			<if test="userName != null">
 				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userRealName != null">
+				#{userRealName,jdbcType=VARCHAR},
 			</if>
 			<if test="userPassword != null">
 				#{userPassword,jdbcType=VARCHAR},
@@ -130,8 +119,10 @@
 			<if test="userPhone != null">
 				#{userPhone,jdbcType=VARCHAR},
 			</if>
-			<if test="userGroupId != null">
-				#{userGroupId,jdbcType=INTEGER},
+			<if test="userGroup != null">
+				<if test="userGroup.id != null and userGroup.id > 0">
+					#{userGroup.id,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="userStatus != null">
 				#{userStatus,jdbcType=BIT},
@@ -143,27 +134,31 @@
 			<if test="userId != null">
 				#{userId,jdbcType=INTEGER},
 			</if>
-			<if test="isActive != null">
+			<if test="isActive != null"> 
 				#{isActive,jdbcType=BIT},
 			</if>
-			<if test="method != null">
-				#{method,jdbcType=VARCHAR},
-			</if>
+			default
 		</trim>
 	</insert>
+	
+	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from user_log
-		where id = #{id,jdbcType=INTEGER}
+		delete from user
+		where log_id = #{id,jdbcType=INTEGER}
 	</delete>
-
+	
+	<!-- update -->
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.UserLog">
 		update user_log
 		<set>
-			<if test="logId != null">
-				log_id = #{logId,jdbcType=INTEGER},
+			<if test="id != null and id > 0">
+				id = #{id, jdbcType=INTEGER},
 			</if>
 			<if test="userName != null">
 				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userRealName != null">
+				user_real_name = #{userRealName,jdbcType=VARCHAR},
 			</if>
 			<if test="userPassword != null">
 				user_password = #{userPassword,jdbcType=VARCHAR},
@@ -177,8 +172,10 @@
 			<if test="userPhone != null">
 				user_phone = #{userPhone,jdbcType=VARCHAR},
 			</if>
-			<if test="userGroupId != null">
-				user_group_id = #{userGroupId,jdbcType=INTEGER},
+			<if test="userGroup != null">
+				<if test="userGroup.id != null and userGroup.id > 0">
+					user_group_id = #{userGroup.id,jdbcType=INTEGER},
+				</if>
 			</if>
 			<if test="userStatus != null">
 				user_status = #{userStatus,jdbcType=BIT},
@@ -193,62 +190,120 @@
 			<if test="isActive != null">
 				is_active = #{isActive,jdbcType=BIT},
 			</if>
-			<if test="method != null">
-				method = #{method,jdbcType=VARCHAR},
-			</if>
+			version = version + 1 
 		</set>
-		where id = #{id,jdbcType=INTEGER}
+		where log_id = #{log_id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
 	</update>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
+
+	<!-- retrieve -->	
+	<select id="retrieveByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from user_log as u,user_group as ug
+		from user as u, user_group as ug 
 		where u.user_group_id = ug.id and u.id = #{id,jdbcType=INTEGER}
 	</select>
 	
 	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from user_log as u, user_group as ug 
+		from user as u, user_group as ug 
 		<trim prefix="where" prefixOverrides="and|or">
 			u.user_group_id = ug.id
-			<if test="userLog != null">
-				<if test="userLog.logId != null and userLog.logId != ''">
-					and u.log_id = #{userLog.logId} 
+			<if test="user != null">
+				<if test="user.userName != null and user.userName != ''">
+					and u.user_name like concat('%',#{user.userName},'%')
 				</if>
-				<if test="userLog.userName != null and userLog.userName != ''">
-					and u.user_name = #{userLog.userName} 
+				<if test="user.userRealName != null and user.userRealName != ''">
+					and u.user_real_name like concat('%',#{user.userRealName},'%')
 				</if>
-				<if test="userLog.userPassword != null and userLog.userPassword != ''">
-					and u.user_password = #{userLog.userPassword} 
+				<if test="user.userEmail != null and user.userEmail != ''">
+					and u.user_email like concat('%',#{user.userEmail},'%')
 				</if>
-				<if test="userLog.userEmail != null and userLog.userEmail != ''">
-					and u.user_email = #{userLog.userEmail} 
+				<if test="user.userMobile != null and user.userMobile != ''">
+					and u.user_mobile like concat('%',#{user.userMobile},'%')  
 				</if>
-				<if test="userLog.userMobile != null and userLog.userMobile != ''">
-					and u.user_mobile = #{userLog.userMobile} 
+				<if test="user.userPhone != null and user.userPhone != ''">
+					and u.user_phone like concat('%',#{user.userPhone}, '%')  
 				</if>
-				<if test="userLog.userPhone != null and userLog.userPhone != ''">
-					and u.user_phone = #{userLog.userPhone} 
-				</if>
-				<if test="userLog.userStatus != null and userLog.userStatus != ''">
-					and u.user_status = #{userLog.userStatus} 
-				</if>
-				<if test="userLog.userRemark != null and userLog.userRemark != ''">
-					and u.user_remark = #{userLog.userRemark} 
-				</if>
-				<if test="userLog.method != null and userLog.method != ''">
-					and u.method = #{userLog.method} 
-				</if>
-				<if test="userLog.userGroup != null and userLog.userGroup != ''">
-					<if test="userLog.userGroup.id != null  and userLog.userGroup.id > 0">
+				<if test="user.userGroup != null">
+					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
 						and u.user_group_id = #{user.userGroup.id} 
 					</if>
 				</if>
-				
+				<if test="user.userStatus != null">
+					and u.user_status = #{user.userStatus}
+				</if>
+				<choose>
+					<when test="user.isActive != null">
+						and u.is_active = #{user.isActive, jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and u.is_active = 0 
+					</otherwise>
+				</choose>
 			</if>
+			<choose>
+				<when test="user != null">
+					<if test="user.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and u.is_active = 0 
+				</otherwise>
+			</choose>
 		</trim>
+		order by u.create_time desc 
 		limit #{start}, #{size}
 	</select>
+
+	<select id="retrieveCount" resultType="java.lang.Integer" parameterType="map">
+		select count(*) 
+		from user as u, user_group as ug 
+		<trim prefix="where" prefixOverrides="and|or">
+			u.user_group_id = ug.id
+			<if test="user != null">
+				<if test="user.userName != null and user.userName != ''">
+					and u.user_name like concat('%',#{user.userName},'%')
+				</if>
+				<if test="user.userRealName != null and user.userRealName != ''">
+					and u.user_real_name like concat('%',#{user.userRealName},'%')
+				</if>
+				<if test="user.userEmail != null and user.userEmail != ''">
+					and u.user_email like concat('%',#{user.userEmail},'%')
+				</if>
+				<if test="user.userMobile != null and user.userMobile != ''">
+					and u.user_mobile like concat('%',#{user.userMobile},'%')  
+				</if>
+				<if test="user.userPhone != null and user.userPhone != ''">
+					and u.user_phone like concat('%',#{user.userPhone}, '%')  
+				</if>
+				<if test="user.userGroup != null and user.userGroup != ''">
+					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
+						and u.user_group_id = #{user.userGroup.id} 
+					</if>
+				</if>
+				<if test="user.userStatus != null">
+					and u.user_status = #{user.userStatus}
+				</if>
+				<choose>
+					<when test="user.isActive != null">
+						and u.is_active = #{user.isActive, jdbcType=BIT} 
+					</when>
+					<otherwise>
+						and u.is_active = 0 
+					</otherwise>
+				</choose>
+			</if>
+			<choose>
+				<when test="user != null">
+					<if test="user.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					and u.is_active = 0 
+				</otherwise>
+			</choose>
+		</trim>
+	</select>
+
 </mapper>
