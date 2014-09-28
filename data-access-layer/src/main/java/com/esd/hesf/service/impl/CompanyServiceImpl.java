@@ -139,7 +139,6 @@ public class CompanyServiceImpl implements CompanyService {
 		return true;
 	}
 
-	// 本来应该执行逻辑删除掉滴 *_*
 	@Override
 	public boolean delete(Integer id) {
 

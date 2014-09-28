@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.esd.hesf.model.Company;
+import com.esd.hesf.model.CompanyLog;
+
 /**
  * 工具类--提供常用的方法
  * 
@@ -80,6 +83,35 @@ public class KitService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String str = sdf.format(date);
 		return str;
+	}
+	
+	//将Company转化为CompanyLog
+	public static CompanyLog getLogFromCompany(Company c){
+		CompanyLog log = new CompanyLog();
+		log.setArea(c.getArea());
+		log.setCompanyAddress(c.getCompanyAddress());
+		log.setCompanyBank(c.getCompanyBank());
+		log.setCompanyBankAccount(c.getCompanyBankAccount());
+		log.setCompanyCode(c.getCompanyCode());
+		log.setCompanyContactPerson(c.getCompanyContactPerson());
+		log.setCompanyEconomyType(c.getCompanyEconomyType());
+		log.setCompanyFax(c.getCompanyFax());
+		log.setCompanyLegal(c.getCompanyLegal());
+		log.setCompanyManagement(c.getCompanyManagement());
+		log.setCompanyMobile(c.getCompanyMobile());
+		log.setCompanyName(c.getCompanyName());
+		log.setCompanyOrganizationCode(c.getCompanyOrganizationCode());
+		log.setCompanyPhone(c.getCompanyPhone());
+		log.setCompanyProperty(c.getCompanyProperty());
+		log.setCompanyRemark(c.getCompanyRemark());
+		log.setCompanyTaxCode(c.getCompanyTaxCode());
+		log.setCompanyType(c.getCompanyType());
+		log.setCompanyZipCode(c.getCompanyZipCode());
+		log.setId(c.getId());
+		log.setUserId(c.getUserId());
+		log.setIsActive(c.getIsActive());
+		log.setVersion(c.getVersion());
+		return log;
 	}
 
 }
