@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -42,11 +43,11 @@ public class UserController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
 
-	
 	public static void main(String[] args) {
 		String a = "abcdefghijklmnopqrstuvwxyz";
-		System.out.println(a.substring(0,1));
+		System.out.println(a.substring(0, 1));
 	}
+
 	@Autowired
 	private UserService userService;
 
@@ -164,9 +165,13 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> addPost(User user, HttpServletRequest request) {
+	public Map<String, Object> addPost(User user, HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("id:{}", user.getId());
 		logger.debug(user.toString());
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
+		user.setUserId(userId);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		// 检查用户名
 		User checkUserName = userService.getUserByUserName(user.getUserName());
@@ -174,13 +179,13 @@ public class UserController {
 			entity.put(Constants.NOTICE, "用户名已经存在.");
 			return entity;
 		}
-//		// 检查手机号
-//		User checkUserMobile = userService.getUserByUserMobile(user
-//				.getUserMobile());
-//		if (checkUserMobile != null) {
-//			entity.put(Constants.NOTICE, "手机号码已经存在.");
-//			return entity;
-//		}
+		// // 检查手机号
+		// User checkUserMobile = userService.getUserByUserMobile(user
+		// .getUserMobile());
+		// if (checkUserMobile != null) {
+		// entity.put(Constants.NOTICE, "手机号码已经存在.");
+		// return entity;
+		// }
 		String passWord = user.getUserPassword();
 		String userName = user.getUserName();
 		UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
@@ -199,18 +204,21 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> updatePost(User user) {
+	public Map<String, Object> updatePost(User user, HttpSession session) {
 		logger.debug(user.toString());
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
+		user.setUserId(userId);
 		Map<String, Object> entity = new HashMap<String, Object>();
-//		// 检查手机号
-//		User checkUserMobile = userService.getUserByUserMobile(user
-//				.getUserMobile());
-//		if (checkUserMobile != null
-//				&& (user.getUserMobile()
-//						.equals(checkUserMobile.getUserMobile()))) {
-//			entity.put(Constants.NOTICE, "手机号码已经存在.");
-//			return entity;
-//		}
+		// // 检查手机号
+		// User checkUserMobile = userService.getUserByUserMobile(user
+		// .getUserMobile());
+		// if (checkUserMobile != null
+		// && (user.getUserMobile()
+		// .equals(checkUserMobile.getUserMobile()))) {
+		// entity.put(Constants.NOTICE, "手机号码已经存在.");
+		// return entity;
+		// }
 		Boolean bl = userService.update(user);
 		entity.put(Constants.NOTICE, bl);
 		return entity;
@@ -249,12 +257,16 @@ public class UserController {
 	@RequestMapping(value = "/change", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean changePost(@RequestParam("id") Integer id,
-			@RequestParam("userPassword") String userPassword) {
+			@RequestParam("userPassword") String userPassword,
+			HttpSession session) {
 		logger.debug("id:{},password:{}", id, userPassword);
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
 		User user = userService.getByPrimaryKey(id);
 		if (user == null) {
 			return false;
 		}
+		user.setUserId(userId);
 		if (StringUtils.isNotBlank(userPassword)) {
 			UsernameAndPasswordMd5 md5 = new UsernameAndPasswordMd5();
 			String pwd = md5.getMd5(user.getUserName(), userPassword);
@@ -284,17 +296,12 @@ public class UserController {
 
 	/**
 	 * 跳转到修改密码页面
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/pwdedit",method=RequestMethod.GET)
-	public ModelAndView pwdedit(){
+	@RequestMapping(value = "/pwdedit", method = RequestMethod.GET)
+	public ModelAndView pwdedit() {
 		return new ModelAndView("/settings/user_pwd_edit");
 	}
-
-	
-
-
-
-
 
 }

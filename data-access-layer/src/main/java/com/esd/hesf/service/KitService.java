@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyLog;
+import com.esd.hesf.model.User;
+import com.esd.hesf.model.UserLog;
 
 /**
  * 工具类--提供常用的方法
@@ -75,6 +77,11 @@ public class KitService {
 		return birthYear;
 	}
 
+	/**
+	 * 将日期Date转化为yyyy-MM-dd格式的字符串
+	 * @param date
+	 * @return
+	 */
 	public static String getStringDate(Date date) {
 		if (date == null) {
 			return null;
@@ -85,33 +92,59 @@ public class KitService {
 		return str;
 	}
 	
-	//将Company转化为CompanyLog
-	public static CompanyLog getLogFromCompany(Company c){
+	/**
+	 * 将Company转化为CompanyLog
+	 * @param c
+	 * @return
+	 */
+	public static CompanyLog getLogObjectFromEntity(Company t){
 		CompanyLog log = new CompanyLog();
-		log.setArea(c.getArea());
-		log.setCompanyAddress(c.getCompanyAddress());
-		log.setCompanyBank(c.getCompanyBank());
-		log.setCompanyBankAccount(c.getCompanyBankAccount());
-		log.setCompanyCode(c.getCompanyCode());
-		log.setCompanyContactPerson(c.getCompanyContactPerson());
-		log.setCompanyEconomyType(c.getCompanyEconomyType());
-		log.setCompanyFax(c.getCompanyFax());
-		log.setCompanyLegal(c.getCompanyLegal());
-		log.setCompanyManagement(c.getCompanyManagement());
-		log.setCompanyMobile(c.getCompanyMobile());
-		log.setCompanyName(c.getCompanyName());
-		log.setCompanyOrganizationCode(c.getCompanyOrganizationCode());
-		log.setCompanyPhone(c.getCompanyPhone());
-		log.setCompanyProperty(c.getCompanyProperty());
-		log.setCompanyRemark(c.getCompanyRemark());
-		log.setCompanyTaxCode(c.getCompanyTaxCode());
-		log.setCompanyType(c.getCompanyType());
-		log.setCompanyZipCode(c.getCompanyZipCode());
-		log.setId(c.getId());
-		log.setUserId(c.getUserId());
-		log.setIsActive(c.getIsActive());
-		log.setVersion(c.getVersion());
+		log.setArea(t.getArea());
+		log.setCompanyAddress(t.getCompanyAddress());
+		log.setCompanyBank(t.getCompanyBank());
+		log.setCompanyBankAccount(t.getCompanyBankAccount());
+		log.setCompanyCode(t.getCompanyCode());
+		log.setCompanyContactPerson(t.getCompanyContactPerson());
+		log.setCompanyEconomyType(t.getCompanyEconomyType());
+		log.setCompanyFax(t.getCompanyFax());
+		log.setCompanyLegal(t.getCompanyLegal());
+		log.setCompanyManagement(t.getCompanyManagement());
+		log.setCompanyMobile(t.getCompanyMobile());
+		log.setCompanyName(t.getCompanyName());
+		log.setCompanyOrganizationCode(t.getCompanyOrganizationCode());
+		log.setCompanyPhone(t.getCompanyPhone());
+		log.setCompanyProperty(t.getCompanyProperty());
+		log.setCompanyRemark(t.getCompanyRemark());
+		log.setCompanyTaxCode(t.getCompanyTaxCode());
+		log.setCompanyType(t.getCompanyType());
+		log.setCompanyZipCode(t.getCompanyZipCode());
+		log.setId(t.getId());
+		log.setUserId(t.getUserId());
+		log.setIsActive(t.getIsActive());
+		log.setVersion(t.getVersion());
 		return log;
 	}
 
+	/**
+	 * 将User转化为UserLog
+	 * @param c
+	 * @return
+	 */
+	public static UserLog getLogObjectFromEntity(User t){
+		UserLog log = new UserLog();
+		log.setUserEmail(t.getUserEmail());
+		log.setUserGroup(t.getUserGroup());
+		log.setUserMobile(t.getUserMobile());
+		log.setUserName(t.getUserName());
+		log.setUserPassword(t.getUserPassword());
+		log.setUserPhone(t.getUserPhone());
+		log.setUserRealName(t.getUserRealName());
+		log.setUserRemark(t.getUserRemark());
+		log.setUserStatus(t.getUserStatus());
+		log.setId(t.getId());
+		log.setUserId(t.getUserId());
+		log.setIsActive(t.getIsActive());
+		log.setVersion(t.getVersion());
+		return log;
+	}
 }

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.UserDao;
+import com.esd.hesf.dao.UserLogDao;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.HesfException;
+import com.esd.hesf.service.KitService;
 import com.esd.hesf.service.UserService;
 
 /**
@@ -27,29 +29,34 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao dao;
 
-	// @Autowired
-	// private PermissionTypeDao ptDao;
-	//
-	// @Autowired
-	// private UserGroupDao ugDao;
+	@Autowired
+	private UserLogDao logDao;
 
 	@Override
 	public boolean save(User t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
 	public boolean delete(Integer id) {
+		User t = dao.retrieveByPrimaryKey(id);
+		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -57,9 +64,12 @@ public class UserServiceImpl implements UserService {
 	public boolean update(User t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
-			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(t.getClass().getName(), HesfException.type_fail)
+					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -67,13 +77,15 @@ public class UserServiceImpl implements UserService {
 	public User getByPrimaryKey(Integer id) {
 		User t = dao.retrieveByPrimaryKey(id);
 		if (t == null) {
-			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
+			new HesfException(this.getClass().getName(),
+					HesfException.type_fail).printStackTrace();
 		}
 		return t;
 	}
 
 	@Override
-	public PaginationRecordsAndNumber<User, Number> getPaginationRecords(User t, Integer page, Integer pageSize) {
+	public PaginationRecordsAndNumber<User, Number> getPaginationRecords(
+			User t, Integer page, Integer pageSize) {
 		// 将参数放入到map中
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("user", t);
@@ -122,7 +134,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getUserByGroup(Integer userGroupId) {
-		if(userGroupId == null || userGroupId <=0){
+		if (userGroupId == null || userGroupId <= 0) {
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -29,9 +29,7 @@ import com.esd.cs.Constants;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.service.AuditService;
-import com.esd.hesf.service.CompanyLogService;
 import com.esd.hesf.service.CompanyService;
-import com.esd.hesf.service.KitService;
 
 @Controller
 @RequestMapping(value = "/security/company")
@@ -44,9 +42,6 @@ public class CompayController {
 	@Autowired
 	private AuditService auditService;// 审核
 
-	@Autowired
-	private CompanyLogService logService;
-	
 	/**
 	 * 转到基本档案页面 省直 中直 机关事业
 	 * 
@@ -206,7 +201,8 @@ public class CompayController {
 				return false;
 			}
 			String nowYear = (String) session.getAttribute(Constants.YEAR);
-			Integer userId = Integer.valueOf(session.getAttribute(Constants.USER_ID).toString());
+			Integer userId = Integer.valueOf(session.getAttribute(
+					Constants.USER_ID).toString());
 			company.setUserId(userId);
 			// 检查该公司是否存在, 不存在则保存, 存在则更新
 			boolean b;
@@ -226,8 +222,6 @@ public class CompayController {
 							CalendarUtil.getBeforeYear(), company.getId());
 				}
 			}
-			//保存日志
-			logService.save(KitService.getLogFromCompany(company));
 			// 如果选中创建当年审核数据
 			String createAudit = request.getParameter("createAudit");
 			if (createAudit != null && "1".equals(createAudit)) {
@@ -266,7 +260,8 @@ public class CompayController {
 				return -1;
 			}
 			String nowYear = (String) session.getAttribute(Constants.YEAR);
-			Integer userId = Integer.valueOf(session.getAttribute(Constants.USER_ID).toString());
+			Integer userId = Integer.valueOf(session.getAttribute(
+					Constants.USER_ID).toString());
 			company.setUserId(userId);
 			// 检查该公司是否存在, 不存在则保存, 存在则更新
 			boolean b;
@@ -287,8 +282,6 @@ public class CompayController {
 							CalendarUtil.getBeforeYear(), company.getId());
 				}
 			}
-			//保存日志
-			logService.save(KitService.getLogFromCompany(company));
 			// 检查是否存在当年的审核数据, 如不存在则创建
 			Audit audit = auditService
 					.getByPrimaryKey(nowYear, company.getId());
@@ -325,14 +318,13 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean edit_company(Company company,HttpSession session) {
+	public Boolean edit_company(Company company, HttpSession session) {
 		logger.debug("editCompanyParams:{}", company);
-		Integer userId = Integer.valueOf(session.getAttribute(Constants.USER_ID).toString());
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
 		company.setUserId(userId);
 		boolean b = companyService.update(company);
 		logger.debug("editCompanyResult:{}", b);
-		//保存日志
-		logService.save(KitService.getLogFromCompany(company));
 		return b;
 	}
 
@@ -347,25 +339,24 @@ public class CompayController {
 	@ResponseBody
 	public boolean deleteCompany(
 			@RequestParam(value = "params[]") Integer idArr[],
-			HttpServletRequest request,HttpSession session) {
+			HttpServletRequest request, HttpSession session) {
 		logger.debug("deleteCompany:{}", idArr.toString());
-		Integer userId = Integer.valueOf(session.getAttribute(Constants.USER_ID).toString());
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
 		boolean b = true;
-		//逐条删除企业信息
+		// 逐条删除企业信息
 		for (int i = 0; i < idArr.length; i++) {
 			Company c = companyService.getByPrimaryKey(idArr[i]);
 			c.setUserId(userId);
 			c.setIsActive(true);
 			b = companyService.update(c);
 			logger.debug("deleteCompanyID:{},Result:{}", idArr[i], b);
-			//保存日志
-			logService.save(KitService.getLogFromCompany(c));
 			if (b == false) {
 				return b;
 			}
 		}
-		//逐条删除当年的审核信息
-	//	auditService.
+		// 逐条删除当年的审核信息
+		// auditService.
 		logger.debug("deleteCompanyResults:{},paramsId:{}", b, idArr);
 		return b;
 	}
@@ -422,8 +413,8 @@ public class CompayController {
 			map.put("companyEconomyType", c.getCompanyEconomyType()
 					.getCompanyEconomyType());// 经济类型
 			map.put("companyArea", c.getArea().getName());// 地区
-			map.put("companyAddress", c.getCompanyAddress()); //地址
-			map.put("companyLegal", c.getCompanyLegal()); //法人/联系人
+			map.put("companyAddress", c.getCompanyAddress()); // 地址
+			map.put("companyLegal", c.getCompanyLegal()); // 法人/联系人
 			Audit audit = auditService.getByPrimaryKey(year, companyId);
 			if (audit == null) {
 				logger.error("get_comapnmy_information:{}", "null");

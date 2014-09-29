@@ -5,7 +5,7 @@ import java.util.List;
 import com.esd.hesf.model.UserLog;
 
 /**
- * 用户 service接口
+ * 用户log信息 service接口
  * 
  * @author Administrator
  * 

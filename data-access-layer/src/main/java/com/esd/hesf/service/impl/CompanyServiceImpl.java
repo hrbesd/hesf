@@ -14,6 +14,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditDao;
 import com.esd.hesf.dao.AuditParameterDao;
 import com.esd.hesf.dao.CompanyDao;
+import com.esd.hesf.dao.CompanyLogDao;
 import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.model.Area;
@@ -44,6 +45,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private CompanyDao dao;
+
+	@Autowired
+	private CompanyLogDao logDao;
 
 	// 公司--员工--年份 关系表dao接口
 	@Autowired
@@ -136,18 +140,23 @@ public class CompanyServiceImpl implements CompanyService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
 	public boolean delete(Integer id) {
-
+		Company t = dao.retrieveByPrimaryKey(id);
+		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
 					HesfException.type_fail).printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -159,6 +168,8 @@ public class CompanyServiceImpl implements CompanyService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -461,8 +472,8 @@ public class CompanyServiceImpl implements CompanyService {
 		map.put("companyId", companyId);
 		// 计算 如果达到退休
 		// 男女职工各自的最大出生日期
-		String maxMaleBirth = KitService.getBirthFromAge(ap
-				.getRetireAgeMale() + "");
+		String maxMaleBirth = KitService.getBirthFromAge(ap.getRetireAgeMale()
+				+ "");
 		String maxFemaleBirth = KitService.getBirthFromAge(ap
 				.getRetireAgeFemale() + "");
 		// 男女干部各自的最大出生日期
@@ -474,7 +485,7 @@ public class CompanyServiceImpl implements CompanyService {
 		map.put("maxMaleCadreBirth", maxMaleCadreBirth);
 		map.put("maxFemaleBirth", maxFemaleBirth);
 		map.put("maxFemaleCadreBirth", maxFemaleCadreBirth);
-		
+
 		// 起始索引值
 		map.put("start", page <= 1 ? Constants.START : (page - 1) * pageSize);
 		// 返回量
@@ -517,7 +528,7 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return dao.retrieveByCompanyCode(companyCode);
 	}
-	
+
 	@Override
 	public Company getByCompanyName(String companyName) {
 		if (companyName == null || "".equals(companyName)) {
