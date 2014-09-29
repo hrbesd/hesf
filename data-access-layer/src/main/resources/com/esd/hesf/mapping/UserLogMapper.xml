@@ -206,32 +206,38 @@
 	<select id="retrieveByPage" resultMap="BaseResultMap" parameterType="map">
 		select
 		<include refid="Base_Column_List" />
-		from user as u, user_group as ug 
+		from user_log as u, user_group as ug 
 		<trim prefix="where" prefixOverrides="and|or">
 			u.user_group_id = ug.id
-			<if test="user != null">
-				<if test="user.userName != null and user.userName != ''">
-					and u.user_name like concat('%',#{user.userName},'%')
+			<if test="userLog != null">
+				<if test="userLog.id != null and userLog.id > 0">
+					and u.id = #{userLog.id, jdbcType=INTEGER}
 				</if>
-				<if test="user.userRealName != null and user.userRealName != ''">
-					and u.user_real_name like concat('%',#{user.userRealName},'%')
+				<if test="userLog.userName != null and userLog.userName != ''">
+					and u.user_name like concat('%',#{userLog.userName},'%')
 				</if>
-				<if test="user.userEmail != null and user.userEmail != ''">
-					and u.user_email like concat('%',#{user.userEmail},'%')
+				<if test="userLog.userRealName != null and userLog.userRealName != ''">
+					and u.user_real_name like concat('%',#{userLog.userRealName},'%')
 				</if>
-				<if test="user.userMobile != null and user.userMobile != ''">
-					and u.user_mobile like concat('%',#{user.userMobile},'%')  
+				<if test="userLog.userEmail != null and userLog.userEmail != ''">
+					and u.user_email like concat('%',#{userLog.userEmail},'%')
 				</if>
-				<if test="user.userPhone != null and user.userPhone != ''">
-					and u.user_phone like concat('%',#{user.userPhone}, '%')  
+				<if test="userLog.userMobile != null and userLog.userMobile != ''">
+					and u.user_mobile like concat('%',#{userLog.userMobile},'%')  
 				</if>
-				<if test="user.userGroup != null">
-					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
-						and u.user_group_id = #{user.userGroup.id} 
+				<if test="userLog.userPhone != null and userLog.userPhone != ''">
+					and u.user_phone like concat('%',#{userLog.userPhone}, '%')  
+				</if>
+				<if test="userLog.userGroup != null">
+					<if test="userLog.userGroup.id != null  and userLog.userGroup.id > 0">
+						and u.user_group_id = #{userLog.userGroup.id} 
 					</if>
 				</if>
-				<if test="user.userStatus != null">
-					and u.user_status = #{user.userStatus}
+				<if test="userLog.userStatus != null">
+					and u.user_status = #{userLog.userStatus}
+				</if>
+				<if test="userLog.isActive != null">
+					and u.is_active = #{userLog.isActive,jdbcType=BIT} 
 				</if>
 			</if>
 		</trim>
@@ -241,32 +247,38 @@
 
 	<select id="retrieveCount" resultType="java.lang.Integer" parameterType="map">
 		select count(*) 
-		from user as u, user_group as ug 
+		from user_log as u, user_group as ug 
 		<trim prefix="where" prefixOverrides="and|or">
 			u.user_group_id = ug.id
-			<if test="user != null">
-				<if test="user.userName != null and user.userName != ''">
-					and u.user_name like concat('%',#{user.userName},'%')
+			<if test="userLog != null">
+				<if test="userLog.id != null and userLog.id > 0">
+					and u.id = #{userLog.id, jdbcType=INTEGER}
 				</if>
-				<if test="user.userRealName != null and user.userRealName != ''">
-					and u.user_real_name like concat('%',#{user.userRealName},'%')
+				<if test="userLog.userName != null and userLog.userName != ''">
+					and u.user_name like concat('%',#{userLog.userName},'%')
 				</if>
-				<if test="user.userEmail != null and user.userEmail != ''">
-					and u.user_email like concat('%',#{user.userEmail},'%')
+				<if test="userLog.userRealName != null and userLog.userRealName != ''">
+					and u.user_real_name like concat('%',#{userLog.userRealName},'%')
 				</if>
-				<if test="user.userMobile != null and user.userMobile != ''">
-					and u.user_mobile like concat('%',#{user.userMobile},'%')  
+				<if test="userLog.userEmail != null and userLog.userEmail != ''">
+					and u.user_email like concat('%',#{userLog.userEmail},'%')
 				</if>
-				<if test="user.userPhone != null and user.userPhone != ''">
-					and u.user_phone like concat('%',#{user.userPhone}, '%')  
+				<if test="userLog.userMobile != null and userLog.userMobile != ''">
+					and u.user_mobile like concat('%',#{userLog.userMobile},'%')  
 				</if>
-				<if test="user.userGroup != null and user.userGroup != ''">
-					<if test="user.userGroup.id != null  and user.userGroup.id > 0">
-						and u.user_group_id = #{user.userGroup.id} 
+				<if test="userLog.userPhone != null and userLog.userPhone != ''">
+					and u.user_phone like concat('%',#{userLog.userPhone}, '%')  
+				</if>
+				<if test="userLog.userGroup != null">
+					<if test="userLog.userGroup.id != null  and userLog.userGroup.id > 0">
+						and u.user_group_id = #{userLog.userGroup.id} 
 					</if>
 				</if>
-				<if test="user.userStatus != null">
-					and u.user_status = #{user.userStatus}
+				<if test="userLog.userStatus != null">
+					and u.user_status = #{userLog.userStatus}
+				</if>
+				<if test="userLog.isActive != null">
+					and u.is_active = #{userLog.isActive,jdbcType=BIT} 
 				</if>
 			</if>
 		</trim>

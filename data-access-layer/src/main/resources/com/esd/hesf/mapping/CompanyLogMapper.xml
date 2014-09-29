@@ -444,6 +444,9 @@
 				<if test="companyLog.userId != null and companyLog.userId > 0">
 					and c.user_id = #{companyLog.userId,jdbcType=INTEGER}
 				</if>
+				<if test="companyLog.isActive != null">
+					and c.is_active = #{companyLog.isActive,jdbcType=BIT} 
+				</if>
 			</if>
 		</trim>
 		order by c.company_code
@@ -500,6 +503,9 @@
 				</if>
 				<if test="companyLog.userId != null and companyLog.userId > 0">
 					and c.user_id = #{companyLog.userId,jdbcType=INTEGER}
+				</if>
+				<if test="companyLog.isActive != null">
+					and c.is_active = #{companyLog.isActive,jdbcType=BIT} 
 				</if>
 			</if>
 		</trim>

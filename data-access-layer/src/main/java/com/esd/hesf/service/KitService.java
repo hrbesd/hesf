@@ -8,6 +8,8 @@ import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyLog;
 import com.esd.hesf.model.User;
 import com.esd.hesf.model.UserLog;
+import com.esd.hesf.model.Worker;
+import com.esd.hesf.model.WorkerLog;
 
 /**
  * 工具类--提供常用的方法
@@ -94,7 +96,7 @@ public class KitService {
 	
 	/**
 	 * 将Company转化为CompanyLog
-	 * @param c
+	 * @param t
 	 * @return
 	 */
 	public static CompanyLog getLogObjectFromEntity(Company t){
@@ -127,7 +129,7 @@ public class KitService {
 
 	/**
 	 * 将User转化为UserLog
-	 * @param c
+	 * @param t
 	 * @return
 	 */
 	public static UserLog getLogObjectFromEntity(User t){
@@ -147,4 +149,46 @@ public class KitService {
 		log.setVersion(t.getVersion());
 		return log;
 	}
+
+	/**
+	 * 将Worker转化为WorkerLog
+	 * @param t
+	 * @return
+	 */
+	public static WorkerLog getLogObjectFromEntity(Worker t){
+		WorkerLog log = new WorkerLog();
+		log.setArea(t.getArea());
+		log.setCareerCard(t.getCareerCard());
+		log.setCurrentJob(t.getCurrentJob());
+		log.setIsCadre(t.getIsCadre());
+		log.setIsCollege(t.getIsCollege());
+		log.setIsProfessor(t.getIsProfessor());
+		log.setIsRetired(t.getIsRetired());
+		log.setPensionInsurance(t.getPensionInsurance());
+		log.setPhone(t.getPhone());
+		log.setPic(t.getPic());
+		log.setPicTitle(t.getPicTitle());
+		log.setRemark(t.getRemark());
+		log.setSalary(t.getSalary());
+		log.setWorkerAddress(t.getWorkerAddress());
+		log.setWorkerBirth(t.getWorkerBirth());
+		log.setWorkerBirthYear(t.getWorkerBirthYear());
+		log.setWorkerGender(t.getWorkerGender());
+		log.setWorkerHandicapCode(t.getWorkerHandicapCode());
+		log.setWorkerHandicapLevel(t.getWorkerHandicapLevel());
+		log.setWorkerHandicapType(t.getWorkerHandicapType());
+		log.setWorkerIdCard(t.getWorkerIdCard());
+		log.setWorkerName(t.getWorkerName());
+		log.setId(t.getId());
+		log.setCreateTime(t.getCreateTime());
+		log.setUpdateTime(t.getUpdateTime());
+		log.setUserId(t.getUserId());
+		log.setIsActive(t.getIsActive());
+		log.setVersion(t.getVersion());
+		return log;
+	}
+
+
+
+
 }

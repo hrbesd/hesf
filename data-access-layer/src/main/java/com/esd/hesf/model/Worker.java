@@ -13,7 +13,7 @@ public class Worker extends PrimaryKey_Int {
 	private String workerName; // 员工名
 	private String workerGender;// 性别
 	private String workerBirth;// 生日年月
-	private String workerBirthYear;// 出生年份--供后台查询使用
+	private String workerBirthYear;// 出生年份
 	private String workerIdCard;// 身份证号
 	private String careerCard;// 职业证号
 	private String phone;// 电话

@@ -12,6 +12,7 @@ import com.esd.hesf.dao.AuditParameterDao;
 import com.esd.hesf.dao.CompanyWorkerViewDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.dao.WorkerDao;
+import com.esd.hesf.dao.WorkerLogDao;
 import com.esd.hesf.model.Area;
 import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.Company;
@@ -44,6 +45,9 @@ public class WorkerServiceImpl implements WorkerService {
 	@Autowired
 	private AuditParameterDao apDao;
 
+	@Autowired
+	private WorkerLogDao logDao;
+	
 	@Override
 	public boolean save(Worker t) {
 		if (t.getArea() == null) {
@@ -55,6 +59,8 @@ public class WorkerServiceImpl implements WorkerService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -65,6 +71,8 @@ public class WorkerServiceImpl implements WorkerService {
 		if (i != 1) {
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(worker));
 		// ②保存到企业--职工 关系表
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(worker.getId());
@@ -83,12 +91,16 @@ public class WorkerServiceImpl implements WorkerService {
 
 	@Override
 	public boolean delete(Integer id) {
+		Worker t = dao.retrieveByPrimaryKey(id);
+		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
 					HesfException.type_fail).printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -100,6 +112,8 @@ public class WorkerServiceImpl implements WorkerService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 

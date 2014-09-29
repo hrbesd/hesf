@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.WorkerLogDao">
+
+	<!-- result of worker -->
+	<resultMap id="ResultWorkerLog" type="com.esd.hesf.model.WorkerLog">
+		<id column="w_log_id" jdbcType="INTEGER" property="logId" />
+		<result column="w_id" jdbcType="INTEGER" property="id" />
+		<result column="w_worker_name" jdbcType="VARCHAR" property="workerName" />
+		<result column="w_worker_gender" jdbcType="VARCHAR" property="workerGender" />
+		<result column="w_worker_birth" jdbcType="VARCHAR" property="workerBirth" />
+		<result column="w_worker_birth_year" jdbcType="CHAR" property="workerBirthYear" />
+		<result column="w_worker_id_card" jdbcType="VARCHAR" property="workerIdCard" />
+		<result column="w_career_card" jdbcType="VARCHAR" property="careerCard" />
+		<result column="w_phone" jdbcType="VARCHAR" property="phone" />
+		<result column="w_current_job" jdbcType="VARCHAR" property="currentJob" />
+		<result column="w_worker_address" jdbcType="VARCHAR" property="workerAddress" />
+		<result column="w_worker_handicap_code" jdbcType="VARCHAR" property="workerHandicapCode" />
+		<result column="w_is_college" jdbcType="BIT" property="isCollege" />
+		<result column="w_is_retired" jdbcType="BIT" property="isRetired" />
+		<result column="w_is_cadre" jdbcType="BIT" property="isCadre" />
+		<result column="w_is_professor" jdbcType="BIT" property="isProfessor" />
+		<result column="w_remark" jdbcType="VARCHAR" property="remark" />
+ 		<result column="w_pic_title" jdbcType="VARCHAR" property="picTitle" />
+ 		<result column="w_salary" jdbcType="DECIMAL" property="salary" />
+ 		<result column="w_pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
+		<result column="w_create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="w_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="w_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="w_is_active" jdbcType="BIT" property="isActive" />
+		<result column="w_version" jdbcType="INTEGER" property="version" />
+		<association property="workerHandicapType" javaType="com.esd.hesf.model.WorkerHandicapType"
+			resultMap="ResultHandicapType" />
+		<association property="workerHandicapLevel" javaType="com.esd.hesf.model.WorkerHandicapLevel"
+			resultMap="ResultHandicapLevel" />
+		<association property="area" javaType="com.esd.hesf.model.Area"
+			resultMap="ResultArea" />
+	</resultMap>
+
+	<!-- handicap type -->
+	<resultMap id="ResultHandicapType" type="com.esd.hesf.model.WorkerHandicapType">
+		<id column="t_id" jdbcType="INTEGER" property="id" />
+		<result column="t_handicap_type" jdbcType="VARCHAR" property="handicapType" />
+	</resultMap>
+
+	<!-- handicap level -->
+	<resultMap id="ResultHandicapLevel" type="com.esd.hesf.model.WorkerHandicapLevel">
+		<id column="l_id" jdbcType="INTEGER" property="id" />
+		<result column="l_handicap_level" jdbcType="VARCHAR" property="handicapLevel" />
+	</resultMap>
+
+	<!-- area -->
+	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
+		<id column="a_code" jdbcType="CHAR" property="code" />
+		<result column="a_name" jdbcType="VARCHAR" property="name" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		<!-- worker -->
+		w.log_id as w_log_id, w.id as w_id, w.worker_name as w_worker_name, w.worker_gender as
+		w_worker_gender, w.worker_birth as w_worker_birth, 
+		w.worker_birth_year as w_worker_birth_year, 
+		w.worker_id_card as w_worker_id_card, w.career_card as w_career_card, w.phone as w_phone,
+		w.current_job as w_current_job, w.worker_address as w_worker_address,
+		w.worker_handicap_code as w_worker_handicap_code,
+		w.is_college as w_is_college, w.is_retired as w_is_retired, w.is_cadre as w_is_cadre,
+		w.is_professor as w_is_professor, w.remark as w_remark, w.pic_title as w_pic_title,
+		w.salary as w_salary, w.pension_insurance as w_pension_insurance,
+		w.create_time as w_create_time, w.update_time as w_update_time,
+		w.user_id as w_user_id, w.is_active as w_is_active, w.version as w_version,
+		<!-- handicap type -->
+		t.id as t_id, t.handicap_type as t_handicap_type,
+		<!-- handicap level -->
+		l.id as l_id, l.handicap_level as l_handicap_level,
+		<!-- area -->
+		a.code as a_code, a.name as a_name
+	</sql>
+
+	<sql id="From_condition_list">
+		worker_log as w, worker_handicap_type as t, worker_handicap_level as l,
+		area as a
+	</sql>
+
+	<sql id="Where_condition_list">
+		w.worker_handicap_type = t.id and w.worker_handicap_level = l.id
+		and w.area_code = a.code
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.WorkerLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into worker_log (id, worker_name,
+		worker_gender, worker_birth, worker_birth_year, 
+		worker_id_card, career_card,
+		phone, current_job, worker_address,
+		area_code, worker_handicap_code, worker_handicap_type,
+		worker_handicap_level, is_college, is_retired, is_cadre, is_professor, 
+		remark, pic_title, pic, salary, pension_insurance, create_time,
+		update_time, user_id, is_active,
+		version)
+		values (#{id,jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR},
+		#{workerGender,jdbcType=VARCHAR},
+		#{workerBirth,jdbcType=VARCHAR}, #{workerBirthYear,jdbcType=CHAR},
+		#{workerIdCard,jdbcType=VARCHAR}, #{careerCard,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR}, #{currentJob,jdbcType=VARCHAR},
+		#{workerAddress,jdbcType=VARCHAR},
+		#{area.code,jdbcType=VARCHAR},
+		#{workerHandicapCode,jdbcType=VARCHAR},
+		#{workerHandicapType.id,jdbcType=INTEGER},
+		#{workerHandicapLevel.id,jdbcType=INTEGER}, #{isCollege,jdbcType=BIT}, #{isRetired, jdbcType=BIT},
+		#{isCadre, jdbcType=BIT},#{isProfessor, jdbcType=BIT},
+		#{remark,jdbcType=VARCHAR}, #{picTitle, jdbcType=VARCHAR}, #{pic, jdbcType=BLOB}, 
+		#{salary, jdbcType=DECIMAL}, #{pension_insurance, jdbcType=DECIMAL}, 
+		now(),now(), #{userId,jdbcType=INTEGER}, default,default)
+	</insert>
+
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.WorkerLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into worker_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="workerName != null">
+				worker_name,
+			</if>
+			<if test="workerGender != null">
+				worker_gender,
+			</if>
+			<if test="workerBirth != null">
+				worker_birth,
+			</if>
+			<if test="workerBirthYear != null">
+				worker_birth_year,
+			</if>
+			<if test="workerIdCard != null">
+				worker_id_card,
+			</if>
+			<if test="careerCard != null">
+				career_card,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="currentJob != null">
+				current_job,
+			</if>
+			<if test="workerAddress != null">
+				worker_address,
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					area_code,
+				</if>
+			</if>
+			<if test="workerHandicapCode != null">
+				worker_handicap_code,
+			</if>
+			<if test="workerHandicapType != null">
+				<if test="workerHandicapType.id != null and workerHandicapType.id > 0">
+					worker_handicap_type,
+				</if>
+			</if>
+			<if test="workerHandicapLevel != null">
+				<if test="workerHandicapLevel.id != null and workerHandicapLevel.id > 0">
+					worker_handicap_level,
+				</if>
+			</if>
+			<if test="isCollege != null">
+				is_college, 
+			</if>
+			<if test="isRetired != null">
+				is_retired,
+			</if>
+			<if test="isCadre != null">
+				is_cadre,
+			</if>
+			<if test="isProfessor != null">
+				is_professor,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="picTitle != null">
+				pic_title,
+			</if>
+			<if test="pic != null">
+				pic,
+			</if>
+			<if test="salary != null">
+				salary,
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance,
+			</if>
+				create_time,
+				update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+				version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER}, 
+			</if>
+			<if test="workerName != null">
+				#{workerName,jdbcType=VARCHAR},
+			</if>
+			<if test="workerGender != null">
+				#{workerGender,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirth != null">
+				#{workerBirth,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirthYear != null">
+				#{workerBirthYear,jdbcType=CHAR},
+			</if>
+			<if test="workerIdCard != null">
+				#{workerIdCard,jdbcType=VARCHAR},
+			</if>
+			<if test="careerCard != null">
+				#{careerCard,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="currentJob != null">
+				#{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="workerAddress != null">
+				#{workerAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					#{area.code},
+				</if>
+			</if>
+			<if test="workerHandicapCode != null">
+				#{workerHandicapCode,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapType != null">
+				<if test="workerHandicapType.id != null and workerHandicapType.id > 0">
+					#{workerHandicapType.id},
+				</if>
+			</if>
+			<if test="workerHandicapLevel != null">
+				<if test="workerHandicapLevel.id != null and workerHandicapLevel.id > 0">
+					#{workerHandicapLevel.id},
+				</if>
+			</if>
+			<if test="isCollege != null">
+				#{isCollege,jdbcType=BIT},
+			</if>
+			<if test="isRetired != null">
+				#{isRetired, jdbcType=BIT},
+			</if>
+			<if test="isCadre != null">
+				#{isCadre, jdbcType=BIT},
+			</if>
+			<if test="isProfessor != null">
+				#{isProfessor, jdbcType=BIT},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="picTitle != null">
+				#{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				#{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				#{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				#{pensionInsurance, jdbcType=DECIMAL},
+			</if>
+			now(),now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT}, 
+			</if>
+			default
+		</trim>
+	</insert>
+	
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from worker_log
+		where log_id
+		= #{logId,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.WorkerLog">
+		update worker_log
+		<set>
+			<if test="id != null">
+				id = #{id, jdbcType=INTEGER}, 
+			</if>
+			<if test="workerName != null">
+				worker_name = #{workerName,jdbcType=VARCHAR},
+			</if>
+			<if test="workerGender != null">
+				worker_gender = #{workerGender,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirth != null">
+				worker_birth = #{workerBirth,jdbcType=VARCHAR},
+			</if>
+			<if test="workerBirthYear != null">
+				worker_birth_year = #{workerBirthYear,jdbcType=VARCHAR},
+			</if>
+			<if test="workerIdCard != null">
+				worker_id_card = #{workerIdCard,jdbcType=VARCHAR},
+			</if>
+			<if test="careerCard != null">
+				career_card = #{careerCard,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="currentJob != null">
+				current_job = #{currentJob,jdbcType=VARCHAR},
+			</if>
+			<if test="workerAddress != null">
+				worker_address = #{workerAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code != ''">
+					area_code = #{area.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="workerHandicapCode != null">
+				worker_handicap_code = #{workerHandicapCode,jdbcType=VARCHAR},
+			</if>
+			<if test="workerHandicapType != null">
+				<if test="workerHandicapType.id != null and workerHandicapType.id > 0">
+					worker_handicap_type =
+					#{workerHandicapType.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="workerHandicapLevel != null">
+				<if test="workerHandicapLevel.id != null and workerHandicapLevel.id > 0">
+					worker_handicap_level =
+					#{workerHandicapLevel.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="isCollege != null">
+				is_college = #{isCollege,jdbcType=BIT}, 
+			</if>
+			<if test="isRetired != null">
+				is_retired = #{isRetired, jdbcType=BIT},
+			</if>
+			<if test="isCadre != null">
+				is_cadre = #{isCadre, jdbcType=BIT},
+			</if>
+			<if test="isProfessor != null">
+				is_professor = #{isProfessor, jdbcType=BIT},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="picTitle != null">
+				pic_title = #{picTitle, jdbcType=VARCHAR},
+			</if>
+			<if test="pic != null">
+				pic = #{pic, jdbcType=BLOB},
+			</if>
+			<if test="salary != null">
+				salary = #{salary, jdbcType=DECIMAL},
+			</if>
+			<if test="pensionInsurance != null">
+				pension_insurance = #{pensionInsurance, jdbcType=DECIMAL},
+			</if>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1
+		</set>
+		where log_id = #{logId,jdbcType=INTEGER} and version = #{version, jdbcType=INTEGER}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="ResultWorkerLog">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_condition_list" />
+		where
+			<include refid="Where_condition_list" />
+		and w.log_id = #{logId,jdbcType=INTEGER}
+	</select>
+
+	<select id="retrieveByPage" parameterType="map" resultMap="ResultWorkerLog">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_condition_list" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_condition_list" />
+			<if test="workerLog != null">
+				<if test="workerLog.id != null and workerLog.id > 0">
+					and w.id = #{workerLog.id, jdbcType=INTEGER} 
+				</if>
+				<if test="workerLog.workerName != null">
+					and w.worker_name like
+					concat('%',#{workerLog.workerName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerGender != null">
+					and w.worker_gender = #{workerLog.workerGender,jdbcType=VARCHAR} 
+				</if>
+				<if test="workerLog.workerBirth!= null">
+					and w.worker_birth = #{workerLog.workerBirth,jdbcType=VARCHAR}
+				</if>
+				<if test="workerLog.phone != null">
+					and w.phone like concat('%',#{workerLog.phone,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerIdCard != null">
+					and w.worker_id_card like concat('%',
+					#{workerLog.workerIdCard,jdbcType=INTEGER},'%')
+				</if>
+				<if test="workerLog.workerHandicapCode != null">
+					and w.worker_handicap_code like concat('%',
+					#{workerLog.workerHandicapCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerHandicapType != null">
+					<if test="workerLog.workerHandicapType.id != null and workerLog.workerHandicapType.id > 0">
+						and w.worker_handicap_type =
+						#{workerLog.workerHandicapType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="workerLog.workerHandicapLevel != null">
+					<if test="workerLog.workerHandicapLevel.id != null and workerLog.workerHandicapLevel.id > 0">
+						and w.worker_handicap_level =
+						#{workerLog.workerHandicapLevel.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="workerLog.area != null">
+					<if test="workerLog.area.code != null and workerLog.area.code != ''">
+						and w.area_code like concat('%',#{workerLog.area.code,jdbcType=VARCHAR},'%')  
+					</if>
+				</if>
+				<if test="workerLog.isCollege != null">
+					and w.is_college =  #{workerLog.isCollege,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isRetired != null">
+					and w.is_retired  = #{workerLog.isRetired,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isCadre != null">
+					and w.is_cadre  = #{workerLog.isCadre,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isProfessor != null">
+					and w.is_professor = #{workerLog.isProfessor,jdbcType=BIT}
+				</if>
+				<if test="workerLog.userId != null and workerLog.userId > 0">
+					and w.user_id = #{workerLog.userId,jdbcType=INTEGER} 
+				</if>
+				<if test="workerLog.isActive != null">
+					and w.is_active = #{workerLog.isActive,jdbcType=BIT} 
+				</if>
+			</if>
+		</trim>
+		order by w.id desc
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" parameterType="map" resultType="int">
+		select count(*)
+		from
+		<include refid="From_condition_list" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_condition_list" />
+			<if test="workerLog != null">
+				<if test="workerLog.id != null and workerLog.id > 0">
+					and w.id = #{workerLog.id, jdbcType=INTEGER} 
+				</if>
+				<if test="workerLog.workerName != null">
+					and w.worker_name like
+					concat('%',#{workerLog.workerName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerGender != null">
+					and w.worker_gender = #{workerLog.workerGender,jdbcType=VARCHAR} 
+				</if>
+				<if test="workerLog.workerBirth!= null">
+					and w.worker_birth = #{workerLog.workerBirth,jdbcType=VARCHAR}
+				</if>
+				<if test="workerLog.phone != null">
+					and w.phone like concat('%',#{workerLog.phone,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerIdCard != null">
+					and w.worker_id_card like concat('%',
+					#{workerLog.workerIdCard,jdbcType=INTEGER},'%')
+				</if>
+				<if test="workerLog.workerHandicapCode != null">
+					and w.worker_handicap_code like concat('%',
+					#{workerLog.workerHandicapCode,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="workerLog.workerHandicapType != null">
+					<if test="workerLog.workerHandicapType.id != null and workerLog.workerHandicapType.id > 0">
+						and w.worker_handicap_type =
+						#{workerLog.workerHandicapType.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="workerLog.workerHandicapLevel != null">
+					<if test="workerLog.workerHandicapLevel.id != null and workerLog.workerHandicapLevel.id > 0">
+						and w.worker_handicap_level =
+						#{workerLog.workerHandicapLevel.id,jdbcType=INTEGER} 
+					</if>
+				</if>
+				<if test="workerLog.area != null">
+					<if test="workerLog.area.code != null and workerLog.area.code != ''">
+						and w.area_code like concat('%',#{workerLog.area.code,jdbcType=VARCHAR},'%')  
+					</if>
+				</if>
+				<if test="workerLog.isCollege != null">
+					and w.is_college =  #{workerLog.isCollege,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isRetired != null">
+					and w.is_retired  = #{workerLog.isRetired,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isCadre != null">
+					and w.is_cadre  = #{workerLog.isCadre,jdbcType=BIT} 
+				</if>
+				<if test="workerLog.isProfessor != null">
+					and w.is_professor = #{workerLog.isProfessor,jdbcType=BIT}
+				</if>
+				<if test="workerLog.userId != null and workerLog.userId > 0">
+					and w.user_id = #{workerLog.userId,jdbcType=INTEGER} 
+				</if>
+				<if test="workerLog.isActive != null">
+					and w.is_active = #{workerLog.isActive,jdbcType=BIT} 
+				</if>
+			</if>
+		</trim>
+	</select>
+
+</mapper>
