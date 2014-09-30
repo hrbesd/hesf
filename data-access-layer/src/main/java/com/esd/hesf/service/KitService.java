@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.esd.hesf.model.Audit;
+import com.esd.hesf.model.AuditLog;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyLog;
 import com.esd.hesf.model.User;
@@ -188,7 +190,66 @@ public class KitService {
 		return log;
 	}
 
+	/**
+	 * 将Worker转化为WorkerLog
+	 * @param t
+	 * @return
+	 */
+	public static AuditLog getLogObjectFromEntity(Audit t){
+		AuditLog log = new AuditLog();
+		log.setActualAmount(t.getActualAmount());
+		log.setAmountPayable(t.getAmountPayable());
+		log.setArea(t.getArea());
+		log.setAuditProcessStatus(t.getAuditProcessStatus());
+		log.setCompany(t.getCompany());
+		log.setCompanyAlreadyTotal(t.getCompanyAlreadyTotal());
+		log.setCompanyEmpTotal(t.getCompanyEmpTotal());
+		log.setCompanyHandicapTotal(t.getCompanyHandicapTotal());
+		log.setCompanyPredictTotal(t.getCompanyPredictTotal());
+		log.setCompanyShouldTotal(t.getCompanyShouldTotal());
+		log.setComplementAmount(t.getComplementAmount());
+		log.setDelayDays(t.getDelayDays());
+		log.setDelayPayAmount(t.getDelayPayAmount());
+		log.setFinalAuditComment(t.getFinalAuditComment());
+		log.setFinalAuditDate(t.getFinalAuditDate());
+		log.setFinalAuditUser(t.getFinalAuditUser());
+		log.setInitAuditComment(t.getInitAuditComment());
+		log.setInitAuditDate(t.getInitAuditDate());
+		log.setInitAuditUser(t.getInitAuditUser());
+		log.setIsDelayPay(t.getIsDelayPay());
+		log.setIsExempt(t.getIsExempt());
+		log.setJianMianAuditComment(t.getJianMianAuditComment());
+		log.setJianMianAuditDate(t.getJianMianAuditDate());
+		log.setJianMianAuditUser(t.getJianMianAuditUser());
+		log.setPayAmount(t.getPayAmount());
+		log.setReducionApplyUser(t.getReducionApplyUser());
+		log.setReductionAmount(t.getReductionAmount());
+		log.setReductionAnswerDate(t.getReductionAnswerDate());
+		log.setReductionAnswerOption(t.getReductionAnswerOption());
+		log.setReductionAnswerUser(t.getReductionAnswerUser());
+		log.setReductionDate(t.getReductionDate());
+		log.setReductionReason(t.getReductionReason());
+		log.setReductionRemark(t.getReductionRemark());
+		log.setReductionType(t.getReductionType());
+		log.setRefuseTimes(t.getRefuseTimes());
+		log.setRemainAmount(t.getRemainAmount());
+		log.setRemark(t.getRemark());
+		log.setSupplementYear(t.getSupplementYear());
+		log.setUnauditYears(t.getUnauditYears());
+		log.setVerifyAuditComment(t.getVerifyAuditComment());
+		log.setVerifyAuditDate(t.getVerifyAuditDate());
+		log.setVerifyAuditUser(t.getVerifyAuditUser());
+		log.setYear(t.getYear());
+		log.setId(t.getId());
+		log.setCreateTime(t.getCreateTime());
+		log.setUpdateTime(t.getUpdateTime());
+		log.setUserId(t.getUserId());
+		log.setIsActive(t.getIsActive());
+		log.setVersion(t.getVersion());
+		return log;
+	}
 
-
+	
+	
 
 }

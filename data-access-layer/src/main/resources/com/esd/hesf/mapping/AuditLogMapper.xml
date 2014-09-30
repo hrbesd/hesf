@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esd.hesf.dao.AuditLogDao">
+
+	<!-- result of audit -->
+	<resultMap id="ResultAuditLog" type="com.esd.hesf.model.AuditLog">
+		<id column="au_log_id" jdbcType="INTEGER" property="logId" />
+		<result column="au_id" jdbcType="INTEGER" property="id" />
+		<result column="au_year" jdbcType="CHAR" property="year" />
+		<result column="au_company_emp_total" jdbcType="INTEGER" property="companyEmpTotal" />
+		<result column="au_company_handicap_total" jdbcType="INTEGER" property="companyHandicapTotal" />
+		<result column="au_company_predict_total" jdbcType="INTEGER" property="companyPredictTotal" />
+		<result column="au_company_should_total" jdbcType="DECIMAL" property="companyShouldTotal" />
+		<result column="au_company_already_total" jdbcType="INTEGER" property="companyAlreadyTotal" />
+		<result column="au_amount_payable" jdbcType="DECIMAL" property="amountPayable" />
+		<result column="au_reduction_amount" jdbcType="DECIMAL" property="reductionAmount" />
+		<result column="au_actual_amount" jdbcType="DECIMAL" property="actualAmount" />
+		<result column="au_pay_amount" jdbcType="DECIMAL" property="payAmount" />
+		<result column="au_remain_amount" jdbcType="DECIMAL" property="remainAmount" />
+		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
+		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
+		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
+		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
+		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
+		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
+		<result column="au_jianmian_audit_user_id" jdbcType="INTEGER" property="jianMianAuditUser.id" />
+		<result column="au_jianmian_audit_date" jdbcType="TIMESTAMP" property="jianMianAuditDate" />
+		<result column="au_jianmian_audit_comment" jdbcType="VARCHAR" property="jianMianAuditComment" />
+		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
+		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
+		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
+		<result column="au_final_audit_user_id" jdbcType="INTEGER" property="finalAuditUser.id" />
+		<result column="au_final_audit_date" jdbcType="TIMESTAMP" property="finalAuditDate" />
+		<result column="au_final_audit_comment" jdbcType="VARCHAR" property="finalAuditComment" />
+		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
+		<result column="au_is_exempt" jdbcType="BIT" property="isExempt" />
+		<result column="au_reduction_type" jdbcType="INTEGER" property="reductionType" />
+		<result column="au_reducion_apply_user" jdbcType="VARCHAR" property="reducionApplyUser" />
+		<result column="au_reduction_date" jdbcType="TIMESTAMP" property="reductionDate" />
+		<result column="au_reduction_reason" jdbcType="VARCHAR" property="reductionReason" />
+		<result column="au_reduction_answer_user" jdbcType="VARCHAR" property="reductionAnswerUser" />
+		<result column="au_reduction_answer_date" jdbcType="VARCHAR" property="reductionAnswerDate" />
+		<result column="au_reduction_answer_option" jdbcType="VARCHAR" property="reductionAnswerOption" />
+		<result column="au_reduction_remark" jdbcType="VARCHAR" property="reductionRemark" />
+		<result column="au_unaudit_years" jdbcType="INTEGER" property="unauditYears" />
+		<result column="au_supplement_year" jdbcType="CHAR" property="supplementYear" />
+		<result column="au_delay_days" jdbcType="INTEGER" property="delayDays" />
+		<result column="au_refuse_times" jdbcType="INTEGER" property="refuseTimes" />
+		<result column="au_create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="au_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="au_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="au_is_active" jdbcType="BIT" property="isActive" />
+		<result column="au_version" jdbcType="INTEGER" property="version" />
+		<association property="company" javaType="com.esd.hesf.model.Company" resultMap="ResultCompany" />
+		<association property="area" javaType="com.esd.hesf.model.Area" resultMap="ResultArea" />
+		<association property="auditProcessStatus" javaType="com.esd.hesf.model.AuditProcessStatus" resultMap="ResultAuditProcessStatus" />
+	</resultMap>
+
+	<!-- company -->
+	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
+		<id column="c_year" jdbcType="CHAR" property="year" />
+		<id column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
+		<result column="c_id" jdbcType="VARCHAR" property="id" />
+		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
+		<result column="c_company_legal" jdbcType="VARCHAR" property="companyLegal" />
+		<result column="c_company_contact_person" jdbcType="VARCHAR" property="companyContactPerson" />
+		<result column="c_company_organization_code" jdbcType="VARCHAR" property="companyOrganizationCode" />
+		<result column="c_company_tax_code" jdbcType="VARCHAR" property="companyTaxCode" />
+		<result column="c_company_address" jdbcType="VARCHAR" property="companyAddress" />
+		<result column="c_company_zip_code" jdbcType="CHAR" property="companyZipCode" />
+		<result column="c_company_phone" jdbcType="VARCHAR" property="companyPhone" />
+		<result column="c_company_mobile" jdbcType="VARCHAR" property="companyMobile" />
+		<result column="c_company_bank" jdbcType="VARCHAR" property="companyBank" />
+		<result column="c_company_bank_account" jdbcType="VARCHAR" property="companyBankAccount" />
+		<result column="c_company_remark" jdbcType="VARCHAR" property="companyRemark" />
+		<result column="c_create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="c_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="c_user_id" jdbcType="INTEGER" property="userId" />
+		<result column="c_is_active" jdbcType="BIT" property="isActive" />
+		<result column="c_version" jdbcType="INTEGER" property="version" />
+		<association property="companyType" javaType="com.esd.hesf.model.CompanyType" resultMap="ResultCompanyType" />
+		<association property="companyEconomyType" javaType="com.esd.hesf.model.CompanyEconomyType" resultMap="ResultCompanyEconomyType" />
+		<association property="companyProperty" javaType="com.esd.hesf.model.CompanyProperty" resultMap="ResultCompanyProperty" />
+	</resultMap>
+
+	<!-- company type -->
+	<resultMap id="ResultCompanyType" type="com.esd.hesf.model.CompanyType">
+		<id column="t_id" jdbcType="INTEGER" property="id" />
+		<result column="t_company_type" jdbcType="VARCHAR" property="companyType" />
+	</resultMap>
+
+	<!-- company economy type -->
+	<resultMap id="ResultCompanyEconomyType" type="com.esd.hesf.model.CompanyEconomyType">
+		<id column="et_id" property="id" jdbcType="INTEGER" />
+		<result column="et_company_economy_type" property="companyEconomyType" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- company property -->
+	<resultMap id="ResultCompanyProperty" type="com.esd.hesf.model.CompanyProperty">
+		<id column="p_id" property="id" jdbcType="INTEGER" />
+		<result column="p_company_property" property="companyProperty" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- audit process -->
+	<resultMap id="ResultAuditProcessStatus" type="com.esd.hesf.model.AuditProcessStatus">
+		<id column="aup_id" property="id" jdbcType="INTEGER" />
+		<result column="aup_audit_process_status" property="auditProcessStatus" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- area -->
+	<resultMap id="ResultArea" type="com.esd.hesf.model.Area">
+		<id column="a_code" jdbcType="CHAR" property="code" />
+		<result column="a_name" jdbcType="VARCHAR" property="name" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		<!-- audit -->
+		au.log_id as au_log_id, au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+		au.company_handicap_total as au_company_handicap_total,
+		au.company_predict_total as au_company_predict_total,
+		au.company_should_total as au_company_should_total,
+		au.company_already_total as au_company_already_total, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount,
+		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount,
+		au.is_delay_pay as au_is_delay_pay,
+		au.init_audit_user_id as au_init_audit_user_id,
+		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
+		au.jianmian_audit_user_id as au_jianmian_audit_user_id, au.jianmian_audit_date as au_jianmian_audit_date,
+		au.jianmian_audit_comment as au_jianmian_audit_comment,
+		au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date ,
+		au.verify_audit_comment as au_verify_audit_comment, 
+		au.final_audit_user_id as au_final_audit_user_id, au.final_audit_date as au_final_audit_date ,
+		au.final_audit_comment as au_final_audit_comment, 
+		au.remark as au_remark, au.is_exempt as au_is_exempt,
+		au.reduction_type as
+		au_reduction_type, au.reducion_apply_user as au_reducion_apply_user,
+		au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+		au.reduction_answer_user as
+		au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date,
+		au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+		au.unaudit_years
+		as au_unaudit_years, au.supplement_year as au_supplement_year,
+		au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+		au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id,
+		au.is_active
+		as au_is_active, au.version as au_version,
+		<!-- company -->
+		c.id as c_id, c.company_code as c_company_code, c.company_name as c_company_name, c.company_legal as c_company_legal,
+		c.company_contact_person as c_company_contact_person,
+		c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+		c.company_address as c_company_address, c.company_zip_code as
+		c_company_zip_code, c.company_phone as c_company_phone, c.company_mobile as c_company_mobile,
+		c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+		c.company_remark as c_company_remark, c.create_time as c_create_time,
+		c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
+		<!-- company type -->
+		t.id as t_id, t.company_type as t_company_type,
+		<!-- economy type -->
+		et.id as et_id, et.company_economy_type as et_company_economy_type,
+		<!-- property -->
+		p.id as p_id, p.company_property as p_company_property,
+		<!-- auditProcessStatus -->
+		aup.id as aup_id, aup.audit_process_status as aup_audit_process_status,
+		<!-- area -->
+		a.code as a_code, a.name as a_name
+	</sql>
+
+	<sql id="From_List">
+		audit_log as au, company as c, company_type as t, company_economy_type as et, company_property as p, audit_process_status as aup, area as a
+	</sql>
+
+	<sql id="Where_List">
+		au.company_id = c.id and c.company_type = t.id and c.company_economy_type = et.id and c.company_property = p.id and au.audit_process_status = aup.id and
+		au.area_code = a.code
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.AuditLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into audit_log (id, year, company_id, company_emp_total,
+		company_handicap_total,
+		company_predict_total,company_should_total,company_already_total,area_code,
+		audit_process_status, amount_payable,
+		reduction_amount,
+		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount,
+		is_delay_pay,
+		init_audit_user_id, init_audit_date, init_audit_comment,
+		jianmian_audit_user_id, jianmian_audit_date, jianmian_audit_comment, 
+		verify_audit_user_id, verify_audit_date, verify_audit_comment, 
+		final_audit_user_id, final_audit_date, final_audit_comment, 
+		remark, is_exempt,reduction_type,reducion_apply_user, reduction_date,
+		reduction_reason, reduction_answer_user,
+		reduction_answer_date, reduction_answer_option,
+		reduction_remark, unaudit_years,supplement_year,delay_days, refuse_times,
+		create_time, update_time,
+		user_id, is_active, version
+		)
+		values (#{id, jdbcType=INTEGER}, #{year,jdbcType=CHAR},
+		#{company.companyCode,jdbcType=VARCHAR},#{companyEmpTotal,jdbcType=INTEGER},#{companyHandicapTotal,jdbcType=INTEGER},#{companyPredictTotal,jdbcType=INTEGER},
+		#{companyShouldTotal,jdbcType=INTEGER},#{companyAlreadyTotal,jdbcType=INTEGER},#{area.code,jdbcType=CHAR},
+		#{auditProcessStatus.ID,jdbcType=INTEGER}, #{amountPayable,jdbcType=DECIMAL},
+		#{reductionAmount,jdbcType=DECIMAL},
+		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
+		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
+		#{isDelayPay,jdbcType=BIT},
+		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
+		#{jianMianAuditUser.id,jdbcType=INTEGER}, #{jianMianAuditDate,jdbcType=TIMESTAMP}, #{jianMianAuditComment,jdbcType=VARCHAR},
+		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
+		#{finalAuditUser.id,jdbcType=INTEGER}, #{finalAuditDate,jdbcType=TIMESTAMP}, #{finalAuditComment,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},#{isExempt,jdbcType=BIT},
+		#{reductionType,jdbcType=INTEGER},#{reducionApplyUser,jdbcType=VARCHAR},
+		#{reductionDate,jdbcType=TIMESTAMP}, #{reductionReason,jdbcType=VARCHAR},
+		#{reductionAnswerUser,jdbcType=VARCHAR},
+		#{reductionAnswerDate,jdbcType=VARCHAR},
+		#{reductionAnswerOption,jdbcType=VARCHAR},
+		#{reductionRemark,jdbcType=VARCHAR}, #{unauditYears,jdbcType=INTEGER},
+		#{supplementYear,jdbcType=CHAR}, #{delayDays,jdbcType=INTEGER}, #{refuseTimes,jdbcType=INTEGER}, 
+		now(),now(),
+		#{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{version,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="logId" parameterType="com.esd.hesf.model.AuditLog">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into audit_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id > 0">
+				id,
+			</if>
+			<if test="year != null">
+				year,
+			</if>
+			<if test="company != null">
+				<if test="company.id != null and company.id > 0">
+					company_id,
+				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total,
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total,
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total,
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total,
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total,
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					area_code,
+				</if>
+			</if>
+			<if test="auditProcessStatus != null">
+				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
+					audit_process_status,
+				</if>
+			</if>
+			<if test="amountPayable != null">
+				amount_payable,
+			</if>
+			<if test="reductionAmount != null">
+				reduction_amount,
+			</if>
+			<if test="actualAmount != null">
+				actual_amount,
+			</if>
+			<if test="payAmount != null">
+				pay_amount,
+			</if>
+			<if test="remainAmount != null">
+				remain_amount,
+			</if>
+			<if test="complementAmount != null">
+				complement_amount,
+			</if>
+			<if test="delayPayAmount != null">
+				delay_pay_amount,
+			</if>
+			<if test="isDelayPay != null">
+				is_delay_pay,
+			</if>
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
+					init_audit_user_id,
+				</if>
+			</if>
+			<if test="initAuditDate != null">
+				init_audit_date,
+			</if>
+			<if test="initAuditComment != null">
+				init_audit_comment,
+			</if>
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					jianmian_audit_user_id,
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				jianmian_audit_date,
+			</if>
+			<if test="jianMianAuditComment != null">
+				jianmian_audit_comment,
+			</if>
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					verify_audit_user_id,
+				</if>
+			</if>
+			<if test="verifyAuditDate != null">
+				verify_audit_date,
+			</if>
+			<if test="verifyAuditComment != null ">
+				verify_audit_comment,
+			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					final_audit_user_id,
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				final_audit_date,
+			</if>
+			<if test="finalAuditComment != null ">
+				final_audit_comment,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="isExempt != null">
+				is_exempt,
+			</if>
+			<if test="reductionType != null and reductionType > 0">
+				reduction_type,
+			</if>
+			<if test="reducionApplyUser != null">
+				reducion_apply_user,
+			</if>
+			<if test="reductionDate != null">
+				reduction_date,
+			</if>
+			<if test="reductionReason != null">
+				reduction_reason,
+			</if>
+			<if test="reductionAnswerUser != null">
+				reduction_answer_user,
+			</if>
+			<if test="reductionAnswerDate != null">
+				reduction_answer_date,
+			</if>
+			<if test="reductionAnswerOption != null">
+				reduction_answer_option,
+			</if>
+			<if test="reductionRemark != null">
+				reduction_remark,
+			</if>
+			<if test="unauditYears != null">
+				unaudit_years,
+			</if>
+			<if test="supplementYear != null">
+				supplement_year,
+			</if>
+			<if test="delayDays != null">
+				delay_days,
+			</if>
+			<if test="refuseTimes != null">
+				refuse_times, 
+			</if>
+			create_time, update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="isActive != null">
+				is_active,
+			</if>
+			version
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id > 0">
+				#{id, jdbcType=INTEGER}, 
+			</if>
+			<if test="year != null">
+				#{year,jdbcType=CHAR},
+			</if>
+			<if test="company != null">
+				<if test="company.id != null and company.id > 0">
+					#{company.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				#{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				#{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				#{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				#{companyShouldTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				#{companyAlreadyTotal,jdbcType=INTEGER},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					#{area.code,jdbcType=CHAR},
+				</if>
+			</if>
+			<if test="auditProcessStatus != null">
+				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
+					#{auditProcessStatus.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="amountPayable != null">
+				#{amountPayable,jdbcType=DECIMAL},
+			</if>
+			<if test="reductionAmount != null">
+				#{reductionAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="actualAmount != null">
+				#{actualAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="payAmount != null">
+				#{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="remainAmount != null">
+				#{remainAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="complementAmount != null">
+				#{complementAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="delayPayAmount != null">
+				#{delayPayAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="isDelayPay != null">
+				#{isDelayPay,jdbcType=BIT},
+			</if>
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
+					#{initAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="initAuditDate != null">
+				#{initAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="initAuditComment != null and initAuditComment != ''">
+				#{initAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					#{jianMianAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				#{jianMianAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jianMianAuditComment != null and jianMianAuditComment != ''">
+				#{jianMianAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					#{verifyAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="verifyAuditDate != null">
+				#{verifyAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="verifyAuditComment != null and verifyAuditComment != ''">
+				#{verifyAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					#{finalAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				#{finalAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finalAuditComment != null and finalAuditComment != ''">
+				#{finalAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="isExempt != null">
+				#{isExempt,jdbcType=BIT},
+			</if>
+			<if test="reductionType != null and reductionType > 0">
+				#{reductionType,jdbcType=INTEGER},
+			</if>
+			<if test="reducionApplyUser != null">
+				#{reducionApplyUser,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionDate != null">
+				#{reductionDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reductionReason != null">
+				#{reductionReason,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerUser != null">
+				#{reductionAnswerUser,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerDate != null">
+				#{reductionAnswerDate,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerOption != null">
+				#{reductionAnswerOption,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionRemark != null">
+				#{reductionRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="unauditYears != null">
+				#{unauditYears,jdbcType=INTEGER},
+			</if>
+			<if test="supplementYear != null">
+				#{supplementYears,jdbcType=CHAR},
+			</if>
+			<if test="delayDays != null">
+				#{delayDays,jdbcType=CHAR},
+			</if>
+			<if test="refuseTimes != null">
+				#{refuseTimes,jdbcType=INTEGER}, 
+			</if>
+			now(),now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				#{isActive,jdbcType=BIT},
+			</if>
+			default
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from audit_log
+		where log_id = #{logId,jdbcType=INTEGER}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.AuditLog">
+		update audit_log
+		<set>
+			<if test="id != null and id > 0">
+				id = #{id, jdbcType=INTEGER},
+			</if>
+			<if test="year != null">
+				year = #{year,jdbcType=CHAR},
+			</if>
+			<if test="company != null">
+				<if test="company.id != null and company.id > 0">
+					company_id = #{company.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="companyEmpTotal != null">
+				company_emp_total = #{companyEmpTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyHandicapTotal != null">
+				company_handicap_total = #{companyHandicapTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyPredictTotal != null">
+				company_predict_total = #{companyPredictTotal,jdbcType=INTEGER},
+			</if>
+			<if test="companyShouldTotal != null">
+				company_should_total = #{companyShouldTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="companyAlreadyTotal != null">
+				company_already_total = #{companyAlreadyTotal,jdbcType=INTEGER},
+			</if>
+			<if test="area != null">
+				<if test="area.code != null and area.code  != ''">
+					area_code = #{area.code,jdbcType=CHAR},
+				</if>
+			</if>
+			<if test="auditProcessStatus != null">
+				<if test="auditProcessStatus.id != null and auditProcessStatus.id > 0">
+					audit_process_status = #{auditProcessStatus.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="amountPayable != null">
+				amount_payable = #{amountPayable,jdbcType=DECIMAL},
+			</if>
+			<if test="reductionAmount != null">
+				reduction_amount = #{reductionAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="actualAmount != null">
+				actual_amount = #{actualAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="payAmount != null">
+				pay_amount = #{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="remainAmount != null">
+				remain_amount = #{remainAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="complementAmount != null">
+				complement_amount = #{complementAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="isDelayPay != null">
+				is_delay_pay = #{isDelayPay,jdbcType=BIT},
+			</if>
+			<if test="delayPayAmount != null">
+				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="initAuditUser != null">
+				<if test="initAuditUser.id != null and initAuditUser.id > 0">
+					init_audit_user_id = #{initAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="initAuditDate != null">
+				init_audit_date = #{initAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="initAuditComment != null">
+				init_audit_comment = #{initAuditComment,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="jianMianAuditUser != null">
+				<if test="jianMianAuditUser.id != null and jianMianAuditUser.id > 0">
+					jianmian_audit_user_id = #{jianMianAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="jianMianAuditDate != null">
+				jianmian_audit_date = #{jianMianAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="jianMianAuditComment != null and jianMianAuditComment != ''">
+				jianmian_audit_comment = #{jianMianAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="verifyAuditUser != null">
+				<if test="verifyAuditUser.id != null and verifyAuditUser.id > 0">
+					verify_audit_user_id = #{verifyAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="verifyAuditDate != null">
+				verify_audit_date = #{verifyAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="verifyAuditComment != null">
+				verify_audit_comment = #{verifyAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="finalAuditUser != null">
+				<if test="finalAuditUser.id != null and finalAuditUser.id > 0">
+					final_audit_user_id = #{finalAuditUser.id,jdbcType=INTEGER},
+				</if>
+			</if>
+			<if test="finalAuditDate != null">
+				final_audit_date = #{finalAuditDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finalAuditComment != null">
+				final_audit_comment = #{finalAuditComment,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			is_exempt = #{isExempt,jdbcType=BIT},
+			<if test="reductionType != null and reductionType > 0">
+				reduction_type = #{reductionType,jdbcType=INTEGER},
+			</if>
+			<if test="reducionApplyUser != null">
+				reducion_apply_user = #{reducionApplyUser,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionDate != null">
+				reduction_date = #{reductionDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reductionReason != null">
+				reduction_reason = #{reductionReason,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerUser != null">
+				reduction_answer_user = #{reductionAnswerUser,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerDate != null">
+				reduction_answer_date = #{reductionAnswerDate,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionAnswerOption != null">
+				reduction_answer_option = #{reductionAnswerOption,jdbcType=VARCHAR},
+			</if>
+			<if test="reductionRemark != null">
+				reduction_remark = #{reductionRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="unauditYears != null">
+				unaudit_years = #{unauditYears,jdbcType=INTEGER},
+			</if>
+			<if test="supplementYear != null">
+				supplement_year = #{supplementYear,jdbcType=CHAR},
+			</if>
+			<if test="delayDays != null">
+				delay_days = #{delayDays,jdbcType=INTEGER},
+			</if>
+			<if test="refuseTimes != null">
+				refuse_times = #{refuseTimes,jdbcType=INTEGER}, 
+			</if>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			version = version + 1,
+		</set>
+		where id = #{id,jdbcType=INTEGER} and version = #{version, jdbcType=INTEGER}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultAuditLog">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_List" />
+		where
+			<include refid="Where_List" />
+		and au.log_id = #{logId,jdbcType=INTEGER}
+	</select>
+
+	<select id="retrieveByPage" parameterType="map" resultMap="ResultAuditLog">
+		select
+			<include refid="Base_Column_List" />
+		from
+			<include refid="From_List" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_List" />
+			<if test="auditLog != null">
+				<if test="auditLog.id != null and auditLog.id > 0">
+					and au.id = #{auditLog.id,jdbcType=CHAR}
+				</if>	
+				<if test="auditLog.year != null and auditLog.year != ''">
+					and au.year = #{auditLog.year,jdbcType=CHAR}
+				</if>
+				<if test="auditLog.company != null">
+					<if test="auditLog.company.id != null and auditLog.company.id > 0">
+						and au.company_id = #{auditLog.company.id,jdbcType=INTEGER}
+					</if>
+				</if>
+				<if test="auditLog.auditProcessStatus != null">
+					<if test="auditLog.auditProcessStatus.id != null and auditLog.auditProcessStatus.id > 0 ">
+						and au.audit_process_status = #{auditLog.auditProcessStatus.id,jdbcType=CHAR}
+					</if>
+				</if>
+				<if test="auditLog.reductionType != null and auditLog.reductionType > 0">
+					and au.reduction_type = #{auditLog.reductionType,jdbcType=INTEGER}
+				</if>
+				<if test="auditLog.isActive != null">
+					and au.is_active = #{auditLog.isActive,jdbcType=BIT}
+				</if>
+			</if>
+		</trim>
+		order by c.company_code
+		limit #{start},#{size}
+	</select>
+
+	<select id="retrieveCount" parameterType="map" resultType="int">
+		select count(*)
+		from
+		<include refid="From_List" />
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Where_List" />
+			<if test="auditLog != null">
+				<if test="auditLog.id != null and auditLog.id > 0">
+					and au.id = #{auditLog.id,jdbcType=CHAR}
+				</if>	
+				<if test="auditLog.year != null and auditLog.year != ''">
+					and au.year = #{auditLog.year,jdbcType=CHAR}
+				</if>
+				<if test="auditLog.company != null">
+					<if test="auditLog.company.id != null and auditLog.company.id > 0">
+						and au.company_id = #{auditLog.company.id,jdbcType=INTEGER}
+					</if>
+				</if>
+				<if test="auditLog.auditProcessStatus != null">
+					<if test="auditLog.auditProcessStatus.id != null and auditLog.auditProcessStatus.id > 0 ">
+						and au.audit_process_status = #{auditLog.auditProcessStatus.id,jdbcType=CHAR}
+					</if>
+				</if>
+				<if test="auditLog.reductionType != null and auditLog.reductionType > 0">
+					and au.reduction_type = #{auditLog.reductionType,jdbcType=INTEGER}
+				</if>
+				<if test="auditLog.isActive != null">
+					and au.is_active = #{auditLog.isActive,jdbcType=BIT}
+				</if>
+			</if>
+		</trim>
+	</select>
+
+</mapper>

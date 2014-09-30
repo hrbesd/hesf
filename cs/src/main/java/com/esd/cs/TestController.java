@@ -788,7 +788,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test56() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = auditService.save("2000", "101001");
+		boolean entity = auditService.save("2000", "101001",1);
 		map.put("entity", entity);
 		return map;
 	}

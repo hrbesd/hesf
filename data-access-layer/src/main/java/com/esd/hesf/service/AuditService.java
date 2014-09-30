@@ -28,7 +28,7 @@ public interface AuditService extends BaseService<Audit> {
 	 * @param companyCode
 	 * @return
 	 */
-	boolean save(String year, String companyCode);
+	boolean save(String year, String companyCode,Integer userId);
 
 	/**
 	 * 根据年份year, 公司id companyId获得一条审核数据

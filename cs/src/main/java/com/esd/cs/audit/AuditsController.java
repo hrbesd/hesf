@@ -522,10 +522,12 @@ public class AuditsController {
 	 */
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean createAudit(HttpServletRequest request) {
+	public Boolean createAudit(HttpServletRequest request, HttpSession session) {
+		Integer userId = Integer.valueOf(session
+				.getAttribute(Constants.USER_ID).toString());
 		String year = (String) request.getParameter("year");
 		String companyCode = (String) request.getParameter("companyCode");
-		Boolean b = auditService.save(year, companyCode);
+		Boolean b = auditService.save(year, companyCode, userId);
 		return b;
 	}
 

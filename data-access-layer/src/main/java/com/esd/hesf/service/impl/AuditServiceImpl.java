@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.aspectj.apache.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.hesf.dao.AuditCompanyViewDao;
 import com.esd.hesf.dao.AuditDao;
+import com.esd.hesf.dao.AuditLogDao;
 import com.esd.hesf.dao.CompanyDao;
 import com.esd.hesf.dao.CompanyYearWorkerDao;
 import com.esd.hesf.dao.UserDao;
@@ -24,6 +26,7 @@ import com.esd.hesf.model.CompanyYearWorker;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.Constants;
 import com.esd.hesf.service.HesfException;
+import com.esd.hesf.service.KitService;
 
 /**
  * 审核service 实现类
@@ -53,6 +56,9 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private CompanyDao cDao;
 
+	@Autowired
+	private AuditLogDao logDao;
+
 	@Override
 	public boolean save(Audit t) {
 		if (t.getYear() == null || "".equals(t.getYear())) {
@@ -76,11 +82,13 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
-	public boolean save(String year, String companyCode) {
+	public boolean save(String year, String companyCode,Integer userId) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null)
 					.printStackTrace();
@@ -88,6 +96,11 @@ public class AuditServiceImpl implements AuditService {
 		}
 		if (companyCode == null || "".equals(companyCode)) {
 			new HesfException("companyCode", HesfException.type_null)
+					.printStackTrace();
+			return false;
+		}
+		if (userId == null || userId <= 0) {
+			new HesfException("userId", HesfException.type_number_negative)
 					.printStackTrace();
 			return false;
 		}
@@ -110,23 +123,30 @@ public class AuditServiceImpl implements AuditService {
 		t.setYear(year);
 		t.setCompany(company);
 		t.setAuditProcessStatus(new AuditProcessStatus(1));
+		t.setUserId(userId);
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
 	public boolean delete(Integer id) {
+		Audit t = dao.retrieveByPrimaryKey(id);
+		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
 					HesfException.type_fail).printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -168,6 +188,8 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
+		// 保存日志
+		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
