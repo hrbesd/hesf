@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.esd.hesf.model.Accounts;
+import com.esd.hesf.model.AccountsLog;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.AuditLog;
 import com.esd.hesf.model.Company;
@@ -83,6 +85,7 @@ public class KitService {
 
 	/**
 	 * 将日期Date转化为yyyy-MM-dd格式的字符串
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -95,13 +98,14 @@ public class KitService {
 		String str = sdf.format(date);
 		return str;
 	}
-	
+
 	/**
 	 * 将Company转化为CompanyLog
+	 * 
 	 * @param t
 	 * @return
 	 */
-	public static CompanyLog getLogObjectFromEntity(Company t){
+	public static CompanyLog getLogObjectFromEntity(Company t) {
 		CompanyLog log = new CompanyLog();
 		log.setArea(t.getArea());
 		log.setCompanyAddress(t.getCompanyAddress());
@@ -131,10 +135,11 @@ public class KitService {
 
 	/**
 	 * 将User转化为UserLog
+	 * 
 	 * @param t
 	 * @return
 	 */
-	public static UserLog getLogObjectFromEntity(User t){
+	public static UserLog getLogObjectFromEntity(User t) {
 		UserLog log = new UserLog();
 		log.setUserEmail(t.getUserEmail());
 		log.setUserGroup(t.getUserGroup());
@@ -154,10 +159,11 @@ public class KitService {
 
 	/**
 	 * 将Worker转化为WorkerLog
+	 * 
 	 * @param t
 	 * @return
 	 */
-	public static WorkerLog getLogObjectFromEntity(Worker t){
+	public static WorkerLog getLogObjectFromEntity(Worker t) {
 		WorkerLog log = new WorkerLog();
 		log.setArea(t.getArea());
 		log.setCareerCard(t.getCareerCard());
@@ -191,11 +197,12 @@ public class KitService {
 	}
 
 	/**
-	 * 将Worker转化为WorkerLog
+	 * 将Audit转化为AuditLog
+	 * 
 	 * @param t
 	 * @return
 	 */
-	public static AuditLog getLogObjectFromEntity(Audit t){
+	public static AuditLog getLogObjectFromEntity(Audit t) {
 		AuditLog log = new AuditLog();
 		log.setActualAmount(t.getActualAmount());
 		log.setAmountPayable(t.getAmountPayable());
@@ -249,7 +256,28 @@ public class KitService {
 		return log;
 	}
 
-	
-	
+	/**
+	 * 将Accounts转化为AccountsLog
+	 * 
+	 * @param t
+	 * @return
+	 */
+	public static AccountsLog getLogObjectFromEntity(Accounts t) {
+		AccountsLog log = new AccountsLog();
+		log.setAudit(t.getAudit());
+		log.setAuditProcessStatus(t.getAuditProcessStatus());
+		log.setCompany(t.getCompany());
+		log.setIsFinished(t.getIsFinished());
+		log.setIsReceipt(t.getIsReceipt());
+		log.setTotalMoney(t.getTotalMoney());
+		log.setYear(t.getYear());
+		log.setId(t.getId());
+		log.setCreateTime(t.getCreateTime());
+		log.setUpdateTime(t.getUpdateTime());
+		log.setUserId(t.getUserId());
+		log.setIsActive(t.getIsActive());
+		log.setVersion(t.getVersion());
+		return log;
+	}
 
 }
