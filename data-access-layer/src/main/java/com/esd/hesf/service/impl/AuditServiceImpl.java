@@ -82,8 +82,8 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时去掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -130,8 +130,8 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时去掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -188,8 +188,8 @@ public class AuditServiceImpl implements AuditService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时去掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
