@@ -59,8 +59,8 @@ public class WorkerServiceImpl implements WorkerService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时拿掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -99,8 +99,8 @@ public class WorkerServiceImpl implements WorkerService {
 					HesfException.type_fail).printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时拿掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -112,8 +112,8 @@ public class WorkerServiceImpl implements WorkerService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时拿掉
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
