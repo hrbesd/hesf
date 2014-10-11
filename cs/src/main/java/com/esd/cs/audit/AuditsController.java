@@ -251,6 +251,7 @@ public class AuditsController {
 		getAudit.setAuditProcessStatus(auditProcessStatus);
 		logger.debug(getAudit.toString());
 		getAudit.setRefuseTimes(getAudit.getRefuseTimes() + 1);
+		getAudit.setUserId(userId);
 		auditService.update(getAudit);
 		return true;
 	}
@@ -305,6 +306,7 @@ public class AuditsController {
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
 						.getByPrimaryKey(Constants.PROCESS_STATIC_WFS);
 				audit.setAuditProcessStatus(auditProcessStatus);// 设置为已初审, 未复审
+				audit.setUserId(userId);
 				auditService.update(audit);
 				return true;
 			}
@@ -339,7 +341,7 @@ public class AuditsController {
 		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
 		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
 		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
-
+		getAudit.setUserId(userId);
 		// AuditProcessStatus auditProcessStatus = null;
 		// if (getAudit.getPayAmount().signum() == 0) {
 		// auditProcessStatus = auditProcessStatusService
@@ -407,7 +409,7 @@ public class AuditsController {
 		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
 		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
 		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
-
+		getAudit.setUserId(userId);
 		AuditProcessStatus auditProcessStatus = null;
 		if (getAudit.getPayAmount().signum() == 0) {
 			auditProcessStatus = auditProcessStatusService
@@ -428,6 +430,7 @@ public class AuditsController {
 				a.setPayAmount(new BigDecimal(0));// 设置实缴总金额为0
 				a.setAuditProcessStatus(auditProcessStatusOK);// 设置为达标
 				a.setSupplementYear(getAudit.getYear());// 设置补缴年度
+				a.setUserId(userId);
 				auditService.update(a);
 			}
 		}
@@ -443,6 +446,7 @@ public class AuditsController {
 		accounts.setCompany(getAudit.getCompany()); // 账单公司
 		accounts.setTotalMoney(getAudit.getPayAmount()); // 实际应缴金额
 		accounts.setAuditProcessStatus(getAudit.getAuditProcessStatus());
+		accounts.setUserId(userId);
 		accountsService.save(accounts);
 		return true;
 	}
@@ -457,7 +461,8 @@ public class AuditsController {
 	@RequestMapping(value = "/repealAudit/{auditId}/{companyId}", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> repealAudit(@PathVariable Integer auditId,
-			@PathVariable Integer companyId, HttpServletRequest request) {
+			@PathVariable Integer companyId, HttpServletRequest request,HttpSession session) {
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String year = CalendarUtil.getNowYear(); // 账目年份--当前年份
 		// ① 删除该公司 审核数据已经开的票
@@ -485,6 +490,7 @@ public class AuditsController {
 		Audit audit = auditService.getByPrimaryKey(auditId);
 		audit.setAuditProcessStatus(new AuditProcessStatus(
 				Constants.PROCESS_STATIC_WCS));
+		audit.setUserId(userId);
 		boolean bl = auditService.update(audit);
 		if (bl) {
 			result.put(Constants.NOTICE, Constants.NOTICE_SUCCESS);
@@ -562,9 +568,11 @@ public class AuditsController {
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean save(Audit audit) {
+	public Boolean save(Audit audit,HttpSession session) {
 		logger.debug(audit.toString());
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		Company company = audit.getCompany();
+		company.setUserId(userId);
 		if (company != null) {
 			logger.debug(company.toString());
 			boolean b = companyService.update(company);
@@ -574,6 +582,7 @@ public class AuditsController {
 				// auditProcessStatusService
 				// .getByPrimaryKey(Constants.PROCESS_STATIC_WCS);
 				// audit.setAuditProcessStatus(auditProcessStatus);
+				audit.setUserId(userId);
 				auditService.update(audit);
 				return true;
 			}

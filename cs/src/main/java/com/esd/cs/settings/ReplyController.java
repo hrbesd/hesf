@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.esd.common.util.PaginationRecordsAndNumber;
+import com.esd.cs.Constants;
 import com.esd.hesf.model.Reply;
 import com.esd.hesf.service.ReplyService;
 
@@ -96,8 +98,10 @@ public class ReplyController {
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean addPost(Reply reply, HttpServletRequest req) {
+	public Boolean addPost(Reply reply, HttpServletRequest req,HttpSession session) {
 		logger.debug(reply.toString());
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		reply.setUserId(userId);
 		Boolean bl = rService.save(reply);
 		return bl;
 	}
@@ -141,8 +145,10 @@ public class ReplyController {
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean updatePost(Reply reply, HttpServletRequest req) {
+	public Boolean updatePost(Reply reply, HttpServletRequest req,HttpSession session) {
 		logger.debug(reply.toString());
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		reply.setUserId(userId);
 		Boolean bl = rService.update(reply);
 		return bl;
 	}

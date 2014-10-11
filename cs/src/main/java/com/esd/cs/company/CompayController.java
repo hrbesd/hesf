@@ -228,6 +228,7 @@ public class CompayController {
 				Audit audit = new Audit();
 				audit.setCompany(company);
 				audit.setYear(nowYear);
+				audit.setUserId(userId);
 				auditService.save(audit);
 			}
 			// 检查一下,
@@ -289,6 +290,7 @@ public class CompayController {
 				audit = new Audit();
 				audit.setCompany(company);
 				audit.setYear(nowYear);
+				audit.setUserId(userId);
 				auditService.save(audit);
 			}
 			// // 如果选中创建当年审核数据
@@ -329,7 +331,7 @@ public class CompayController {
 	}
 
 	/**
-	 * 删除单位控制器
+	 * 删除单位	控制器
 	 * 
 	 * @param idArr
 	 * @param request

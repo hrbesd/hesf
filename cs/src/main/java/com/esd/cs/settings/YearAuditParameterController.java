@@ -146,6 +146,8 @@ public class YearAuditParameterController {
 	public Map<String, Object> addPost(AuditParameter auditParameter,
 			HttpServletRequest request, HttpSession session) {
 		logger.debug("auditParameter:{}", auditParameter);
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		auditParameter.setUserId(userId);
 		Boolean copy = Boolean.valueOf(request.getParameter("copy"));	//是否创建审核数据
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (copy) {
@@ -200,8 +202,10 @@ public class YearAuditParameterController {
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean updatePost(AuditParameter auditParameter) {
+	public Boolean updatePost(AuditParameter auditParameter,HttpSession session) {
 		logger.debug(auditParameter.toString());
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
+		auditParameter.setUserId(userId);
 		return auditParameterService.update(auditParameter);
 	}
 
@@ -231,7 +235,7 @@ public class YearAuditParameterController {
 	}
 
 	/**
-	 * 编辑年审参数
+	 * 查看年审参数
 	 * 
 	 * @param request
 	 * @return
@@ -245,7 +249,7 @@ public class YearAuditParameterController {
 	}
 
 	/**
-	 * 编辑年审参数
+	 * 跳转到编辑年审参数
 	 * 
 	 * @param request
 	 * @return

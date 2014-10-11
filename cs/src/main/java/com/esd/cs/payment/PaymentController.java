@@ -203,6 +203,9 @@ public class PaymentController {
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
 	public Boolean confirmPost(Payment payment, HttpSession session) {
+		// 添加审计人
+		Integer userId = (Integer) session
+				.getAttribute(Constants.USER_ID);
 		logger.debug(payment.toString());
 		Payment queryPayment = paymentService.getByPrimaryKey(payment.getId());
 		queryPayment.setBillExchangeDate(payment.getBillExchangeDate());// 回票时间
@@ -211,6 +214,7 @@ public class PaymentController {
 		queryPayment.setPaymentExceptional(payment.getPaymentExceptional());// 特殊情况
 		queryPayment.setBillObsolete(payment.getBillObsolete());// 作费票据
 		queryPayment.setRemark(payment.getRemark());// 备注
+		queryPayment.setUserId(userId);
 		// 更新缴款明细
 		paymentService.update(queryPayment);
 
@@ -228,6 +232,7 @@ public class PaymentController {
 				Accounts ac = accountsService.getOneByCompanyAuditYear(
 						queryPayment.getAuditYear(), queryPayment.getYear(),
 						queryPayment.getPaymentCompany().getId());
+				ac.setUserId(userId);
 				ac.setIsReceipt(Boolean.FALSE);
 				if (!accountsService.update(ac)) {
 					return false;
@@ -250,6 +255,7 @@ public class PaymentController {
 			Accounts accounts = accountsService.getOneByCompanyAuditYear(
 					queryPayment.getAuditYear(), queryPayment.getYear(),
 					queryPayment.getPaymentCompany().getId());
+			accounts.setUserId(userId);
 			// 1-3应交款==已交款
 			if (accounts.getTotalMoney().compareTo(alreadyPayment) == 0) {
 				auditProcessStatus = Constants.PROCESS_STATIC_YJK;
@@ -257,10 +263,12 @@ public class PaymentController {
 						.getId());
 				audit.setAuditProcessStatus(new AuditProcessStatus(
 						auditProcessStatus));
+				audit.setUserId(userId);
 				auditService.update(audit);
 				accounts.setAuditProcessStatus(new AuditProcessStatus(
 						auditProcessStatus));
 				accounts.setIsFinished(true);
+				accounts.setUserId(userId);
 				Boolean b2 = accountsService.update(accounts);
 				return b2;
 			} else {
@@ -270,10 +278,12 @@ public class PaymentController {
 						.getId());
 				audit.setAuditProcessStatus(new AuditProcessStatus(
 						auditProcessStatus));
+				audit.setUserId(userId);
 				auditService.update(audit);
 				accounts.setAuditProcessStatus(new AuditProcessStatus(
 						auditProcessStatus));
 				accounts.setIsFinished(true);
+				accounts.setUserId(userId);
 				Boolean b2 = accountsService.update(accounts);
 				return b2;
 			}
@@ -308,12 +318,14 @@ public class PaymentController {
 							auditProcessStatus));
 					// 设置补审年份
 					audit.setSupplementYear(queryPayment.getYear());
+					audit.setUserId(userId);
 					auditService.update(audit);
 					// 2-4-3 更新账目
 					ac.setAuditProcessStatus(new AuditProcessStatus(
 							auditProcessStatus));
 					// 账目缴款缴款完成
 					ac.setIsFinished(true);
+					ac.setUserId(userId);
 					accountsService.update(ac);
 				}
 				return true;
@@ -335,10 +347,12 @@ public class PaymentController {
 							auditProcessStatus));
 					// 设置补审年份
 					audit.setSupplementYear(queryPayment.getYear());
+					audit.setUserId(userId);
 					auditService.update(audit);
 					// 2-5-3 更新账目
 					ac.setAuditProcessStatus(new AuditProcessStatus(
 							auditProcessStatus));
+					ac.setUserId(userId);
 					accountsService.update(ac);
 				}
 				return true;
@@ -451,6 +465,7 @@ public class PaymentController {
 				.getAuditYear(), payment.getYear(), payment.getPaymentCompany()
 				.getId());
 		ac.setIsReceipt(Boolean.TRUE); // 是否开票, 这是为是 1
+		ac.setUserId(userId);
 		accountsService.update(ac);
 		return b;
 	}
@@ -493,12 +508,14 @@ public class PaymentController {
 			pay.setVersion(1);
 			Company company = companyService.getByPrimaryKey(payment.getId());
 			pay.setPaymentCompany(company);
+			pay.setUserId(userId);
 			if (paymentService.save(pay) == true) {
 				Audit audit = auditService
 						.getByPrimaryKey(payment.getAuditId());
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
 						.getByPrimaryKey(Constants.PROCESS_STATIC_BFJK);
 				audit.setAuditProcessStatus(auditProcessStatus);
+				audit.setUserId(userId);
 				auditService.update(audit);
 				return true;
 			}
@@ -629,6 +646,7 @@ public class PaymentController {
 			@PathVariable(value = "accountsYear") String accountsYear,
 			@PathVariable(value = "companyId") Integer companyId,
 			HttpSession session) {
+		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		// 将审核对象改回未复审状态
 		Audit audit = auditService.getByPrimaryKey(auditYear, companyId);
 		audit.setAuditProcessStatus(new AuditProcessStatus(
@@ -639,6 +657,7 @@ public class PaymentController {
 		String remark = "注意! 该条是在缴款中通过\"重审\"操作返回来的数据, 其中实缴总金额包含已缴的款额："
 				+ alreadyPayment + "元. 如有\"减缴\"操作, 注意需要扣除上述提到的已缴金额.";
 		audit.setRemark(audit.getRemark() + remark);
+		audit.setUserId(userId);
 		Boolean b = auditService.update(audit);
 		// 删除对应的账目信息
 		Accounts ac = accountsService.getOneByCompanyAuditYear(auditYear,
