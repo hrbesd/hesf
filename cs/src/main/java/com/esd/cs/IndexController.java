@@ -109,6 +109,13 @@ public class IndexController {
 			String pwd = md5.getMd5(userName, passWord);
 			logger.debug("pwd:", pwd);
 			if (pwd.equals(user.getUserPassword())) {
+				//如果被禁用, 则不能登陆, 返回登陆页面,给出提示
+				if(user.getUserStatus() == false){
+					redirectAttributes.addFlashAttribute("username", userName);
+					redirectAttributes.addFlashAttribute("password", passWord);
+					redirectAttributes.addFlashAttribute("message", "用户名已被禁用.");
+					return new ModelAndView("redirect:/login");
+				}
 				session.setAttribute(Constants.USER_ID, user.getId());
 				session.setAttribute(Constants.USER_NAME, user.getUserName());
 				session.setAttribute(Constants.USER_REAL_NAME, user.getUserRealName());

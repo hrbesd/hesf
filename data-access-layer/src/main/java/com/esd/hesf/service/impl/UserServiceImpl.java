@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时停用
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -55,8 +55,8 @@ public class UserServiceImpl implements UserService {
 					HesfException.type_fail).printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时停用
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
 					.printStackTrace();
 			return false;
 		}
-		// 保存日志
-		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// 保存日志--暂时停用
+//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 

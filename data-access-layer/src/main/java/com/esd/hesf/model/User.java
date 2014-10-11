@@ -15,7 +15,7 @@ public class User extends PrimaryKey_Int {
 	private String userMobile; // 手机
 	private String userPhone; // 固话
 	private UserGroup userGroup; // 所属用户组
-	private Boolean userStatus; // 用户状态
+	private Boolean userStatus; // 用户状态 true-激活  false-禁用
 	private String userRemark; // 备注
 
 	public User() {
