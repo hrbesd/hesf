@@ -402,7 +402,7 @@
 				<td class="">初审日期:</td>
 				<td>
 					<c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="initDate" />
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd hh:mm" var="initDate" />
 					</c:if> 
 					<input class="readonly" value="${initDate}" />
 				</td>
@@ -422,7 +422,7 @@
 				<td class="">复审日期:</td>
 				<td>
 					<c:if test="${entity.verifyAuditDate!=null}">
-						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy-MM-dd" var="verifyAuditDate" />
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd hh:mm" var="verifyAuditDate" />
 					</c:if> 
 					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" />
 				</td>
