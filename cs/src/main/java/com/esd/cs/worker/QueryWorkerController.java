@@ -124,7 +124,9 @@ public class QueryWorkerController {
 						.getHandicapType());// 残疾类别
 				map.put("workerHandicapLevel", it.getWorkerHandicapLevel()
 						.getHandicapLevel());// 残疾等级
-
+				map.put("companyId", it.getCompany().getId());
+				map.put("companyCode", it.getCompany().getCompanyCode());
+				map.put("companyName", it.getCompany().getCompanyName());
 				list.add(map);
 			}
 			entity.put("total", total);

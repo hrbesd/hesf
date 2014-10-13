@@ -98,6 +98,12 @@
 						<input readonly="readonly" type="text" value="${worker.pensionInsurance }" name="pensionInsurance" id="pensionInsurance" />
 					</td>
 				</tr>
+			<!-- 	<tr>
+					<td>所在公司:</td>
+					<td colspan="4">
+						<input readonly="readonly" type="text" style="width:100%;"value="${worker.pensionInsurance }" name="pensionInsurance" id="pensionInsurance" />
+					</td>
+				</tr> -->
 				<tr>
 					<td >备注:</td>
 					<td colspan="5">

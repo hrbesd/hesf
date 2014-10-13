@@ -64,7 +64,7 @@
 		esd.common.datagrid("#queryWorker_grid", "query/worker/list", "#queryWorker_boolbar", [ [ {
 			field : 'action',
 			title : '姓名',
-			width : 300,
+			width : 100,
 			formatter : function(value,row,index){
 				var a ='<a href="javascript:queryWorker.viewWorker(' + row.id + ');" >'+row.workerName+'</a>';
 				return a;
@@ -72,31 +72,43 @@
 		}, {
 			field : 'workerHandicapCode',
 			title : '残疾证号',
-			width : 600
+			width : 200
 		}, {
 			field : 'workerGender',
 			title : '性别',
-			width : 250,
+			width : 60,
 			align : 'center'
 		}, {
 			field : 'workerAge',
 			title : '年龄',
-			width : 250,
-			align : 'center'
-		}, {
-			field : 'phone',
-			title : '联系电话',
-			width : 350,
+			width : 60,
 			align : 'center'
 		}, {
 			field : 'workerHandicapType',
 			title : '残疾类别',
-			width : 250,
+			width : 100,
 			align : 'center'
+		}, {
+			field : 'companyId',
+			hidden : true
+		},{
+			field : 'companyCode',
+			title : '公司档案号',
+			width : 100,
+			align : 'center'
+		},{
+			field : 'companyName',
+			title : '所在公司',
+			width : 400,
+			align : 'center',
+			formatter : function(value,row,index){
+				var c = '<a href="javascript:void(0);" onclick="esd.common.viewCompany(\'' + row.companyId + '\')">' + value + '</a>';
+				return c;
+			}
 		}, {
 			field : 'workerHandicapLevel',
 			title : '残疾等级',
-			width : 250,
+			width : 100,
 			align : 'center'
 		} ] ], params);
 
