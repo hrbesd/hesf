@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.esd.common.util.CalendarUtil;
 import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.common.PoiCreateExcel;
@@ -34,8 +35,10 @@ import com.esd.cs.company.CompanyParamModel;
 import com.esd.cs.worker.QueryWorkerController;
 import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.model.User;
 import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyService;
+import com.esd.hesf.service.UserService;
 
 @Controller
 @RequestMapping(value = "/security/query/audit")
@@ -48,6 +51,9 @@ public class QueryAuditController {
 
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 转到查询审核数据列表页
@@ -63,6 +69,21 @@ public class QueryAuditController {
 		return new ModelAndView("query/audit");
 	}
 
+	/**
+	 * 转到查询 未初审/未交款/达标 数据列表页
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
+	public ModelAndView queryAuditList1(@PathVariable(value="process") Integer process,HttpServletRequest request,
+			HttpSession session) {
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
+		request.setAttribute("process", process);
+		return new ModelAndView("query/audit_back");
+	}
+	
 	/**
 	 * 获取审核列表数据
 	 * 
@@ -98,6 +119,43 @@ public class QueryAuditController {
 						.getCompanyContactPerson()); // 联系人
 				map.put("companyPhone", it.getCompany().getCompanyPhone());// 联系电话
 				map.put("companyAddress", it.getCompany().getCompanyAddress());// 公司地址
+				System.out.println(it.getInitAuditDate());
+				// 初审时间
+				if (it.getInitAuditDate() != null) {
+					map.put("initAuditDate",
+							CalendarUtil.dateFormat(it.getInitAuditDate()));
+				} else {
+					map.put("initAuditDate", "-");
+				}
+				// 初审人
+				if (it.getInitAuditUser() != null) {
+					if (it.getInitAuditUser().getId() != null) {
+						User initAuditUser = userService.getByPrimaryKey(it
+								.getInitAuditUser().getId());
+						map.put("initAuditUser",
+								initAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("initAuditUser", "-");
+				}
+				// 复审时间
+				if (it.getVerifyAuditDate() != null) {
+					map.put("verifyAuditDate",
+							CalendarUtil.dateFormat(it.getVerifyAuditDate()));
+				} else {
+					map.put("verifyAuditDate", "-");
+				}
+				// 复审人
+				if (it.getVerifyAuditUser() != null) {
+					if (it.getVerifyAuditUser().getId() != null) {
+						User verifyAuditUser = userService.getByPrimaryKey(it
+								.getVerifyAuditUser().getId());
+						map.put("verifyAuditUser",
+								verifyAuditUser.getUserRealName());
+					}
+				} else {
+					map.put("verifyAuditUser", "-");
+				}
 				map.put("companyEmpTotal", it.getCompanyEmpTotal()); // 员工总数
 				map.put("companyHandicapTotal", it.getCompanyHandicapTotal());
 				map.put("auditProcessStatus", it.getAuditProcessStatus()
@@ -315,4 +373,5 @@ public class QueryAuditController {
 		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		return paramsMap;
 	}
+
 }
