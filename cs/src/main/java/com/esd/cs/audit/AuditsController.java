@@ -680,8 +680,10 @@ public class AuditsController {
 				.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
 		// =====================================================================================================
 		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
-		BigDecimal real_yingJiaoJinE = shiJiaoJinE
-				.add(shangNianDuWeiJiaoBaoZhangJin);
+		// 应残联要求 实缴金额中 不加入 上年度 未缴金额 2014-10-14 *****
+//		BigDecimal real_yingJiaoJinE = shiJiaoJinE
+//				.add(shangNianDuWeiJiaoBaoZhangJin);
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		// BigDecimal real_yingJiaoJinE = shiJiaoJinE;
 		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
 		// 计算滞纳金============================================================================================
