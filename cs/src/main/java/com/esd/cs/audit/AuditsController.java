@@ -651,10 +651,15 @@ public class AuditsController {
 			yingJiaoJinE = Constants.ZERO;
 			calculateModel.setYingJiaoJinE(yingJiaoJinE);
 		}
-		// 获得减缴金额
-		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
-		// 实缴金额=应缴金额-减缴金额
-		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
+		//******************************//
+//		// 应残联要求   获得减缴金额改为  最终应缴金额中减去
+//		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
+//		// 实缴金额=应缴金额-减缴金额
+//		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
+		
+		//实缴金额=应缴金额
+		BigDecimal shiJiaoJinE = yingJiaoJinE;
+		//******************************//
 		// 获得未缴金额 --------需要计算
 
 		// ============================================================欠缴金额 部分缴款
@@ -707,8 +712,9 @@ public class AuditsController {
 		}
 		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
 		// 计算滞纳金===============================================================================================
-		// 实缴总金额=实缴金额+滞纳金
-		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin);
+		// 实缴总金额=实缴金额+滞纳金  - 减缴金额*************应残联要求   获得减缴金额改为  最终应缴金额中减去
+		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
+		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin).subtract(jianJiaoJinE);
 		Boolean mianJiao = calculateModel.getMianJiao();// 获取免交状态
 		if (mianJiao) {
 			shiJiaoZongJinE = new BigDecimal(0.00);
