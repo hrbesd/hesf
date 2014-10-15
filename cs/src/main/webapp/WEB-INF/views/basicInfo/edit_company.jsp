@@ -19,15 +19,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" />
+			<td class="tdRight">组织机关代码:</td>
+			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" />
 	
 				 <!-- 地区码 --> <input name="id" type="hidden" value="${company.id}" /> 
 				<!-- 地区码 --> <input name="version" type="hidden"
 				value="${company.version}" />
 			</td>
-			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" value="${company.companyTaxCode}" data-options="required:true" />
+			<td class="tdRight">税务编码:</td>
+			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" value="${company.companyTaxCode}" />
 			</td>
 		</tr>
 		<tr>
@@ -63,11 +63,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">开户银行(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" value="${company.companyBank}" data-options="required:true" />
+			<td class="tdRight">开户银行:</td>
+			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" value="${company.companyBank}" />
 			</td>
-			<td class="tdRight">银行账户(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" value="${company.companyBankAccount}" data-options="required:true" />
+			<td class="tdRight">银行账户:</td>
+			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" value="${company.companyBankAccount}" />
 			</td>
 		</tr>
 		<tr>

@@ -25,12 +25,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
+			<td class="tdRight">组织机关代码:</td>
 			<td class="">
-			<input name="companyOrganizationCode" class="easyui-validatebox" required="true" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
+			<input name="companyOrganizationCode" class="easyui-validatebox" validType="remote['company/validate_companyOrganizationCode','param','组织机关代码证已存在']" type="text" />
 			</td>
-			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+			<td class="tdRight">税务编码:</td>
+			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">企业性质:</td>
@@ -67,10 +67,10 @@
 			<td><input name="companyMobile" class="easyui-validatebox" type="text" data-options="validType:['_number']" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">开户银行(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
-			<td class="tdRight">银行账户(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" data-options="required:true,validType:['_number']" /></td>
+			<td class="tdRight">开户银行:</td>
+			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" /></td>
+			<td class="tdRight">银行账户:</td>
+			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" data-options="validType:['_number']" /></td>
 		</tr>
 		<tr>
 			<td class="tdRight">地区</td>
