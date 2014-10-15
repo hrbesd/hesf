@@ -344,11 +344,15 @@
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
 				<td width="100"><input id="jianJiaoJinE" type="text" class="readonly" name="reductionAmount" value="${entity.reductionAmount}" onblur="initAudit.jisuan()" /></td>
-				<td width="99">免滞纳金:</td>
+				<td width="99">减滞纳金:</td>
+				<td>
+					<input id="jianZhiNaJin" type="text" class="readonly" name="jianZhiNaJin" value="${entity.jianZhiNaJin}" onblur="initAudit.jisuan()" />
+				</td>
+		<!-- 		<td width="99">免滞纳金:</td>
 				<td><select disabled="disabled" id="mianZhiNaJin" style="font-size: 12px; width: 100px;height: 28px;" class="" name="isDelayPay" data-options="width:100,panelHeight:80,height:30,editable:false">
 						<option value="true" <c:if test="${entity.isDelayPay eq 'true'}">selected="selected"</c:if>>是</option>
 						<option value="false" <c:if test="${entity.isDelayPay eq 'false'}">selected="selected"</c:if>>否</option>
-				</select></td>
+				</select></td> -->
 
 				<td width="91">是否免交:</td>
 				<td><select disabled="disabled" id="mianJiao" style="font-size: 12px; width: 100px;height: 28px;" class="" name="isExempt" data-options="width:100,panelHeight:80,height:30,editable:false">

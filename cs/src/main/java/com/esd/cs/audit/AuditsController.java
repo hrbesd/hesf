@@ -407,7 +407,8 @@ public class AuditsController {
 		getAudit.setRemainAmount(audit.getRemainAmount());// 上年度未缴金额
 		getAudit.setComplementAmount(audit.getComplementAmount());// 补缴金额
 		getAudit.setDelayPayAmount(audit.getDelayPayAmount());// 滞纳金
-		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
+//		getAudit.setIsDelayPay(audit.getIsDelayPay());// 是否减免滞纳金
+		getAudit.setJianZhiNaJin(audit.getJianZhiNaJin());	//减缴滞纳金额
 		getAudit.setIsExempt(audit.getIsExempt());// 是否免0
 		getAudit.setUserId(userId);
 		AuditProcessStatus auditProcessStatus = null;
@@ -651,15 +652,10 @@ public class AuditsController {
 			yingJiaoJinE = Constants.ZERO;
 			calculateModel.setYingJiaoJinE(yingJiaoJinE);
 		}
-		//******************************//
-//		// 应残联要求   获得减缴金额改为  最终应缴金额中减去
-//		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
-//		// 实缴金额=应缴金额-减缴金额
-//		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
-		
-		//实缴金额=应缴金额
-		BigDecimal shiJiaoJinE = yingJiaoJinE;
-		//******************************//
+		// 获得减缴金额
+		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
+		// 实缴金额=应缴金额-减缴金额
+		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
 		// 获得未缴金额 --------需要计算
 
 		// ============================================================欠缴金额 部分缴款
@@ -705,16 +701,20 @@ public class AuditsController {
 		// 计算滞纳金
 		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi)
 				.multiply(new BigDecimal(zhiNanJinTianshu));
-		// 判断是否免除滞纳金
-		Boolean mian = calculateModel.getMianZhiNaJin();
-		if (mian) {
-			zhiNaJin = new BigDecimal(0.00);
-		}
+//		// 判断是否免除滞纳金
+//		Boolean mian = calculateModel.getMianZhiNaJin();
+//		if (mian) {
+//			zhiNaJin = new BigDecimal(0.00);
+//		}
 		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
+		
 		// 计算滞纳金===============================================================================================
-		// 实缴总金额=实缴金额+滞纳金  - 减缴金额*************应残联要求   获得减缴金额改为  最终应缴金额中减去
-		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
-		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin).subtract(jianJiaoJinE);
+		// 实缴总金额=实缴金额+滞纳金-减缴滞纳金
+		BigDecimal jianZhiNaJin = new BigDecimal("0.00");
+		if(calculateModel.getJianZhiNaJin()!=null){
+			jianZhiNaJin = calculateModel.getJianZhiNaJin();
+		}
+		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin).subtract(jianZhiNaJin);
 		Boolean mianJiao = calculateModel.getMianJiao();// 获取免交状态
 		if (mianJiao) {
 			shiJiaoZongJinE = new BigDecimal(0.00);

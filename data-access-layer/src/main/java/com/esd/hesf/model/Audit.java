@@ -35,6 +35,7 @@ public class Audit extends PrimaryKey_Int {
 	private BigDecimal complementAmount; // 补缴金额
 	private BigDecimal delayPayAmount; // 滞纳金
 	private Boolean isDelayPay; // 是否减免滞纳金
+	private BigDecimal jianZhiNaJin; // 当年 减缴滞纳金
 	private User initAuditUser;// 初审人id
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date initAuditDate;// 初审日期
@@ -244,6 +245,14 @@ public class Audit extends PrimaryKey_Int {
 		this.isDelayPay = isDelayPay;
 	}
 
+	public BigDecimal getJianZhiNaJin() {
+		return jianZhiNaJin;
+	}
+
+	public void setJianZhiNaJin(BigDecimal jianZhiNaJin) {
+		this.jianZhiNaJin = jianZhiNaJin;
+	}
+
 	public User getInitAuditUser() {
 		return initAuditUser;
 	}
@@ -267,7 +276,7 @@ public class Audit extends PrimaryKey_Int {
 	public void setInitAuditComment(String initAuditComment) {
 		this.initAuditComment = initAuditComment;
 	}
-	
+
 	public User getJianMianAuditUser() {
 		return jianMianAuditUser;
 	}

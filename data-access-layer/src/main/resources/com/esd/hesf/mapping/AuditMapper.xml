@@ -19,6 +19,7 @@
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
 		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
 		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
+		<result column="au_jian_zhi_na_jin" jdbcType="DECIMAL" property="jianZhiNaJin" />
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
@@ -121,7 +122,7 @@
 		au.company_already_total as au_company_already_total, au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
 		au.actual_amount as au_actual_amount, au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount,
 		au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount,
-		au.is_delay_pay as au_is_delay_pay,
+		au.is_delay_pay as au_is_delay_pay, au.jian_zhi_na_jin as au_jian_zhi_na_jin,
 		au.init_audit_user_id as au_init_audit_user_id,
 		au.init_audit_date as au_init_audit_date, au.init_audit_comment as au_init_audit_comment,
 		au.jianmian_audit_user_id as au_jianmian_audit_user_id, au.jianmian_audit_date as au_jianmian_audit_date,
@@ -184,7 +185,7 @@
 		audit_process_status, amount_payable,
 		reduction_amount,
 		actual_amount, pay_amount, remain_amount,complement_amount,delay_pay_amount,
-		is_delay_pay,
+		is_delay_pay, jian_zhi_na_jin,
 		init_audit_user_id, init_audit_date, init_audit_comment,
 		jianmian_audit_user_id, jianmian_audit_date, jianmian_audit_comment, 
 		verify_audit_user_id, verify_audit_date, verify_audit_comment, 
@@ -203,7 +204,7 @@
 		#{reductionAmount,jdbcType=DECIMAL},
 		#{actualAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
 		#{remainAmount,jdbcType=DECIMAL},#{complementAmount,jdbcType=DECIMAL},#{delayPayAmount,jdbcType=DECIMAL},
-		#{isDelayPay,jdbcType=BIT},
+		#{isDelayPay,jdbcType=BIT}, #{jianZhiNaJin,jdbcType=DECIMAL},
 		#{initAuditUser.id,jdbcType=INTEGER}, #{initAuditDate,jdbcType=TIMESTAMP}, #{initAuditComment,jdbcType=VARCHAR},
 		#{jianMianAuditUser.id,jdbcType=INTEGER}, #{jianMianAuditDate,jdbcType=TIMESTAMP}, #{jianMianAuditComment,jdbcType=VARCHAR},
 		#{verifyAuditUser.id,jdbcType=INTEGER}, #{verifyAuditDate,jdbcType=TIMESTAMP}, #{verifyAuditComment,jdbcType=VARCHAR},
@@ -283,6 +284,9 @@
 			</if>
 			<if test="isDelayPay != null">
 				is_delay_pay,
+			</if>
+			<if test="jianZhiNaJin != null">
+				jian_zhi_na_jin,
 			</if>
 			<if test="initAuditUser != null">
 				<if test="initAuditUser.id != null and initAuditUser.id > 0">
@@ -436,6 +440,9 @@
 			</if>
 			<if test="isDelayPay != null">
 				#{isDelayPay,jdbcType=BIT},
+			</if>
+			<if test="jianZhiNaJin != null">
+				#{jianZhiNaJin,jdbcType=DECIMAL},
 			</if>
 			<if test="initAuditUser != null">
 				<if test="initAuditUser.id != null and initAuditUser.id > 0">
@@ -608,11 +615,14 @@
 			<if test="complementAmount != null">
 				complement_amount = #{complementAmount,jdbcType=DECIMAL},
 			</if>
+			<if test="delayPayAmount != null">
+				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
+			</if>
 			<if test="isDelayPay != null">
 				is_delay_pay = #{isDelayPay,jdbcType=BIT},
 			</if>
-			<if test="delayPayAmount != null">
-				delay_pay_amount = #{delayPayAmount,jdbcType=DECIMAL},
+			<if test="jianZhiNaJin != null">
+				jian_zhi_na_jin = #{jianZhiNaJin,jdbcType=DECIMAL},
 			</if>
 			<if test="initAuditUser != null">
 				<if test="initAuditUser.id != null and initAuditUser.id > 0">

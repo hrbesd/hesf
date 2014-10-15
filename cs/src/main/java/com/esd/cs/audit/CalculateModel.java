@@ -12,7 +12,7 @@ import java.util.List;
 public class CalculateModel {
 
 	private DecimalFormat df = new DecimalFormat("0.00");
-//	private DecimalFormat df4 = new DecimalFormat("0.000");
+	// private DecimalFormat df4 = new DecimalFormat("0.000");
 
 	private Integer zaiZhiYuanGongZongShu;
 	private BigDecimal yingAnPaiCanJiRen;
@@ -32,6 +32,7 @@ public class CalculateModel {
 	private Integer companyId;
 	private Boolean mianZhiNaJin;
 	private Boolean mianJiao;
+	private BigDecimal jianZhiNaJin;
 
 	private String s_zaiZhiYuanGongZongShu;
 	private String s_yingAnPaiCanJiRen;
@@ -106,9 +107,11 @@ public class CalculateModel {
 		return shangNianDuWeiJiaoBaoZhangJin;
 	}
 
-	public void setShangNianDuWeiJiaoBaoZhangJin(BigDecimal shangNianDuWeiJiaoBaoZhangJin) {
+	public void setShangNianDuWeiJiaoBaoZhangJin(
+			BigDecimal shangNianDuWeiJiaoBaoZhangJin) {
 		this.shangNianDuWeiJiaoBaoZhangJin = shangNianDuWeiJiaoBaoZhangJin;
-		this.s_shangNianDuWeiJiaoBaoZhangJin = String.valueOf(df.format(shangNianDuWeiJiaoBaoZhangJin));
+		this.s_shangNianDuWeiJiaoBaoZhangJin = String.valueOf(df
+				.format(shangNianDuWeiJiaoBaoZhangJin));
 	}
 
 	public BigDecimal getYingJiaoJinE() {
@@ -203,7 +206,8 @@ public class CalculateModel {
 		return s_shangNianDuWeiJiaoBaoZhangJin;
 	}
 
-	public void setS_shangNianDuWeiJiaoBaoZhangJin(String s_shangNianDuWeiJiaoBaoZhangJin) {
+	public void setS_shangNianDuWeiJiaoBaoZhangJin(
+			String s_shangNianDuWeiJiaoBaoZhangJin) {
 		this.s_shangNianDuWeiJiaoBaoZhangJin = s_shangNianDuWeiJiaoBaoZhangJin;
 	}
 
@@ -331,6 +335,14 @@ public class CalculateModel {
 
 	public void setMianJiao(Boolean mianJiao) {
 		this.mianJiao = mianJiao;
+	}
+
+	public BigDecimal getJianZhiNaJin() {
+		return jianZhiNaJin;
+	}
+
+	public void setJianZhiNaJin(BigDecimal jianZhiNaJin) {
+		this.jianZhiNaJin = jianZhiNaJin;
 	}
 
 	public List<AccountModel> getWeiJiaoMingXi() {

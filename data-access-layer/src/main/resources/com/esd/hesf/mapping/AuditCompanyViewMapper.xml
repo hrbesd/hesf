@@ -20,6 +20,7 @@
 		<result column="au_complement_amount" jdbcType="DECIMAL" property="complementAmount" />
 		<result column="au_delay_pay_amount" jdbcType="DECIMAL" property="delayPayAmount" />
 		<result column="au_is_delay_pay" jdbcType="BIT" property="isDelayPay" />
+		<result column="au_jian_zhi_na_jin" jdbcType="DECIMAL" property="jianZhiNaJin" />
 		<result column="au_init_audit_user_id" jdbcType="INTEGER" property="initAuditUser.id" />
 		<result column="au_init_audit_date" jdbcType="TIMESTAMP" property="initAuditDate" />
 		<result column="au_init_audit_comment" jdbcType="VARCHAR" property="initAuditComment" />
@@ -106,7 +107,7 @@
 				au.actual_amount as au_actual_amount,
 				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
 				au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
-				au.is_delay_pay as au_is_delay_pay, 
+				au.is_delay_pay as au_is_delay_pay, au.jian_zhi_na_jin as au_jian_zhi_na_jin, 
 				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
 				au.init_audit_comment as au_init_audit_comment, 
 				au.jianmian_audit_user_id as au_jianmian_audit_user_id,  au.jianmian_audit_date as au_jianmian_audit_date, 
@@ -308,7 +309,55 @@
 	</select>
 	
 	
-	
+	<insert id="create_7">
+		create view audit_company_view as 
+		select	c.id as c_id, c.company_code as c_company_code, c.company_management as c_company_management,
+				c.company_name as c_company_name, c.company_legal as c_company_legal,
+				c.company_contact_person as c_company_contact_person, 
+				c.company_organization_code as c_company_organization_code, c.company_tax_code as c_company_tax_code,
+				c.company_address as c_company_address, c.company_zip_code as c_company_zip_code, 
+				c.company_fax as c_company_fax, 
+				c.company_phone as c_company_phone, c.company_mobile as c_company_mobile, 
+				c.company_bank as c_company_bank, c.company_bank_account as c_company_bank_account,
+				c.company_remark as c_company_remark, c.create_time as c_create_time, 
+				c.update_time as c_update_time, c.user_id as c_user_id, c.is_active as c_is_active, c.version as c_version,
+			t.id as t_id, t.company_type as t_company_type, 
+			et.id as et_id, et.company_economy_type as et_company_economy_type,
+			p.id as p_id, p.company_property as p_company_property,
+			a.code as a_code, a.name as a_name,
+			au.id as au_id, au.year as au_year, au.company_emp_total as au_company_emp_total,
+				au.company_handicap_total as au_company_handicap_total, au.company_predict_total as au_company_predict_total,
+				au.company_should_total as au_company_should_total, au.company_already_total as au_company_already_total, 
+				au.amount_payable as au_amount_payable, au.reduction_amount as au_reduction_amount,
+				au.actual_amount as au_actual_amount,
+				au.pay_amount as au_pay_amount, au.remain_amount as au_remain_amount, 
+				au.complement_amount as au_complement_amount, au.delay_pay_amount as au_delay_pay_amount, 
+				au.is_delay_pay as au_is_delay_pay, au.jian_zhi_na_jin as au_jian_zhi_na_jin, 
+				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
+				au.init_audit_comment as au_init_audit_comment, 
+				au.jianmian_audit_user_id as au_jianmian_audit_user_id,  au.jianmian_audit_date as au_jianmian_audit_date, 
+				au.jianmian_audit_comment as au_jianmian_audit_comment, 
+				au.verify_audit_user_id as au_verify_audit_user_id, au.verify_audit_date as au_verify_audit_date , 
+				au.verify_audit_comment as au_verify_audit_comment,
+				au.remark as au_remark, 
+				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
+				au.reducion_apply_user as au_reducion_apply_user, 
+				au.reduction_date as au_reduction_date, au.reduction_reason as au_reduction_reason,
+				au.reduction_answer_user as au_reduction_answer_user, au.reduction_answer_date as au_reduction_answer_date, 
+				au.reduction_answer_option as au_reduction_answer_option, au.reduction_remark as au_reduction_remark,
+				au.unaudit_years as au_unaudit_years, au.supplement_year as au_supplement_year, 
+				au.delay_days as au_delay_days, au.refuse_times as au_refuse_times, 
+				au.create_time as au_create_time, au.update_time as au_update_time, au.user_id as au_user_id, 
+				au.is_active as au_is_active, au.version as au_version,
+			aup.id as aup_id, aup.audit_process_status as aup_audit_process_status
+		from audit as au 
+			left join audit_process_status as aup on au.audit_process_status = aup.id 
+			left join company as c on au.company_id = c.id 
+			left join company_type as t on c.company_type = t.id left join company_economy_type as et on c.company_economy_type = et.id
+			left join company_property as p on c.company_property = p.id left join area as a on c.area_code = a.code
+		group by au.id
+		order by c.company_code;
+	</insert>
 	
 	
 	<insert id="create_6">
