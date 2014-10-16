@@ -72,7 +72,7 @@ basicFile.loadData = function(params) {
 		width : 250,
 		align : 'center',
 		formatter : function(value, row, index) {
-			if(row.userGroupId == 1 || row.userGroupId == 2 || row.userGroupId == 3 || row.userGroupId == 6){
+			if(row.userGroupId == 1 || row.userGroupId == 2 || row.userGroupId == 3 || row.userGroupId == 6 || row.userGroupId == 7){
 				return  '<a  href="#" onclick="basicFile.openEditCompany(\'' + row.id + '\')">编辑</a> '+
 					'<a href="#" onclick="basicFile.openDeleteCompany(\'' + row.id + '\')">删除</a> ';
 			}
