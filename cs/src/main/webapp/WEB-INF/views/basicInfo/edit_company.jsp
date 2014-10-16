@@ -10,7 +10,10 @@
 	<table id="edit_companyTab" class="companyTable" border="0">
 		<tr>
 			<td class="tdRight">档案编码:</td>
-			<td class="texttd"><input name="" class="inNormal" type="text" value="${company.companyCode}"   data-options="required:true" readonly="readonly" />
+			<td class="texttd">
+				<input name="" class="inNormal" type="text" value="${company.companyCode}"   data-options="required:true" readonly="readonly" />
+				<input name="id" type="hidden" value="${company.id}" /> 
+				<input name="version" type="hidden" value="${company.version}" />
 			</td>
 		</tr>
 		<tr>
@@ -19,55 +22,26 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">组织机关代码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyOrganizationCode" class="inNormal easyui-validatebox" type="text" value="${company.companyOrganizationCode}" data-options="required:true" />
-	
-				 <!-- 地区码 --> <input name="id" type="hidden" value="${company.id}" /> 
-				<!-- 地区码 --> <input name="version" type="hidden"
-				value="${company.version}" />
-			</td>
-			<td class="tdRight">税务编码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyTaxCode" class="inNormal easyui-validatebox" type="text" value="${company.companyTaxCode}" data-options="required:true" />
-			</td>
-		</tr>
-		<tr>
 			<td class="tdRight">企业性质:</td>
 			<td><input value="${company.companyProperty.id}" name="companyProperty.id" class="easyui-combobox iniTcompanyProperty"
 				data-options="height:30,editable:false,valueField:'id',textField:'companyProperty',url:'parameter/propertyEx'" /></td>
-			<td class="tdRight">经济类型:</td>
-			<td class="bj_belu"><input value="${company.companyEconomyType.id}" name="companyEconomyType.id" class="easyui-combobox "
-				data-options="height:30,editable:false,valueField:'id',textField:'companyEconomyType',url:'parameter/economytypeEx'" /></td>
-		</tr>
-		<tr>
-			<td class="tdRight">单位类别:</td>
-			<td class="bj_belu"><input value="${company.companyType.id}" id="companyType" name="companyType.id" class="easyui-combobox iniTcompanyType"
-				data-options="height:30,editable:false,valueField:'id',textField:'companyType',url:'parameter/companytypeEx'" />
-			</td>
 			<td class="tdRight">主管部门:</td>
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
-			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" data-options="required:true" />
+			<td class="tdRight">法人代表:</td>
+			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" />
 			</td>
-			<td class="tdRight">联系人(<span class="red_notice">*</span>):</td>
-			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" value="${company.companyContactPerson}" />
+			<td class="tdRight">联系人:</td>
+			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" value="${company.companyContactPerson}" />
 			</td>
 		</tr>
 		<tr>
-			<td class="tdRight">电话号码(<span class="red_notice">*</span>):</td>
-			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" value="${company.companyPhone}" data-options="required:true" />
+			<td class="tdRight">电话号码:</td>
+			<td><input name="companyPhone" class="inNormal easyui-validatebox" type="text" value="${company.companyPhone}" />
 			</td>
 			<td class="tdRight">手机号码:</td>
 			<td><input name="companyMobile" class="inNormal easyui-validatebox" type="text" value="${company.companyMobile}"/>
-			</td>
-		</tr>
-		<tr>
-			<td class="tdRight">开户银行(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBank" class="inNormal easyui-validatebox" type="text" value="${company.companyBank}" data-options="required:true" />
-			</td>
-			<td class="tdRight">银行账户(<span class="red_notice">*</span>):</td>
-			<td><input name="companyBankAccount" class="inNormal easyui-validatebox" type="text" value="${company.companyBankAccount}" data-options="required:true" />
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +49,7 @@
 			<td><input name="area.code" class="easyui-combobox iniTcompanyProperty" value="${company.area.code}"
 				data-options="height:30,editable:false,valueField:'code',textField:'name',url:'parameter/getArea'" /></td>
 			<td class="tdRight">邮政编码:</td>
-			<td class="bj_belu"><input name="companyZipCode" class="inNormal easyui-validatebox" type="text" value="${company.companyZipCode}" data-options="validType:['_length[6]','_number']" />
+			<td class="bj_belu"><input name="companyZipCode" class="inNormal easyui-validatebox" type="text" value="${company.companyZipCode}" data-options="validType:['_number']" />
 			</td>
 		</tr>
 		<tr>

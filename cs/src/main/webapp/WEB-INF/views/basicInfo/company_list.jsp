@@ -9,10 +9,11 @@
 <input type="hidden" id="companyProperty" value="${companyProperty}" />
 <!-- 自定义菜单 -->
 <div id="company_boolbar">
+<!-- 
 	<div style="text-align: right;">
 		<a onclick="basicFile.openAddCompany('${companyProperty}')" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">增加</a> <a onclick="basicFile.openBatchDeleteCompany()" href="#"
 			class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">删除</a>
-	</div>
+	</div>	 -->
 	<div>
 		<!-- 基本档案 搜索框 档案编码 -->
 		<input id="companyCode" type="text" style="width: 14%;margin-left: 50px" />

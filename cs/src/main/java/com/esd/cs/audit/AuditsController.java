@@ -196,16 +196,16 @@ public class AuditsController {
 			boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
-				audit.setVerifyAuditDate(new Date()); // 添加复审时间
-				// 添加复审人
 				Integer userId = (Integer) session
 						.getAttribute(Constants.USER_ID);
-				User user = userService.getByPrimaryKey(userId);
-				audit.setVerifyAuditUser(user);
+//				User user = userService.getByPrimaryKey(userId);
+				audit.setFinalAuditUser(new User(userId));	//添加终审人
+				audit.setFinalAuditDate(new Date()); // 添加终审时间
+				audit.setUserId(userId);	//添加操作人
 				// 更改审计状态
 				AuditProcessStatus auditProcessStatus = auditProcessStatusService
 						.getByPrimaryKey(Constants.PROCESS_STATIC_ZSOK);
-				audit.setAuditProcessStatus(auditProcessStatus);// 设置为未终审
+				audit.setAuditProcessStatus(auditProcessStatus);// 设置为 终审ok
 				auditService.update(audit);
 				return true;
 			}
@@ -803,6 +803,9 @@ public class AuditsController {
 					map.put("initAuditUser", "-");
 				}
 				// 终审时间
+				System.out.println("**************************************************");
+				System.out.println(it.getFinalAuditDate()+"-----------"+it.getFinalAuditUser());
+				System.out.println("**************************************************");
 				if (it.getFinalAuditDate() != null) {
 					map.put("finalAuditDate",
 							CalendarUtil.dateFormat(it.getFinalAuditDate()));
@@ -975,8 +978,15 @@ public class AuditsController {
 	 */
 	@RequestMapping(value = "/saveAudit", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean saveAudit(Audit audit) {
+	public Boolean saveAudit(Audit audit,HttpSession session) {
 		logger.debug(audit.toString());
+		audit.setInitAuditDate(new Date()); // 添加初审计时间
+		// 添加审计人
+		Integer userId = (Integer) session
+				.getAttribute(Constants.USER_ID);
+//		User user = userService.getByPrimaryKey(userId);
+		audit.setInitAuditUser(new User(userId));
+		audit.setUserId(userId);	//添加操作人id
 		audit.setAuditProcessStatus(new AuditProcessStatus(
 				Constants.PROCESS_STATIC_YCSWZS));
 		//初审信息备注前面添加内容： 新增公司

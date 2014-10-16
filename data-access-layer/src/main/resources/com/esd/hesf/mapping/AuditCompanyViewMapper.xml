@@ -26,6 +26,9 @@
 		<result column="au_verify_audit_user_id" jdbcType="INTEGER" property="verifyAuditUser.id" />
 		<result column="au_verify_audit_date" jdbcType="TIMESTAMP" property="verifyAuditDate" />
 		<result column="au_verify_audit_comment" jdbcType="VARCHAR" property="verifyAuditComment" />
+		<result column="au_final_audit_user_id" jdbcType="VARCHAR" property="finalAuditUser.id" />
+		<result column="au_final_audit_date" jdbcType="TIMESTAMP" property="finalAuditDate" />
+		<result column="au_final_audit_comment" jdbcType="VARCHAR" property="finalAuditComment" />
 		<result column="au_remark" jdbcType="VARCHAR" property="remark" />
 		<result column="au_is_exempt" jdbcType="BIT" property="isExempt" />
 		<result column="au_reduction_type" jdbcType="INTEGER" property="reductionType" />
@@ -107,6 +110,8 @@
 				au.init_audit_user_id as au_init_audit_user_id,  au.init_audit_date as au_init_audit_date, 
 				au.init_audit_comment as au_init_audit_comment, au.verify_audit_user_id as au_verify_audit_user_id,
 				au.verify_audit_date as au_verify_audit_date , au.verify_audit_comment as au_verify_audit_comment,
+				au.final_audit_user_id as au_final_audit_user_id,au.final_audit_date as au_final_audit_date, 
+				au.final_audit_comment as au_final_audit_comment,
 				au.remark as au_remark, 
 				au.is_exempt as au_is_exempt,au.reduction_type as au_reduction_type,
 				au.reducion_apply_user as au_reducion_apply_user, 

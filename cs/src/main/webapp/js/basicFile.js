@@ -120,7 +120,7 @@ basicFile.openViewCompany = function(id) {
  * 打开编辑企业信息框
  */
 basicFile.openEditCompany = function(id) {
-	esd.common.defaultOpenWindow("编辑企业信息", 'company/edit/' + id);
+	esd.common.defaultOpenWindowEx("编辑企业信息",900,500, 'company/edit/' + id);
 };
 
 /**
