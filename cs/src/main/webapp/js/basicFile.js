@@ -150,7 +150,7 @@ basicFile.openCompanyStaff = function(id) {
  */
 basicFile.openDeleteCompany = function(id) {
 	// 显示确认删除对话框
-	$.messager.confirm('确认', '您确认想要删除该记录吗？', function(r) {
+	$.messager.confirm('确认', '删除公司数据也将会删除对应的审核数据，您确认想要删除该记录吗？', function(r) {
 		if (r) {
 			// 组装参数
 			var params = new Array();
