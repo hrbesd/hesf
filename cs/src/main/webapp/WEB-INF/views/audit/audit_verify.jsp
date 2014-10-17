@@ -140,7 +140,7 @@
 //		}
 
 		$.ajax({
-			url : 'audits/calculate',
+			url : 'audits/calculateVerify',
 			type : 'POST',
 			data : param,
 			success : function(data) {
@@ -166,7 +166,7 @@
 				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
 				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
 				$('#zhiNaJin').val(data.s_zhiNaJin);
-				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
+			//	$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
 				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
 
 			},
