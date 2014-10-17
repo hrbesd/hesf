@@ -822,23 +822,20 @@ public class AuditsController {
 		// 计算滞纳金==========复审不再重复计算滞纳金天数, 使用初审已经确定了的=================================================
 		//		// 获得滞纳金开始时间
 //		Date date = auditParameter.getAuditDelayDate();
-//		// 获得滞纳金比例
-//		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
+		// 获得滞纳金比例
+		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
 //		// 计算滞纳金天数
-//		int zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
-//		if (zhiNanJinTianshu < 0) {
-//			zhiNanJinTianshu = 0;
-//		}
+		int zhiNanJinTianshu = calculateModel.getZhiNaJinTianShu();
 //		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);// 添加滞纳金天数
-//		// 计算滞纳金
-//		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi)
-//				.multiply(new BigDecimal(zhiNanJinTianshu));
+		// 计算滞纳金
+		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi)
+				.multiply(new BigDecimal(zhiNanJinTianshu));
 //		// 判断是否免除滞纳金
 //		Boolean mian = calculateModel.getMianZhiNaJin();
 //		if (mian) {
 //			zhiNaJin = new BigDecimal(0.00);
 //		}
-//		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
+		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
 		
 		// 计算滞纳金===============================================================================================
 		// 实缴总金额=实缴金额+滞纳金-减缴滞纳金
@@ -846,7 +843,7 @@ public class AuditsController {
 		if(calculateModel.getJianZhiNaJin()!=null){
 			jianZhiNaJin = calculateModel.getJianZhiNaJin();
 		}
-		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(calculateModel.getZhiNaJin()).subtract(jianZhiNaJin);
+		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin).subtract(jianZhiNaJin);
 		Boolean mianJiao = calculateModel.getMianJiao();// 获取免交状态
 		if (mianJiao) {
 			shiJiaoZongJinE = new BigDecimal(0.00);

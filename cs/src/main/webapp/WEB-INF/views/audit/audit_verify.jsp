@@ -127,6 +127,7 @@
 		param.shiJiaoJinE = $('#shiJiaoJinE').val();
 		param.zhiNaJin = $('#zhiNaJin').val();
 		param.jianZhiNaJin = $('#jianZhiNaJin').val();
+		param.zhiNaJinTianShu = $('#zhiNaJinTianShu').val();
 		//param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
 	//	param.mianZhiNaJin = $('#mianZhiNaJin').val();
 		//param.mianJiao = $('#mianJiao').combobox('getValue');
