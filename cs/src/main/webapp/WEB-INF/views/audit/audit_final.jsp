@@ -121,6 +121,7 @@
 		param.jianJiaoJinE = $('#jianJiaoJinE').val();
 		param.shiJiaoJinE = $('#shiJiaoJinE').val();
 		param.zhiNaJin = $('#zhiNaJin').val();
+		param.zhiNaJinTianShu = $('#zhiNaJinTianShu').val();
 		//param.mianZhiNaJin = $('#mianZhiNaJin').combobox('getValue');
 		param.mianZhiNaJin = $('#mianZhiNaJin').val();
 		//param.mianJiao = $('#mianJiao').combobox('getValue');
@@ -134,7 +135,7 @@
 		}
 
 		$.ajax({
-			url : 'audits/calculate',
+			url : 'audits/calculateFinal',
 			type : 'POST',
 			data : param,
 			success : function(data) {
@@ -159,7 +160,7 @@
 				$('#jianJiaoJinE').val(data.s_jianJiaoJinE);
 				$('#shiJiaoJinE').val(data.s_shiJiaoJinE);
 				$('#zhiNaJin').val(data.s_zhiNaJin);
-				$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
+			//	$('#zhiNaJinTianShu').val(data.s_zhiNaJinTianShu);
 				$('#shiJiaoZongJinE').val(data.s_shiJiaoZongJinE);
 				
 				//更新打印页面的实缴总金额

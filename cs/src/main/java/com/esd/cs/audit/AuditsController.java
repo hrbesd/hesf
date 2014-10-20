@@ -396,7 +396,7 @@ public class AuditsController {
 	}
 
 	/**
-	 * 计算保障金公式
+	 * 计算保障金公式--初审
 	 * 
 	 * @param calculateModel
 	 * @return
@@ -565,6 +565,177 @@ public class AuditsController {
 		return calculateModel;
 	}
 
+	/**
+	 * 计算保障金公式--终审
+	 * 
+	 * @param calculateModel
+	 * @return
+	 */
+	@RequestMapping(value = "/calculateFinal", method = RequestMethod.POST)
+	@ResponseBody
+	public CalculateModel calculateFinal(CalculateModel calculateModel) {
+		logger.debug(calculateModel.toString());
+		Integer companyId = calculateModel.getCompanyId();
+		String year = calculateModel.getYear();
+		AuditParameter auditParameter = auditParameterService.getByYear(year);
+
+		// 获得在职员工总数
+		Integer zaiZhiYuanGongZongShu = calculateModel
+				.getZaiZhiYuanGongZongShu();
+		if (zaiZhiYuanGongZongShu == null) {
+			zaiZhiYuanGongZongShu = 0;
+		}
+		// 残疾人安排比例
+		BigDecimal putScale = auditParameter.getPutScale();
+		// 计算出应安排人数
+		// 应安排人数=单位在职职工总数*残疾人安排比例
+		BigDecimal yingAnPaiCanJiRen = putScale.multiply(
+				new BigDecimal(zaiZhiYuanGongZongShu)).setScale(2,
+				BigDecimal.ROUND_HALF_UP);
+		calculateModel.setYingAnPaiCanJiRen(yingAnPaiCanJiRen);// 添加应安排残疾人数
+		// ========================================================================================
+		// 获得已录入残疾人数
+		Integer yiLuRuCanJiRen = calculateModel.getYiLuRuCanJiRen();
+		// 处理残疾人残疾类型和等级不同的比例
+		List<WorkerCalculator> list = auditParameterService
+				.getSpecialSetting(year);
+		for (WorkerCalculator workerCalculator : list) {
+			Integer per = workerCalculator.getPer().intValue();
+			Integer type = workerCalculator.getType();
+			Integer lvl = workerCalculator.getLvl();
+			Integer num = auditParameterService.getSpecialCount(companyId,
+					year, type, lvl);
+			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
+			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
+		}
+		// 获得预定残疾人数
+		Integer yuDingCanJiRen = calculateModel.getYuDingCanJiRen();
+		// 计算出在岗所有残疾人
+		Integer yiAnPaiCanJiRen = yiLuRuCanJiRen + yuDingCanJiRen;
+		calculateModel.setYiAnPaiCanJiRen(yiAnPaiCanJiRen);// 添加已安排残疾人数;残疾人总数
+		// =========================================================================================
+		// 本地区上年度职工年人均工资数
+		BigDecimal averageSalary = null;
+		Company company = companyService.getByPrimaryKey(companyId);
+		//如果为企业单位, 则使用企业平均工资计算
+		if(Constants.AVERAGE_SALARY_COMPANY == company.getCompanyProperty().getId()){
+			averageSalary = auditParameter.getAverageSalary();
+		}else if(Constants.AVERAGE_SALARY_PI== company.getCompanyProperty().getId()){
+			//如果为事业单位, 则使用事业单位平均工资计算
+			averageSalary = auditParameter.getAverageSalaryPi();
+		}
+//		averageSalary = auditParameter.getAverageSalary();
+		//-------------------//
+		//---计算出应缴金额---//
+		//-------------------//
+		
+		//
+		// 2014年审核, 使用下面的这个方法
+		//
+		// 如果 已安排人数  大于等于 应安排人数  , 则应缴金额为 零; 否则 应缴金额 = (职工总人数 - 已安排人数*66)* 平均工资(企业645, 事业742)
+		// 已安排人数 大于等于 应安排人数时 应缴款为零
+		BigDecimal yingJiaoJinE = null;	//声明应缴金额
+		if(new BigDecimal(yiAnPaiCanJiRen).compareTo(yingAnPaiCanJiRen) >= 0){
+			yingJiaoJinE = Constants.ZERO;
+		}else{
+		// 已安排人数  小于  应安排人数时  应缴金额 = (职工总人数 - 已安排人数*66)* 平均工资(企业645, 事业742)
+			yingJiaoJinE = new BigDecimal(zaiZhiYuanGongZongShu - yiAnPaiCanJiRen*66).multiply(averageSalary);
+		}
+		calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
+//				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+//		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		} else {
+//			yingJiaoJinE = Constants.ZERO;
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		}
+		//
+		// 2014年审核, 使用上面的这个方法
+		//
+		
+		//
+		// 2015年审核, 使用下面的这个方法
+		//
+//		// 本地区上年度职工年人均工资数*(应安排人数﹣已安排人数)
+//		BigDecimal yingJiaoJinE = averageSalary.multiply(yingAnPaiCanJiRen
+//				.subtract(new BigDecimal(yiAnPaiCanJiRen)));
+//		if (yingJiaoJinE.signum() == 1) {// 如果为正数添加 负数为达标置为0
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		} else {
+//			yingJiaoJinE = Constants.ZERO;
+//			calculateModel.setYingJiaoJinE(yingJiaoJinE);
+//		}
+		//
+		// 2015年审核, 使用上面的这个方法
+		//
+		
+		
+		// 获得减缴金额
+		BigDecimal jianJiaoJinE = calculateModel.getJianJiaoJinE();
+		// 应缴金额=应缴金额-减缴金额
+		BigDecimal shiJiaoJinE = yingJiaoJinE.subtract(jianJiaoJinE);
+		// 获得未缴金额 --------需要计算
+
+		// ============================================================欠缴金额 部分缴款
+		List<AccountModel> qianJiaoMingXi = new ArrayList<AccountModel>();
+		BigDecimal qianJiao = getSectionPaid(year, companyId, qianJiaoMingXi);
+		calculateModel.setQianJiaoMingXi(qianJiaoMingXi);
+		// ============================================================未审年度
+		List<AccountModel> weiShenMingXi = new ArrayList<AccountModel>();
+		BigDecimal weiShen = getUnAudits(year, companyId, new BigDecimal(
+				zaiZhiYuanGongZongShu), weiShenMingXi);
+		calculateModel.setWeiShenMingXi(weiShenMingXi);
+		// =============================================================未缴款
+		List<AccountModel> weiJiaoMingXi = new ArrayList<AccountModel>();
+		BigDecimal weiJiao = getUnpaid(year, companyId, weiJiaoMingXi);
+		calculateModel.setWeiJiaoMingXi(weiJiaoMingXi);
+		// ==================================================================上年未缴金额
+		logger.debug("qianJiao:{} weiShen:{} weiJiao{}", qianJiao, weiShen,
+				weiJiao);
+		// 上年未缴金额 =未缴+欠缴+未审
+		BigDecimal shangNianDuWeiJiaoBaoZhangJin = qianJiao.add(weiShen).add(
+				weiJiao);
+		calculateModel
+				.setShangNianDuWeiJiaoBaoZhangJin(shangNianDuWeiJiaoBaoZhangJin);
+		// =====================================================================================================
+		// 实缴金额=应缴金额-减缴金额+补缴金额+上年度未缴金额
+		BigDecimal real_yingJiaoJinE = shiJiaoJinE
+				.add(shangNianDuWeiJiaoBaoZhangJin);
+		// BigDecimal real_yingJiaoJinE = shiJiaoJinE;
+		calculateModel.setShiJiaoJinE(real_yingJiaoJinE);// 添加实缴金额
+		// 计算滞纳金============================================================================================
+		// 获得滞纳金开始时间
+		System.out.println(calculateModel.getZhiNaJinTianShu());
+		Date date = auditParameter.getAuditDelayDate();
+		// 获得滞纳金比例
+		BigDecimal zhiNaJinBiLi = auditParameter.getAuditDelayRate();
+		// 计算滞纳金天数
+//		int zhiNanJinTianshu = CalendarUtil.getDaySub(date, new Date());
+//		if (zhiNanJinTianshu < 0) {
+//			zhiNanJinTianshu = 0;
+//		}
+//		calculateModel.setZhiNaJinTianShu(zhiNanJinTianshu);// 添加滞纳金天数
+		int zhiNanJinTianshu = calculateModel.getZhiNaJinTianShu();
+		// 计算滞纳金
+		BigDecimal zhiNaJin = real_yingJiaoJinE.multiply(zhiNaJinBiLi)
+				.multiply(new BigDecimal(zhiNanJinTianshu));
+		// 判断是否免除滞纳金
+		Boolean mian = calculateModel.getMianZhiNaJin();
+		if (mian) {
+			zhiNaJin = new BigDecimal(0.00);
+		}
+		calculateModel.setZhiNaJin(zhiNaJin);// 添加滞纳金
+		// 计算滞纳金===============================================================================================
+		// 实缴总金额=实缴金额+滞纳金
+		BigDecimal shiJiaoZongJinE = real_yingJiaoJinE.add(zhiNaJin);
+		Boolean mianJiao = calculateModel.getMianJiao();// 获取免交状态
+		if (mianJiao) {
+			shiJiaoZongJinE = new BigDecimal(0.00);
+		}
+		calculateModel.setShiJiaoZongJinE(shiJiaoZongJinE);
+		return calculateModel;
+	}
 	/**
 	 * 获得未审年度的金额
 	 * 
