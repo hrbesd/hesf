@@ -1,0 +1,555 @@
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<script type="text/javascript">
+	setTimeout(loadauditParams,1000);
+	
+	function loadauditParams(){
+		var htmldiv=
+			"<div style='margin-top: 20px; margin-left: 20px;'>"+
+			"<input type='hidden'  id='eyeOneHid' name='eyeOneHid' value='${params.eyeOne}' />"+
+			"<input type='hidden'  id='auditDelayHid' name='auditDelayHid' value='${params.auditDelayDate}' />"+
+			"<input type='hidden'  id='beginHid' name='beginHid' value='${params.payCloseDate}' />"+
+				"<input type='hidden'  id='eyeTwoHid' name='eyeTwoHid' value='${params.eyeTwo}' />"+
+				"<input type='hidden'  id='eyeThreeHid' name='eyeThreeHid' value='${params.eyeThree}' />"+
+				"<input type='hidden'  id='eyeFourHid' name='eyeFourHid' value='${params.eyeFour}' />"+
+				"<input type='hidden'  id='hearingOneHid' name='hearingOneHid' value='${params.hearingOne}' />"+
+				"<input type='hidden'  id='hearingTwoHid' name='hearingTwoHid' value='${params.hearingTwo}' />"+
+				"<input type='hidden'  id='hearingThreeHid' name='hearingThreeHid' value='${params.hearingThree}' />"+
+				"<input type='hidden'  id='hearingFourHid' name='hearingFourHid' value='${params.hearingFour}' />"+
+				"<input type='hidden'  id='speakOneHid' name='speakOneHid' value='${params.speakOne}' />"+
+				"<input type='hidden'  id='speakTwoHid' name='speakTwoHid' value='${params.speakTwo}' />"+
+				"<input type='hidden'  id='speakThreeHid' name='speakThreeHid' value='${params.speakThree}' />"+
+				"<input type='hidden'  id='speakFourHid' name='speakFourHid' value='${params.speakFour}' />"+
+				"<input type='hidden'  id='bodyOneHid' name='bodyOneHid' value='${params.bodyOne}' />"+
+				"<input type='hidden'  id='bodyTwoHid' name='bodyTwoHid' value='${params.bodyTwo}' />"+
+				"<input type='hidden'  id='bodyThreeHid' name='bodyThreeHid' value='${params.bodyThree}' />"+
+				"<input type='hidden'  id='bodyFourHid' name='bodyFourHid' value='${params.bodyFour}' />"+
+				"<input type='hidden'  id='intelligenceOneHid' name='intelligenceOneHid' value='${params.intelligenceOne}' />"+
+				"<input type='hidden'  id='intelligenceTwoHid' name='intelligenceTwoHid' value='${params.intelligenceTwo}' />"+
+				"<input type='hidden'  id='intelligenceThreeHid' name='intelligenceThreeHid' value='${params.intelligenceThree}' />"+
+				"<input type='hidden'  id='intelligenceFourHid' name='intelligenceFourHid' value='${params.intelligenceFour}' />"+
+				"<input type='hidden'  id='mentalOneHid' name='mentalOneHid' value='${params.mentalOne}' />"+
+				"<input type='hidden'  id='mentalTwoHid' name='mentalTwoHid' value='${params.mentalTwo}' />"+
+				"<input type='hidden'  id='mentalThreeHid' name='mentalThreeHid' value='${params.mentalThree}' />"+
+				"<input type='hidden'  id='mentalFourHid' name='mentalFourHid' value='${params.mentalFour}' />"+
+				"<input type='hidden'  id='multiOneHid' name='multiOneHid' value='${params.multiOne}' />"+
+				"<input type='hidden'  id='multiTwoHid' name='multiTwoHid' value='${params.multiTwo}' />"+
+				"<input type='hidden'  id='multiThreeHid' name='multiThreeHid' value='${params.multiThree}' />"+
+				"<input type='hidden'  id='multiFourHid' name='multiFourHid' value='${params.multiFour}' />"+
+				"<table class='parameterTab'>"+
+					"<tr>"+
+						"<td>年度:</td>"+
+						"<td>"+"<input class='easyui-validatebox' required='true' name='year' type='text' value='${params.year}' />"+ 
+						"<input class='easyui-validatebox' name='version' type='hidden' 	value='${params.version}' />"+ "<input class='easyui-validatebox' name='id' type='hidden' value='${params.id}' />"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>所属地区:</td>"+
+						"<td>"+"<input value='${areaName}' />"+"</td>"+
+						"<td>滞纳金开始日期:</td>"+
+						"<td>"+"<input type='text' id='auditDelaytext' style='width:150px;height:30px'></input>"+ 
+						"<td>干部退休年龄(女)：</td>"+
+							"<td>"+"<input class='easyui-validatebox' name='retireAgeCadreFemale' type='text' required='true' value='${params.retireAgeCadreFemale }' />"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>安置比例(%):</td>"+
+						"<td>"+"<input class='easyui-validatebox' name='putScale' type='text' required='true' value='${params.putScale}' />"+"</td>"+
+						"<td>滞纳金征收比率(%):</td>"+
+						"<td>"+"<input class='easyui-validatebox' name='auditDelayRate' type='text' required='true' value='${params.auditDelayRate}'  style='width:148px;'/>"+"</td>"+
+						"<td>职工退休年龄(男)：</td>"+
+						"<td>"+"<input class='easyui-validatebox' name='retireAgeMale' type='text' required='true' value='${params.retireAgeMale}' />"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>计算基数:</td>"+
+						"<td>"+"<input class='easyui-validatebox' name='averageSalary' type='text' required='true' value='${params.averageSalary}' />"+"</td>"+
+						"<td>支付截至日期:</td>"+
+						"<td>"+"<input type='text' id='begindate' style='width:150px;height:30px' ></input>"+ 
+						"<td>职工退休年龄(女)：</td>"+
+						"<td>"+"<input class='easyui-validatebox' name='retireAgeFemale' type='text' required='true' value='${params.retireAgeFemale }' />"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>&nbsp;</td>"+
+					"</tr>"+
+
+				"</table>"+
+				"<div>"+
+					"<strong>残疾人等级计算：</strong>"+
+				"</div>"+
+				"<table style='margin-top: 10px; margin-left: 20px; float: left;' border='0'>"+
+					"<tr>"+
+						"<td width='80'>&nbsp;</td>"+
+						"<td>一级</td>"+
+						"<td>二级</td>"+
+						"<td>三级</td>"+
+						"<td>四级</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>视力残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='eyeOne' id='eyeOne' data-options='panelHeight:70,height:30'>"+
+							 	"<option value='1' >1</option>"+
+								"<option value='2' >2</option>"+ 
+							"</select>"+
+						"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='eyeTwo'  id='eyeTwo' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+
+						"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='eyeThree'  id='eyeThree' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+
+						"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='eyeFour'  id='eyeFour' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+
+						"</td>"+
+					"</tr>"+
+					 "<tr>"+
+						"<td>听力残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='hearingOne'  id='hearingOne' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='hearingTwo' id='hearingTwo'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='hearingThree'  id='hearingThree' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='hearingFour' id='hearingFour'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>言语残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='speakOne' id='speakOne'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='speakTwo' id='speakTwo'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='speakThree'  id='speakThree' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='speakFour' id='speakFour'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>肢体残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='bodyOne' id='bodyOne'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='bodyTwo' id='bodyTwo'  data-options='panelHeight:70,height:30'>"+
+							"<option value='1' >1</option>"+
+							"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='bodyThree'  id='bodyThree' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='bodyFour' id='bodyFour'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>智力残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='intelligenceOne' id='intelligenceOne'  data-options='panelHeight:70,height:30'>"+
+							"<option value='1' >1</option>"+
+							"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='intelligenceTwo' id='intelligenceTwo'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='intelligenceThree' id='intelligenceThree'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+						"<td>"+"<select class='easyui-combobox' name='intelligenceFour' id='intelligenceFour'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>精神残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='mentalOne' id='mentalOne'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='mentalTwo' id='mentalTwo'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='mentalThree' id='mentalThree'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='mentalFour'  id='mentalFour' data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>多重残疾:</td>"+
+						"<td>"+"<select class='easyui-combobox' name='multiOne' id='multiOne'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='multiTwo' id='multiTwo'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='multiThree' id='multiThree'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+						"<td>"+"<select class='easyui-combobox' name='multiFour' id='multiFour'  data-options='panelHeight:70,height:30'>"+
+						"<option value='1' >1</option>"+
+						"<option value='2' >2</option>"+ 
+							"</select>"+"</td>"+
+					"</tr>"+ 
+					"<tr>"+
+						"<td>&nbsp;</td>"+
+					"</tr>"+
+				"</table>"+
+			"</div>";
+		
+		
+		document.getElementById("maindiv").innerHTML += htmldiv;
+		loadeyeOne();
+		
+	}
+	
+
+	/**
+     * 时间格式化 返回格式化的时间
+     * @param date {object}  可选参数，要格式化的data对象，没有则为当前时间
+     * @param fomat {string} 格式化字符串，例如：'YYYY年MM月DD日 hh时mm分ss秒 星期' 'YYYY/MM/DD week' (中文为星期，英文为week)
+     * @return {string} 返回格式化的字符串
+     * 
+     * 例子:
+     * formatDate(new Date("january 01,2012"));
+     * formatDate(new Date());
+     * formatDate('YYYY年MM月DD日 hh时mm分ss秒 星期 YYYY-MM-DD week');
+     * formatDate(new Date("january 01,2012"),'YYYY年MM月DD日 hh时mm分ss秒 星期 YYYY/MM/DD week');
+     * 
+     * 格式：   
+     *    YYYY：4位年,如1993
+　　 *　　YY：2位年,如93
+　　 *　　MM：月份
+　　 *　　DD：日期
+　　 *　　hh：小时
+　　 *　　mm：分钟
+　　 *　　ss：秒钟
+　　 *　　星期：星期，返回如 星期二
+　　 *　　周：返回如 周二
+　　 *　　week：英文星期全称，返回如 Saturday
+　　 *　　www：三位英文星期，返回如 Sat
+     */
+    function formatDate(date, format) {
+        if (arguments.length < 2 && !date.getTime) {
+            format = date;
+            date = new Date();
+        }
+        typeof format != 'string' && (format = 'YYYY-MM-DD');
+        var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', '日', '一', '二', '三', '四', '五', '六'];
+        return format.replace(/YYYY|YY|MM|DD|hh|mm|ss|星期|周|www|week/g, function(a) {
+            switch (a) {
+            case "YYYY": return date.getFullYear();
+            case "YY": return (date.getFullYear()+"").slice(2);
+            case "MM": return date.getMonth() + 1;
+            case "DD": return date.getDate();
+            case "hh": return date.getHours();
+            case "mm": return date.getMinutes();
+            case "ss": return date.getSeconds();
+            case "星期": return "星期" + week[date.getDay() + 7];
+            case "周": return "周" +  week[date.getDay() + 7];
+            case "week": return week[date.getDay()];
+            case "www": return week[date.getDay()].slice(0,3);
+            }
+        });
+    }
+	function loadeyeOne(){
+		var auditDelayHid= document.getElementById("auditDelayHid").value;
+		var auditDelaystr=formatDate(new Date(auditDelayHid));
+		$("#auditDelaytext").datebox({    
+		    required:true   
+		});  
+		$("#auditDelaytext").datebox("setValue", auditDelaystr);
+		
+		var beginHid= document.getElementById("beginHid").value;
+		var payClosestr=formatDate(new Date(beginHid));
+		$("#begindate").datebox({    
+		    required:true   
+		});  
+		$("#begindate").datebox("setValue", payClosestr);
+
+		var eyeOneHid= document.getElementById("eyeOneHid").value;
+		var eyeOne= document.getElementById("eyeOne");
+		for(var i=0;i<eyeOne.options.length;i++) {  
+		    if(eyeOne.options[i].value == eyeOneHid) {  
+		    	eyeOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var eyeThreeHid= document.getElementById("eyeThreeHid").value;
+		var eyeThree= document.getElementById("eyeThree");
+		for(var i=0;i<eyeThree.options.length;i++) {  
+		    if(eyeThree.options[i].value == eyeThreeHid) {  
+		    	eyeThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var eyeTwoHid= document.getElementById("eyeTwoHid").value;
+		var eyeTwo= document.getElementById("eyeTwo");
+		for(var i=0;i<eyeTwo.options.length;i++) {  
+		    if(eyeTwo.options[i].value == eyeTwoHid) {  
+		    	eyeTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var eyeFourHid= document.getElementById("eyeFourHid").value;
+		var eyeFour= document.getElementById("eyeFour");
+		for(var i=0;i<eyeFour.options.length;i++) {  
+		    if(eyeFour.options[i].value == eyeFourHid) {  
+		    	eyeFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var hearingOneHid= document.getElementById("hearingOneHid").value;
+		var hearingOne= document.getElementById("hearingOne");
+		for(var i=0;i<hearingOne.options.length;i++) {  
+		    if(hearingOne.options[i].value == hearingOneHid) {  
+		    	hearingOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var hearingTwoHid= document.getElementById("hearingTwoHid").value;
+		var hearingTwo= document.getElementById("hearingTwo");
+		for(var i=0;i<hearingTwo.options.length;i++) {  
+		    if(hearingTwo.options[i].value == hearingTwoHid) {  
+		    	hearingTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var hearingThreeHid= document.getElementById("hearingThreeHid").value;
+		var hearingThree= document.getElementById("hearingThree");
+		for(var i=0;i<hearingThree.options.length;i++) {  
+		    if(hearingThree.options[i].value == hearingThreeHid) {  
+		    	hearingThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var hearingFourHid= document.getElementById("hearingFourHid").value;
+		var hearingFour= document.getElementById("hearingFour");
+		for(var i=0;i<hearingFour.options.length;i++) {  
+		    if(hearingFour.options[i].value == hearingFourHid) {  
+		    	hearingFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var speakOneHid= document.getElementById("speakOneHid").value;
+		var speakOne= document.getElementById("speakOne");
+		for(var i=0;i<speakOne.options.length;i++) {  
+		    if(speakOne.options[i].value == speakOneHid) {  
+		    	speakOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var speakTwoHid= document.getElementById("speakTwoHid").value;
+		var speakTwo= document.getElementById("speakTwo");
+		for(var i=0;i<speakTwo.options.length;i++) {  
+		    if(speakTwo.options[i].value == speakTwoHid) {  
+		    	speakTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var speakThreeHid= document.getElementById("speakThreeHid").value;
+		var speakThree= document.getElementById("speakThree");
+		for(var i=0;i<speakThree.options.length;i++) {  
+		    if(speakThree.options[i].value == speakThreeHid) {  
+		    	speakThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var speakFourHid= document.getElementById("speakFourHid").value;
+		var speakFour= document.getElementById("speakFour");
+		for(var i=0;i<speakFour.options.length;i++) {  
+		    if(speakFour.options[i].value == speakFourHid) {  
+		    	speakFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var bodyOneHid= document.getElementById("bodyOneHid").value;
+		var bodyOne= document.getElementById("bodyOne");
+		for(var i=0;i<bodyOne.options.length;i++) {  
+		    if(bodyOne.options[i].value == bodyOneHid) {  
+		    	bodyOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var bodyTwoHid= document.getElementById("bodyTwoHid").value;
+		var bodyTwo= document.getElementById("bodyTwo");
+		for(var i=0;i<bodyTwo.options.length;i++) {  
+		    if(bodyTwo.options[i].value == bodyTwoHid) {  
+		    	bodyTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var bodyThreeHid= document.getElementById("bodyThreeHid").value;
+		var bodyThree= document.getElementById("bodyThree");
+		for(var i=0;i<bodyThree.options.length;i++) {  
+		    if(bodyThree.options[i].value == bodyThreeHid) {  
+		    	bodyThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var bodyFourHid= document.getElementById("bodyFourHid").value;
+		var bodyFour= document.getElementById("bodyFour");
+		for(var i=0;i<bodyFour.options.length;i++) {  
+		    if(bodyFour.options[i].value == bodyFourHid) {  
+		    	bodyFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var intelligenceOneHid= document.getElementById("intelligenceOneHid").value;
+		var intelligenceOne= document.getElementById("intelligenceOne");
+		for(var i=0;i<intelligenceOne.options.length;i++) {  
+		    if(intelligenceOne.options[i].value == intelligenceOneHid) {  
+		    	intelligenceOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var intelligenceTwoHid= document.getElementById("intelligenceTwoHid").value;
+		var intelligenceTwo= document.getElementById("intelligenceTwo");
+		for(var i=0;i<intelligenceTwo.options.length;i++) {  
+		    if(intelligenceTwo.options[i].value == intelligenceTwoHid) {  
+		    	intelligenceTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var intelligenceThreeHid= document.getElementById("intelligenceThreeHid").value;
+		var intelligenceThree= document.getElementById("intelligenceThree");
+		for(var i=0;i<intelligenceThree.options.length;i++) {  
+		    if(intelligenceThree.options[i].value == intelligenceThreeHid) {  
+		    	intelligenceThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var intelligenceFourHid= document.getElementById("intelligenceFourHid").value;
+		var intelligenceFour= document.getElementById("intelligenceFour");
+		for(var i=0;i<intelligenceFour.options.length;i++) {  
+		    if(intelligenceFour.options[i].value == intelligenceFourHid) {  
+		    	intelligenceFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var mentalOneHid= document.getElementById("mentalOneHid").value;
+		var mentalOne= document.getElementById("mentalOne");
+		for(var i=0;i<mentalOne.options.length;i++) {  
+		    if(mentalOne.options[i].value == mentalOneHid) {  
+		    	mentalOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var mentalTwoHid= document.getElementById("mentalTwoHid").value;
+		var mentalTwo= document.getElementById("mentalTwo");
+		for(var i=0;i<mentalTwo.options.length;i++) {  
+		    if(mentalTwo.options[i].value == mentalTwoHid) {  
+		    	mentalTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var mentalThreeHid= document.getElementById("mentalThreeHid").value;
+		var mentalThree= document.getElementById("mentalThree");
+		for(var i=0;i<mentalThree.options.length;i++) {  
+		    if(mentalThree.options[i].value == mentalThreeHid) {  
+		    	mentalThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var mentalFourHid= document.getElementById("mentalFourHid").value;
+		var mentalFour= document.getElementById("mentalFour");
+		for(var i=0;i<mentalFour.options.length;i++) {  
+		    if(mentalFour.options[i].value == mentalFourHid) {  
+		    	mentalFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var multiOneHid= document.getElementById("multiOneHid").value;
+		var multiOne= document.getElementById("multiOne");
+		for(var i=0;i<multiOne.options.length;i++) {  
+		    if(multiOne.options[i].value == multiOneHid) {  
+		    	multiOne.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var multiTwoHid= document.getElementById("multiTwoHid").value;
+		var multiTwo= document.getElementById("multiTwo");
+		for(var i=0;i<multiTwo.options.length;i++) {  
+		    if(multiTwo.options[i].value == multiTwoHid) {  
+		    	multiTwo.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var multiThreeHid= document.getElementById("multiThreeHid").value;
+		var multiThree= document.getElementById("multiThree");
+		for(var i=0;i<multiThree.options.length;i++) {  
+		    if(multiThree.options[i].value == multiThreeHid) {  
+		    	multiThree.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+
+		var multiFourHid= document.getElementById("multiFourHid").value;
+		var multiFour= document.getElementById("multiFour");
+		for(var i=0;i<multiFour.options.length;i++) {  
+		    if(multiFour.options[i].value == multiFourHid) {  
+		    	multiFour.options[i].selected = true;  
+		        break;  
+		    }  
+		}  
+ 
+	}
+</script>
+<div id="maindiv" >
+</div>

@@ -24,8 +24,10 @@
 	<!--startprint-->
 		<div id="startaudit_tabs" title="年审信息" cache="false">
 			<!-- 初审页面 -->
-			<c:if test="${process==1}">
+			<c:if test="${process==1}"><%--
 				<jsp:include page="audit_init.jsp" />
+			--%>
+				<%@ include file="audit_init.html"  %>
 			</c:if>
 			<!-- 复审页面 -->
 			<c:if test="${process==2}">
@@ -49,8 +51,12 @@
 		<!-- 往年审核数据 -->
 		<div title="历史数据" data-options="href:'query/audit/history/${entity.company.id }/${entity.year }'"></div>
 		
-		<div title="年审参数"><jsp:include page="audit_params.jsp" /></div>
-			
+		<div title="年审参数">
+		<%--
+		<jsp:include page="audit_params.jsp" />
+		--%>
+			<%@ include file="audit_params.html"  %>
+		</div>
 	</div>
 </div>
 
