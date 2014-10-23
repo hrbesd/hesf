@@ -55,15 +55,15 @@ function formatDate(date, format) {
         format = date;
         date = new Date();
     }
-    typeof format != 'string' && (format = 'YY/MM/DD hh:mm');
+    typeof format != 'string' && (format = 'YYYY/MM/DD HH:mm');
     var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', '日', '一', '二', '三', '四', '五', '六'];
-    return format.replace(/YYYY|YY|MM|DD|hh|mm|ss|星期|周|www|week/g, function(a) {
+    return format.replace(/YYYY|YY|MM|DD|HH|mm|ss|星期|周|www|week/g, function(a) {
         switch (a) {
         case "YYYY": return date.getFullYear();
         case "YY": return (date.getFullYear()+"").slice(2);
         case "MM": return date.getMonth() + 1;
         case "DD": return date.getDate();
-        case "hh": return date.getHours();
+        case "HH": return date.getHours(); //小时       
         case "mm": return date.getMinutes();
         case "ss": return date.getSeconds();
         case "星期": return "星期" + week[date.getDay() + 7];
@@ -72,23 +72,36 @@ function formatDate(date, format) {
         case "www": return week[date.getDay()].slice(0,3);
         }
     });
-}
+} 
+ function  timeConversion(initAudDate)   
+{
+	 var initAudDateNew=new Date(initAudDate);
+	 var initAud=initAudDateNew.valueOf();
+	 var hours=14;      //h為小時數
+	 initAud=initAud-(hours*3600*1000);  //可加可減
+	 initAud=new Date(initAud);
+	 var str=initAud.getFullYear()+'/'+(initAud.getMonth()+1)+'/'+initAud.getDate()+' '
+	 str+=initAud.getHours()+':'+initAud.getMinutes();
+	 var initAudDatestr=str.substring(2,str.length);
+	 return initAudDatestr;   
+}  
+
 //处理初审日期
 var initAudithid=document.getElementById("initAudithid").value;
 if (initAudithid!="")
 {
-var initAuditstr=formatDate(new Date(initAudithid));
-document.getElementById("initAuditDate").value=initAuditstr;
-}
-
+	var initAuditstr=formatDate(new Date(initAudithid));
+	var initAudDatestr=timeConversion(initAuditstr); 
+	document.getElementById("initAuditDate").value=initAudDatestr;
+} 
 
 //处理复审日期
 var verifyAuditDateHid=document.getElementById("verifyAuditDateHid").value;
 if (verifyAuditDateHid !="")
 {
-var verifyAuditDatestr=formatDate(new Date(verifyAuditDateHid));
-document.getElementById("verifyAudittext").value=verifyAuditDatestr;
-
+	var verifyAuditDatestr=formatDate(new Date(verifyAuditDateHid));
+	var verifyAuditDateSuc=timeConversion(verifyAuditDatestr); 
+	document.getElementById("verifyAudittext").value=verifyAuditDateSuc;
 }
 
 var unAudityearNumVal=${unAudityearNum};
@@ -97,7 +110,7 @@ if(unAudityearNumVal==0){
 	document.getElementById("unAudityearText").value="无";
 	document.getElementById("unAudityearText").style.background = "#d8d8d8";//readonly
 }else if(unAudityearNumVal>0){
-	document.getElementById("unAudityearText").value=unAudityearHid;//问题所在
+	document.getElementById("unAudityearText").value=unAudityearHid;//
 	document.getElementById("unAudityearText").style.backgroundColor = "#D82828";//error
 }
 
@@ -108,7 +121,6 @@ if(ageExNameVal>0){
 }else if(ageExNameVal==0){
 		document.getElementById("ageExName").style.background = "#d8d8d8";
 }
-
 
 var companyPropertySel= document.getElementById("companyPropertySel");
 var companyPropertyHid=document.getElementById("companyPropertyHid").value;
@@ -153,7 +165,6 @@ if(unAudityearNum==0){
 	document.getElementById("unAudityearText").style.backgroundColor = "#D82828";//error
 }
 
-    
 //拒绝意见下拉框
 var reasonsSel= document.getElementById("reasonsSel");
 
@@ -356,7 +367,7 @@ var reasonsSel= document.getElementById("reasonsSel");
 			<tr>
 				<td width="100">档案号码:</td>
 				<td width="290" colspan="3">
-					<input type="hidden" id="initAudithid"  value="${entity.initAuditDate}" /> 
+					<input type="hidden" id="initAudithid" name="initAudithid" value="${entity.initAuditDate}" /> 
 					<input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> 
 					<input type="hidden" id="companyId" name="company.id" value="${entity.company.id}" /> 
 					<input type="hidden" name="year" value="${entity.year}" /> 
@@ -538,7 +549,6 @@ var reasonsSel= document.getElementById("reasonsSel");
 			<tr>
 				<td class="">初审日期:</td>
 				<td>
-
 					<input type="text" id="initAuditDate"  class="readonly" />
 				</td>
 				<td width="100">初审人:</td>
