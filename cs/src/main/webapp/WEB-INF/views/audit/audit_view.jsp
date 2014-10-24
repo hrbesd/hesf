@@ -193,7 +193,7 @@
 				</td>
 				<td width="99">减滞纳金:</td>
 				<td>
-					<input id="jianZhiNaJin" type="text" class="readonly" name="jianZhiNaJin" value="${entity.jianZhiNaJin}" onblur="initAudit.jisuan()" />
+					<input id="jianZhiNaJin" type="text" class="readonly" name="jianZhiNaJin" value="${entity.jianZhiNaJin}" />
 				</td>
 			<!-- 	<td width="99">免滞纳金:</td>
 				<td><select disabled="disabled" id="mianZhiNaJin" style="font-size: 12px; width: 100px;height: 28px;" class="" name="isDelayPay"
