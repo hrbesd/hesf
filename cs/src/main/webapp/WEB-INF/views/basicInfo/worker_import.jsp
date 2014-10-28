@@ -80,8 +80,8 @@
 			 *	②设置上传参数
 			 **/
 			this.setData({
-				'companyId':params.companyId,
-				'year':params.year
+				'companyId':$('#companyId').val(),
+				'year':$('#year').val()
 			});
 			
 		},
