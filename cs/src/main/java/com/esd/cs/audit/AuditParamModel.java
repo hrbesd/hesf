@@ -15,8 +15,8 @@ public class AuditParamModel {
 	private String area; // 公司所属地区
 	private Integer companyEmpTotal_1;// 最少员工总数
 	private Integer companyEmpTotal_2;// 最多员工总数
-	private Integer companyHandicapTotal_1;//最少残疾人数
-	private Integer companyHandicapTotal_2;//最多残疾人数
+	private Integer companyHandicapTotal_1;// 最少残疾人数
+	private Integer companyHandicapTotal_2;// 最多残疾人数
 	private String companyName; // 企业名称
 	private String companyAddress;// 企业地址
 	private String companyLegal; // 企业法人
@@ -26,6 +26,9 @@ public class AuditParamModel {
 	private String overYear; // 超过指定年度未初审的企业
 	private String isExempt; // 是否免交
 	private String firstTime;
+
+	private String startDate; // 初审开始时间
+	private String endDate; // 初审结束时间
 
 	private String isDownLoadAll; // 是否下载全部查询出来的数据 yes or no
 	private Integer page;
@@ -229,6 +232,22 @@ public class AuditParamModel {
 
 	public void setFirstTime(String firstTime) {
 		this.firstTime = firstTime;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 }

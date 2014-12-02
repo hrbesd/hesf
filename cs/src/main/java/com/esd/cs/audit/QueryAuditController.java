@@ -51,7 +51,7 @@ public class QueryAuditController {
 
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -76,14 +76,15 @@ public class QueryAuditController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list/{process}", method = RequestMethod.GET)
-	public ModelAndView queryAuditList1(@PathVariable(value="process") Integer process,HttpServletRequest request,
-			HttpSession session) {
+	public ModelAndView queryAuditList1(
+			@PathVariable(value = "process") Integer process,
+			HttpServletRequest request, HttpSession session) {
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("process", process);
 		return new ModelAndView("query/audit_back");
 	}
-	
+
 	/**
 	 * 获取审核列表数据
 	 * 
@@ -367,10 +368,12 @@ public class QueryAuditController {
 		}
 		paramsMap.put("overYear", overYear);// 超过几年未初审的公司
 		paramsMap.put("isExempt", Boolean.valueOf(model.getIsExempt())); // 是否免缴
-																			// true免缴,
-																			// false不免缴
+		paramsMap.put("startDate", model.getStartDate()); // 开始初审时间
+		paramsMap.put("endDate", model.getEndDate()); // 结束初审时间 // true免缴,
+														// false不免缴
 		paramsMap.put("page", model.getPage()); // 分页--起始页
 		paramsMap.put("pageSize", model.getRows());// 分页--返回量
+
 		return paramsMap;
 	}
 

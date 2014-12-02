@@ -98,6 +98,9 @@ public class ExampleMap {
 		map.put("page", 2); // 分页--起始页 ******************************
 		map.put("pageSize", 50);// 分页--返回量 ******************************
 		map.put("isActive", false); // 是否已经被逻辑删除了, 默认值为false,即只查询没有被逻辑删除的
+		
+		map.put("startDate","2011-11-11"); // 初审开始时间
+		map.put("endDate","2014-12-12"); // 初审结束时间
 	}
 	
 	/**

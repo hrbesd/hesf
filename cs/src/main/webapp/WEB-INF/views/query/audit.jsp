@@ -182,6 +182,9 @@
 
 		params.overYear = $("#overYear").val(); // 超过指定年度未初审的企业
 		params.isExempt = $("#isExempt").combobox("getValue");// 是否免交
+		
+		params.startDate = $('#startDate').combobox("getValue");	//缴款起始时间
+		params.endDate = $('#endDate').combobox("getValue");	//缴款结束时间
 		return params;
 	};
 
@@ -274,7 +277,9 @@
 						'paymentPerson' : params.paymentPerson, // 缴款人
 						'overYear' : params.overYear, // 超过指定年度未初审的企业
 						'isExempt' : params.isExempt, // 是否免交
-						'isDownLoadAll' : params.isDownLoadAll
+						'isDownLoadAll' : params.isDownLoadAll,
+						'startDate':params.startDate,
+						'endDate':params.endDate
 					},
 					success:function(data){
 						if(data!="null"){
@@ -385,8 +390,11 @@
 				<td><input type="text" id="isExempt" /></td>
 			</tr>
 			<tr>
-				<td></td>
-
+				<td class="tipsText">初审时间:</td>
+				<td colspan="3">
+					<input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:100px" />-
+					<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:100px" />
+				</td>
 			</tr>
 		</table>
 		<div class="findBut">

@@ -466,7 +466,7 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
-				<!-- 缴款时间范围 -->
+				<!-- payment date time -->
 				<if test="startDate != null and startDate != ''">
 					and substring(pay.payment_date,1,10) &gt;=  #{startDate}
 				</if>
@@ -618,7 +618,7 @@
 						and pay.payment_exceptional = #{payment.paymentExceptional.id,jdbcType=INTEGER} 
 					</if>
 				</if>
-				<!-- 缴款时间范围 -->
+				<!-- payment date time -->
 				<if test="startDate != null and startDate != ''">
 					and substring(pay.payment_date,1,10) &gt;=  #{startDate}
 				</if>

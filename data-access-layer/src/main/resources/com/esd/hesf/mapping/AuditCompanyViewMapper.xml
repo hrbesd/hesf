@@ -206,6 +206,13 @@
 			<if test="isRepealPredict != null and isRepealPredict == true">
 				and au.company_predict_total &gt; 0 
 			</if>
+			<!-- init audit time -->
+			<if test="startDate != null and startDate != ''">
+				and au.init_audit_date &gt;=  #{startDate, jdbcType=VARCHAR}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and au.init_audit_date &lt;= #{endDate, jdbcType=VARCHAR}
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -296,6 +303,13 @@
 			</if>
 			<if test="isRepealPredict != null and isRepealPredict == true">
 				and au.company_predict_total &gt; 0 
+			</if>
+			<!-- init audit time -->
+			<if test="startDate != null and startDate != ''">
+				and au.init_audit_date &gt;=  #{startDate, jdbcType=VARCHAR}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				and au.init_audit_date &lt;= #{endDate, jdbcType=VARCHAR}
 			</if>
 			<choose>
 				<when test="isActive != null">
