@@ -440,14 +440,14 @@
 				<td class="">初审日期:</td>
 				<td>
 					<c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd hh:mm" var="initDate" />
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd HH:mm" var="initDate" />
 					</c:if> <input class="readonly" value="${initDate}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复审日期:</td>
 				<td>
 					<c:if test="${entity.verifyAuditDate != null}">
-						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd hh:mm" var="verifyAuditDate" />
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd HH:mm" var="verifyAuditDate" />
 					</c:if>  
 					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>
