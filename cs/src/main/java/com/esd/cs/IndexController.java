@@ -56,7 +56,7 @@ public class IndexController {
 	private AuditParameterService auditParameterService; // 年审参数
 
 	/**
-	 * 登录页面
+	 * 退出页面
 	 * 
 	 * @return
 	 */
@@ -74,6 +74,16 @@ public class IndexController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginGet() {
 		return new ModelAndView("login");
+	}
+	
+	/**
+	 * 登录页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/loginerror", method = RequestMethod.GET)
+	public ModelAndView loginerror() {
+		return new ModelAndView("login_error");
 	}
 
 	/**

@@ -16,7 +16,8 @@
 	<resultMap id="ResultPermissionType" type="com.esd.hesf.model.PermissionType">
 		<id column="p_id" property="id" jdbcType="INTEGER" />
 		<result column="p_permission_type" property="permissionType" jdbcType="VARCHAR" />
-		<result column="p_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="p_start_time" property="startTime" jdbcType="VARCHAR" />
+		<result column="p_end_time" property="endTime" jdbcType="VARCHAR" />
 		<result column="p_update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="p_user_id" property="userId" jdbcType="INTEGER" />
 		<result column="p_is_active" property="isActive" jdbcType="BIT" />
@@ -25,7 +26,9 @@
 	<sql id="Base_Column_List">
 		ug.id as ug_id, ug.user_group_name as ug_user_group_name, ug.create_time as ug_create_time, 
 		ug.update_time as ug_update_time, ug.user_id as ug_user_id, ug.is_active as ug_is_active, ug.version as ug_version, 
-		p.id as p_id, p.permission_type as p_permission_type, p.create_time as p_create_time, 
+		p.id as p_id, p.permission_type as p_permission_type, 
+		p.start_time as p_start_time, p.end_time as p_end_time, 
+		p.create_time as p_create_time, 
 		p.update_time p_update_time, p.user_id as p_user_id, p.is_active as p_is_active
 	</sql>
 

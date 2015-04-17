@@ -12,9 +12,16 @@ import com.esd.hesf.model.PermissionType;
  */
 public interface PermissionTypeService extends BaseService<PermissionType> {
 
-	/*
-	 * 8 查询所有权限列表
+	/**
+	 * 查询所有权限列表
+	 * @return
 	 */
 	List<PermissionType> getAll();
+
+	/**
+	 * 取得需要设置登录时间限定的权限类别 列表
+	 * @return
+	 */
+	List<PermissionType> getNeedSetTime();
 
 }

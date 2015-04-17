@@ -135,6 +135,7 @@
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
+		param.companyCode = $('#currentCompanyCode').val();
 		//校验
 //		if (initAudit.checkJianJiao(param.jianJiaoJinE) == false) {
 //			return;
@@ -277,8 +278,8 @@
 	<div style="border: #95B8E7 1px solid; width: 900px;">
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="100">档案号码:</td>
-				<td width="290" colspan="3"><input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
+				<td width="85">档案号码:</td>
+				<td width="290" colspan="3"><input name="currentCompanyCode" id="currentCompanyCode"class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> <input type="hidden" id="companyId" name="company.id"
 					value="${entity.company.id}" /> <input type="hidden" name="year" value="${entity.year}" /> <input type="hidden" name="company.version" value="${entity.company.version}" /></td>
 				<td>年审年度:</td>
 				<td colspan="2"><input name="year" class="readonly" type="text" value="${entity.year}" /></td>
@@ -299,7 +300,7 @@
 
 			<tr>
 				<td rowspan="4">单位基本情况</td>
-				<td width="100">法人代表:</td>
+				<td width="105">法人代表:</td>
 				<td width="199" colspan="2"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" />
 				</td>
 				<td>组织机关代码证:</td>
@@ -343,10 +344,10 @@
 			</tr>
 			<!-- 年审企业表格  第三部分(残疾人信息) -->
 			<tr>
-				<td rowspan="3" width="100">在职员工情况:</td>
+				<td rowspan="3" width="85">在职员工情况:</td>
 				<td width="100">职员工总数:</td>
 				<td colspan="4" width="200">职残疾职工情况</td>
-				<td width="98">补缴金额:</td>
+				<td width="105">补缴金额:</td>
 				<td width="91">未审年数:</td>
 				<td>补审年度:</td>
 			</tr>
@@ -376,7 +377,7 @@
 
 			<!-- 年审企业表格  第四部分(保障金额度) -->
 			<tr>
-				<td width="100" rowspan="2">保障金情况:</td>
+				<td width="85" rowspan="2">保障金情况:</td>
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
@@ -416,12 +417,12 @@
 
 			</tr>
 			<tr>
-				<td width="100">备注:</td>
+				<td width="85">备注:</td>
 				<td colspan="10"><textarea name="remark" rows="2" class="readonly" style="height: 60px;">${entity.remark }</textarea></td>
 			</tr>
 			<!-- 年审企业表格  第六部分(意见栏) -->
 			<tr>
-				<td width="100" rowspan="2">初审意见:</td>
+				<td width="85" rowspan="2">初审意见:</td>
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" class="readonly" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<td width="100" rowspan="3">复审意见:</td>
 				<td width="100" style="height: 30px;">拒绝意见:</td>
@@ -440,14 +441,14 @@
 				<td class="">初审日期:</td>
 				<td>
 					<c:if test="${entity.initAuditDate!=null}">
-						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd HH:mm" var="initDate" />
+						<fmt:formatDate value="${entity.initAuditDate}" type="both" dateStyle="long" pattern="yyyy/MM/dd HH:mm" var="initDate" />
 					</c:if> <input class="readonly" value="${initDate}" /></td>
 				<td width="100">初审人:</td>
 				<td><input type="text" class="readonly" value="${entity.initAuditUser.userRealName}" /></td>
 				<td class="">复审日期:</td>
 				<td>
 					<c:if test="${entity.verifyAuditDate != null}">
-						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yy/MM/dd HH:mm" var="verifyAuditDate" />
+						<fmt:formatDate value="${entity.verifyAuditDate}" type="both" dateStyle="long" pattern="yyyy/MM/dd HH:mm" var="verifyAuditDate" />
 					</c:if>  
 					<input type="text" class="bj_belu4 readonly" value="${verifyAuditDate}" /></td>
 				<td width="100">复审人:</td>

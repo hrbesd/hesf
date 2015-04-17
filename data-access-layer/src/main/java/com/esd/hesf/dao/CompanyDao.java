@@ -22,14 +22,13 @@ public interface CompanyDao extends BaseDao<Company> {
 	List<Company> retrieveByPrimaryKeys(Map<String, Object> map);
 
 	/**
-	 * retrieveByCompanyCode : 根据公司档案号, 查询一条数据
+	 * retrieveByCompanyCodeAndYear : 根据公司的档案号和审核年份, 查询一条数据
 	 * 
 	 * @param companyCode
 	 * @return
 	 */
-	Company retrieveByCompanyCode(String companyCode);
+	Company retrieveByCompanyCodeAndYear(Company company);
 
-	
 	/**
 	 * retrieveByCompanyName : 根据公司名称, 查询一条数据
 	 * 
@@ -67,4 +66,11 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @return
 	 */
 	String retrieveNextCompanyCode();
+	
+	/**
+	 * 根据年份创建 当前年度审核数据--企业数据
+	 * @param map : thisYear -- 当前审核年,必填;lastYear -- 去年审核年,必填; userId -- 操作人ID,必填;
+	 * @return
+	 */
+	Integer insertLastYearData(Map<String,Object> map);
 }

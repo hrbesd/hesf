@@ -27,7 +27,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	private CompanyTypeDao dao;
 
 	@Override
-	public boolean save(CompanyType t) {
+	public Boolean save(CompanyType t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 	}
 
 	@Override
-	public boolean update(CompanyType t) {
+	public Boolean update(CompanyType t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();

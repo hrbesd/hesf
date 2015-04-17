@@ -38,7 +38,7 @@ public class PoiCreateExcel {
 	 * @param workerList
 	 * @return 导入成功返回true, 否则返回false
 	 */
-	public static boolean createExcel(String FilePath,
+	public static Boolean createExcel(String FilePath,
 			List<WorkerTemp> workerList) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -95,7 +95,7 @@ public class PoiCreateExcel {
 	 * @param list
 	 * @return
 	 */
-	public static boolean createCompanyExcel(String FilePath,
+	public static Boolean createCompanyExcel(String FilePath,
 			List<Company> list) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -192,7 +192,7 @@ public class PoiCreateExcel {
 	 * @param list
 	 * @return
 	 */
-	public static boolean createAuditExcel(String FilePath,
+	public static Boolean createAuditExcel(String FilePath,
 			List<Audit> list) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -390,7 +390,7 @@ public class PoiCreateExcel {
 	 * @param companyList
 	 * @return
 	 */
-	public static boolean createWorkerExcel(String FilePath, List<Worker> list) {
+	public static Boolean createWorkerExcel(String FilePath, List<Worker> list) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建Excel的工作sheet,对应到一个excel文档的tab
@@ -489,7 +489,7 @@ public class PoiCreateExcel {
 	 * @param list
 	 * @return
 	 */
-	public static boolean createPaymentExcel(String FilePath,
+	public static Boolean createPaymentExcel(String FilePath,
 			List<Payment> list) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -589,7 +589,7 @@ public class PoiCreateExcel {
 	 * @param companyList
 	 * @return
 	 */
-	public static boolean createRepeaExcel(String FilePath,
+	public static Boolean createRepeaExcel(String FilePath,
 			List<ReportViewModel> companyList, ReportModel model) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();

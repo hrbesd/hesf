@@ -17,6 +17,11 @@ public class CalendarUtil {
 		return String.valueOf(year - 1);
 	}
 
+	public static void main(String[] args) {
+		Calendar cal = Calendar.getInstance();// 使用日历类
+		int year = cal.get(Calendar.YEAR);// 得到年
+		System.out.println(String.valueOf(year - 1));
+	}
 	/**
 	 * 获取当年
 	 * 

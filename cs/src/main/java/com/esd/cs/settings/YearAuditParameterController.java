@@ -33,6 +33,7 @@ import com.esd.hesf.model.AuditParameter;
 import com.esd.hesf.model.UserGroup;
 import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.AuditService;
+import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.UserGroupService;
 
 /**
@@ -49,8 +50,12 @@ public class YearAuditParameterController {
 
 	@Autowired
 	private AuditParameterService auditParameterService;
+	
 	@Autowired
 	private AuditService auditService;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	/**
 	 * 转到年审参数
@@ -148,8 +153,26 @@ public class YearAuditParameterController {
 		logger.debug("auditParameter:{}", auditParameter);
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		auditParameter.setUserId(userId);
-		Boolean copy = Boolean.valueOf(request.getParameter("copy"));	//是否创建审核数据
 		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			// 验证该年度的审核参数是否存在
+			AuditParameter tempAup = auditParameterService
+					.getByYear(auditParameter.getYear());
+			if (tempAup != null) {
+				map.put(Constants.NOTICE, "该年度的审核数据已经存在");
+				return map;
+			}
+			auditParameterService.save(auditParameter);
+			//更新存在于session中的当前的审核年度
+			String year = auditParameterService.getLastestYear();
+			session.setAttribute(Constants.YEAR, year);
+			map.put(Constants.NOTICE, true);
+		} catch (Exception e) {
+			logger.error("add audit year parms error", e);
+			map.put(Constants.NOTICE, "保存审核数据失败");
+		}
+		
+		Boolean copy = Boolean.valueOf(request.getParameter("copy"));	//是否创建审核数据
 		if (copy) {
 			// 检查审核表中该年份的审核数据是否存在,如不存在-则进行复制以产生审核数据, 如存在-则不进行复制
 			Boolean isExist = false;
@@ -165,7 +188,8 @@ public class YearAuditParameterController {
 				try {
 					String currentYear = auditParameter.getYear(); // 获取指定要审核的年
 					if (currentYear != null) {
-						auditService.initAuditData(currentYear);
+						//初始化对应年度审核数据
+						auditService.initAuditData(currentYear,userId);
 					}
 				} catch (Exception e) {
 					logger.error("copy audit date error", e);
@@ -174,22 +198,7 @@ public class YearAuditParameterController {
 				}
 			}
 		}
-		try {
-			// 验证该年度的审核参数是否存在
-			AuditParameter tempAup = auditParameterService
-					.getByYear(auditParameter.getYear());
-			if (tempAup != null) {
-				map.put(Constants.NOTICE, "该年度的审核数据已经存在");
-				return map;
-			}
-			auditParameterService.save(auditParameter);
-			String year = auditParameterService.getLastestYear();
-			session.setAttribute(Constants.YEAR, year);
-			map.put(Constants.NOTICE, true);
-		} catch (Exception e) {
-			logger.error("add audit year parms error", e);
-			map.put(Constants.NOTICE, "保存审核数据失败");
-		}
+		
 		return map;
 
 	}

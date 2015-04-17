@@ -82,7 +82,7 @@ function formatDate(date, format) {
 	 initAud=new Date(initAud);
 	 var str=initAud.getFullYear()+'/'+(initAud.getMonth()+1)+'/'+initAud.getDate()+' '
 	 str+=initAud.getHours()+':'+initAud.getMinutes();
-	 var initAudDatestr=str.substring(2,str.length);
+	 var initAudDatestr=str.substring(0,str.length);
 	 return initAudDatestr;   
 }  
 
@@ -267,6 +267,7 @@ var reasonsSel= document.getElementById("reasonsSel");
 		param.shiJiaoZongJinE = $('#shiJiaoZongJinE').val();
 		param.year = $('input[name=year]').val();
 		param.companyId = $('#companyId').val();
+		param.companyCode = $('#currentCompanyCode').val();
 		$.ajax({
 			url : 'audits/calculate',
 			type : 'POST',
@@ -338,7 +339,7 @@ var reasonsSel= document.getElementById("reasonsSel");
 	$(function() {
 		$(".readonly").each(function() {
 			$(this).attr("readonly", "readonly");
-			$(this).attr("disabled", "disabled");
+		//	$(this).attr("disabled", "disabled");
 		});
 		initAudit.initVerify();
 		//初始化easyUi完成
@@ -365,10 +366,10 @@ var reasonsSel= document.getElementById("reasonsSel");
 	<div style="border: #95B8E7 1px solid; width: 900px;">
 		<table class="company-examined" border="0" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="100">档案号码:</td>
+				<td width="85">档案号码:</td>
 				<td width="290" colspan="3">
 					<input type="hidden" id="initAudithid" name="initAudithid" value="${entity.initAuditDate}" /> 
-					<input name="companyCode" class="bj_belu2 readonly" type="text" value="${entity.company.companyCode}" /> 
+					<input type="text" name="currentCompanyCode" id="currentCompanyCode" class="bj_belu2 readonly" value="${entity.company.companyCode}" /> 
 					<input type="hidden" id="companyId" name="company.id" value="${entity.company.id}" /> 
 					<input type="hidden" name="year" value="${entity.year}" /> 
 					<input type="hidden" name="company.version" value="${entity.company.version}" />
@@ -404,7 +405,7 @@ var reasonsSel= document.getElementById("reasonsSel");
 
 			<tr>
 				<td rowspan="4">单位基本情况</td>
-				<td width="100">法人代表:</td>
+				<td width="105">法人代表:</td>
 				<td width="199" colspan="2"><input name="company.companyLegal" class="bj_belu3" type="text" value="${entity.company.companyLegal}" />
 				</td>
 				<td>组织机关代码证:</td>
@@ -450,10 +451,10 @@ var reasonsSel= document.getElementById("reasonsSel");
 			</tr>
 			<!-- 年审企业表格  第三部分(残疾人信息) -->
 			<tr>
-				<td rowspan="3" width="100">在职员工情况:</td>
+				<td rowspan="3" width="85">在职员工情况:</td>
 				<td width="100">职员工总数:</td>
 				<td colspan="4" width="200">职残疾职工情况</td>
-				<td width="98">补缴金额:</td>
+				<td width="105">补缴金额:</td>
 				<td width="91">未审年数:</td>
 				<td>补审年度:</td>
 			</tr>
@@ -483,7 +484,7 @@ var reasonsSel= document.getElementById("reasonsSel");
 
 			<!-- 年审企业表格  第四部分(保障金额度) -->
 			<tr>
-				<td width="100" rowspan="2">保障金情况:</td>
+				<td width="85" rowspan="2">保障金情况:</td>
 				<td width="100">应缴金额:</td>
 				<td><input id="yingJiaoJinE" type="text" name="amountPayable" class="readonly" value="${entity.amountPayable}" /></td>
 				<td width="100">减缴金额:</td>
@@ -519,12 +520,12 @@ var reasonsSel= document.getElementById("reasonsSel");
 
 			</tr>
 			<tr>
-				<td width="100">备注:</td>
+				<td width="85">备注:</td>
 				<td colspan="10"><textarea name="remark" rows="2" style="height: 60px;">${entity.remark }</textarea></td>
 			</tr>
 			<!-- 年审企业表格  第六部分(意见栏) -->
 			<tr>
-				<td width="100" rowspan="2">初审意见:</td>
+				<td width="85" rowspan="2">初审意见:</td>
 				<td colspan="3" rowspan="2"><textarea name="initAuditComment" rows="3" cols="45" style="height: 60px;">${entity.initAuditComment}</textarea></td>
 				<!-- 审核状态为 " 已减免 未通过 " 时 显示减免 意见 -->
 				<c:if test="${entity.auditProcessStatus.id == 13 }">

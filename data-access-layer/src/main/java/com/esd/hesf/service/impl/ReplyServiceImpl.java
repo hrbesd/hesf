@@ -27,7 +27,7 @@ public class ReplyServiceImpl implements ReplyService {
 	private ReplyDao dao;
 
 	@Override
-	public boolean save(Reply t) {
+	public Boolean save(Reply t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public boolean update(Reply t) {
+	public Boolean update(Reply t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();

@@ -33,7 +33,15 @@ public interface BaseDao<T> {
 	 * @param id
 	 * @return
 	 */
-	int deleteByPrimaryKey(int id);
+	int deleteByPrimaryKey(Integer id);
+	
+	/**
+	 * delete : 按主键删除一条数据
+	 * 
+	 * @param id
+	 * @return
+	 */
+	int deleteByPrimaryKey(String id);
 
 	/**
 	 * update : 根据id, 更新一条数据

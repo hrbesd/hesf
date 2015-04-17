@@ -16,7 +16,7 @@ public class CompanyYearWorkerServiceImpl implements CompanyYearWorkerService {
 	private CompanyYearWorkerDao dao;
 
 	@Override
-	public boolean save(CompanyYearWorker t) {
+	public Boolean save(CompanyYearWorker t) {
 		if (t == null) {
 			new HesfException("companyYearWork", HesfException.type_null)
 					.printStackTrace();
@@ -26,13 +26,13 @@ public class CompanyYearWorkerServiceImpl implements CompanyYearWorkerService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(CompanyYearWorker t) {
+	public Boolean update(CompanyYearWorker t) {
 		// TODO Auto-generated method stub
 		return false;
 	}

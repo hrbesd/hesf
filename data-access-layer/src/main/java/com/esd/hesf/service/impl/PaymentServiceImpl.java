@@ -35,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
 	private PaymentDao dao;
 
 	@Override
-	public boolean save(Payment t) {
+	public Boolean save(Payment t) {
 		if (t == null) {
 			new HesfException("payment对象", HesfException.type_null)
 					.printStackTrace();
@@ -77,7 +77,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -101,7 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
 	
 
 	@Override
-	public boolean update(Payment t) {
+	public Boolean update(Payment t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -268,7 +268,7 @@ public class PaymentServiceImpl implements PaymentService {
 	// }
 
 	@Override
-	public boolean createPaymentExcel(String FilePath,
+	public Boolean createPaymentExcel(String FilePath,
 			List<Payment> paymentList, Integer page, Integer pageSize) {
 		// 创建Excel的工作书册 Workbook,对应到一个excel文档
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -617,7 +617,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	// @Override
-	// public boolean createPaymentExcel(String FilePath,
+	// public Boolean createPaymentExcel(String FilePath,
 	// List<Payment> paymentList, Integer page, Integer pageSize) {
 	// // 创建Excel的工作书册 Workbook,对应到一个excel文档
 	// HSSFWorkbook wb = new HSSFWorkbook();
@@ -934,7 +934,7 @@ public class PaymentServiceImpl implements PaymentService {
 	// }
 
 	// @Override
-	// public boolean createPaymentExcel(String FilePath, List<Payment>
+	// public Boolean createPaymentExcel(String FilePath, List<Payment>
 	// paymentList) {
 	// // 创建Excel的工作书册 Workbook,对应到一个excel文档
 	// HSSFWorkbook wb = new HSSFWorkbook();

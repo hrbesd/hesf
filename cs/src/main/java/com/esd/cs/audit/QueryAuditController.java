@@ -244,7 +244,7 @@ public class QueryAuditController {
 	@ResponseBody
 	public String export(AuditParamModel params, Integer[] idArray,
 			HttpServletRequest request) {
-		boolean b = true;
+		Boolean b = true;
 		List<Audit> auditList = null;
 		// 下载全部
 		if ("yes".equals(params.getIsDownLoadAll())) {
@@ -369,8 +369,10 @@ public class QueryAuditController {
 		paramsMap.put("overYear", overYear);// 超过几年未初审的公司
 		paramsMap.put("isExempt", Boolean.valueOf(model.getIsExempt())); // 是否免缴
 		paramsMap.put("startDate", model.getStartDate()); // 开始初审时间
-		paramsMap.put("endDate", model.getEndDate()); // 结束初审时间 // true免缴,
-														// false不免缴
+		paramsMap.put("endDate", model.getEndDate()); // 结束初审时间 
+		paramsMap.put("verifyStartDate", model.getVerifyStartDate()); // 复审开始时间
+		paramsMap.put("verifyEndDate", model.getVerifyEndDate()); // 复审结束时间 
+		
 		paramsMap.put("page", model.getPage()); // 分页--起始页
 		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 

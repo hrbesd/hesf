@@ -11,6 +11,14 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>classpath:log4j.properties</param-value>
 	</context-param>
+<!-- 	<filter>
+		<filter-name>check holiday</filter-name>
+		<filter-class>com.esd.cs.filter.HolidayFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>check holiday</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	 -->
 	<filter>
 		<filter-name>Set Character Encoding</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

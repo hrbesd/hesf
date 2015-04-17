@@ -31,7 +31,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 	private CompanyPropertyDao dao;
 
 	@Override
-	public boolean save(CompanyProperty t) {
+	public Boolean save(CompanyProperty t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -41,7 +41,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		// TODO Auto-generated method stub
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
@@ -52,7 +52,7 @@ public class CompanyPropertyServiceImpl implements CompanyPropertyService {
 	}
 
 	@Override
-	public boolean update(CompanyProperty t) {
+	public Boolean update(CompanyProperty t) {
 		// TODO Auto-generated method stub
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {

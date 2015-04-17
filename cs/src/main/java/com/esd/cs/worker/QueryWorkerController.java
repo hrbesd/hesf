@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +64,10 @@ public class QueryWorkerController {
 	private AuditParameterService auditParameterService;// 年审参数
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView worker_list(HttpServletRequest request) {
+	public ModelAndView worker_list(HttpServletRequest request,HttpSession session) {
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
 		return new ModelAndView("query/worker");
 
 	}
@@ -79,7 +82,8 @@ public class QueryWorkerController {
 		try {
 
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
-
+			
+			paramsMap.put("year", params.getYear());	//审核年份
 			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
 			paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名
@@ -351,7 +355,7 @@ public class QueryWorkerController {
 	public String export(@RequestParam(value = "params[]") Integer idArr[],
 			HttpServletRequest request) {
 		logger.debug("idArr:{}", idArr + "");
-		boolean b = true;
+		Boolean b = true;
 		List<Worker> list = null;
 		if (idArr[0] == Integer.MAX_VALUE) {
 			list = new ArrayList<Worker>();

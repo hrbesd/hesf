@@ -31,7 +31,7 @@ public class AccountsServiceImpl implements AccountsService {
 	private AccountsDao dao;
 
 	@Override
-	public boolean save(Accounts t) {
+	public Boolean save(Accounts t) {
 		if (t == null) {
 			new HesfException("accounts对象", HesfException.type_null)
 					.printStackTrace();
@@ -70,7 +70,7 @@ public class AccountsServiceImpl implements AccountsService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -97,7 +97,7 @@ public class AccountsServiceImpl implements AccountsService {
 	}
 
 	@Override
-	public boolean update(Accounts t) {
+	public Boolean update(Accounts t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

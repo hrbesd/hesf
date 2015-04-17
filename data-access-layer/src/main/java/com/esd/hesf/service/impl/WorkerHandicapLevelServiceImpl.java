@@ -27,7 +27,7 @@ public class WorkerHandicapLevelServiceImpl implements WorkerHandicapLevelServic
 	private WorkerHandicapLevelDao dao;
 
 	@Override
-	public boolean save(WorkerHandicapLevel t) {
+	public Boolean save(WorkerHandicapLevel t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class WorkerHandicapLevelServiceImpl implements WorkerHandicapLevelServic
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class WorkerHandicapLevelServiceImpl implements WorkerHandicapLevelServic
 	}
 
 	@Override
-	public boolean update(WorkerHandicapLevel t) {
+	public Boolean update(WorkerHandicapLevel t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();

@@ -676,7 +676,7 @@ public class PaymentController {
 	@RequestMapping(value = "/download")
 	@ResponseBody
 	public String downPaylist(HttpServletRequest request) {
-		boolean b = true;
+		Boolean b = true;
 		// 每次导入量
 		Integer pageSize = 99999;
 		PaginationRecordsAndNumber<Payment, Number> prn = paymentService

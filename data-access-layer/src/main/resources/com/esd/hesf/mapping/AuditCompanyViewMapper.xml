@@ -213,6 +213,13 @@
 			<if test="endDate != null and endDate != ''">
 				and au.init_audit_date &lt;= #{endDate, jdbcType=VARCHAR}
 			</if>
+			<!-- verify audit time -->
+			<if test="verifyStartDate != null and verifyStartDate != ''">
+				and au.verify_audit_date &gt;=  #{verifyStartDate, jdbcType=VARCHAR}
+			</if>
+			<if test="verifyEndDate != null and verifyEndDate != ''">
+				and au.verify_audit_date &lt;= #{verifyEndDate, jdbcType=VARCHAR}
+			</if>
 			<choose>
 				<when test="isActive != null">
 					and c.is_active = #{isActive,jdbcType=BIT}
@@ -310,6 +317,13 @@
 			</if>
 			<if test="endDate != null and endDate != ''">
 				and au.init_audit_date &lt;= #{endDate, jdbcType=VARCHAR}
+			</if>
+			<!-- verify audit time -->
+			<if test="verifyStartDate != null and verifyStartDate != ''">
+				and au.verify_audit_date &gt;=  #{verifyStartDate, jdbcType=VARCHAR}
+			</if>
+			<if test="verifyEndDate != null and verifyEndDate != ''">
+				and au.verify_audit_date &lt;= #{verifyEndDate, jdbcType=VARCHAR}
 			</if>
 			<choose>
 				<when test="isActive != null">

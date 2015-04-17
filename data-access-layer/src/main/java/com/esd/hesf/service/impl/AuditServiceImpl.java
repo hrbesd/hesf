@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +58,11 @@ public class AuditServiceImpl implements AuditService {
 	@Autowired
 	private AuditLogDao logDao;
 
+	@Autowired
+	private CompanyDao companyDao;
+
 	@Override
-	public boolean save(Audit t) {
+	public Boolean save(Audit t) {
 		if (t.getYear() == null || "".equals(t.getYear())) {
 			new HesfException("year", HesfException.type_null)
 					.printStackTrace();
@@ -83,12 +85,12 @@ public class AuditServiceImpl implements AuditService {
 			return false;
 		}
 		// 保存日志--暂时去掉
-//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
-	public boolean save(String year, String companyCode,Integer userId) {
+	public Boolean save(String year, String companyCode, Integer userId) {
 		if (year == null || "".equals(year)) {
 			new HesfException("year", HesfException.type_null)
 					.printStackTrace();
@@ -105,7 +107,8 @@ public class AuditServiceImpl implements AuditService {
 			return false;
 		}
 		// 先得到公司
-		Company company = cDao.retrieveByCompanyCode(companyCode);
+		Company company = cDao.retrieveByCompanyCodeAndYear(new Company(
+				companyCode, year));
 		if (company == null) {
 			new HesfException("公司不存在!").printStackTrace();
 			return false;
@@ -131,12 +134,12 @@ public class AuditServiceImpl implements AuditService {
 			return false;
 		}
 		// 保存日志--暂时去掉
-//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		Audit t = dao.retrieveByPrimaryKey(id);
 		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
@@ -151,7 +154,7 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public boolean update(Audit t) {
+	public Boolean update(Audit t) {
 		if (t.getId() == null) {
 			new HesfException("audit.id", HesfException.type_null)
 					.printStackTrace();
@@ -189,7 +192,7 @@ public class AuditServiceImpl implements AuditService {
 			return false;
 		}
 		// 保存日志--暂时去掉
-//		logDao.insertSelective(KitService.getLogObjectFromEntity(t));
+		// logDao.insertSelective(KitService.getLogObjectFromEntity(t));
 		return true;
 	}
 
@@ -203,7 +206,7 @@ public class AuditServiceImpl implements AuditService {
 		}
 		// 查询该公司当年度残疾职工人数
 		CompanyYearWorker cyw = new CompanyYearWorker();
-		cyw.setCompanyId(audit.getCompany().getId());
+		cyw.setCompanyCode(audit.getCompany().getCompanyCode());
 		cyw.setYear(audit.getYear());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("companyYearWorker", cyw);
@@ -282,37 +285,26 @@ public class AuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public boolean initAuditData(String year) {
-		if (year == null || "".equals(year)) {
-			new HesfException("year", HesfException.type_null)
-					.printStackTrace();
-			return false;
-		}
-		// 向审核表里插入数据
-		int k = dao.insertLastYearData(year);
-		if (k < 0) {
-			new HesfException("向审核表里插入数据		失败").printStackTrace();
-			return false;
-		}
+	public Boolean initAuditData(String year, Integer logUserId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		// 当前审核年度
+		paramMap.put("thisYear", year);
+		// 去年审核年度
 		Integer currentYear = Integer.parseInt(year);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("currentYear", currentYear);
-		map.put("lastYear", (currentYear - 1));
-		// 向公司-员工关系表中插入数据
-		// 首先验证有无上年度的数据
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		CompanyYearWorker searchCyw = new CompanyYearWorker();
-		Integer thisYear = Integer.parseInt(year);
-		searchCyw.setYear(String.valueOf(thisYear - 1));
-		searchMap.put("companyYearWorker", searchCyw);
-		int nums = cywDao.retrieveCount(searchMap);
-		if (nums > 0) {
-			cywDao.insertLastYearData(map);
+		paramMap.put("lastYear", (currentYear - 1));
+		// log操作人id
+		paramMap.put("userId", logUserId);
+		// ① 初始化 企业数据
+		Integer result1 = companyDao.insertLastYearData(paramMap);
+		// ②初始化审核数据
+		Integer result2 = dao.insertLastYearData(paramMap);
+//		// ③初始化公司-员工关系数据
+//		Integer result3 = cywDao.insertLastYearData(paramMap);
+		if (result1 < 0 || result2 < 0) {
+			new HesfException("初始化 审核表数据 	*****失败*****").printStackTrace();
+			return Boolean.FALSE;
 		}
-		// if (l <= 0) {
-		// new HesfException("向公司-员工关系表中插入数据		失败").printStackTrace();
-		// }
-		return (k > 0) ? true : false;
+		return Boolean.TRUE;
 	}
 
 	@Override

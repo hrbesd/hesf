@@ -29,10 +29,30 @@ public class AuditParamModel {
 
 	private String startDate; // 初审开始时间
 	private String endDate; // 初审结束时间
+	
+	private String verifyStartDate; // 复审开始时间
+	private String verifyEndDate; // 复审结束时间
 
 	private String isDownLoadAll; // 是否下载全部查询出来的数据 yes or no
 	private Integer page;
 	private Integer rows;
+
+	
+	public String getVerifyStartDate() {
+		return verifyStartDate;
+	}
+
+	public void setVerifyStartDate(String verifyStartDate) {
+		this.verifyStartDate = verifyStartDate;
+	}
+
+	public String getVerifyEndDate() {
+		return verifyEndDate;
+	}
+
+	public void setVerifyEndDate(String verifyEndDate) {
+		this.verifyEndDate = verifyEndDate;
+	}
 
 	public String getIsDownLoadAll() {
 		return isDownLoadAll;
@@ -41,6 +61,7 @@ public class AuditParamModel {
 	public void setIsDownLoadAll(String isDownLoadAll) {
 		this.isDownLoadAll = isDownLoadAll;
 	}
+	
 
 	public String getPaymentPerson() {
 		return paymentPerson;

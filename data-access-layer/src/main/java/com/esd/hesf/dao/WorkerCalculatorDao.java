@@ -24,7 +24,7 @@ public interface WorkerCalculatorDao {
 	 * 查询 指定公司, 指定年度, 指定残疾等级和类型的残疾人数
 	 * 
 	 * @param map	
-	 * map中放入: year-年份, companyId--公司id, workerHandicapType--残疾类型, workerHandicapLevel--残疾等级
+	 * map中放入: year-年份, companyCode--公司code, workerHandicapType--残疾类型, workerHandicapLevel--残疾等级
 	 * @return
 	 */
 	Integer retrieveSpecialCount(Map<String, Object> map);

@@ -9,6 +9,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 
 public class CommonUtil {
+	
 	public static String formatData() {
 		SimpleDateFormat dateFm = new SimpleDateFormat("yyyy-MM-dd"); // 格式化当前系统日期
 		return dateFm.format(new java.util.Date());
@@ -21,7 +22,7 @@ public class CommonUtil {
 	 *            String
 	 * @return 包含中文字符返回true,否则返回false
 	 */
-	static public boolean chineseValid(String s) {
+	static public Boolean chineseValid(String s) {
 		int length = s.length();
 		byte[] b;
 		for (int i = 0; i < length; i++) {
@@ -50,4 +51,6 @@ public class CommonUtil {
 		}
 
 	}
+	
+	
 }

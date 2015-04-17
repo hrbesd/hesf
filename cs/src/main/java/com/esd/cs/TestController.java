@@ -30,6 +30,7 @@ import com.esd.hesf.model.AuditProcessStatus;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyType;
+import com.esd.hesf.model.LegalHoliday;
 import com.esd.hesf.model.Menu;
 import com.esd.hesf.model.Payment;
 import com.esd.hesf.model.PaymentExceptional;
@@ -49,6 +50,7 @@ import com.esd.hesf.service.AuditService;
 import com.esd.hesf.service.CompanyEconomyTypeService;
 import com.esd.hesf.service.CompanyService;
 import com.esd.hesf.service.CompanyTypeService;
+import com.esd.hesf.service.LegalHolidayService;
 import com.esd.hesf.service.MenuService;
 import com.esd.hesf.service.PaymentExceptionalService;
 import com.esd.hesf.service.PaymentService;
@@ -135,6 +137,9 @@ public class TestController {
 
 	@Autowired
 	private WorkerTempService wtService;
+
+	@Autowired
+	private LegalHolidayService legalHolidayService;
 
 	// 菜单
 	@RequestMapping("/1")
@@ -341,7 +346,7 @@ public class TestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Worker entity = wService.getByPrimaryKey(26884);
 		entity.setWorkerAddress("红旗大街");
-		boolean bl = wService.update(entity);
+		Boolean bl = wService.update(entity);
 		map.put("entity", bl);
 		return map;
 	}
@@ -351,7 +356,7 @@ public class TestController {
 	// @ResponseBody
 	// public Map<String, Object> test18() {
 	// Map<String, Object> map = new HashMap<String, Object>();
-	// boolean entity = cService("2011", "2010");
+	// Boolean entity = cService("2011", "2010");
 	// map.put("entity", entity);
 	// return map;
 	// }
@@ -361,7 +366,8 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test19() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = cService.deleteWorkerFromCompany("2013", 1366, 26884);
+		Boolean entity = cService
+				.deleteWorkerFromCompany("2013", "1366", 26884);
 		map.put("entity", entity);
 		return map;
 	}
@@ -457,7 +463,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test25() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = auditService.initAuditData("2013");
+		Boolean entity = auditService.initAuditData("2013", 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -509,7 +515,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test28() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getByCompanyCode("101007");
+		Company entity = cService.getByCompanyCodeAndYear("101007", "2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -582,7 +588,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test35() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		int entity = apService.getSpecialCount(1366, "2013", 1, 1);
+		int entity = apService.getSpecialCount("600010", "2013", 1, 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -603,7 +609,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test37() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = wService.changeCompany(18496, 1370, "2013", "城管");
+		Boolean entity = wService.changeCompany(18496, "1370", "2013", "城管");
 		map.put("entity", entity);
 		return map;
 	}
@@ -681,7 +687,7 @@ public class TestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Company c = cService.getByPrimaryKey(1366);
 		c.setCompanyContactPerson("虎头人");
-		boolean entity = cService.update(c);
+		Boolean entity = cService.update(c);
 		map.put("entity", entity);
 		return map;
 	}
@@ -722,7 +728,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test49() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Company entity = cService.getByCompanyCode("101001");
+		Company entity = cService.getByCompanyCodeAndYear("101001", "2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -778,7 +784,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test55() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Integer entity = cService.getWorkerHandicapTotal(1794, "2013");
+		Integer entity = cService.getWorkerHandicapTotal("1794", "2013");
 		map.put("entity", entity);
 		return map;
 	}
@@ -788,7 +794,7 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test56() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean entity = auditService.save("2000", "101001",1);
+		Boolean entity = auditService.save("2000", "101001", 1);
 		map.put("entity", entity);
 		return map;
 	}
@@ -814,7 +820,7 @@ public class TestController {
 
 	@RequestMapping(value = "/59")
 	public String test59(HttpServletRequest request) {
-		boolean b = true;
+		Boolean b = true;
 		// 每次导入量
 		Integer pageSize = 99999;
 		PaginationRecordsAndNumber<Payment, Number> prn = pService
@@ -1064,7 +1070,7 @@ public class TestController {
 			Area a = new Area();
 			a.setCode("q" + i);
 			a.setName("test地方");
-			boolean w = aService.save(a);
+			Boolean w = aService.save(a);
 			System.out.println(w);
 		}
 		map.put("entity", 123);
@@ -1093,7 +1099,7 @@ public class TestController {
 		Reply c = new Reply();
 		c.setContent("测试");
 		c.setTitle("test");
-		boolean bl = rService.save(c);
+		Boolean bl = rService.save(c);
 		if (bl) {
 			d++;
 			map.put("entity", bl);
@@ -1132,7 +1138,6 @@ public class TestController {
 						conn.close();
 					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -1166,9 +1171,9 @@ public class TestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		byte[] pic = wtService.getPicByPrimaryKey(4441);
 		WorkerTemp wt = wtService.getByPrimaryKey(4441);
-//		WorkerTemp wt1 = new WorkerTemp();
-//		wt1.setPic(pic);
-//		map.put("bl", wtService.save(wt1));
+		// WorkerTemp wt1 = new WorkerTemp();
+		// wt1.setPic(pic);
+		// map.put("bl", wtService.save(wt1));
 		Worker worker = new Worker();
 		worker.setWorkerName(wt.getWorkerName());
 		worker.setWorkerGender(wt.getWorkerGender());
@@ -1180,19 +1185,29 @@ public class TestController {
 				.getWorkerHandicapLevel()));
 		worker.setWorkerHandicapType(new WorkerHandicapType(wt
 				.getWorkerHandicapType()));
-		worker.setCurrentJob(wt.getCurrentJob());	//目前工作
-		worker.setCareerCard(wt.getCareerCard());	//就业证号
-		worker.setPhone(wt.getPhone());	//联系电话
-		worker.setIsCadre(wt.getIsCadre());	//是否干部
-		//检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
-		if(wt.getPicTitle() != null && !"".equals(wt.getPicTitle())){
+		worker.setCurrentJob(wt.getCurrentJob()); // 目前工作
+		worker.setCareerCard(wt.getCareerCard()); // 就业证号
+		worker.setPhone(wt.getPhone()); // 联系电话
+		worker.setIsCadre(wt.getIsCadre()); // 是否干部
+		// 检查是否存在图片, 如果存在, 则替换原来的, 不管原来是否存在
+		if (wt.getPicTitle() != null && !"".equals(wt.getPicTitle())) {
 			worker.setPicTitle(wt.getPicTitle());
-//			byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
+			// byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
 			worker.setPic(pic);
 		}
 		map.put("111bl111", wService.save(worker));
 		// map.put("entity", entity);
 		// return map;
 		return map;
+	}
+
+	// 得到法定假日
+	@RequestMapping("/85")
+	@ResponseBody
+	public Map<String, Object> test85() {
+		Map<String, Object> entity = new HashMap<String, Object>();
+		List<LegalHoliday> list = legalHolidayService.getAll();
+		entity.put("entity", list);
+		return entity;
 	}
 }

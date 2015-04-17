@@ -12,7 +12,7 @@ public class ExampleMap {
 	 */
 	public void example_company() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		// map.put("year", "2001"); // 年度 已被删除
+		 map.put("year", "2001"); // 审核年度 
 		map.put("companyCode", "601001"); // 公司档案号
 		map.put("companyName", "广寒攻丝"); // 公司名称
 		map.put("companyProperty", 1); // 公司性质 对应的id

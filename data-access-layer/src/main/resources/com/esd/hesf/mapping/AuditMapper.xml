@@ -541,17 +541,19 @@
 		</trim>
 	</insert>
 
-	<!-- copy last year data : to be continued -->
-	<insert id="insertLastYearData" parameterType="java.lang.String">
+	<!-- copy last year data -->
+	<insert id="insertLastYearData" parameterType="map">
 		insert into audit
 		(
 			year,
-			company_id
+			company_id,
+			user_id,
+			update_time
 		)
-		select #{year,jdbcType=CHAR},id 
+		select #{thisYear,jdbcType=CHAR},id, #{userId,jdbcType=INTEGER}, now()
 		from company
 		<!-- only copy the effective company data -->
-		where is_active = 0
+		where is_active = 0 and year = #{thisYear, jdbcType=VARCHAR}
 	</insert>
 
 	<!-- delete -->

@@ -41,19 +41,25 @@ public class QueryCompayController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView company_list(HttpServletRequest request, HttpSession session) {
+		logger.debug("goToPage:{}", "queryCompany");
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
-		logger.debug("goToPage:{}", "queryCompany");
 		return new ModelAndView("query/company");
 
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> companyPost(CompanyParamModel params, HttpServletRequest request) {
-
+	public Map<String, Object> companyPost(CompanyParamModel params, HttpServletRequest request,HttpSession session) {
+		//获得当前审核年份
+		String thisYear = params.getYear();
+		//如果前台没有传递审核年份参数, 则使用当前审核年度参数
+		if(params.getYear()==null || "".equals(params.getYear())){
+			thisYear =session.getAttribute(Constants.YEAR).toString();; 
+		}
 		logger.debug("queryCompanyParams{}", params);
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("year", thisYear);	//审核年度
 		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
 		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
 		paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
@@ -114,7 +120,7 @@ public class QueryCompayController {
 	@ResponseBody
 	public String export(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
 		logger.debug("exportCompany:{}", idArr+"");
-		boolean b = true;
+		Boolean b = true;
 		List<Company> companyList = null;
 		if(idArr[0] == Integer.MAX_VALUE){
 			companyList = new ArrayList<Company>();

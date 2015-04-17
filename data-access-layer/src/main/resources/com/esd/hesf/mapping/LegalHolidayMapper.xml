@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.hesf.dao.LegalHolidayDao">
+
+	<resultMap id="ResultLegalHoliday" type="com.esd.hesf.model.LegalHoliday">
+		<id column="lh_id" property="id" jdbcType="VARCHAR" />
+		<result column="lh_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="lh_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="lh_user_id" property="userId" jdbcType="INTEGER" />
+		<result column="lh_is_active" property="isActive" jdbcType="BIT" />
+		<result column="lh_version" property="version" jdbcType="INTEGER" />
+		<result column="lh_legaldate" property="legaldate" jdbcType="VARCHAR" />
+		<result column="lh_name" property="name" jdbcType="VARCHAR" />
+		<result column="lh_remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		<!-- legal_holiday -->
+		lh.id as lh_id, lh.create_time as lh_create_time, lh.update_time as lh_update_time,lh.user_id as lh_user_id, lh.is_active as lh_is_active, lh.version as lh_version,
+		lh.legaldate as lh_legaldate, lh.name as lh_name, lh.remark as lh_remark
+	</sql>
+
+	<!-- insert -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.esd.hesf.model.LegalHoliday">
+		insert into legal_holiday (id, create_time, update_time, user_id, is_active, version, legaldate, name,remark) 
+		values (#{id, jdbcType=VARCHAR}, now(),now(), #{userId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT},default,#{legaldate,jdbcType=CHAR},
+		#{name, jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" keyProperty="id" parameterType="com.esd.hesf.model.LegalHoliday">
+		insert into legal_holiday
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			create_time,
+			update_time,
+			<if test="userId != null">
+				user_id,
+			</if>
+			is_active, version,
+			<if test="legaldate != null and legaldate != ''">
+				legaldate,
+			</if>
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id,jdbcType=VARCHAR},
+			now(),
+			now(),
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			default,
+			default,
+			<if test="legaldate != null and legaldate != ''">
+				#{legaldate, jdbcType=DECIMAL},
+			</if>
+			<if test="name != null and name != ''">
+				#{name, jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null and name != ''">
+				#{remark,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from legal_holiday
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.LegalHoliday">
+		update legal_holiday
+		<set>
+			update_time = now(),
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive,jdbcType=BIT},
+			</if>
+			<if test="legaldate != null and legaldate != ''">
+				legaldate = #{legaldate, jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and name != ''">
+				remark = #{remark,jdbcType=VARCHAR}
+			</if>
+			version = version + 1
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="ResultLegalHoliday" parameterType="java.lang.String">
+		select
+			<include refid="Base_Column_List" />
+		from legal_holiday as lh 
+		where lh.id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByLegalDate" resultMap="ResultLegalHoliday" parameterType="java.lang.String">
+		select
+			<include refid="Base_Column_List" />
+		from legal_holiday as lh 
+		where lh.legaldate = #{legaldate,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByPage" resultMap="ResultLegalHoliday" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from legal_holiday as lh 
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="legal_holiday != null">
+				<if test="legal_holiday.legaldate != null and legal_holiday.legaldate != ''">
+					lh.legaldate = #{legalHoliday.legaldate,jdbcType=VARCHAR}
+				</if>
+				<if test="legal_holiday.name != null and legal_holiday.name != ''">
+					lh.name = #{legalHoliday.name,jdbcType=VARCHAR}
+				</if>
+			</if>
+			<choose>
+				<when test="legal_holiday != null">
+					<if test="legal_holiday.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					lh.is_active = 0
+				</otherwise>
+			</choose>
+		</trim>
+		order by lh.legaldate 
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from legal_holiday as lh 
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="legal_holiday != null">
+				<if test="legal_holiday.legaldate != null and legal_holiday.legaldate != ''">
+					lh.legaldate = #{legalHoliday.legaldate,jdbcType=VARCHAR}
+				</if>
+				<if test="legal_holiday.name != null and legal_holiday.name != ''">
+					lh.name = #{legalHoliday.name,jdbcType=VARCHAR}
+				</if>
+			</if>
+			<choose>
+				<when test="legal_holiday != null">
+					<if test="legal_holiday.isActive != null">
+					</if>
+				</when>
+				<otherwise>
+					lh.is_active = 0
+				</otherwise>
+			</choose>
+		</trim>
+	</select>
+
+</mapper>

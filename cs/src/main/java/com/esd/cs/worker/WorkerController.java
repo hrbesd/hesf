@@ -234,6 +234,7 @@ public class WorkerController {
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
 		logger.debug("addWorker--:{},year:{},companyID:{}", worker, year,
 				companyId);
+		Company currentCompany = companyService.getByPrimaryKey(companyId);
 		// 组装员工对象
 		worker = WorkerUtil.assembly(worker);
 		worker.setUserId(userId);
@@ -242,7 +243,7 @@ public class WorkerController {
 				.getWorkerIdCard());
 		// ①数据库中没有该员工的话,直接保存
 		if (tempWorker == null) {
-			return workerService.save(worker, companyId, year);
+			return workerService.save(worker, currentCompany.getCompanyCode(), currentCompany.getYear());
 		} else {
 			// ②数据库中已经存在该员工(但不在任何一家公司)的话, 则更新他的信息, 并同时保存和该公司今年的关系
 			tempWorker.setWorkerName(worker.getWorkerName());
@@ -257,7 +258,7 @@ public class WorkerController {
 			tempWorker.setUserId(userId);
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
-			cyw.setCompanyId(companyId);
+			cyw.setCompanyCode(currentCompany.getCompanyCode());
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
 			cyw.setCurrentJob(worker.getCurrentJob());
@@ -316,6 +317,7 @@ public class WorkerController {
 		String year = request.getParameter("year");
 		// 公司id
 		Integer companyId = Integer.valueOf(request.getParameter("companyId"));
+		Company currentCompany = companyService.getByPrimaryKey(companyId);
 		// 从CommonsMultipartFile 得到图片和图片名信息
 		worker.setPic(picfile.getBytes());
 		worker.setPicTitle(picfile.getOriginalFilename());
@@ -326,7 +328,7 @@ public class WorkerController {
 		Boolean bl = false;
 		// ①数据库中没有该员工的话,直接保存
 		if (tempWorker == null) {
-			bl = workerService.save(worker, companyId, year);
+			bl = workerService.save(worker, currentCompany.getCompanyCode(), year);
 		} else {
 			// ②数据库中已经存在该员工(但不在任何一家公司)的话, 则更新他的信息, 并同时保存和该公司今年的关系
 			tempWorker.setWorkerName(worker.getWorkerName());
@@ -343,7 +345,7 @@ public class WorkerController {
 			tempWorker.setUserId(userId);
 			// 关系表对象
 			CompanyYearWorker cyw = new CompanyYearWorker();
-			cyw.setCompanyId(companyId);
+			cyw.setCompanyCode(currentCompany.getCompanyCode());
 			cyw.setYear(year);
 			cyw.setWorkerId(tempWorker.getId());
 			cyw.setCurrentJob(worker.getCurrentJob());
@@ -559,7 +561,7 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean edit(Worker worker, HttpServletRequest request) {
 		logger.debug("editWorker:{}", worker);
-		boolean b = workerService.update(worker);
+		Boolean b = workerService.update(worker);
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
@@ -575,7 +577,7 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean editWithPic(Worker worker, HttpServletRequest request) {
 		logger.debug("editWorker:{}", worker);
-		boolean b = workerService.update(worker);
+		Boolean b = workerService.update(worker);
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
@@ -591,11 +593,10 @@ public class WorkerController {
 	@ResponseBody
 	public Boolean editWorkerTemp(WorkerTemp worker, HttpServletRequest request) {
 		logger.debug("editWorker:{}", worker);
-		boolean b = wtService.update(worker);
+		Boolean b = wtService.update(worker);
 		logger.debug("editWorkerResult:{}", b);
 		return b;
 	}
-
 
 	/**
 	 * 异步 更新有照片的 缓存表中的 残疾职工
@@ -682,10 +683,11 @@ public class WorkerController {
 
 		logger.debug("deleteWorkerParamsID:{},years:{},companyId:{}", params,
 				year, companyId);
+		Company currentCompany = companyService.getByPrimaryKey(companyId);
 		try {
 			for (int i = 0; i < params.length; i++) {
-				boolean b = companyService.deleteWorkerFromCompany(year,
-						companyId, params[i]);
+				Boolean b = companyService.deleteWorkerFromCompany(year,
+						currentCompany.getCompanyCode(), params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
 				if (b = false) {
 
@@ -714,7 +716,7 @@ public class WorkerController {
 			HttpServletRequest request) {
 		try {
 			for (int i = 0; i < params.length; i++) {
-				boolean b = wtService.delete(params[i]);
+				Boolean b = wtService.delete(params[i]);
 				logger.debug("delete_worker:{},result:{}", params[i], b);
 				if (b = false) {
 
@@ -890,7 +892,7 @@ public class WorkerController {
 	}
 
 	/**
-	 * 校验从excel中读取出来的worker信息
+	 * 校验从excel中读取出来的单个worker信息
 	 * 
 	 * @param worker
 	 * @return
@@ -957,7 +959,7 @@ public class WorkerController {
 		}
 		// 7.校验残疾类型
 		String handicapTypeStr = workerHandicapCode.substring(18, 19);
-		boolean ishandicapType = handicapTypeStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
+		Boolean ishandicapType = handicapTypeStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
 		// 8.校验是否数数字
 		if (!ishandicapType) {
 			result.setRemark("残疾类型错误, 必须为数字.");
@@ -970,7 +972,7 @@ public class WorkerController {
 		}
 		// 9.校验残疾证号等级
 		String handicapLevelStr = workerHandicapCode.substring(19, 20);
-		boolean ishandicapLevel = handicapLevelStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
+		Boolean ishandicapLevel = handicapLevelStr.matches("\\d+");// 返回true为纯数字,否则就不是纯数字
 		if (!ishandicapLevel) {
 			result.setRemark("残疾等级错误, 必须为数字.");
 			return result;
@@ -1041,7 +1043,7 @@ public class WorkerController {
 	}
 
 	/**
-	 * 校验残疾证号
+	 * 校验身份证号 是否存在, 或者已经被其他公司录用
 	 * 
 	 * @param workerIdCard
 	 * @return
@@ -1148,6 +1150,8 @@ public class WorkerController {
 		// 当前登陆用户ID
 		Integer userId = Integer.parseInt(session.getAttribute(
 				Constants.USER_ID).toString());
+		//得到公司对象
+		Company currentCompany = companyService.getByPrimaryKey(companyId);
 		// 先得到总共需要导入的残疾职工数量
 		int totalWorkers = wtService.getCountByCheck(true, userId);
 		// 如果总数大于1K， 则分批导入, 防止内存溢出
@@ -1160,7 +1164,7 @@ public class WorkerController {
 		WorkerTemp t = new WorkerTemp();
 		t.setIsOk(true);
 		t.setUserId(userId);
-		boolean bl = true;
+		Boolean bl = true;
 		for (int k = 0; k < circulationTimes; k++) {
 			int page = k + 1; // 起始索引
 			workerTempList = null;
@@ -1179,9 +1183,11 @@ public class WorkerController {
 					.iterator();
 			while (iterator.hasNext()) {
 				WorkerTemp wt = iterator.next();
-				bl = exportWorkerFromTempToEntity(wt, companyId, year, userId);
+				bl = exportWorkerFromTempToEntity(wt, currentCompany.getCompanyCode(), year, userId);
 			}
 		}
+		//导入完毕后都要删除遗留在workerTemp员工缓存表中的数据, 按操作人ID删除, 防止误删其他人的数据
+		wtService.deleteByUserId(userId);
 		return bl;
 	}
 
@@ -1218,7 +1224,7 @@ public class WorkerController {
 		Boolean bl = true;
 		while (it.hasNext()) {
 			WorkerTemp wt = it.next();
-			if (!exportWorkerFromTempToEntity(wt, companyId, audit.getYear(),
+			if (!exportWorkerFromTempToEntity(wt, audit.getCompany().getCompanyCode(), audit.getYear(),
 					userId)) {
 				notice.put(Constants.NOTICE, "保存员工数据发生错误, 请重新操作或联系管理员.");
 				bl = false;
@@ -1244,8 +1250,8 @@ public class WorkerController {
 	 * 
 	 * @param wt
 	 *            员工缓存对象
-	 * @param companyId
-	 *            公司id
+	 * @param companyCode
+	 *            公司code
 	 * @param year
 	 *            审核年份
 	 * @param userId
@@ -1253,7 +1259,7 @@ public class WorkerController {
 	 * @return
 	 */
 	private Boolean exportWorkerFromTempToEntity(WorkerTemp wt,
-			Integer companyId, String year, Integer userId) {
+			String  companyCode, String year, Integer userId) {
 		// ①如果先前的员工id存在, 则对其进行更新, 然后插入到企业员工关系表中
 		if (wt.getPreId() != null && wt.getPreId() > 0) {
 			Worker w = workerService.getByPrimaryKey(wt.getPreId());
@@ -1275,7 +1281,7 @@ public class WorkerController {
 				return false;
 			}
 			CompanyYearWorker cyw = new CompanyYearWorker();
-			cyw.setCompanyId(companyId);
+			cyw.setCompanyCode(companyCode);
 			cyw.setYear(year);
 			cyw.setCurrentJob(Constants.NOTYET);
 			cyw.setSalary(wt.getSalary());
@@ -1313,7 +1319,7 @@ public class WorkerController {
 			byte[] pic = wtService.getPicByPrimaryKey(wt.getId()).clone();
 			worker.setPic(pic);
 		}
-		if (!workerService.save(worker, companyId, year)) {
+		if (!workerService.save(worker, companyCode, year)) {
 			return false;
 		}
 		return true;

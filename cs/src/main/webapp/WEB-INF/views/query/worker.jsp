@@ -24,13 +24,13 @@
 			editable:false,
 			textField : 'handicapLevel'
 		});
-
+		//加载历史审核年份列表
 		$('#year').combobox({
 			url : 'parameter/getyears',
 			valueField : 'id',
 			textField : 'text'
 		});
-	//初始化输入元素默认值
+		//初始化输入元素默认值
 		var element=$(".inputElement");
 		for(var i=0;i<element.length;i++){
 			$(element[i]).val("");
@@ -119,6 +119,7 @@
 	 **/
 	queryWorker.getParams = function() {
 		params = {};
+		params.year = $('#year').combobox('getValue');	//审核年度
 		params.companyId = $("#companyId").val();//单位id
 		params.workerName = $("#workerFind_workerName").val(); // //员工名
 		params.workerHandicapCode = $("#workerFind_workerHandicapCode").val();// 残疾证号
@@ -242,8 +243,8 @@
 			<tr>
 				<td class="tipsText">残疾证号:</td>
 				<td><input type="text" id="workerFind_workerHandicapCode" class="inputElement long" /></td>
-				<td class="tipsText">就业证号:</td>
-				<td><input type="text" id="workerFind_careerCard" class="inputElement long"  /></td>
+				<td class="tipsText">审核年度 :</td>
+				<td><input id="year" class="easyui-combobox" value="${nowYear }" data-options="height:29,width:60,editable:false" /></td>
 				<td class="tipsText">性别:</td>
 				<td><input type="text" id="workerFind_Gender" /></td>
 			</tr>

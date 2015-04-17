@@ -28,7 +28,7 @@ public interface AuditService extends BaseService<Audit> {
 	 * @param companyCode
 	 * @return
 	 */
-	boolean save(String year, String companyCode,Integer userId);
+	Boolean save(String year, String companyCode,Integer userId);
 
 	/**
 	 * 根据年份year, 公司id companyId获得一条审核数据
@@ -43,10 +43,11 @@ public interface AuditService extends BaseService<Audit> {
 	 * 初始化审计参数--包括创建 年度审核信息
 	 * 
 	 * @param year
-	 *            年度
+	 *            当前审核年度
+	 * @param logUserId 操作人id
 	 * @return
 	 */
-	boolean initAuditData(String year);
+	Boolean initAuditData(String year,Integer logUserId);
 
 	/**
 	 * 多条件查询 公司审核数据 数据

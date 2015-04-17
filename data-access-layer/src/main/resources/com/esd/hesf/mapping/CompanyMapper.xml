@@ -4,6 +4,7 @@
 
 	<resultMap id="ResultCompany" type="com.esd.hesf.model.Company">
 		<id column="c_id" jdbcType="INTEGER" property="id" />
+		<result column="c_year" jdbcType="VARCHAR" property="year" />
 		<result column="c_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="c_company_management" jdbcType="VARCHAR" property="companyManagement" />
 		<result column="c_company_name" jdbcType="VARCHAR" property="companyName" />
@@ -56,7 +57,7 @@
 
 	<sql id="Base_Column_List">
 		<!-- company -->
-		c.id as c_id, c.company_code as c_company_code,
+		c.id as c_id, c.year as c_year, c.company_code as c_company_code,
 		c.company_management as c_company_management,
 		c.company_name as c_company_name, c.company_legal as c_company_legal,
 		c.company_contact_person as c_company_contact_person,
@@ -91,6 +92,7 @@
 			select last_insert_id()
 		</selectKey>
 		insert into company (
+		year,
 		company_code,
 		company_management,
 		company_name,
@@ -106,6 +108,7 @@
 		is_active,version)
 		values
 		(
+		#{year, jdbcType=VARCHAR},
 		#{companyCode,jdbcType=VARCHAR},
 		#{companyManagement,jdbcType=VARCHAR},
 		#{companyName,jdbcType=VARCHAR},
@@ -130,7 +133,10 @@
 		</selectKey>
 		insert into company
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="companyCode != null">
+			<if test="year != null and year != ''">
+				year,
+			</if>
+			<if test="companyCode != null and companyCode != ''">
 				company_code,
 			</if>
 			<if test="companyManagement != null">
@@ -205,6 +211,9 @@
 			version
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="year != null and year != ''">
+				#{year,jdbcType=CHAR},
+			</if>
 			<if test="companyCode != null and companyCode != ''">
 				#{companyCode,jdbcType=VARCHAR},
 			</if>
@@ -281,6 +290,21 @@
 		</trim>
 	</insert>
 
+	<!-- copy last year data -->
+	<insert id="insertLastYearData" parameterType="map">
+		insert into company (year, company_code,  company_management, company_name,  company_legal, 
+			company_contact_person, company_organization_code,company_tax_code,company_address,company_zip_code,
+			company_fax,company_type,company_economy_type, company_property,area_code,company_mobile,company_phone,
+			company_bank,company_bank_account,company_remark,update_time,user_id)
+		select #{thisYear,jdbcType=VARCHAR}, company_code, company_management, company_name, company_legal, 
+			company_contact_person, company_organization_code,company_tax_code,company_address,company_zip_code,
+			company_fax,company_type,company_economy_type, company_property,area_code,company_mobile,company_phone,
+			company_bank,company_bank_account,company_remark,now(),#{userId,jdbcType=INTEGER}
+		from company
+		<!-- only copy the effective company data -->
+		where is_active = 0 and year = #{lastYear, jdbcType=VARCHAR}
+	</insert>
+	
 	<!-- delete -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from company
@@ -291,6 +315,9 @@
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.Company">
 		update company
 		<set>
+			<if test="year != null and year != ''">
+				year = #{year,jdbcType=VARCHAR},
+			</if>
 			<if test="companyCode != null and companyCode != ''">
 				company_code = #{companyCode,jdbcType=VARCHAR},
 			</if>
@@ -393,14 +420,14 @@
 		</foreach>
 	</select>
 	
-	<select id="retrieveByCompanyCode" parameterType="java.lang.String" resultMap="ResultCompany">
+	<select id="retrieveByCompanyCodeAndYear" parameterType="com.esd.hesf.model.Company" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />
 		from
 		<include refid="From_condition_list" />
 		where
 		<include refid="Where_condition_list" />
-		and c.company_code = #{companyCode,jdbcType=INTEGER}
+		and c.company_code = #{companyCode,jdbcType=INTEGER} and c.year = #{year, jdbcType=VARCHAR}
 	</select>
 	
 	<select id="retrieveByCompanyName" parameterType="java.lang.String" resultMap="ResultCompany">
@@ -421,6 +448,9 @@
 		<trim prefix="where" prefixOverrides="and|or">
 			<include refid="Where_condition_list" />
 			<if test="company != null">
+				<if test="company.year != null and company.year != ''">
+					and c.year = #{company.year,jdbcType=VARCHAR} 
+				</if>
 				<if test="company.companyCode != null and company.companyCode != ''">
 					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
 				</if>
@@ -492,6 +522,9 @@
 		<trim prefix="where" prefixOverrides="and|or">
 			<include refid="Where_condition_list" />
 			<if test="company != null">
+				<if test="company.year != null and company.year != ''">
+					and c.year = #{company.year,jdbcType=VARCHAR} 
+				</if>
 				<if test="company.companyCode != null and company.companyCode != ''">
 					and c.company_code like concat('%', #{company.companyCode,jdbcType=VARCHAR},'%')
 				</if>

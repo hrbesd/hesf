@@ -29,7 +29,7 @@ public class AreaServiceImpl implements AreaService {
 	private AreaDao dao;
 
 	@Override
-	public boolean save(Area t) {
+	public Boolean save(Area t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail);
@@ -39,7 +39,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -50,7 +50,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public boolean update(Area t) {
+	public Boolean update(Area t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail);

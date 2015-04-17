@@ -101,7 +101,7 @@ public interface PaymentService extends BaseService<Payment> {
 	 * @param paymentList
 	 * @return
 	 */
-	boolean createPaymentExcel(String FilePath, List<Payment> paymentList,
+	Boolean createPaymentExcel(String FilePath, List<Payment> paymentList,
 			Integer page, Integer pageSize);
 
 	/**

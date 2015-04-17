@@ -52,11 +52,13 @@ public class CompayController {
 	@RequestMapping(value = "/list/{property}", method = RequestMethod.GET)
 	public ModelAndView companyGet(
 			@PathVariable(value = "property") String property,
-			HttpServletRequest request) {
+			HttpServletRequest request,HttpSession session) {
 		logger.debug("companyProperty{}", property);
 		if (Constants.LURU.equals(property)) {
 			return new ModelAndView("audit/audit_create_list");
 		}
+		String nowYear = (String) session.getAttribute(Constants.YEAR);
+		request.setAttribute("nowYear", nowYear);
 		request.setAttribute("companyProperty", property);
 		return new ModelAndView("basicInfo/company_list");
 	}
@@ -143,8 +145,10 @@ public class CompayController {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		try {
 			String companyCode = request.getParameter("companyCode");
+			String year = request.getParameter("year");
 			logger.debug("companyCode:{}", companyCode);
-			Company company = companyService.getByCompanyCode(companyCode);
+			Company company = companyService.getByCompanyCodeAndYear(
+					companyCode, year);
 			logger.debug(" getcompany{}", company);
 			entity.put("entity", company);
 			return entity;
@@ -195,19 +199,21 @@ public class CompayController {
 	public Boolean add_company(Company company, HttpServletRequest request,
 			HttpSession session) {
 		logger.debug("addCompany:{}", company);
+		// 获得当前审核年度
+		String year = session.getAttribute(Constants.YEAR).toString();
 		try {
 			if (company == null) {
 				logger.error("addCompany:{}", "paramserror");
 				return false;
 			}
-			String nowYear = (String) session.getAttribute(Constants.YEAR);
 			Integer userId = Integer.valueOf(session.getAttribute(
 					Constants.USER_ID).toString());
 			company.setUserId(userId);
+			company.setYear(year);
 			// 检查该公司是否存在, 不存在则保存, 存在则更新
-			boolean b;
-			Company tempCompany = companyService.getByCompanyCode(company
-					.getCompanyCode());
+			Boolean b;
+			Company tempCompany = companyService.getByCompanyCodeAndYear(
+					company.getCompanyCode(), year);
 			if (tempCompany == null) {
 				b = companyService.save(company);
 			} else {
@@ -215,7 +221,7 @@ public class CompayController {
 				b = companyService.update(company);
 				// 同时检查下是否有员工, 有的话则将关系复制一份
 				Integer workerCount = companyService.getWorkerHandicapTotal(
-						company.getId(), CalendarUtil.getBeforeYear());
+						company.getCompanyCode(), CalendarUtil.getBeforeYear());
 				if (workerCount > 0) {
 					companyService.copyLastYearWorker(
 							CalendarUtil.getNowYear(),
@@ -223,11 +229,11 @@ public class CompayController {
 				}
 			}
 			// 如果选中创建当年审核数据
-			String createAudit = request.getParameter("createAudit");
+			String createAudit = request.getParameter("ckbCreateAudit");
 			if (createAudit != null && "1".equals(createAudit)) {
 				Audit audit = new Audit();
 				audit.setCompany(company);
-				audit.setYear(nowYear);
+				audit.setYear(year);
 				audit.setUserId(userId);
 				auditService.save(audit);
 			}
@@ -255,6 +261,8 @@ public class CompayController {
 			HttpSession session) {
 		System.out.println("///////////////**************************");
 		logger.debug("addCompany:{}", company);
+		// 获得当前审核年度
+		String year = session.getAttribute(Constants.YEAR).toString();
 		try {
 			if (company == null) {
 				logger.error("addCompany:{}", "paramserror");
@@ -265,9 +273,9 @@ public class CompayController {
 					Constants.USER_ID).toString());
 			company.setUserId(userId);
 			// 检查该公司是否存在, 不存在则保存, 存在则更新
-			boolean b;
-			Company tempCompany = companyService.getByCompanyCode(company
-					.getCompanyCode());
+			Boolean b;
+			Company tempCompany = companyService.getByCompanyCodeAndYear(
+					company.getCompanyCode(), year);
 			if (tempCompany == null) {
 				b = companyService.save(company);
 			} else {
@@ -276,7 +284,7 @@ public class CompayController {
 				b = companyService.update(company);
 				// 同时检查下是否有员工, 有的话则将关系复制一份
 				Integer workerCount = companyService.getWorkerHandicapTotal(
-						company.getId(), CalendarUtil.getBeforeYear());
+						company.getCompanyCode(), CalendarUtil.getBeforeYear());
 				if (workerCount > 0) {
 					companyService.copyLastYearWorker(
 							CalendarUtil.getNowYear(),
@@ -325,13 +333,13 @@ public class CompayController {
 		Integer userId = Integer.valueOf(session
 				.getAttribute(Constants.USER_ID).toString());
 		company.setUserId(userId);
-		boolean b = companyService.update(company);
+		Boolean b = companyService.update(company);
 		logger.debug("editCompanyResult:{}", b);
 		return b;
 	}
 
 	/**
-	 * 删除单位	控制器
+	 * 删除单位 控制器
 	 * 
 	 * @param idArr
 	 * @param request
@@ -339,13 +347,13 @@ public class CompayController {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean deleteCompany(
+	public Boolean deleteCompany(
 			@RequestParam(value = "params[]") Integer idArr[],
 			HttpServletRequest request, HttpSession session) {
 		logger.debug("deleteCompany:{}", idArr.toString());
 		Integer userId = Integer.valueOf(session
 				.getAttribute(Constants.USER_ID).toString());
-		boolean b = true;
+		Boolean b = true;
 		// 逐条删除企业信息
 		for (int i = 0; i < idArr.length; i++) {
 			Company c = companyService.getByPrimaryKey(idArr[i]);
@@ -424,7 +432,8 @@ public class CompayController {
 			}
 			map.put("companyEmpTotal", audit.getCompanyEmpTotal() + "");// 员工总人数
 			map.put("workerHandicapTotal",
-					companyService.getWorkerHandicapTotal(companyId, year) + "");// 残疾职工总人数
+					companyService.getWorkerHandicapTotal(c.getCompanyCode(),
+							year) + "");// 残疾职工总人数
 			list.add(map);
 			logger.debug("getComapnmyInformationResult:{}", list);
 			return list;
@@ -444,9 +453,10 @@ public class CompayController {
 	@ResponseBody
 	public Boolean validate_companyCode(
 			@RequestParam(value = "param") String param,
-			HttpServletRequest request) {
-
-		if (companyService.getByCompanyCode(param) == null) {
+			HttpServletRequest request, HttpSession session) {
+		// 获取审核年度
+		String year = session.getAttribute(Constants.YEAR).toString();
+		if (companyService.getByCompanyCodeAndYear(param, year) == null) {
 			logger.debug("validate_companyCode:{},Result{}", param, "true");
 			return true;
 		} else {

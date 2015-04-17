@@ -8,6 +8,7 @@ package com.esd.hesf.model;
  */
 public class Company extends PrimaryKey_Int {
 
+	private String year; // 审核年份
 	private String companyCode; // 档案号
 	private String companyManagement; // 主管部门
 	private String companyName; // 企业名称
@@ -34,18 +35,48 @@ public class Company extends PrimaryKey_Int {
 	public Company(Integer id) {
 		super.setId(id);
 	}
-	
+
+	/**
+	 * 根据此构造方法查询的结果  不唯一  ~~~
+	 * @param companyCode
+	 */
 	public Company(String companyCode){
+		this.companyCode=companyCode;
+	}
+	/**
+	 * 根据此构造方法查询的结果  唯一  ~~~
+	 * @param companyCode
+	 * @param year
+	 */
+	public Company(String companyCode, String year) {
 		this.companyCode = companyCode;
+		this.year = year;
 	}
 
 	@Override
 	public String toString() {
-		return "Company [companyCode=" + companyCode + ", companyManagement=" + companyManagement + ", companyName=" + companyName + ", companyLegal=" + companyLegal + ", companyContactPerson="
-				+ companyContactPerson + ", companyOrganizationCode=" + companyOrganizationCode + ", companyTaxCode=" + companyTaxCode + ", companyAddress=" + companyAddress + ", companyZipCode="
-				+ companyZipCode + ", companyFax=" + companyFax + ", companyType=" + companyType + ", companyEconomyType=" + companyEconomyType + ", companyProperty=" + companyProperty + ", area="
-				+ area + ", companyPhone=" + companyPhone + ", companyMobile=" + companyMobile + ", companyBank=" + companyBank + ", companyBankAccount=" + companyBankAccount + ", companyRemark="
-				+ companyRemark + "]";
+		return "Company [year=" + year + ", companyCode=" + companyCode
+				+ ", companyManagement=" + companyManagement + ", companyName="
+				+ companyName + ", companyLegal=" + companyLegal
+				+ ", companyContactPerson=" + companyContactPerson
+				+ ", companyOrganizationCode=" + companyOrganizationCode
+				+ ", companyTaxCode=" + companyTaxCode + ", companyAddress="
+				+ companyAddress + ", companyZipCode=" + companyZipCode
+				+ ", companyFax=" + companyFax + ", companyType=" + companyType
+				+ ", companyEconomyType=" + companyEconomyType
+				+ ", companyProperty=" + companyProperty + ", area=" + area
+				+ ", companyPhone=" + companyPhone + ", companyMobile="
+				+ companyMobile + ", companyBank=" + companyBank
+				+ ", companyBankAccount=" + companyBankAccount
+				+ ", companyRemark=" + companyRemark + "]";
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 
 	public String getCompanyCode() {

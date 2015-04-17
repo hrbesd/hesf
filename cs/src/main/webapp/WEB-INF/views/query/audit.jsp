@@ -183,8 +183,10 @@
 		params.overYear = $("#overYear").val(); // 超过指定年度未初审的企业
 		params.isExempt = $("#isExempt").combobox("getValue");// 是否免交
 		
-		params.startDate = $('#startDate').combobox("getValue");	//缴款起始时间
-		params.endDate = $('#endDate').combobox("getValue");	//缴款结束时间
+		params.startDate = $('#startDate').combobox("getValue");	//初审起始时间
+		params.endDate = $('#endDate').combobox("getValue");	//初审结束时间
+		params.verifyStartDate = $('#verifyStartDate').combobox("getValue");	//复审起始时间
+		params.verifyEndDate = $('#verifyEndDate').combobox("getValue");	//复审结束时间
 		return params;
 	};
 
@@ -278,8 +280,10 @@
 						'overYear' : params.overYear, // 超过指定年度未初审的企业
 						'isExempt' : params.isExempt, // 是否免交
 						'isDownLoadAll' : params.isDownLoadAll,
-						'startDate':params.startDate,
-						'endDate':params.endDate
+						'startDate':params.startDate,	//复审起始时间
+						'endDate':params.endDate, //初审结束时间
+						'verifyStartDate':params.verifyStartDate,	//复审起始时间
+						'verifyEndDate':params.verifyEndDate	//复审结束时间
 					},
 					success:function(data){
 						if(data!="null"){
@@ -391,9 +395,13 @@
 			</tr>
 			<tr>
 				<td class="tipsText">初审时间:</td>
-				<td colspan="3">
+				<td colspan="2">
 					<input class="easyui-datebox" name="startDate" id="startDate" data-options="height:30,showSeconds:false" style="width:100px" />-
 					<input class="easyui-datebox" name="endDate" id="endDate" data-options="height:30,showSeconds:false" style="width:100px" />
+				</td>
+				<td colspan="3">复审时间:
+					<input class="easyui-datebox" name="verifyStartDate" id="verifyStartDate" data-options="height:30,showSeconds:false" style="width:100px" />-
+					<input class="easyui-datebox" name="verifyEndDate" id="verifyEndDate" data-options="height:30,showSeconds:false" style="width:100px" />
 				</td>
 			</tr>
 		</table>

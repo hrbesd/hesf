@@ -27,7 +27,7 @@ public class WorkerLogServiceImpl implements WorkerLogService {
 	private WorkerLogDao dao;
 
 	@Override
-	public boolean save(WorkerLog t) {
+	public Boolean save(WorkerLog t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -38,7 +38,7 @@ public class WorkerLogServiceImpl implements WorkerLogService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -49,7 +49,7 @@ public class WorkerLogServiceImpl implements WorkerLogService {
 	}
 
 	@Override
-	public boolean update(WorkerLog t) {
+	public Boolean update(WorkerLog t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

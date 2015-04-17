@@ -242,7 +242,7 @@ public class AuditsController {
 		Integer id = audit.getId();
 		Audit getAudit = auditService.getByPrimaryKey(id);
 		getAudit.setVerifyAuditComment(audit.getVerifyAuditComment());
-		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
+//		getAudit.setVerifyAuditDate(new Date());// 添加复审时间
 		Integer userId = (Integer) session.getAttribute(Constants.USER_ID);
 		User user = userService.getByPrimaryKey(userId);
 		getAudit.setVerifyAuditUser(user);// 添加复审ID
@@ -293,7 +293,7 @@ public class AuditsController {
 		Company company = audit.getCompany();
 		if (company != null) {
 			logger.debug(company.toString());
-			boolean b = companyService.update(company);
+			Boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
 				audit.setInitAuditDate(new Date()); // 添加初审计时间
@@ -492,7 +492,7 @@ public class AuditsController {
 		audit.setAuditProcessStatus(new AuditProcessStatus(
 				Constants.PROCESS_STATIC_WCS));
 		audit.setUserId(userId);
-		boolean bl = auditService.update(audit);
+		Boolean bl = auditService.update(audit);
 		if (bl) {
 			result.put(Constants.NOTICE, Constants.NOTICE_SUCCESS);
 		} else {
@@ -576,7 +576,7 @@ public class AuditsController {
 		company.setUserId(userId);
 		if (company != null) {
 			logger.debug(company.toString());
-			boolean b = companyService.update(company);
+			Boolean b = companyService.update(company);
 			logger.debug("save Company:{}", b);
 			if (b == true) {
 				// AuditProcessStatus auditProcessStatus =
@@ -629,7 +629,7 @@ public class AuditsController {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
 			Integer lvl = workerCalculator.getLvl();
-			Integer num = auditParameterService.getSpecialCount(companyId,
+			Integer num = auditParameterService.getSpecialCount(calculateModel.getCompanyCode(),
 					year, type, lvl);
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
@@ -761,7 +761,7 @@ public class AuditsController {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
 			Integer lvl = workerCalculator.getLvl();
-			Integer num = auditParameterService.getSpecialCount(companyId,
+			Integer num = auditParameterService.getSpecialCount(calculateModel.getCompanyCode(),
 					year, type, lvl);
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
@@ -851,6 +851,7 @@ public class AuditsController {
 		calculateModel.setShiJiaoZongJinE(shiJiaoZongJinE);
 		return calculateModel;
 	}
+	
 	/**
 	 * 获得未审年度的金额
 	 * 
@@ -1045,14 +1046,14 @@ public class AuditsController {
 		}
 		params.put("companyCode", companyCode); // 公司档案号
 		params.put("companyTaxCode", companyTaxCode); // 公司税务编码
-		params.put("companyName", companyName); // 公司税务编码
+		params.put("companyName", companyName); // 公司名称
 		if (StringUtils.isNotBlank(money)) {
 			params.put("actualAmount", new BigDecimal(money)); // 实缴金额
 		}
 		params.put("initAuditUser", initAuditUser1);
 		params.put("jianMianAuditUser", jianMianAuditUser1);
 		params.put("verifyAuditUser", verifyAuditUser1);
-		logger.debug("years:{},page:{},rows:{},process{}", year, page,
+		logger.debug("years:{},page:{},rows:{},process:{}", year, page,
 				pageSize, process);
 		Map<String, Object> entity = new HashMap<>();
 		try {

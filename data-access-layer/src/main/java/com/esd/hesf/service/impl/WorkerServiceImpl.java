@@ -49,7 +49,7 @@ public class WorkerServiceImpl implements WorkerService {
 	private WorkerLogDao logDao;
 	
 	@Override
-	public boolean save(Worker t) {
+	public Boolean save(Worker t) {
 		if (t.getArea() == null) {
 			t.setArea(new Area("10230000"));
 		}
@@ -65,7 +65,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean save(Worker worker, Integer companyId, String year) {
+	public Boolean save(Worker worker, String companyCode, String year) {
 		// ①保存到职工表
 		int i = dao.insertSelective(worker);
 		if (i != 1) {
@@ -76,7 +76,7 @@ public class WorkerServiceImpl implements WorkerService {
 		// ②保存到企业--职工 关系表
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(worker.getId());
-		cyw.setCompanyId(companyId);
+		cyw.setCompanyCode(companyCode);
 		cyw.setYear(year);
 		cyw.setCurrentJob(worker.getCurrentJob());
 		cyw.setSalary(worker.getSalary());
@@ -90,7 +90,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		Worker t = dao.retrieveByPrimaryKey(id);
 		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
@@ -105,7 +105,7 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean update(Worker t) {
+	public Boolean update(Worker t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -319,15 +319,15 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public boolean changeCompany(Integer workerId, Integer targetCompanyId,
+	public Boolean changeCompany(Integer workerId, String targetCompanyCode,
 			String currentYear, String currentJob) {
 		if (workerId == null || workerId <= 0) {
 			new HesfException("workerId", HesfException.type_number_negative)
 					.printStackTrace();
 			return false;
 		}
-		if (targetCompanyId == null || targetCompanyId <= 0) {
-			new HesfException("targetCompanyId", HesfException.type_null)
+		if (targetCompanyCode == null || "".equals(targetCompanyCode)) {
+			new HesfException("targetCompanyCode", HesfException.type_null)
 					.printStackTrace();
 			return false;
 		}
@@ -338,10 +338,10 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 		CompanyYearWorker cyw = new CompanyYearWorker();
 		cyw.setWorkerId(workerId);
-		cyw.setCompanyId(targetCompanyId);
+		cyw.setCompanyCode(targetCompanyCode);
 		cyw.setYear(currentYear);
 		cyw.setCurrentJob(currentJob);
-		boolean bl = cywDao.insertSelective(cyw) == 1 ? true : false;
+		Boolean bl = cywDao.insertSelective(cyw) == 1 ? true : false;
 		if (!bl) {
 			new HesfException("向员工--公司关系表  插入数据失败!").printStackTrace();
 		}

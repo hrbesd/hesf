@@ -37,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public boolean save(Menu t) {
+	public Boolean save(Menu t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public boolean update(Menu t) {
+	public Boolean update(Menu t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();

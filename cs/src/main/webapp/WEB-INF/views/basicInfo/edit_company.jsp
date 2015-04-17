@@ -47,8 +47,8 @@
 			<td class="bj_belu"><input name="companyManagement" value="${company.companyManagement}" /></td>
 		</tr>
 		<tr>
-			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
-			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}" data-options="required:true" />
+			<td class="tdRight">法人代表:</td>
+			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" value="${company.companyLegal}"/>
 			</td>
 			<td class="tdRight">联系人(<span class="red_notice">*</span>):</td>
 			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" value="${company.companyContactPerson}" />

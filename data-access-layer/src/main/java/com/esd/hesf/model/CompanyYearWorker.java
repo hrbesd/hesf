@@ -12,7 +12,7 @@ public class CompanyYearWorker extends PrimaryKey_Int {
 
 	private String year; // 年份
 	private Integer workerId; // 员工id
-	private Integer companyId; // 公司id
+	private String companyCode; // 公司档案code
 	private String currentJob; // 当前工作
 	private BigDecimal salary; // 当前工资
 	private BigDecimal pensionInsurance; // 养老保险
@@ -20,8 +20,9 @@ public class CompanyYearWorker extends PrimaryKey_Int {
 	@Override
 	public String toString() {
 		return "CompanyYearWorker [year=" + year + ", workerId=" + workerId
-				+ ", companyId=" + companyId + ", currentJob=" + currentJob
-				+ "]";
+				+ ", companyCode=" + companyCode + ", currentJob=" + currentJob
+				+ ", salary=" + salary + ", pensionInsurance="
+				+ pensionInsurance + "]";
 	}
 
 	public String getYear() {
@@ -40,12 +41,12 @@ public class CompanyYearWorker extends PrimaryKey_Int {
 		this.workerId = workerId;
 	}
 
-	public Integer getCompanyId() {
-		return companyId;
+	public String getCompanyCode() {
+		return companyCode;
 	}
 
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 
 	public String getCurrentJob() {

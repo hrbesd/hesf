@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	private UserLogDao logDao;
 
 	@Override
-	public boolean save(User t) {
+	public Boolean save(User t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		User t = dao.retrieveByPrimaryKey(id);
 		t.setIsActive(true);
 		int k = dao.deleteByPrimaryKey(id);
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean update(User t) {
+	public Boolean update(User t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

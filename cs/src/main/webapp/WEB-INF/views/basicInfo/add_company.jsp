@@ -54,8 +54,8 @@
 		</tr>
 		
 		<tr>
-			<td class="tdRight">法人代表(<span class="red_notice">*</span>):</td>
-			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
+			<td class="tdRight">法人代表:</td>			<!-- data-options="required:true" -->
+			<td><input name="companyLegal" class="inNormal easyui-validatebox" type="text"  /></td>
 		<td class="tdRight">联系人(<span class="red_notice">*</span>):</td>
 			<td><input name="companyContactPerson" class="inNormal easyui-validatebox" type="text" data-options="required:true" /></td>
 		
@@ -90,9 +90,9 @@
 		<tr>
 			<td class="tdRight">&nbsp;</td>
 			<td colspan="4">
-				<p style="margin: 0px;"><input type="checkbox" value="1" name="ckbCreateAudit" checked="checked" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息, 默认自动创建.</span></p>
-					<input type="hidden" name="createAudit" id="createAudit" value="0"/>
-				<script type="text/javascript">
+				<p style="margin: 0px;"><input type="checkbox" name="ckbCreateAudit" checked="checked" id="ckbCreateAudit" style="width:auto;height:auto;"/><span>创建当年的审核信息, 默认自动创建.</span></p>
+					<input type="hidden" name="createAudit" id="createAudit" value="1"/>
+		<!-- 		<script type="text/javascript">
 					$('#ckbCreateAudit').click(function(){
 						var ckbCreateAudit = $('#ckbCreateAudit').attr('checked');
 						if(ckbCreateAudit != null && ckbCreateAudit =='checked'){
@@ -101,7 +101,7 @@
 							$('#createAudit').val('0');
 						}
 					});
-				</script>
+				</script> -->
 			<!-- 	<p>带" <span style="color:red;">*</span> "项为必填项, 请认真填写.</p>	 -->
 			</td>
 		</tr>

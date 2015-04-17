@@ -13,9 +13,9 @@ import com.esd.hesf.model.CompanyYearWorker;
 public interface CompanyYearWorkerDao extends BaseDao<CompanyYearWorker> {
 
 	/**
-	 * 复制上一年的公司-员工对应信息
+	 * 根据年份创建 当前年度审核数据--企业-员工关系
 	 * 
-	 * @param map : currentYear -- 今年,必填;lastYear -- 去年,必填; userId -- 操作人ID,选填;companyId--公司id, 选填
+	 * @param map : thisYear -- 当前审核年,必填;lastYear -- 去年审核年,必填; userId -- 操作人ID,必填;
 	 * @return
 	 */
 	int insertLastYearData(Map<String, Object> map);

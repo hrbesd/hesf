@@ -34,7 +34,7 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	private AuditParameterDao apDao;
 
 	@Override
-	public boolean save(WorkerTemp t) {
+	public Boolean save(WorkerTemp t) {
 		if (t == null) {
 			new HesfException("workerTemp", HesfException.type_null)
 					.printStackTrace();
@@ -49,7 +49,7 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		if (id <= 0) {
 			new HesfException(id, HesfException.type_number_negative)
 					.printStackTrace();
@@ -67,7 +67,7 @@ public class WorkerTempServiceImpl implements WorkerTempService {
 	}
 	
 	@Override
-	public boolean update(WorkerTemp t) {
+	public Boolean update(WorkerTemp t) {
 		if (t == null) {
 			new HesfException("workerTemp", HesfException.type_null)
 					.printStackTrace();

@@ -27,7 +27,7 @@ public class CompanyLogServiceImpl implements CompanyLogService {
 	private CompanyLogDao dao;
 
 	@Override
-	public boolean save(CompanyLog t) {
+	public Boolean save(CompanyLog t) {
 		int i = dao.insertSelective(t);
 		if (i != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -38,7 +38,7 @@ public class CompanyLogServiceImpl implements CompanyLogService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -49,7 +49,7 @@ public class CompanyLogServiceImpl implements CompanyLogService {
 	}
 
 	@Override
-	public boolean update(CompanyLog t) {
+	public Boolean update(CompanyLog t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

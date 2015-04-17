@@ -6,7 +6,7 @@
 		<id column="cyw_id" jdbcType="INTEGER" property="id" />
 		<result column="cyw_year" jdbcType="CHAR" property="year" />
 		<result column="cyw_worker_id" jdbcType="INTEGER" property="workerId" />
-		<result column="cyw_company_id" jdbcType="VARCHAR" property="companyId" />
+		<result column="cyw_company_code" jdbcType="VARCHAR" property="companyCode" />
 		<result column="cyw_current_job" jdbcType="VARCHAR" property="currentJob" />
 		<result column="cyw_salary" jdbcType="DECIMAL" property="salary" />
 		<result column="cyw_pension_insurance" jdbcType="DECIMAL" property="pensionInsurance" />
@@ -17,7 +17,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_id as cyw_company_id,
+		cyw.id as cyw_id, cyw.year as cyw_year, cyw.worker_id as cyw_worker_id, cyw.company_code as cyw_company_code,
 		cyw.current_job as cyw_current_job, 
 		cyw.salary as cyw_salary, cyw.pension_insurance as cyw_pension_insurance,
 		cyw.create_time as cyw_create_time, cyw.update_time as cyw_update_time,
@@ -27,10 +27,10 @@
 	<!-- insert -->
 	<insert id="insert" parameterType="com.esd.hesf.model.CompanyYearWorker">
 		insert into company_year_worker (year, worker_id,
-		company_id, current_job, salary, pension_insurance, create_time,
+		company_code, current_job, salary, pension_insurance, create_time,
 		update_time, is_active, user_id )
 		values (#{year,jdbcType=CHAR}, #{workerId,jdbcType=INTEGER},
-		#{companyId,jdbcType=INTEGER}, #{currentJob,jdbcType=VARCHAR},
+		#{companyCode,jdbcType=VARCHAR}, #{currentJob,jdbcType=VARCHAR},
 		#{salary, jdbcType=DECIMAL}, #{pensionInsurance, jdbcType=DECIMAL},
 		now(),now(),default,#{userId,jdbcType=INTEGER} )
 	</insert>
@@ -44,8 +44,8 @@
 			<if test="workerId != null">
 				worker_id,
 			</if>
-			<if test="companyId != null">
-				company_id,
+			<if test="companyCode != null and companyCode != ''">
+				company_code,
 			</if>
 			<if test="currentJob != null">
 				current_job,
@@ -71,8 +71,8 @@
 			<if test="workerId != null">
 				#{workerId,jdbcType=INTEGER},
 			</if>
-			<if test="companyId != null">
-				#{companyId,jdbcType=INTEGER},
+			<if test="companyCode != null and companyCode != ''">
+				#{companyCode,jdbcType=VARCHAR},
 			</if>
 			<if test="currentJob != null">
 				#{currentJob,jdbcType=VARCHAR},
@@ -96,32 +96,26 @@
 	<!-- copy last year data -->
 	<insert id="insertLastYearData" parameterType="map">
 		insert into company_year_worker 
-			( 
+		( 
 			year, 
-			company_id,
+			company_code,
 			worker_id,
 			current_job,
-			<if test="userId != null and userId > 0">
-				user_id,
-			</if>
+			salary,
+			pension_insurance,
+			user_id,
 			update_time
-			)
-		select 	#{currentYear}, 
-			company_id,
+		)
+		select 	#{thisYear}, 
+			company_code,
 			worker_id,
 			current_job,
-			<if test="userId != null and userId > 0">
-				#{userId,jdbcType=INTEGER},
-			</if>
+			salary,
+			pension_insurance,
+			#{userId,jdbcType=INTEGER},
 			now()
-			from 
-			company_year_worker
-		<where>
-			year = #{lastYear} 
-			<if test="companyId != null and companyId > 0">
-				and company_id = #{companyId,jdbcType=INTEGER}
-			</if>
-		</where>
+		from company_year_worker
+		where year = #{lastYear}
 	</insert>
 	
 	<!-- delete -->
@@ -141,8 +135,8 @@
 			<if test="year != null and year != ''">
 				year = #{year,jdbcType=CHAR} 
 			</if>
-			<if test="companyId != null and companyId > 0">
-				and company_id = #{companyId,jdbcType=INTEGER} 
+			<if test="companyCode != null and companyCode != ''">
+				and company_code = #{companyCode,jdbcType=VARCHAR} 
 			</if>
 			<if test="workerId != null and workerId != ''">
 				and worker_id = #{workerId,jdbcType=CHAR} 
@@ -157,8 +151,8 @@
 			<if test="workerId != null">
 				worker_id = #{workerId,jdbcType=INTEGER},
 			</if>
-			<if test="companyId != null and companyId > 0">
-				company_id = #{companyId,jdbcType=INTEGER},
+			<if test="companyCode != null and companyCode != ''">
+				company_code = #{companyCode,jdbcType=VARCHAR},
 			</if>
 			<if test="currentJob != null">
 				current_job = #{currentJob,jdbcType=VARCHAR},
@@ -184,8 +178,8 @@
 	<update id="updateCompanyByWorkerAndYear" parameterType="com.esd.hesf.model.CompanyYearWorker">
 		update company_year_worker
 		<set>
-			<if test="companyId != null and companyId > 0">
-				company_id = #{companyId,jdbcType=INTEGER},
+			<if test="companyCode != null and companyCode != ''">
+				company_code = #{companyCode,jdbcType=VARCHAR},
 			</if>
 			<if test="currentJob != null">
 				current_job = #{currentJob,jdbcType=VARCHAR},
@@ -227,8 +221,8 @@
 				<if test="companyYearWorker.workerId != null and companyYearWorker.workerId > 0">
 					and cyw.worker_id = #{companyYearWorker.workerId}
 				</if>
-				<if test="companyYearWorker.companyId != null and companyYearWorker.companyId > 0 ">
-					and cyw.company_id = #{companyYearWorker.companyId}
+				<if test="companyYearWorker.companyCode != null and companyYearWorker.companyCode != '' ">
+					and cyw.company_code = #{companyYearWorker.companyCode}
 				</if>
 				<choose>
 					<when test="companyYearWorker.isActive != null">
@@ -255,8 +249,8 @@
 				<if test="companyYearWorker.workerId != null and companyYearWorker.workerId > 0">
 					and cyw.worker_id = #{companyYearWorker.workerId}
 				</if>
-				<if test="companyYearWorker.companyId != null and companyYearWorker.companyId > 0">
-					and cyw.company_id = #{companyYearWorker.companyId}
+				<if test="companyYearWorker.companyCode != null and companyYearWorker.companyCode != ''">
+					and cyw.company_code = #{companyYearWorker.companyCode}
 				</if>
 				<choose>
 					<when test="companyYearWorker.isActive != null">

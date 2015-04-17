@@ -30,6 +30,7 @@ public class CalculateModel {
 	private BigDecimal shiJiaoZongJinE;
 	private String year;
 	private Integer companyId;
+	private String companyCode;
 	private Boolean mianZhiNaJin;
 	private Boolean mianJiao;
 	private BigDecimal jianZhiNaJin;
@@ -249,6 +250,14 @@ public class CalculateModel {
 
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getCompanyCode() {
+		return companyCode;
+	}
+
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 
 	public BigDecimal getZhiNaJin() {

@@ -135,7 +135,7 @@ public class QueryPaymentController {
 			@RequestParam(value = "year") String year,
 			HttpServletRequest request) {
 		logger.debug("exportPayment:{}", idArr + "");
-		boolean b = true;
+		Boolean b = true;
 		List<Payment> list = null;
 		if (idArr[0] == Integer.MAX_VALUE) {
 			list = new ArrayList<Payment>();
@@ -178,9 +178,6 @@ public class QueryPaymentController {
 	 */
 	private Map<String, Object> getParams(PaymentParamModel model) {
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		// payment中的 审核对象
-		Audit audit = new Audit();
-		audit.setYear(model.getYear());
 		// payment中的 公司对象
 		Company company = new Company();
 		company.setCompanyCode(model.getCompanyCode());
@@ -198,6 +195,8 @@ public class QueryPaymentController {
 		}
 		// Payment对象
 		Payment payment = new Payment();
+		//审核年度
+		payment.setAuditYear(model.getYear());
 		// 付款人对象放入其中
 		if (model.getPaymentPerson() != null) {
 			payment.setPaymentPerson(new User(model.getPaymentPerson()));

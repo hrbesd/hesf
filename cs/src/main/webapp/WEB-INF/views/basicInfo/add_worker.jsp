@@ -69,7 +69,7 @@
 		}
 		params.remark = remark;
 		params.companyId = $('#companyId').val(); //所属企业id
-		params.year = $('#year').val();	//年审年份
+		params.year = $('#nowYear').val();	//年审年份
 		return params;
 	};
 	
@@ -137,6 +137,7 @@
 	var saveWithOutPic = function(){
 		// 先提取参数
 		params = addWorker.getParams();
+		alert(params.year);
 		if(params != null && params != undefined){
 			$.ajax({
 				url : '${contextPath}/security/worker/add',
@@ -485,7 +486,6 @@
 			
 			<!-- 数据表格 -->
 			<table id="company_information" align="center">
-				
 				<tr>
 					<td align="center" colspan="6"><span style="font-size: 18px;font-weight: bold;">增加残疾职工</span>
 					</td>

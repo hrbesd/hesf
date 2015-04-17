@@ -27,7 +27,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	private PaymentTypeDao dao;
 
 	@Override
-	public boolean save(PaymentType t) {
+	public Boolean save(PaymentType t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	}
 
 	@Override
-	public boolean update(PaymentType t) {
+	public Boolean update(PaymentType t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();

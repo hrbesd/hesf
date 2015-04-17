@@ -98,7 +98,7 @@ public class WorkerUtil {
 
 		String reg = "/[0-9]{14}[0-9a-zA-Z]{4}[1-7]{1}[1-4]{1}[B]?[0-9]?";
 		String str = "23020419630724125214B2";
-		boolean bl = str.matches(reg);
+		Boolean bl = str.matches(reg);
 		System.out.println(bl);
 
 	}

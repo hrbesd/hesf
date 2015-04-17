@@ -5,6 +5,8 @@
 	<resultMap id="BaseResultMap" type="com.esd.hesf.model.PermissionType">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="permission_type" property="permissionType" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="VARCHAR" />
+		<result column="end_time" property="endTime" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -13,7 +15,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, permission_type, create_time, update_time, user_id, is_active, version
+		id, permission_type, start_time, end_time, create_time, update_time, user_id, is_active, version
 	</sql>
 
 	<!-- insert -->
@@ -22,10 +24,10 @@
 		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
-		insert into permission_type (permission_type, create_time,
+		insert into permission_type (permission_type, start_time, end_time, create_time,
 		update_time, user_id, is_active, version )
-		values (#{permissionType,jdbcType=VARCHAR}, now(),now(),
-		#{userId,jdbcType=INTEGER}, default, default)
+		values (#{permissionType,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR}, 
+		now(),now(), #{userId,jdbcType=INTEGER}, default, default)
 	</insert>
 
 	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
@@ -37,6 +39,12 @@
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="permissionType != null">
 				permission_type,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
 			</if>
 			create_time,update_time,
 			<if test="userId != null">
@@ -50,6 +58,12 @@
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="permissionType != null">
 				#{permissionType,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=VARCHAR},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=VARCHAR},
 			</if>
 			now(),now(),
 			<if test="userId != null">
@@ -73,10 +87,16 @@
 	<update id="updateByPrimaryKey" parameterType="com.esd.hesf.model.PermissionType">
 		update permission_type
 		<set>
+			update_time = now(),
 			<if test="permissionType != null">
 				permission_type = #{permissionType,jdbcType=VARCHAR},
 			</if>
-			update_time = now(),
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=VARCHAR},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=VARCHAR},
+			</if>
 			<if test="userId != null">
 				user_id = #{userId,jdbcType=INTEGER},
 			</if>
@@ -85,7 +105,7 @@
 			</if>
 			version = version + 1 
 		</set>
-		where id = #{id,jdbcType=INTEGER} and version = #{version, jdbyType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 
 	<!-- retrieve -->
@@ -103,15 +123,24 @@
 		from permission_type
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="permissionType != null">
+				<if test="permissionType.permissionType != null and permissionType.permissionType != ''">
+					permission_type like concat('%',#{permissionType.permissionType, jdbcType=VARCHAR}, '%') 
+				</if>
+				<if test="permissionType.startTime != null and permissionType.startTime != ''">
+					and start_time = #{permissionType.startTime, jdbcType=VARCHAR}
+				</if>
+				<if test="permissionType.endTime != null and permissionType.endTime != ''">
+					and end_time = #{permissionType.endTime, jdbcType=VARCHAR}
+				</if>
 				<if test="permissionType.userId != null and permissionType.userId > 0 ">
-					user_id = #{permissionType.userId}
+					and user_id = #{permissionType.userId, jdbcType=INTEGER}
 				</if>
 				<if test="permissionType.isActive != null">
-					and is_active = #{permissionType.isActive}
+					and is_active = #{permissionType.isActive, jdbcType=BIT}
 				</if>
 				<choose>
 					<when test="permissionType.isActive != null">
-						and is_active = #{permissionType.isActive}
+						and is_active = #{permissionType.isActive, jdbcType=BIT}
 					</when>
 					<otherwise>
 						and is_active = 0
@@ -137,12 +166,24 @@
 		from permission_type
 		<trim prefix="where" prefixOverrides="and|or">
 			<if test="permissionType != null">
+				<if test="permissionType.permissionType != null and permissionType.permissionType != ''">
+					permission_type like concat('%',#{permissionType.permissionType, jdbcType=VARCHAR}, '%') 
+				</if>
+				<if test="permissionType.startTime != null and permissionType.startTime != ''">
+					and start_time = #{permissionType.startTime, jdbcType=VARCHAR}
+				</if>
+				<if test="permissionType.endTime != null and permissionType.endTime != ''">
+					and end_time = #{permissionType.endTime, jdbcType=VARCHAR}
+				</if>
 				<if test="permissionType.userId != null and permissionType.userId > 0 ">
-					user_id = #{permissionType.userId}
+					and user_id = #{permissionType.userId, jdbcType=INTEGER}
+				</if>
+				<if test="permissionType.isActive != null">
+					and is_active = #{permissionType.isActive, jdbcType=BIT}
 				</if>
 				<choose>
 					<when test="permissionType.isActive != null">
-						and is_active = #{permissionType.isActive}
+						and is_active = #{permissionType.isActive, jdbcType=BIT}
 					</when>
 					<otherwise>
 						and is_active = 0
@@ -161,4 +202,10 @@
 		</trim>
 	</select>
 
+	<select id="retrieveneedsettime" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from permission_type
+		where id in (2,3,4)
+	</select>
 </mapper>

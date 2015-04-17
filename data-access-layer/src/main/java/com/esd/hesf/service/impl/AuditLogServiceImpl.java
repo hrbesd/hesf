@@ -27,7 +27,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 	private AuditLogDao dao;
 
 	@Override
-	public boolean save(AuditLog t) {
+	public Boolean save(AuditLog t) {
 		int k = dao.insertSelective(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)
@@ -38,7 +38,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(),
@@ -49,7 +49,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 	}
 
 	@Override
-	public boolean update(AuditLog t) {
+	public Boolean update(AuditLog t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail)

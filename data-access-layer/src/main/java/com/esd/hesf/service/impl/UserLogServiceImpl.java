@@ -27,7 +27,7 @@ public class UserLogServiceImpl implements UserLogService {
 	private UserLogDao dao;
 
 	@Override
-	public boolean save(UserLog t) {
+	public Boolean save(UserLog t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class UserLogServiceImpl implements UserLogService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		// TODO Auto-generated method stub
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
@@ -48,7 +48,7 @@ public class UserLogServiceImpl implements UserLogService {
 	}
 
 	@Override
-	public boolean update(UserLog t) {
+	public Boolean update(UserLog t) {
 		// TODO Auto-generated method stub
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {

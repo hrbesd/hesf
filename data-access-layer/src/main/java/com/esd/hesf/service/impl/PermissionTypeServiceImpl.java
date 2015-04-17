@@ -27,7 +27,7 @@ public class PermissionTypeServiceImpl implements PermissionTypeService {
 	private PermissionTypeDao dao;
 
 	@Override
-	public boolean save(PermissionType t) {
+	public Boolean save(PermissionType t) {
 		int k = dao.insert(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -37,7 +37,7 @@ public class PermissionTypeServiceImpl implements PermissionTypeService {
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public Boolean delete(Integer id) {
 		int k = dao.deleteByPrimaryKey(id);
 		if (k != 1) {
 			new HesfException(this.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -47,7 +47,7 @@ public class PermissionTypeServiceImpl implements PermissionTypeService {
 	}
 
 	@Override
-	public boolean update(PermissionType t) {
+	public Boolean update(PermissionType t) {
 		int k = dao.updateByPrimaryKey(t);
 		if (k != 1) {
 			new HesfException(t.getClass().getName(), HesfException.type_fail).printStackTrace();
@@ -95,4 +95,10 @@ public class PermissionTypeServiceImpl implements PermissionTypeService {
 		return dao.retrieveByPage(map);
 	}
 
+	@Override
+	public List<PermissionType> getNeedSetTime() {
+		return dao.retrieveneedsettime();
+	}
+
+	
 }

@@ -23,24 +23,24 @@ public interface CompanyService extends BaseService<Company> {
 	// * @param year
 	// * @return
 	// */
-	// boolean save(Company company, String year);
+	// Boolean save(Company company, String year);
 
 	// 按ID数组查找多个企业列表
 	List<Company> getMultiById(int[] arr);
 
 	// 按ID数组删除多个企业
-	boolean deleteMultiById(int[] arr);
+	Boolean deleteMultiById(int[] arr);
 
 	// // 自动生成最新档案号
 	// String getDocumentCode();
 
 	/**
-	 * 根据公司档案号code 得到一个公司对象,如不存在则返回null
-	 * 
+	 * 根据公司档案号code和审核年份得到一个公司对象,如不存在则返回null
 	 * @param companyCode
+	 * @param year
 	 * @return
 	 */
-	Company getByCompanyCode(String companyCode);
+	Company getByCompanyCodeAndYear(String companyCode,String year);
 	
 	/**
 	 * 根据公司名称  得到一个公司对象,如不存在则返回null
@@ -75,20 +75,20 @@ public interface CompanyService extends BaseService<Company> {
 	// * 上年度
 	// * @return
 	// */
-	// boolean copyLatYearData(String currentYear, String lastYear);
+	// Boolean copyLatYearData(String currentYear, String lastYear);
 
 	/**
 	 * 从一个企业中删除一条员工数据,三个参数都不能为空
 	 * 
 	 * @param year
 	 *            年度
-	 * @param companyId
-	 *            公司id
+	 * @param companyCode
+	 *            公司code
 	 * @param workerId
 	 *            员工id
 	 * @return
 	 */
-	boolean deleteWorkerFromCompany(String year, Integer companyId,
+	Boolean deleteWorkerFromCompany(String year, String  companyCode,
 			Integer workerId);
 
 	/**
@@ -105,11 +105,11 @@ public interface CompanyService extends BaseService<Company> {
 	/**
 	 * 查询 指定公司指定年度残疾职工人数
 	 * 
-	 * @param companyId
+	 * @param companyCode
 	 * @param year
 	 * @return
 	 */
-	Integer getWorkerHandicapTotal(Integer companyId, String year);
+	Integer getWorkerHandicapTotal(String companyCode, String year);
 
 	/**
 	 * 将上一年度的员工关系复制到今年
@@ -188,5 +188,5 @@ public interface CompanyService extends BaseService<Company> {
 	 * @return
 	 */
 	List<Company> getByIds(Integer[] ids);
-
+	
 }

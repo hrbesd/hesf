@@ -39,12 +39,12 @@ public interface AuditParameterService extends BaseService<AuditParameter> {
 	/**
 	 * 查询 指定公司, 指定年度, 指定残疾类型和等级的残疾人数
 	 * 
-	 * year-年份, companyId--公司id, workerHandicapType--残疾类型,
+	 * year-年份, companyCode--公司code, workerHandicapType--残疾类型,
 	 * workerHandicapLevel--残疾等级
 	 * 
 	 * @return
 	 */
-	int getSpecialCount(Integer companyId, String year, int workerHandicapType,
+	int getSpecialCount(String companyCode, String year, int workerHandicapType,
 			int workerHandicapLevel);
 
 	/**
