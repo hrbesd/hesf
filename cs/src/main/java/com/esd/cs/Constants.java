@@ -196,5 +196,5 @@ public class Constants {
 	/**
 	 * 黑龙江网站域名...
 	 */
-	public static final String DOMAIN_NAME="http:/cbj.hljcjrjy.com/temp/";
+	public static final String DOMAIN_NAME="http://cbj.hljcjrjy.com/temp/";
 }
