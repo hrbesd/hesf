@@ -275,9 +275,10 @@ public class QueryAuditController {
 		// 导出文件
 		b = PoiCreateExcel.createAuditExcel(exportPath, auditList);
 		if (b) {
-			String destPath = request.getLocalAddr() + ":"
-					+ request.getLocalPort() + request.getContextPath();
-			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
+//			String destPath = request.getLocalAddr() + ":"
+//					+ request.getLocalPort() + request.getContextPath();
+//			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
+			FileDownloadPath = Constants.DOMAIN_NAME + uuid + ".xls";
 		}
 		return FileDownloadPath;
 	}

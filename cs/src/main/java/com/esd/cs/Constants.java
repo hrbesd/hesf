@@ -192,4 +192,9 @@ public class Constants {
 	public static final String BELONGS_TYPE = "belongsType";	//所属类型
 	public static final String BELONGS_TYPE_SIX = "six";	//档案号以 6开头的
 	public static final String BELONGS_TYPE_NON_SIX = "nonSix";	//档案号不以 6开头的
+	
+	/**
+	 * 黑龙江网站域名...
+	 */
+	public static final String DOMAIN_NAME="http:/cbj.hljcjrjy.com/temp/";
 }

@@ -134,9 +134,7 @@ public class QueryCompayController {
 		if (b) {
 //			String destPath = request.getLocalAddr() + ":"
 //					+ request.getLocalPort() + request.getContextPath();
-//			StringBuffer requestUrl = request.getRequestURL();  
-//			String destPath = requestUrl.delete(requestUrl.length() - request.getRequestURI().length(), requestUrl.length()).toString();  
-			FileDownloadPath = "http://cbj.hljcjrjy.com/temp/" + uuid + ".xls";
+			FileDownloadPath = Constants.DOMAIN_NAME + uuid + ".xls";
 			
 		}
 		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArray);
