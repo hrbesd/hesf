@@ -5,8 +5,6 @@
  */
 package com.esd.cs.payment;
 
-import java.math.BigDecimal;
-
 /**
  * 
  * @author Administrator
@@ -30,6 +28,7 @@ public class PaymentParamModel {
 	private String maxPaymentMoney; // 最大缴款额
 	private Integer page;
 	private Integer rows;
+	private String isDownLoadAll; // 是否下载全部查询出来的数据 yes or no
 
 	@Override
 	public String toString() {
@@ -42,26 +41,21 @@ public class PaymentParamModel {
 				+ billReturn + ", billObsolete=" + billObsolete + "]";
 	}
 
-
 	public String getMinPaymentMoney() {
 		return minPaymentMoney;
 	}
-
 
 	public void setMinPaymentMoney(String minPaymentMoney) {
 		this.minPaymentMoney = minPaymentMoney;
 	}
 
-
 	public String getMaxPaymentMoney() {
 		return maxPaymentMoney;
 	}
 
-
 	public void setMaxPaymentMoney(String maxPaymentMoney) {
 		this.maxPaymentMoney = maxPaymentMoney;
 	}
-
 
 	public String getBelongsType() {
 		return belongsType;
@@ -173,6 +167,14 @@ public class PaymentParamModel {
 
 	public void setRows(Integer rows) {
 		this.rows = rows;
+	}
+
+	public String getIsDownLoadAll() {
+		return isDownLoadAll;
+	}
+
+	public void setIsDownLoadAll(String isDownLoadAll) {
+		this.isDownLoadAll = isDownLoadAll;
 	}
 
 }

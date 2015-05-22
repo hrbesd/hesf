@@ -168,7 +168,6 @@
 	queryWorker.downloadSelected = function() {
 		// 获取所有选中列
 		var selection = $("#queryWorker_grid").datagrid('getChecked');
-	
 		// 判断选择数目是否大于0
 		if (selection.length == 0) {
 			$.messager.alert('消息', '未选择任何数据。', 'error');
@@ -177,25 +176,27 @@
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '条残疾职工信息吗？', function(r) {
 				if (r) {
 					// 组装参数
-					var params = new Array();
+					var ids = new Array();
 					for ( var i = 0; i < selection.length; i++) {
-						params.push(selection[i].id);
+						ids.push(selection[i].id);
 					}
 					//发送导出请求
 					$.ajax({
 						url:'query/worker/export',
 						type:'post',
+						traditional:true,
 						data: {
-							params : params
+							'idArray' : ids,
+							'isDownLoadAll' : 'no'
 						},
 						success:function(data){
-						if(data!="null"){
-							window.location.href=data;
-						}else{
-							$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
-						}
+							if(data!="null"){
+								window.location.href=data;
+							}else{
+								$.messager.alert('消息', '残疾职工信息导出错误。', 'error');
+							}
 						},error:function(){
-							$.messager.alert('消息', 'exportCompanyErrror。', 'error');
+							$.messager.alert('消息', 'exportWorkerError。', 'error');
 						}
 					});
 				}
@@ -210,13 +211,25 @@
 	queryWorker.downloadAll = function() {
 		$.messager.confirm('确认', '您确认想要导出所有残疾职工信息吗？', function(r) {
 			if (r) {
-				var params = [2147483647];
+				var params = queryWorker.getParams();
+				params.isDownLoadAll = 'yes';
 				//发送导出请求
 				$.ajax({
 					url:'query/worker/export',
 					type:'post',
 					data: {
-						params : params
+						'year' : params.year,	//审核年度
+						'companyId' : params.companyId,	//企业id
+						'workName' : params.workName, 	//员工姓名
+						'workerHandicapCode' : params.workerHandicapCode, // 残疾证号
+						'workerGender' : params.workerGender,	//性别
+						'currentJob' : params.currentJob,	//现任岗位
+						'workerAge_1' : params.workerAge_1,	//年龄1
+						'workerAge_2' : params.workerAge_2, //年龄2
+						'workerHandicapType' : params.workerHandicapType,	//残疾类型
+						'workerHandicapLevel' : params.workerHandicapLevel,	//残疾等级
+						'careerCard' : params.careerCard,	//就业证号
+						'isDownLoadAll' : params.isDownLoadAll 	//是否下载全部
 					},
 					success:function(data){
 						if(data!="null"){

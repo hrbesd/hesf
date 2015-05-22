@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +33,6 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Area;
-import com.esd.hesf.model.Audit;
 import com.esd.hesf.model.Company;
 import com.esd.hesf.model.CompanyEconomyType;
 import com.esd.hesf.model.CompanyProperty;
@@ -56,7 +54,7 @@ public class QueryPaymentController {
 			.getLogger(QueryPaymentController.class);
 	private DecimalFormat format = new DecimalFormat("0.00");
 	@Autowired
-	private PaymentService pService;
+	private PaymentService paymentService;
 
 	/**
 	 * get方法, 跳转到列表页面
@@ -82,10 +80,12 @@ public class QueryPaymentController {
 	public Map<String, Object> listPost(PaymentParamModel model,
 			HttpServletRequest request) {
 		logger.debug(model.toString());
-		//提取模型中的参数, 放到map中
+		// 提取模型中的参数, 放到map中
 		Map<String, Object> paramsMap = getParams(model);
+		paramsMap.put("page", model.getPage()); // 分页--起始页
+		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		// 查询结果
-		PaginationRecordsAndNumber<Payment, Number> pgs = pService
+		PaginationRecordsAndNumber<Payment, Number> pgs = paymentService
 				.getByMultiCondition(paramsMap);
 		Map<String, Object> entity = new HashMap<String, Object>();
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -131,22 +131,27 @@ public class QueryPaymentController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@RequestParam(value = "params[]") Integer idArr[],
-			@RequestParam(value = "year") String year,
+	public String export(PaymentParamModel params, Integer[] idArray,
 			HttpServletRequest request) {
-		logger.debug("exportPayment:{}", idArr + "");
+		logger.debug("exportPayment  params:" + params + ", idArray :"
+				+ idArray);
 		Boolean b = true;
 		List<Payment> list = null;
-		if (idArr[0] == Integer.MAX_VALUE) {
+		// 下载全部
+		if ("yes".equals(params.getIsDownLoadAll())) {
+			// 获得参数
+			Map<String, Object> paramsMap = getParams(params);
+			paramsMap.put("page", Constants.PAGE_START); // 分页--起始页
+			// ******************************
+			paramsMap.put("pageSize", Constants.PAGE_SIZE_MAX);// 分页--返回量
+
 			list = new ArrayList<Payment>();
-			Payment payment = new Payment();
-			payment.setAuditYear(year);
-			for (Payment c : pService.getPaginationRecords(payment,
-					Constants.PAGE_START, Constants.PAGE_SIZE_MAX).getRecords()) {
+			for (Payment c : paymentService.getByMultiCondition(paramsMap)
+					.getRecords()) {
 				list.add(c);
 			}
 		} else {
-			list = pService.getByIds(idArr);
+			list = paymentService.getByIds(idArray);
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
@@ -166,7 +171,7 @@ public class QueryPaymentController {
 					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
-		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArr);
+		logger.debug("ecportAuditResults:{},paramsId:{}", b, idArray);
 		return FileDownloadPath;
 	}
 
@@ -195,7 +200,7 @@ public class QueryPaymentController {
 		}
 		// Payment对象
 		Payment payment = new Payment();
-		//审核年度
+		// 审核年度
 		payment.setAuditYear(model.getYear());
 		// 付款人对象放入其中
 		if (model.getPaymentPerson() != null) {
@@ -214,18 +219,20 @@ public class QueryPaymentController {
 
 		paramsMap.put("payment", payment);
 		// 缴款金额区间
-		if(model.getMinPaymentMoney()!=null && !"".equals(model.getMinPaymentMoney())){
-			paramsMap.put("minPaymentMoney", new BigDecimal(model.getMinPaymentMoney()));// 最低金额
+		if (model.getMinPaymentMoney() != null
+				&& !"".equals(model.getMinPaymentMoney())) {
+			paramsMap.put("minPaymentMoney",
+					new BigDecimal(model.getMinPaymentMoney()));// 最低金额
 		}
-		if(model.getMaxPaymentMoney()!=null && !"".equals(model.getMaxPaymentMoney())){
-			paramsMap.put("maxPaymentMoney", new BigDecimal(model.getMaxPaymentMoney()));// 最高金额
+		if (model.getMaxPaymentMoney() != null
+				&& !"".equals(model.getMaxPaymentMoney())) {
+			paramsMap.put("maxPaymentMoney",
+					new BigDecimal(model.getMaxPaymentMoney()));// 最高金额
 		}
 		// 区分省残联和地税的单位
 		paramsMap.put("belongsType", model.getBelongsType());
 		paramsMap.put("startDate", model.getStartDate());
 		paramsMap.put("endDate", model.getEndDate());
-		paramsMap.put("page", model.getPage()); // 分页--起始页
-		paramsMap.put("pageSize", model.getRows());// 分页--返回量
 		return paramsMap;
 	}
 }

@@ -258,18 +258,18 @@
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
 				if (r) {
 					// 组装参数
-					var params = new Array();
-					var year = $("#year").combobox("getValue"); // 审核年度
+					var ids = new Array();
 					for ( var i = 0; i < selection.length; i++) {
-						params.push(selection[i].id);
+						ids.push(selection[i].id);
 					}
 					//发送导出请求
 					$.ajax({
 						url:'query/payment/export',
 						type:'post',
+						traditional:true,
 						data: {
-							params : params,
-							year : year
+							'idArray' : ids,
+							'isDownLoadAll' : 'no'
 						},
 						success:function(data){
 							if(data!="null"){
@@ -292,15 +292,28 @@
 	 queryPayment.downloadAll = function() {
 		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
 			if (r) {
-				var params = esd.common.maxInteger;
-				var year = $("#year").combobox("getValue"); // 审核年度
+				var params = queryPayment.getParams();
+				params.isDownLoadAll = 'yes';
 				//发送导出请求
 				$.ajax({
 					url:'query/payment/export',
 					type:'post',
 					data: {
-						params : params,
-						year :year
+						'year' : params.year,	//审核年度
+						'companyCode' : params.companyCode,	//档案号码
+						'companyName' : params.companyName, //企业名称
+						'companyProperty' : params.companyProperty,	//公司性质
+						'companyEconomyType' : params.companyEconomyType,	// 企业经济类型
+						'area' : params.area,	//公司所属地区
+						'paymentPerson' : params.paymentPerson,	//缴款人
+						'startDate' : params.startDate, 	//缴款起始时间
+						'endDate' : params.endDate,	//缴款结束时间
+						'belongsType' : params.belongsType,	//所属类型
+						'billReturn' : params.billReturn,	//是否返票
+						'billObsolete' : params.billObsolete,	//是否作废票
+						'minPaymentMoney' : params.minPaymentMoney,	//最小金额
+						'maxPaymentMoney' : params.maxPaymentMoney,	//最大金额
+						'isDownLoadAll' : params.isDownLoadAll 	//是否下载全部
 					},
 					success:function(data){
 						if(data!="null"){

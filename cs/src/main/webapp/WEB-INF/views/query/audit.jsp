@@ -279,7 +279,7 @@
 						'paymentPerson' : params.paymentPerson, // 缴款人
 						'overYear' : params.overYear, // 超过指定年度未初审的企业
 						'isExempt' : params.isExempt, // 是否免交
-						'isDownLoadAll' : params.isDownLoadAll,
+						'isDownLoadAll' : params.isDownLoadAll,//是否下载全部
 						'startDate':params.startDate,	//复审起始时间
 						'endDate':params.endDate, //初审结束时间
 						'verifyStartDate':params.verifyStartDate,	//复审起始时间

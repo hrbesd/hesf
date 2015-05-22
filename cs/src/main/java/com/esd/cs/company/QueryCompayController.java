@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,12 +34,14 @@ import com.esd.hesf.service.CompanyService;
 @Controller
 @RequestMapping(value = "/security/query/company")
 public class QueryCompayController {
-	private static final Logger logger = LoggerFactory.getLogger(QueryCompayController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(QueryCompayController.class);
 	@Autowired
 	private CompanyService companyService;// 企业
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView company_list(HttpServletRequest request, HttpSession session) {
+	public ModelAndView company_list(HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("goToPage:{}", "queryCompany");
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
@@ -50,46 +51,21 @@ public class QueryCompayController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> companyPost(CompanyParamModel params, HttpServletRequest request,HttpSession session) {
-		//获得当前审核年份
-		String thisYear = params.getYear();
-		//如果前台没有传递审核年份参数, 则使用当前审核年度参数
-		if(params.getYear()==null || "".equals(params.getYear())){
-			thisYear =session.getAttribute(Constants.YEAR).toString();; 
-		}
-		logger.debug("queryCompanyParams{}", params);
-		Map<String, Object> paramsMap = new HashMap<String, Object>();
-		paramsMap.put("year", thisYear);	//审核年度
-		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
-		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
-		paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
-		paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
-																		// 对应的id
-		paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
-																				// 对应的id
-		paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
-		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 查询范围中
-																	// 公司最少人数
-		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
-																	// 公司最多人数
-		paramsMap.put("minHandicapTotal", params.getCompanyHandicapTotal_1()); // 查询范围中
-																				// 残疾职工最少人数
-		paramsMap.put("maxHandicapTotal", params.getCompanyHandicapTotal_2()); // 查询范围中
-																				// 残疾职工最多人数
-		paramsMap.put("companyName", params.getCompanyName()); // 公司名称
-		paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
-		paramsMap.put("companyOrganizationCode", params.getCompanyOrganizationCode()); // 组织机构代码证
+	public Map<String, Object> companyPost(CompanyParamModel params,
+			HttpServletRequest request, HttpSession session) {
+		Map<String, Object> paramsMap = getParams(params);
 		paramsMap.put("page", params.getPage()); // 分页--起始页
 													// ******************************
 		paramsMap.put("pageSize", params.getRows());// 分页--返回量
 													// ******************************
-
 		Map<String, Object> entity = new HashMap<>();
-		PaginationRecordsAndNumber<Company, Number> query = companyService.getByMultiCondition(paramsMap);
+		PaginationRecordsAndNumber<Company, Number> query = companyService
+				.getByMultiCondition(paramsMap);
 
 		Integer total = query.getNumber().intValue();// 数据总条数
 		List<Map<String, Object>> list = new ArrayList<>();
-		for (Iterator<Company> iterator = query.getRecords().iterator(); iterator.hasNext();) {
+		for (Iterator<Company> iterator = query.getRecords().iterator(); iterator
+				.hasNext();) {
 			Company it = iterator.next();
 			Map<String, Object> map = new HashMap<>();
 			map.put("id", it.getId());// id
@@ -97,8 +73,10 @@ public class QueryCompayController {
 			map.put("companyCode", it.getCompanyCode());// 档案编码
 			map.put("companyTaxCode", it.getCompanyTaxCode());// 税务编码
 			map.put("companyName", it.getCompanyName());// 企业名称
-			map.put("companyProperty", it.getCompanyProperty().getCompanyProperty());
-			map.put("companyEconomyType", it.getCompanyEconomyType().getCompanyEconomyType());
+			map.put("companyProperty", it.getCompanyProperty()
+					.getCompanyProperty());
+			map.put("companyEconomyType", it.getCompanyEconomyType()
+					.getCompanyEconomyType());
 			map.put("companyType", it.getCompanyType().getCompanyType());
 			map.put("companyPhone", it.getCompanyPhone());
 			list.add(map);
@@ -118,17 +96,27 @@ public class QueryCompayController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@RequestParam(value = "params[]") Integer idArr[], HttpServletRequest request) {
-		logger.debug("exportCompany:{}", idArr+"");
+	public String export(CompanyParamModel params, Integer[] idArray,
+			HttpServletRequest request) {
+		logger.debug("idArr:{}", idArray + ",params: " +params);
 		Boolean b = true;
 		List<Company> companyList = null;
-		if(idArr[0] == Integer.MAX_VALUE){
+		// 下载全部
+		if ("yes".equals(params.getIsDownLoadAll())) {
+			// 获得参数
+			Map<String, Object> paramsMap = getParams(params);
+			paramsMap.put("page", Constants.PAGE_START); // 分页--起始页
+			// ******************************
+			paramsMap.put("pageSize", Constants.PAGE_SIZE_MAX);// 分页--返回量
+			// ******************************
+
 			companyList = new ArrayList<Company>();
-			for(Company c:companyService.getPaginationRecords(null, Constants.PAGE_START, Constants.PAGE_SIZE_MAX).getRecords()){
+			for (Company c : companyService.getByMultiCondition(paramsMap)
+					.getRecords()) {
 				companyList.add(c);
 			}
-		}else{
-			companyList= companyService.getByIds(idArr);
+		} else {
+			companyList = companyService.getByIds(idArray);
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
@@ -136,7 +124,7 @@ public class QueryCompayController {
 		if (!(downloadPath.exists())) {
 			downloadPath.mkdir();
 		}
-		
+
 		// 创建文件唯一名称
 		String uuid = UUID.randomUUID().toString();
 		String exportPath = downloadPath + File.separator + uuid + ".xls";
@@ -144,11 +132,43 @@ public class QueryCompayController {
 		// 导出文件
 		b = PoiCreateExcel.createCompanyExcel(exportPath, companyList);
 		if (b) {
-			String destPath = request.getLocalAddr() + ":" + request.getLocalPort() + request.getContextPath();
+			String destPath = request.getLocalAddr() + ":"
+					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
-		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArr);
+		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArray);
 		return FileDownloadPath;
+	}
+
+	/**
+	 * 从CompanyParamModel 参数对象中, 将各个属性字段取出, 放到map对象中
+	 * @param params
+	 * @return
+	 */
+	private Map<String, Object> getParams(CompanyParamModel params) {
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("year", params.getYear()); // 审核年度
+		paramsMap.put("companyCode", params.getCompanyCode()); // 公司档案号
+		paramsMap.put("companyTaxCode", params.getCompanyTaxCode()); // 公司税务编码
+		paramsMap.put("companyLegal", params.getCompanyLegal()); // 公司法人代表
+		paramsMap.put("companyProperty", params.getCompanyProperty()); // 公司性质
+																		// 对应的id
+		paramsMap.put("companyEconomyType", params.getCompanyEconomyType()); // 公司经济类型
+																				// 对应的id
+		paramsMap.put("areaCode", params.getArea()); // 地区 对应地区 code
+		paramsMap.put("minTotal", params.getCompanyEmpTotal_1()); // 查询范围中
+																	// 公司最少人数
+		paramsMap.put("maxTotal", params.getCompanyEmpTotal_2()); // 查询范围中
+																	// 公司最多人数
+		paramsMap.put("minHandicapTotal", params.getCompanyHandicapTotal_1()); // 查询范围中
+																				// 残疾职工最少人数
+		paramsMap.put("maxHandicapTotal", params.getCompanyHandicapTotal_2()); // 查询范围中
+																				// 残疾职工最多人数
+		paramsMap.put("companyName", params.getCompanyName()); // 公司名称
+		paramsMap.put("companyAddress", params.getCompanyAddress()); // 公司地址
+		paramsMap.put("companyOrganizationCode",
+				params.getCompanyOrganizationCode()); // 组织机构代码证
+		return paramsMap;
 	}
 
 }

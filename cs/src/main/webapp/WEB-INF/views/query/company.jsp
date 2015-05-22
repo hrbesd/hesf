@@ -144,16 +144,20 @@
 			$.messager.confirm('确认', '您确认想要导出' + selection.length + '记录吗？', function(r) {
 				if (r) {
 					// 组装参数
-					var params = new Array();
+					var params = {};
+					params.isDownLoadAll = 'no';
+					var ids = new Array();
 					for ( var i = 0; i < selection.length; i++) {
-						params.push(selection[i].id);
+						ids.push(selection[i].id);
 					}
 					//发送导出请求
 					$.ajax({
 						url:'query/company/export',
 						type:'post',
+						traditional:true,
 						data: {
-							params : params
+							'idArray' : ids,
+							'isDownLoadAll' : 'no'
 						},
 						success:function(data){
 							if(data!="null"){
@@ -176,13 +180,28 @@
 	queryCompany.downloadAll = function() {
 		$.messager.confirm('确认', '您确认想要导出所有记录吗？', function(r) {
 			if (r) {
-				var params = esd.common.maxInteger;
+				var params = queryCompany.getParams();
+				params.isDownLoadAll = 'yes';
 				//发送导出请求
 				$.ajax({
 					url:'query/company/export',
 					type:'post',
 					data: {
-						params : params
+						'year' : params.year,// 年度
+						'companyCode' : params.companyCode, // 档案号码
+						'companyTaxCode' : params.companyTaxCode, // 税务编码
+						'companyOrganizationCode' : params.companyOrganizationCode,// 组织机构代码证号
+						'companyProperty' : params.companyProperty,// 公司性质 _
+						'companyEconomyType' : params.companyEconomyType,// 企业经济类型
+						'area' : params.area,// 公司所属地区
+						'companyEmpTotal_1' : params.companyEmpTotal_1, // 最少员工总数
+						'companyEmpTotal_2' : params.companyEmpTotal_2, // 最多员工总数
+						'companyHandicapTotal_1':params.companyHandicapTotal_1,	// 最少残疾人数
+						'companyHandicapTotal_2':params.companyHandicapTotal_2,	// 最多残疾人数
+						'companyName' : params.companyName, // 企业名称
+						'companyAddress' : params.companyAddress, // 企业地址
+						'companyLegal': params.companyLegal,	//公司法人
+						'isDownLoadAll' : params.isDownLoadAll 	//是否下载全部
 					},
 					success:function(data){
 						if(data!="null"){

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -64,7 +63,8 @@ public class QueryWorkerController {
 	private AuditParameterService auditParameterService;// 年审参数
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView worker_list(HttpServletRequest request,HttpSession session) {
+	public ModelAndView worker_list(HttpServletRequest request,
+			HttpSession session) {
 		logger.debug("goToPage:{}", "转到残疾职工列表页面");
 		String nowYear = (String) session.getAttribute(Constants.YEAR);
 		request.setAttribute("nowYear", nowYear);
@@ -72,6 +72,12 @@ public class QueryWorkerController {
 
 	}
 
+	/**
+	 *  post方法, 得到查询数据
+	 * @param params
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> workerList(WorkerParamModel params,
@@ -81,21 +87,7 @@ public class QueryWorkerController {
 		Integer total = 0;
 		try {
 
-			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			
-			paramsMap.put("year", params.getYear());	//审核年份
-			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
-			paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
-			paramsMap.put("workerName", params.getWorkerName()); // 姓名
-			paramsMap.put("workerGender", params.getWorkerGender()); // 性别
-			paramsMap.put("currentJob", params.getCurrentJob()); // 当前岗位
-			paramsMap.put("minAge", params.getWorkerAge_1()); // 最小年龄
-			paramsMap.put("maxAge", params.getWorkerAge_2()); // 最大年龄
-			paramsMap.put("workerHandicapType", params.getWorkerHandicapType()); // 残疾类别
-																					// 对应的id
-			paramsMap.put("workerHandicapLevel",
-					params.getWorkerHandicapLevel()); // 残疾等级
-														// 对应的id
+			Map<String, Object> paramsMap = getParams(params);
 			paramsMap.put("page", params.getPage()); // 分页--起始页
 														// ******************************
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
@@ -160,11 +152,11 @@ public class QueryWorkerController {
 		List<Map<String, Object>> list = null;
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
-			paramsMap.put("getOverproof", params.getIsExceed()); // 是否获取超过退休年龄
 			paramsMap.put("year", params.getYear()); // 公司id
+			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
+			paramsMap.put("getOverproof", params.getIsExceed()); // 是否获取超过退休年龄
 			paramsMap.put("companyId", params.getCompanyId()); // 公司id
 			paramsMap.put("workerName", params.getWorkerName()); // 姓名
-			paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
 			paramsMap.put("workerGender", params.getWorkerGender()); // 性别
 			paramsMap.put("maxAge", params.getWorkerAge_2()); // 最大年龄
 			paramsMap.put("minAge", params.getWorkerAge_1()); // 最小年龄
@@ -175,6 +167,7 @@ public class QueryWorkerController {
 					params.getWorkerHandicapLevel()); // 残疾等级
 														// 对应的id
 			paramsMap.put("isCadre", params.getIsCadre()); // 是否是干部
+			
 			paramsMap.put("page", params.getPage()); // 分页--起始页
 														// ******************************
 			paramsMap.put("pageSize", params.getRows());// 分页--返回量
@@ -330,16 +323,16 @@ public class QueryWorkerController {
 			Integer per = workerCalculator.getPer().intValue();
 			Integer type = workerCalculator.getType();
 			Integer lvl = workerCalculator.getLvl();
-			Integer num = auditParameterService.getSpecialCountFromWorkerTemp(companyId,
-					year, type, lvl);
+			Integer num = auditParameterService.getSpecialCountFromWorkerTemp(
+					companyId, year, type, lvl);
 			logger.debug("type:{},lvl:{},per:{}", type, lvl, per);
 			yiLuRuCanJiRen = ((yiLuRuCanJiRen - num) + (num * per));
 		}
-		System.out.println("**************"+yiLuRuCanJiRen);
-		System.out.println("**************"+yiLuRuCanJiRen);
-		System.out.println("**************"+yiLuRuCanJiRen);
-		System.out.println("**************"+yiLuRuCanJiRen);
-		System.out.println("**************"+yiLuRuCanJiRen);
+		System.out.println("**************" + yiLuRuCanJiRen);
+		System.out.println("**************" + yiLuRuCanJiRen);
+		System.out.println("**************" + yiLuRuCanJiRen);
+		System.out.println("**************" + yiLuRuCanJiRen);
+		System.out.println("**************" + yiLuRuCanJiRen);
 		return yiLuRuCanJiRen;
 	}
 
@@ -352,19 +345,25 @@ public class QueryWorkerController {
 	 */
 	@RequestMapping(value = "/export", method = RequestMethod.POST)
 	@ResponseBody
-	public String export(@RequestParam(value = "params[]") Integer idArr[],
+	public String export(WorkerParamModel params, Integer[] idArray,
 			HttpServletRequest request) {
-		logger.debug("idArr:{}", idArr + "");
+		logger.debug("idArray:{}", idArray + ",params: " + params);
 		Boolean b = true;
 		List<Worker> list = null;
-		if (idArr[0] == Integer.MAX_VALUE) {
+		// 下载全部
+		if ("yes".equals(params.getIsDownLoadAll())) {
+			// 获得参数
+			Map<String, Object> paramsMap = getParams(params);
+			paramsMap.put("page", Constants.PAGE_START); // 分页--起始页
+			// ******************************
+			paramsMap.put("pageSize", Constants.PAGE_SIZE_MAX);// 分页--返回量
+			// ******************************
 			list = new ArrayList<Worker>();
-			for (Worker c : workerService.getPaginationRecords(null,
-					Constants.PAGE_START, Constants.PAGE_SIZE_MAX).getRecords()) {
+			for (Worker c : workerService.getByMultiCondition(paramsMap).getRecords()) {
 				list.add(c);
 			}
 		} else {
-			list = workerService.getByIds(idArr);
+			list = workerService.getByIds(idArray);
 		}
 		String url = request.getServletContext().getRealPath("/");
 		// 创建导出文件夹
@@ -384,8 +383,30 @@ public class QueryWorkerController {
 					+ request.getLocalPort() + request.getContextPath();
 			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
 		}
-		logger.debug("ecportWorkerResults:{},paramsId:{}", b, idArr);
+		logger.debug("ecportWorkerResults:{},paramsId:{}", b, idArray);
 		return FileDownloadPath;
 	}
 
+	/**
+	 * 从CompanyParamModel 参数对象中, 将各个属性字段取出, 放到map对象中
+	 * 
+	 * @param params
+	 * @return
+	 */
+	private Map<String, Object> getParams(WorkerParamModel params) {
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		paramsMap.put("year", params.getYear()); // 审核年份
+		paramsMap.put("workerHandicapCode", params.getWorkerHandicapCode()); // 残疾证号
+		paramsMap.put("careerCard", params.getCareerCard()); // 就业证号
+		paramsMap.put("workerName", params.getWorkerName()); // 姓名
+		paramsMap.put("workerGender", params.getWorkerGender()); // 性别
+		paramsMap.put("currentJob", params.getCurrentJob()); // 当前岗位
+		paramsMap.put("minAge", params.getWorkerAge_1()); // 最小年龄
+		paramsMap.put("maxAge", params.getWorkerAge_2()); // 最大年龄
+		paramsMap.put("workerHandicapType", params.getWorkerHandicapType()); // 残疾类别
+																				// 对应的id
+		paramsMap.put("workerHandicapLevel", params.getWorkerHandicapLevel()); // 残疾等级
+																				// 对应的id
+		return paramsMap;
+	}
 }

@@ -34,6 +34,7 @@ public class WorkerParamModel extends PrimaryKey_Int {
 	private Boolean isExceed;// 是否超过退休年龄
 	private Boolean isOk; // 是否ok; 用来销补预订人数时, 则表示是否干部!
 	private Boolean isCadre; // 是否干部, 用作普通员工查询
+	private String isDownLoadAll; // 是否下载全部查询出来的数据 yes or no
 
 	@Override
 	public String toString() {
@@ -207,6 +208,14 @@ public class WorkerParamModel extends PrimaryKey_Int {
 
 	public void setIsCadre(Boolean isCadre) {
 		this.isCadre = isCadre;
+	}
+
+	public String getIsDownLoadAll() {
+		return isDownLoadAll;
+	}
+
+	public void setIsDownLoadAll(String isDownLoadAll) {
+		this.isDownLoadAll = isDownLoadAll;
 	}
 
 }

@@ -110,29 +110,31 @@ public class PoiCreateExcel {
 		HSSFCell headell = headRow.createCell(0);
 		// 设置单元格的样式格式
 		headell = headRow.createCell(0);
-		headell.setCellValue("档案编码");
+		headell.setCellValue("审核年度");
 		headell = headRow.createCell(1);
-		headell.setCellValue("税务编码");
+		headell.setCellValue("档案编码");
 		headell = headRow.createCell(2);
-		headell.setCellValue("单位名称");
-		sheet.setColumnWidth(2, 12000); // 设置第二列的宽度
-
+		headell.setCellValue("税务编码");
 		headell = headRow.createCell(3);
-		headell.setCellValue("法人代表");
+		headell.setCellValue("单位名称");
+		sheet.setColumnWidth(3, 12000); // 设置第二列的宽度
+
 		headell = headRow.createCell(4);
+		headell.setCellValue("法人代表");
+		headell = headRow.createCell(5);
 		headell.setCellValue("联系人");
 
-		headell = headRow.createCell(5);
+		headell = headRow.createCell(6);
 		headell.setCellValue("电话号码");
 
-		headell = headRow.createCell(6);
+		headell = headRow.createCell(7);
 		headell.setCellValue("手机号码");
 
-		headell = headRow.createCell(7);
-		headell.setCellValue("邮编");
 		headell = headRow.createCell(8);
+		headell.setCellValue("邮编");
+		headell = headRow.createCell(9);
 		headell.setCellValue("单位地址");
-		sheet.setColumnWidth(8, 12000);
+		sheet.setColumnWidth(9, 12000);
 
 		for (int i = 1; i <= list.size(); i++) {
 			Company company = list.get(i - 1);
@@ -140,32 +142,35 @@ public class PoiCreateExcel {
 			HSSFRow row = sheet.createRow(i);
 			HSSFCell cell = row.createCell(0);
 			// 设置单元格的样式格式
-			// 档案编码
+			//审核年度
 			cell = row.createCell(0);
+			cell.setCellValue(company.getYear());
+			// 档案编码
+			cell = row.createCell(1);
 			cell.setCellValue(company.getCompanyCode());
 			// 税务编码
-			cell = row.createCell(1);
+			cell = row.createCell(2);
 			cell.setCellValue(company.getCompanyTaxCode());
 			// 企业名称
-			cell = row.createCell(2);
+			cell = row.createCell(3);
 			cell.setCellValue(company.getCompanyName());
 			// 法人代表
-			cell = row.createCell(3);
+			cell = row.createCell(4);
 			cell.setCellValue(company.getCompanyLegal());
 			// 联系人
-			cell = row.createCell(4);
+			cell = row.createCell(5);
 			cell.setCellValue(company.getCompanyContactPerson());
 			// 电话号码
-			cell = row.createCell(5);
+			cell = row.createCell(6);
 			cell.setCellValue(company.getCompanyPhone());
 			// 手机号码
-			cell = row.createCell(6);
+			cell = row.createCell(7);
 			cell.setCellValue(company.getCompanyMobile());
 			// 邮编
-			cell = row.createCell(7);
+			cell = row.createCell(8);
 			cell.setCellValue(company.getCompanyZipCode());
 			// 单位地址
-			cell = row.createCell(8);
+			cell = row.createCell(9);
 			cell.setCellValue(company.getCompanyAddress());
 		}
 		try {
