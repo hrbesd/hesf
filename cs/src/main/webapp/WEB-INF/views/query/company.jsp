@@ -205,7 +205,7 @@
 					},
 					success:function(data){
 						if(data!="null"){
-							window.location.href=data;
+							window.open(data);
 						}else{
 							$.messager.alert('消息', '单位信息导出错误。', 'error');
 						}

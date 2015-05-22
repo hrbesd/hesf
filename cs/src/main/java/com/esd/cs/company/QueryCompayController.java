@@ -132,9 +132,12 @@ public class QueryCompayController {
 		// 导出文件
 		b = PoiCreateExcel.createCompanyExcel(exportPath, companyList);
 		if (b) {
-			String destPath = request.getLocalAddr() + ":"
-					+ request.getLocalPort() + request.getContextPath();
-			FileDownloadPath = "http://" + destPath + "/temp/" + uuid + ".xls";
+//			String destPath = request.getLocalAddr() + ":"
+//					+ request.getLocalPort() + request.getContextPath();
+			StringBuffer requestUrl = request.getRequestURL();  
+			String destPath = requestUrl.delete(requestUrl.length() - request.getRequestURI().length(), requestUrl.length()).toString();  
+			FileDownloadPath = destPath + "/temp/" + uuid + ".xls";
+			
 		}
 		logger.debug("ecportCompanyResults:{},paramsId:{}", b, idArray);
 		return FileDownloadPath;
