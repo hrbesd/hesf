@@ -246,55 +246,12 @@ public class CompanyServiceImpl implements CompanyService {
 		return check;
 	}
 
-//	// 自动生成最新档案号
-//	public String getDocumentCode() {
-//		String oldCode = dao.getLatestDocumentCode();
-//		logger.debug("oldCode :" + oldCode);
-//		if (StringUtils.isBlank(oldCode)) {
-//			return null;
-//		}
-//		// 方法①
-//		int code = Integer.parseInt(oldCode);
-//		code++;
-//		return String.valueOf(code);
-
-		// 方法②
-		// String sub = oldCode.substring(3);
-		// int num = Integer.parseInt(sub);
-		// num++;
-		// String code = "301";
-		// if (num < 10) {
-		// code += "00000" + num;
-		// } else if (num < 100 && num > 9) {
-		// code += "0000" + num;
-		// } else if (num < 1000 && num > 99) {
-		// code += "000" + num;
-		// } else if (num < 10000 && num > 999) {
-		// code += "00" + num;
-		// } else if (num < 100000 && num > 9999) {
-		// code += "0" + num;
-		// } else if (num < 1000000 && num > 99999) {
-		// code += num;
-		// }
-		// logger.debug("code :"+code);
-		// return code;
-//	}
-
 	@Override
 	public Company getByCompanyOrganizationCode(String companyOrganizationCode) {
 		Company company = dao
 				.retrieveByOrganizationCode(companyOrganizationCode);
 		return company;
 	}
-
-	// @Override
-	// public boolean copyLatYearData(String currentYear, String lastYear) {
-	// Map<String, String> map = new HashMap<String, String>();
-	// map.put("currentYear", currentYear);
-	// map.put("lastYear", lastYear);
-	// int k = dao.insertLastYearData(map);
-	// return k > 0 ? true : false;
-	// }
 
 	@Override
 	public boolean deleteWorkerFromCompany(String year, Integer companyId,
@@ -538,7 +495,56 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return nextCompanyCode;
 	}
+
+	
+	@Override
+	public List<Company> getByCodeOrName(String queryStr) {
+		return dao.retrieveByCodeOrName(queryStr);
+	}
+
 	
 	
+	// @Override
+	// public boolean copyLatYearData(String currentYear, String lastYear) {
+	// Map<String, String> map = new HashMap<String, String>();
+	// map.put("currentYear", currentYear);
+	// map.put("lastYear", lastYear);
+	// int k = dao.insertLastYearData(map);
+	// return k > 0 ? true : false;
+	// }
+	
+//	// 自动生成最新档案号
+//	public String getDocumentCode() {
+//		String oldCode = dao.getLatestDocumentCode();
+//		logger.debug("oldCode :" + oldCode);
+//		if (StringUtils.isBlank(oldCode)) {
+//			return null;
+//		}
+//		// 方法①
+//		int code = Integer.parseInt(oldCode);
+//		code++;
+//		return String.valueOf(code);
+
+		// 方法②
+		// String sub = oldCode.substring(3);
+		// int num = Integer.parseInt(sub);
+		// num++;
+		// String code = "301";
+		// if (num < 10) {
+		// code += "00000" + num;
+		// } else if (num < 100 && num > 9) {
+		// code += "0000" + num;
+		// } else if (num < 1000 && num > 99) {
+		// code += "000" + num;
+		// } else if (num < 10000 && num > 999) {
+		// code += "00" + num;
+		// } else if (num < 100000 && num > 9999) {
+		// code += "0" + num;
+		// } else if (num < 1000000 && num > 99999) {
+		// code += num;
+		// }
+		// logger.debug("code :"+code);
+		// return code;
+//	}
 
 }

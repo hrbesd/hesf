@@ -169,4 +169,11 @@ public interface CompanyService extends BaseService<Company> {
 	 */
 	String getNextCompanyCode();
 	
+	/**
+	 * 根据企业名称或档案号来查询公司
+	 * @param queryStr 可以为企业名称或档案号
+	 * @return
+	 */
+	List<Company> getByCodeOrName(String queryStr);
+	
 }

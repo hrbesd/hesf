@@ -390,6 +390,20 @@
 		and c.company_code = #{companyCode,jdbcType=INTEGER}
 	</select>
 
+	<!-- retrieve -->
+	<select id="retrieveByCodeOrName" parameterType="java.lang.String" resultMap="ResultCompany">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="From_condition_list" />
+		where
+		<include refid="Where_condition_list" />
+		and (c.company_code like concat('%', #{queryStr,jdbcType=VARCHAR} ,'%') 
+		or c.company_name like concat('%', #{queryStr,jdbcType=VARCHAR} ,'%'))
+		order by c.company_code asc 
+		limit 0, 10;
+	</select>
+	
 	<select id="retrieveByPage" parameterType="map" resultMap="ResultCompany">
 		select
 		<include refid="Base_Column_List" />

@@ -1,6 +1,7 @@
 package com.esd.hesf.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.esd.hesf.model.Company;
 
@@ -48,4 +49,11 @@ public interface CompanyDao extends BaseDao<Company> {
 	 * @return
 	 */
 	String retrieveNextCompanyCode();
+	
+	/**
+	 * 根据企业名称或档案号来查询公司
+	 * @param queryStr 可以为企业名称或档案号
+	 * @return
+	 */
+	List<Company> retrieveByCodeOrName(String queryStr);
 }

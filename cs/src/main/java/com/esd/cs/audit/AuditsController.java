@@ -346,22 +346,19 @@ public class AuditsController {
 	}
 
 	/**
-	 * 模糊查找公司档案号
+	 * 模糊查找公司档案号或公司名称
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/create/{companyCode}", method = RequestMethod.GET)
+	@RequestMapping(value = "/create/{queryStr}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, String>> findCompanyCode(
-			@PathVariable(value = "companyCode") String companyCode) {
+			@PathVariable(value = "queryStr") String queryStr) {
 		List<Map<String, String>> list = new ArrayList<>();
 
-		Company company = new Company();
-		company.setCompanyCode(companyCode);
-		PaginationRecordsAndNumber<Company, Number> query = companyService
-				.getPaginationRecords(company, 1, 20);
+		List<Company> resultList = companyService.getByCodeOrName(queryStr);
 
-		for (Company c : query.getRecords()) {
+		for (Company c : resultList) {
 			Map<String, String> entity = new HashMap<>();
 			entity.put("id", c.getCompanyCode());
 			entity.put("text", c.getCompanyCode() + ":" + c.getCompanyName());
