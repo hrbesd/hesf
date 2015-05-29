@@ -31,8 +31,11 @@
 					//员工信息
 					var workerStr = '';
 					var workerLength = data.workerList.length;
+					//下面残疾人
+					var useHeight = 0;
 					if(workerLength == 0){
 						workerStr += '<tr><td colspan="6" style="height:50px;font-weight:bold;">该单位没有在职的残疾职工</td></tr>';
+						useHeight= 50;
 					}else{
 						$(data.workerList).each(function(index,element){
 							workerStr += '<tr>';
@@ -52,8 +55,14 @@
 							}
 							workerStr += '<td>'+element.isRetired+'</td>';	//是否内退
 							workerStr += '</tr>';
+							useHeight += 24;
 						});
+						
 					}
+					//最后加上那个空白行来填充，支撑页面铺满
+					//原来空白的总高度60 - 可能被残疾人行占用的高度;
+					var preHeight = 430;
+					workerStr += '<tr style="height:'+ (preHeight - useHeight)+'px;border-top:none;"><td colspan="6">&nbsp;</td></tr>';
 					$('#infoBody tbody').append(workerStr);
 					return true;
 				},
@@ -79,14 +88,18 @@
 		#infoBody thead tr td {
 			height: 30px;
 			text-align:center;
-			font-size:14px;
+			font-size:16px;
 		}
 		#infoBody tbody tr td {
 			text-align:center;
-			font-size:14px;
+			font-size:16px;
+		}
+		#infoBody tfoot tr td{
+			font-size:18px;
 		}
 		#infoBody tfoot tr td p{
 			width:100%;
+			
 		}
 		.p_toleft{
 			text-align: left;
@@ -98,7 +111,7 @@
 			text-align: right;
 		}
 	</style>
-	<div id="printArea" style="width: 800px;  margin: 10px auto auto;font-size: 15px;text-align: center;">
+	<div id="printArea" style="width: 700px;  margin: 10px auto auto;font-size: 15px;text-align: center;">
 			<div style="text-align:center;font-size:25px;font-weight: bold;">
 				<span style="font-size:20px;">黑 龙 江 垦 区</span><br/>
 				分散按比例安置残疾人就业认定书
