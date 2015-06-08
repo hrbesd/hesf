@@ -268,7 +268,7 @@ public class CompayController {
 				logger.error("addCompany:{}", "paramserror");
 				return -1;
 			}
-			String nowYear = (String) session.getAttribute(Constants.YEAR);
+			company.setYear(year);	//公司所属的审核年度
 			Integer userId = Integer.valueOf(session.getAttribute(
 					Constants.USER_ID).toString());
 			company.setUserId(userId);
@@ -293,11 +293,11 @@ public class CompayController {
 			}
 			// 检查是否存在当年的审核数据, 如不存在则创建
 			Audit audit = auditService
-					.getByPrimaryKey(nowYear, company.getId());
+					.getByPrimaryKey(year, company.getId());
 			if (audit == null) {
 				audit = new Audit();
 				audit.setCompany(company);
-				audit.setYear(nowYear);
+				audit.setYear(year);
 				audit.setUserId(userId);
 				auditService.save(audit);
 			}

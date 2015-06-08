@@ -29,6 +29,7 @@ import com.esd.common.util.PaginationRecordsAndNumber;
 import com.esd.cs.Constants;
 import com.esd.cs.common.PoiCreateExcel;
 import com.esd.hesf.model.Company;
+import com.esd.hesf.service.AuditParameterService;
 import com.esd.hesf.service.CompanyService;
 
 @Controller
@@ -39,6 +40,14 @@ public class QueryCompayController {
 	@Autowired
 	private CompanyService companyService;// 企业
 
+	@Autowired
+	private AuditParameterService auditParameterService;
+	/**
+	 * 跳转到公司列表页面
+	 * @param request
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView company_list(HttpServletRequest request,
 			HttpSession session) {
@@ -49,6 +58,13 @@ public class QueryCompayController {
 
 	}
 
+	/**
+	 * 返回公司列表数据
+	 * @param params
+	 * @param request
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> companyPost(CompanyParamModel params,
@@ -59,6 +75,14 @@ public class QueryCompayController {
 		paramsMap.put("pageSize", params.getRows());// 分页--返回量
 													// ******************************
 		Map<String, Object> entity = new HashMap<>();
+		String year = "";	//审核年份
+		// 如果没有传递年份参数, 则返回最近一年审核的公司数据
+		if(params.getYear() == null || "".equals(params.getYear())){
+			year = auditParameterService.getLastestYear();
+		}else{
+			year = params.getYear();
+		}
+		paramsMap.put("year", year);
 		PaginationRecordsAndNumber<Company, Number> query = companyService
 				.getByMultiCondition(paramsMap);
 
